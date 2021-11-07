@@ -1,6 +1,10 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.container{
+    padding:0;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -59,9 +63,14 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: Roboto, sans-serif;
+    color: rgb(43, 43, 43);
+    background-color: rgb(247, 247, 247);
+    line-height: 1.42857;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -131,4 +140,236 @@ body {
 
 .container-2 h1 {
     text-shadow: 1px 1px 1px white;
+}
+
+
+.events a {
+    text-decoration: none;
+    color: rgb(43, 43, 43);
+}
+
+.events .category-header {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 7px;
+    margin-bottom: 35px;
+    line-height: 1.1;
+    color: inherit;
+}
+
+.events .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px 0 rgb(0 0 0 / 5%);
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 30px;
+}
+
+.events .card:hover img {
+    filter: brightness(0.8);
+}
+
+.events .card:hover {
+    box-shadow: 0 5px 10px 5px rgb(0 0 0 / 6%);
+}
+
+.events .card img {
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.card-block-img {
+    width: 100%;
+    padding-bottom: 56.25%;
+    cursor: pointer;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    padding-bottom: 56.25%;
+}
+
+    .card-block-img .wrapper {
+        display: flex;
+        justify-content: end;
+    }
+
+.card-age {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    width: 42px;
+    height: 26 px;
+    color: #2b2b2b;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.71;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 15px 15px 0 0;
+}
+
+.events .card a:hover {
+    color: crimson;
+}
+
+.card-tag {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    z-index: 1;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+    .card-tag a {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        background-color: hsla(0, 0%, 100%, .8);
+        display: inline-block;
+        box-sizing: border-box;
+        max-width: 100%;
+        padding: 4px 10px;
+        font-weight: 500;
+        font-size: 9px;
+        white-space: nowrap;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        border-radius: 4px;
+    }
+
+        .more-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 22px;
+            background: #fff;
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    .more-btn .icon-more {
+        color: #9b9b9b;
+        font-size: 14px;
+    }
+
+    .more-btn:hover .icon-more {
+        color: #2b2b2b;
+    }
+
+.card-block-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 224px;
+    padding: 15px 20px 20px;
+    color: #737373;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 30px;
+}
+
+.card-date {
+    padding-bottom: 8px;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.card-venue {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.card-venue-link {
+    color: #737373;
+    font-weight: 400;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.card-price {
+    display: block;
+    padding-top: 10px;
+    color: #2b2b2b;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.venues-card {
+    margin: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 5%);
+    height: 120px;
+}
+
+.venue {
+    display: flex;
+    justify-content: space-around;
+}
+
+.venue-card-img-container {
+    background-image: linear-gradient(117deg, #cc2b5e, #753a88);
+    display: flex;
+    flex: 0 0 60px;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+    background-color: #fff;
+    border-radius: 30px;
+}
+
+.venue-card-placeholder {
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.venue-card-content {
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+}
+
+.venue-card-type {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    margin: 0;
+    color: #737373;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 2;
+    text-transform: uppercase;
+}
+
+.venue-card-title {
+    white-space: normal;
+    word-break: break-word;
+    margin-top: 5px;
+    margin-bottom: 0;
+    color: #2b2b2b;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.44;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -9,6 +9,10 @@ html {
     scrollbar-width: none; /* Firefox */
 }
 
+.page-content {
+    margin-bottom: 180px;
+}
+
 .navbar {
     z-index: 98;
 }
@@ -211,10 +215,6 @@ html {
 }
 
 body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
     font-family: Roboto, sans-serif;
     color: rgb(43, 43, 43);
     background-color: rgb(247, 247, 247);
@@ -222,7 +222,6 @@ body {
 }
 
 .footer {
-    margin-top: auto;
     padding: 30px 0;
     background-color: #000;
     position: absolute;

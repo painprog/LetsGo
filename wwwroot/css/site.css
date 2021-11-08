@@ -1,71 +1,236 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿/*Layout*/
+::-webkit-scrollbar { /* chrome based */
+    width: 0px; /* ширина scrollbar'a */
+    background: transparent; /* опционально */
+}
+
+html {
+    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+.nav-start {
+    background-color: #000;
+}
+
+.nav-end {
+    position: fixed !important;
+    background-color: #2b2b2b;
+}
+
+
+.sidenav {
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: -330px;
+    background-color: #000;
+    overflow-x: hidden;
+    padding-top: 0.25rem;
+}
+
+.fog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sidenav ul {
+    padding: 0;
+    list-style-type: none;
+    margin-bottom: 40px;
+}
+
+    .sidenav ul li {
+        padding: 16px 30px;
+        width: 330px;
+    }
+
+        .sidenav ul li a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #737373;
+        }
+
+        .sidenav ul li:hover,
+        .sidenav ul li:hover a {
+            cursor: pointer;
+            background-color: rgb(21, 21, 21);
+            color: #fff;
+        }
+
+.icon-menu {
+    cursor: pointer;
+    text-decoration: none;
+    width: 30px;
+    height: 10px;
+    font-style: 30px;
+}
+
+.icon-close {
+    cursor: pointer;
+    padding: 1rem 0 0 2rem;
+}
+
+.submenu-link:hover > .menu-link,
+.menu-link:hover {
+    color: #FF0000 !important;
+}
+
+.menu-link:focus {
+    outline: none;
+    color: #FF0000 !important;
+}
+
+.submenu-link {
+    float: left;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+}
+
+
+.submenu-item {
+    display: block;
+    text-decoration: none;
+    padding: 5px 15px;
+    color: #000;
+    background-color: #fff;
+}
+
+.submenu-link:hover {
+    cursor: pointer;
+}
+
+    .submenu-link:hover .submenu {
+        display: flex;
+    }
+
+/* .submenu-link:hover .overlay {
+  display: block;
+} */
+
+.submenu .submenu-item:hover {
+    text-decoration: none;
+    color: #FF0000;
+    background-color: rgb(247, 247, 247);
+}
+
+.search {
+    display: none;
+    background-color: #151515;
+    color: #737373;
+    width: 111px;
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 30px 5px 5px;
+}
+
+    .search span {
+        vertical-align: middle;
+        height: 30px;
+    }
+
+
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    padding: 30px 0;
+    background-color: #000;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+.footer-link-tittle {
+    height: 16px;
+    margin-bottom: 30px;
+    font-size: 11px;
+}
+
+.footer-tittle {
+    font-size: 14px;
+    height: 20px;
+}
+
+.footer p {
+    color: #737373;
+    margin-top: 20px;
+    line-height: 20px;
 }

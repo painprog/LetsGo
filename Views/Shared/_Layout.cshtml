@@ -6,12 +6,94 @@
     <title>@ViewData["Title"] - LetsGo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/v5.11.1/css/free.min.css" media="all">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LetsGo</a>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom text-white box-shadow mb-3 nav-start w-100">
+            <div class="container-fluid">
+                <div id="sideNav" class="sidenav">
+                    <a><span onclick="closeNav()" class="material-icons icon-close" id="closeSpan">close</span></a>
+                    <div class="sideNavMenu">
+                        <ul>
+                            <li>
+                                <a href="#">Отмены и переносы</a>
+                            </li>
+                            <li>
+                                <a href="#">Условия возврата</a>
+                            </li>
+                            <li>
+                                <a href="#">Площадки</a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="#">О компании</a>
+                            </li>
+                            <li>
+                                <a href="#">Контакты</a>
+                            </li>
+                            <li>
+                                <a href="#">Кассы</a>
+                            </li>
+                            <li>
+                                <a href="#">Реквизиты</a>
+                            </li>
+                            <li>
+                                <a href="#">Способы оплаты</a>
+                            </li>
+                            <li>
+                                <a href="#">Электронный билет</a>
+                            </li>
+                            <li>
+                                <a href="#">Публичная оферта</a>
+                            </li>
+                            <li>
+                                <a href="#">Политика конфиденциальности</a>
+                            </li>
+                            <li>
+                                <a href="#">Политика использования файлов "cookie</a>
+                            </li>
+                            <li>
+                                <a href="#">Субагентский договор</a>
+                            </li>
+                            <li>
+                                <a href="#">Комплаенс и деловая этика</a>
+                            </li>
+
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="#">Промокоды Пономиналу</a>
+                            </li>
+                            <li>
+                                <a href="#">Баннеры Пономиналу</a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="#">Корпоративным клиентам</a>
+                            </li>
+                            <li>
+                                <a href="#">ЛК организатора</a>
+                            </li>
+                            <li>
+                                <a href="#">Партнерская программа</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="fog"></div>
+                <div onclick="openNav()" class="mr-5">
+                    <a><span class="material-icons icon-menu d-block">maximize</span></a>
+                    <a><span class="material-icons icon-menu d-block">maximize</span></a>
+                </div>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">LetsGo</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,48 +101,130 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white menu-link" href="#">Концерты</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-white menu-link" href="#">Спектакли</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <p>@User.Identity.Name</p>
-                            </li>
-                            <li>
-                                @using (Html.BeginForm("Logout", "Account"))
-                                {
-                                    <button type="submit" class="btn btn-danger flex-fill">Выход</button>
-                                }
-                            </li>
-                        }
-                        else
-                        {
-                        <li>
-                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Вход</a>
+                        <li class="nav-item">
+                            <a class="nav-link text-white menu-link" href="#">Детям</a>
                         </li>
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-white menu-link" href="#">Классика</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white menu-link" href="#">Экскурсия</a>
+                        </li>
+                        <li class="nav-item submenu-link">
+                            <a class="nav-link text-white menu-link">Еще</a>
+                            <div class="submenu pt-4">
+                                <a class="submenu-item" href="#">Фестивали</a>
+                                <a class="submenu-item" href="#">Спорт</a>
+                            </div>
+                        </li>
+                        <li class="nav-item ml-auto">
+                            <button class="search align-bottom">
+                                <span class="d-inline-block material-icons">search</span>
+                                <span class="d-inline-block">Поиск</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">
+                                <span class="material-icons">location_on</span>
+                            </a>
+                        </li>
                     </ul>
+                </div>
+                <div class="login_group ml-auto">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="text-white" asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a>
+                        @using (Html.BeginForm("Logout", "Account"))
+                        {
+                            <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>
+                        }
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Вход</a>
+                    }
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 page-content">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-white">
         <div class="container">
-            &copy; 2021 - LetsGo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer-link-tittle text-muted">НОВОСТИ</div>
+                    <div class="footer-link">Ежедневное издание «Сова»</div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="footer-link-tittle text-muted">МОБИЛЬНОЕ ПРИЛОЖЕНИЕ</div>
+                    <div class="footer-link">App Store</div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="footer-link-tittle text-muted">МЫ ПРИНИМАЕМ</div>
+                    <div class="footer-link">тут карты</div>
+                </div>
+                <div class="col-md-3">
+                    <p>
+                        © 2021 ООО «МДТЗК»<br>
+                        ул. 2-ая Брестская, д.43, Москва, 123056<br>
+                        Телефон:  <span class="text-white">8-495-134-77-77</span><br>
+                        <span class="text-white">Форма для обратной связи</span>
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+
+
+        function openNav() {
+            $("#sideNav").animate({ left: '0px' });
+            $('.fog').show();
+        }
+        function closeNav() {
+            $("#sideNav").animate({ left: '-330px' });
+            $('.fog').hide();
+        }
+
+        $('.fog').click(function () {
+            $('#sideNav').animate({ left: '-330px' });
+            $('.fog').hide();
+        });
+
+
+        $('.dropdown').hover(function () {
+            $('.dropdown-toggle', this).trigger('click');
+        });
+
+        $(document).scroll(function () {
+            if (window.scrollY > screen.height) {
+                $('.search').show();
+                $('.navbar').addClass("nav-end");
+                $('.navbar').removeClass("nav-start");
+            }
+            else {
+                $('.search').hide();
+                $('.navbar').addClass("nav-start");
+                $('.navbar').removeClass('nav-end');
+            }
+        });
+
+
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

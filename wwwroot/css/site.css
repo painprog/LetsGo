@@ -9,6 +9,10 @@ html {
     scrollbar-width: none; /* Firefox */
 }
 
+.page-content {
+    margin-bottom: 180px;
+}
+
 .navbar {
     z-index: 98;
 }
@@ -218,11 +222,10 @@ body {
 }
 
 .footer {
-   /* margin-top: auto;*/
     padding: 30px 0;
     background-color: #000;
-    /*position: absolute;*/
-  /*  bottom: 0;*/
+    position: absolute;
+    bottom: 0;
     width: 100%;
     white-space: nowrap;
     line-height: 60px;

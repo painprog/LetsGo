@@ -129,11 +129,16 @@ body {
 }
 
 .card_cont2 {
-    background-image: url(canva-радуга-градиентный-розовый-оранжевый-и-синий-zoom-виртуальный-фон-9z3hOYl4auA.jpg);
-    height: 220px;
+    background-image: linear-gradient(to right bottom, #051237, #3d1b56, #7a1566, #b70063, #eb124e);
+    height: 100%;
+    color: white;
 }
 
-.cont_2_body{
+.img_card {
+    filter: invert(100%) sepia(0%) saturate(7482%) hue-rotate(20deg) brightness(118%) contrast(93%);
+}
+
+.cont_2_body {
     background-image: url(15017480345982db42b6a5b9.62651496.jpg);
     background-size: cover;
 }

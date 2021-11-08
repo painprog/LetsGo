@@ -138,7 +138,7 @@
                 <div class="login_group ml-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="text-dark" asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a>
+                        <a class="text-white" asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a>
                         @using (Html.BeginForm("Logout", "Account"))
                         {
                             <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>
@@ -161,19 +161,19 @@
     <footer class="border-top footer text-white">
         <div class="container">
             <div class="row">
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="footer-link-tittle text-muted">НОВОСТИ</div>
                     <div class="footer-link">Ежедневное издание «Сова»</div>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="footer-link-tittle text-muted">МОБИЛЬНОЕ ПРИЛОЖЕНИЕ</div>
                     <div class="footer-link">App Store</div>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="footer-link-tittle text-muted">МЫ ПРИНИМАЕМ</div>
                     <div class="footer-link">тут карты</div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <p>
                         © 2021 ООО «МДТЗК»<br>
                         ул. 2-ая Брестская, д.43, Москва, 123056<br>
@@ -212,11 +212,12 @@
 
         $(document).scroll(function () {
             if (window.scrollY > screen.height) {
-                $('.search').css('display', 'inline-block');
+                $('.search').show();
                 $('.navbar').addClass("nav-end");
                 $('.navbar').removeClass("nav-start");
             }
             else {
+                $('.search').hide();
                 $('.navbar').addClass("nav-start");
                 $('.navbar').removeClass('nav-end');
             }

@@ -1,0 +1,107 @@
+﻿@model Event
+
+@{
+    ViewBag.Title = "Добавление нового события";
+}
+
+<h2>@ViewBag.Title</h2>
+<form asp-controller="Event" asp-action="Add" method="post" EncType="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+    <div>
+        <label asp-for="Name"></label><br />
+        <input id="name" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label asp-for="Description"></label><br />
+        <input id="description" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label asp-for="EventStart"></label><br />
+        <input id="eventStart" asp-for="EventStart" type="datetime-local" />
+        <span asp-validation-for="EventStart"></span>
+    </div>
+    <div>
+        <label asp-for="EventEnd"></label><br />
+        <input id="eventEnd" asp-for="EventEnd" type="datetime-local" />
+        <span asp-validation-for="EventEnd"></span>
+    </div>
+    <div>
+        <label asp-for="TicketLimit"></label><br />
+        <input id="ticketLimit" asp-for="TicketLimit"/>
+        <span asp-validation-for="TicketLimit"></span>
+    </div>
+    <div>
+        <label for="uploadImage">Постер</label><br />
+        <input type="file" name="uploadImage" id="uploadImage" required>
+    </div>
+    <div>
+        <label for="radioBtns"></label>Возрастное ограничение<br />
+        <div id="radioBtns">
+            @{int i = 1;}
+            @foreach (var item in ViewBag.AgeLimits)
+            {
+                <input id="ageLimit-@i" type="radio" name="AgeLimit" value="@item" checked="TakeAgeLimit(@i)">
+                <label for="roleChoice1">@item+</label>
+                i++;
+            }
+        </div>
+    </div>
+    <div>
+        <label for="checkBoxes"></label>Категории<br />
+        <div id="checkBoxes">
+            @{int count = 1;}
+            @foreach (var item in ViewBag.Categories)
+            {
+                <input type="checkbox" id="categ-@count"
+                       name="category" value="@item" onchange="AddCateg(@count)">
+                <label for="roleChoice1">@item</label>
+                count++;
+            }
+        </div>
+    </div>
+    <div>
+        <button type="button" class="btn btn-secondary" onclick="AddEvent()">Добавить</button>
+    </div>
+</form>
+
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+ 
+<script>
+
+        var categs = [];
+        var ageLimit;
+
+        function AddCateg(count) {
+            categs.push($('#categ-' + count).val());
+            console.log(categs)
+        }
+
+        function TakeAgeLimit(i) {
+            ageLimit = $('#ageLimit-' + i).val();
+            console.log(ageLimit)
+        }
+
+
+
+   //function AddEvent() {
+   //    $.post('@Url.Action("Add", "Event")',
+   //        {
+   //            data: new FormData(this),
+   //            name: $('#name').val(),
+   //            description: $('#description').val(),
+   //            eventStart: $('#eventStart').val(),
+   //            eventEnd: $('#eventEnd').val(),
+   //            AgeLimit: ageLimit,
+   //            categories: categs,
+   //            ticketLimit: $('#ticketLimit').val()
+   //        },
+   //        function (response) {
+   //            console.log(response)
+   //        }
+   //    )
+   //
+</script>
+}

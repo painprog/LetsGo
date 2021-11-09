@@ -15,6 +15,7 @@ namespace LetsGo.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventTicketType> EventTicketTypes { get; set; }
+        public DbSet<PurchasedTicket> PurchasedTickets { get; set; }
         public LetsGoContext(DbContextOptions options) : base(options) {}
     }
 }

@@ -10,6 +10,7 @@ namespace LetsGo.Models
     public class LetsGoContext : IdentityDbContext<User>
     {
         public DbSet<User> ContextUsers { get; set; }
+        public DbSet<EventCategory> EventCategories { get; set; }
         public LetsGoContext(DbContextOptions options) : base(options) {}
     }
 }

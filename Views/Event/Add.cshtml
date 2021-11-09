@@ -42,8 +42,8 @@
             @{int i = 1;}
             @foreach (var item in ViewBag.AgeLimits)
             {
-                <input id="ageLimit-@i" type="radio" name="AgeLimit" value="@item" checked="TakeAgeLimit(@i)">
-                <label for="roleChoice1">@item+</label>
+                <input id="ageLimit-@i" type="radio" name="AgeLimit" value="@item" checked onchange="TakeAgeLimit(@i)">
+                <label for="ageLimit-@i">@item+</label>
                 i++;
             }
         </div>

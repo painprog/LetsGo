@@ -34,7 +34,11 @@ namespace LetsGo.Controllers
                 await _goContext.EventCategories.AddAsync(categoryShow);
                 await _goContext.SaveChangesAsync();
             }
-            ViewBag.Categories = await _goContext.EventCategories.ToListAsync();
+            List<string> categoriesName = new List<string>();
+            List<EventCategory> eventCategories = await _goContext.EventCategories.ToListAsync();
+            foreach (var item in eventCategories)
+                categoriesName.Add(item.Name);
+            ViewBag.Categories = categoriesName;
             ViewBag.AgeLimits = new int[] { 0, 5, 6, 12, 16, 18 };
             return View();
         }

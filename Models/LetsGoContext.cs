@@ -13,6 +13,7 @@ namespace LetsGo.Models
         public DbSet<EventCategory> EventCategories { get; set; }
         public DbSet<LocationCategory> LocationCategories { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Event> Events { get; set; }
         public LetsGoContext(DbContextOptions options) : base(options) {}
     }
 }

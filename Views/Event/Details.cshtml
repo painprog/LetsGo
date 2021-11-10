@@ -1,0 +1,95 @@
+﻿
+@{ 
+    ViewBag.Title = "Детальная страница мероприятия";
+} 
+
+<div class="pn-page_section">
+    <div class="pn-page-head">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="pn-head_image">
+                    <img src="~/events/@Model.Event.PosterImage" alt="">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="pn-head_title">
+                    <h1>@Model.Event.Name</h1>
+                    <span>@Model.Event.AgeLimit +</span>
+                </div>
+                <div class="pn-head_description">
+                    <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
+                    <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
+                    <div class="pn-head_place">@Model.Event.Location.Name</div>
+                </div>
+                <div class="pn-head_tags">
+                    @foreach (var item in Model.EventCategories)
+                    {
+                        <a href="#" class="tag">@item.Name</a>
+                    }
+                </div>
+                <div class="pn-head_buttons">
+                    <button class="btn btn-danger"><span>билеты</span></button>
+                    <button class="btn btn-light"><span>другие сеансы</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="event">
+            <div class="info">
+                <h1>@Model.Event.Name</h1>
+                <p>@Model.Event.EventStart.ToLongDateString() — @Model.Event.EventEnd.ToLongDateString()</p>
+            </div>
+            <div class="menu">
+                <button id="prices" class="btn btn-light">цены / места</button>
+                <div class="section_box">
+                    <!-- типы билетов, с ценами -->
+                    <div class="dynamic">
+                        <div class="section_block">
+                            <div class="color_bl" style="background-color: #e3ff00;"></div>
+                            <div class="price">— 5000 руб.</div>
+                        </div>
+                        <div class="section_block">
+                            <div class="color_bl" style="background-color: #ef0000;"></div>
+                            <div class="price">— 4000 руб.</div>
+                        </div>
+                        <div class="section_block">
+                            <div class="color_bl" style="background-color: bisque;"></div>
+                            <div class="price">— 3000 руб.</div>
+                        </div>
+                    </div>
+                    <div class="section_status">
+                        <div class="section_fix">
+                            <div class="color_bl" style="background-color: #2b2b2b;"></div>
+                            <div class="price">Забронированные места</div>
+                        </div>
+                        <div class="section_fix">
+                            <div class="color_bl" style="background-color: #e1e1e1;"></div>
+                            <div class="price">Выкупленные места</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="places">
+                <p>тут блок с местами</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts 
+{
+<script>
+    $('#prices').click(function () {
+        if ($('.section_box').is(':visible')) {
+            $('.section_box').hide();
+        }
+        else {
+            $('.section_box').show();
+            $('.section_box').css({ position: "absolute" });
+        }
+    });
+</script>
+} 

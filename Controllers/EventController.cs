@@ -1,5 +1,6 @@
 ﻿using LetsGo.Models;
 using LetsGo.Services;
+using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace LetsGo.Controllers
@@ -44,10 +46,9 @@ namespace LetsGo.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Add(IFormFile uploadImage, Event _event,
-            string[] categories, string AgeLimit)
+        public async Task<JsonResult> Add([FromForm] EventViewModel eventView)
         {     
-            Event @event = await _Service.GetEvent(uploadImage, _event, categories, AgeLimit);
+            Event @event = await _Service.AddEvent(eventView);
             return Json(new { @event });
         }
     }

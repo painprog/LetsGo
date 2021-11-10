@@ -1,4 +1,4 @@
-﻿@model Event
+﻿@model EventViewModel
 
 @{
     ViewBag.Title = "Добавление нового события";
@@ -34,7 +34,7 @@
     </div>
     <div>
         <label for="uploadImage">Постер</label><br />
-        <input type="file" name="uploadImage" id="uploadImage" required>
+        <input type="file" name="uploadImage" id="uploadImage" required onchange="GetPoster('uploadImage')">
     </div>
     <div>
         <label for="radioBtns"></label>Возрастное ограничение<br />
@@ -73,9 +73,14 @@
 
         var categs = [];
         var ageLimit;
+        var formData = new FormData();
 
-        function AddCateg(count) {
-            categs.push($('#categ-' + count).val());
+    function AddCateg(count) {
+        var categ = $('#categ-' + count).val()
+        var bool = categs.includes(categ)
+        if (!bool) {
+            categs.push(categ);
+        }         
             console.log(categs)
         }
 
@@ -84,24 +89,36 @@
             console.log(ageLimit)
         }
 
+       function GetPoster(uploadImage) {
+           var input = document.getElementById(uploadImage)
+           var file = input.files[0]
+           formData.append("file", file);
+           console.log(formData)
+      }
 
 
-   //function AddEvent() {
-   //    $.post('@Url.Action("Add", "Event")',
-   //        {
-   //            data: new FormData(this),
-   //            name: $('#name').val(),
-   //            description: $('#description').val(),
-   //            eventStart: $('#eventStart').val(),
-   //            eventEnd: $('#eventEnd').val(),
-   //            AgeLimit: ageLimit,
-   //            categories: categs,
-   //            ticketLimit: $('#ticketLimit').val()
-   //        },
-   //        function (response) {
-   //            console.log(response)
-   //        }
-   //    )
-   //
+    function AddEvent() {
+        formData.append("name", $('#name').val());
+        formData.append("description", $('#description').val());
+        formData.append("eventStart", $('#eventStart').val());
+        formData.append("eventEnd", $('#eventEnd').val());
+        formData.append("categories", categs);
+        formData.append("ageLimit", ageLimit);
+        formData.append("ticketLimit", $('#ticketLimit').val());
+        console.log(formData)
+
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("Add", "Event")',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+
 </script>
 }

@@ -1,10 +1,14 @@
 ﻿using LetsGo.Models;
+using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -21,23 +25,48 @@ namespace LetsGo.Services
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<Event> GetEvent(IFormFile uploadImage, Event _event,
-            string[] categories, string AgeLimit)
+        public async Task<Event> AddEvent([FromForm] EventViewModel eventView)
         {
-            string pathImage = "/posters/" + uploadImage.FileName;
+            string UCimg = DoUC();
+            string name = UCimg + '.'+ eventView.File.ContentType.Substring(eventView.File.ContentType.IndexOf('/') + 1);
+            string pathImage = "/posters/" + name;
             using (var fileStream = new FileStream(_appEnvironment.WebRootPath + pathImage, FileMode.Create))
-                await uploadImage.CopyToAsync(fileStream);
+                await eventView.File.CopyToAsync(fileStream);
 
-            if (categories.Length > 0)
+            string jsonCateg = string.Empty;
+            if (eventView.Categories.Length > 0)
+                jsonCateg = JsonSerializer.Serialize(eventView.Categories);
+
+            Event @event = new Event
             {
-                string jsonCateg = JsonSerializer.Serialize<string[]>(categories);
-            }
-            _event.PosterImage = pathImage;
-            _event.CreatedAt = DateTime.Now;
-            _event.AgeLimit = Convert.ToInt32(AgeLimit);
-            await _goContext.Events.AddAsync(_event);
+                Name = eventView.Name,
+                Description = eventView.Description,
+                CreatedAt = DateTime.Now,
+                EventStart = eventView.EventStart,
+                EventEnd = eventView.EventEnd,
+                PosterImage = pathImage,
+                Categories = jsonCateg,
+                AgeLimit = Convert.ToInt32(eventView.AgeLimit),
+                TicketLimit = eventView.TicketLimit,
+                LocationId = eventView.LocationId
+            };
+            await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();
-            return _event;
+            
+            return @event;
+        }
+
+        public static string DoUC()
+        {
+            string _numbers = "0123456789";
+            StringBuilder builder = new StringBuilder(6);
+            Random random = new Random();
+            for (var i = 0; i < 6; i++)
+            {
+                builder.Append(_numbers[random.Next(0, _numbers.Length)]);
+            }
+            string UC = builder.ToString();
+            return UC;
         }
     }
 }

@@ -122,6 +122,16 @@
                                 <a class="submenu-item" href="#">Спорт</a>
                             </div>
                         </li>
+
+                        @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
+                        {
+                            <li class="nav-item ml-5">
+                                <a class="nav-link text-white menu-link" asp-controller="Locations" asp-action="Create">
+                                    Добавить площадку
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item ml-auto">
                             <button class="search align-bottom">
                                 <span class="d-inline-block material-icons">search</span>

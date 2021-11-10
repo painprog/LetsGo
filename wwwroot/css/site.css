@@ -552,3 +552,18 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+#create-location-form .label{
+    font-weight:500;
+}
+
+.add-more-phones {
+    cursor: pointer;
+    color:darkred !important;
+    float:right;
+    padding-top: 5px;
+}
+
+.add-more-phones:hover{
+    text-decoration: underline !important;
+}

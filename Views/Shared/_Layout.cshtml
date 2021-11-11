@@ -122,6 +122,12 @@
                                 <a class="submenu-item" href="#">Спорт</a>
                             </div>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white menu-link" asp-area="" asp-controller="EVent" asp-action="Add">Добавить событие</a>
+                            </li>
+                        }
                         <li class="nav-item ml-auto">
                             <button class="search align-bottom">
                                 <span class="d-inline-block material-icons">search</span>
@@ -142,8 +148,7 @@
                         @using (Html.BeginForm("Logout", "Account"))
                         {
                             <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>
-                        }
-                        <a class="text-white" asp-area="" asp-controller="EVent" asp-action="Add">Добавить событие</a>
+                        }                       
                     }
                     else
                     {

@@ -3,34 +3,34 @@
 @{
     ViewBag.Title = "Добавление нового события";
 }
-
+<hr />
 <h2>@ViewBag.Title</h2>
 <form asp-controller="Event" asp-action="Add" method="post" EncType="multipart/form-data">
     <div asp-validation-summary="All"></div>
     <div>
         <label asp-for="Name"></label><br />
         <input id="name" asp-for="Name" />
-        <span asp-validation-for="Name"></span>
+        <span asp-validation-for="Name" id="invalid"></span>
     </div>
     <div>
         <label asp-for="Description"></label><br />
         <input id="description" asp-for="Description" />
-        <span asp-validation-for="Description"></span>
+        <span asp-validation-for="Description" id="invalid"></span>
     </div>
     <div>
         <label asp-for="EventStart"></label><br />
         <input id="eventStart" asp-for="EventStart" type="datetime-local" />
-        <span asp-validation-for="EventStart"></span>
+        <span asp-validation-for="EventStart" id="invalid"></span>
     </div>
     <div>
         <label asp-for="EventEnd"></label><br />
         <input id="eventEnd" asp-for="EventEnd" type="datetime-local" />
-        <span asp-validation-for="EventEnd"></span>
+        <span asp-validation-for="EventEnd" id="invalid"></span>
     </div>
     <div>
         <label asp-for="TicketLimit"></label><br />
         <input id="ticketLimit" asp-for="TicketLimit"/>
-        <span asp-validation-for="TicketLimit"></span>
+        <span asp-validation-for="TicketLimit" id="invalid"></span>
     </div>
     <div>
         <label for="uploadImage">Постер</label><br />
@@ -42,7 +42,7 @@
             @{int i = 1;}
             @foreach (var item in ViewBag.AgeLimits)
             {
-                <input id="ageLimit-@i" type="radio" name="AgeLimit" value="@item" checked onchange="TakeAgeLimit(@i)">
+                <input id="ageLimit-@i" type="radio" name="AgeLimit" value="@item" onchange="TakeAgeLimit(@i)">
                 <label for="ageLimit-@i">@item+</label>
                 i++;
             }
@@ -80,7 +80,9 @@
         var bool = categs.includes(categ)
         if (!bool) {
             categs.push(categ);
-        }         
+        } else {
+            categs.splice(categs.indexOf(categ), 1)
+        }
             console.log(categs)
         }
 
@@ -97,7 +99,7 @@
       }
 
 
-    function AddEvent() {
+    function AddEvent(evt) {
         formData.append("name", $('#name').val());
         formData.append("description", $('#description').val());
         formData.append("eventStart", $('#eventStart').val());

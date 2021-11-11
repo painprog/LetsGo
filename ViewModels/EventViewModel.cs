@@ -37,7 +37,7 @@ namespace LetsGo.ViewModels
         public string Categories { get; set; }
 
         [FromForm(Name = "ageLimit")]
-        public int AgeLimit { get; set; }
+        public string AgeLimit { get; set; }
 
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Количество билетов")]

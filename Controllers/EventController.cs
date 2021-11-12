@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -36,20 +37,23 @@ namespace LetsGo.Controllers
                 await _goContext.EventCategories.AddAsync(categoryShow);
                 await _goContext.SaveChangesAsync();
             }
-            List<string> categoriesName = new List<string>();
-            List<EventCategory> eventCategories = await _goContext.EventCategories.ToListAsync();
-            foreach (var item in eventCategories)
-                categoriesName.Add(item.Name);
-            ViewBag.Categories = categoriesName;
-            ViewBag.AgeLimits = new int[] { 0, 5, 6, 12, 16, 18 };
+            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
+            ViewBag.Categories = categories;
             return View();
         }
 
         [HttpPost]
-        public async Task<JsonResult> Add([FromForm] EventViewModel eventView)
-        {     
-            Event @event = await _Service.AddEvent(eventView);
-            return Json(new { @event });
+        public async Task<JsonResult> Add(AddEventViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string tickets = model.Tickets;
+                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
+                Event @event = await _Service.AddEvent(model);
+                ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
+                return Json(new { success = true });
+            }
+            return Json(new { succes = false });
         }
     }
 }

@@ -25,9 +25,9 @@ namespace LetsGo.Services
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<Event> AddEvent([FromForm] EventViewModel eventView)
+        public async Task<Event> AddEvent(AddEventViewModel eventView)
         {
-            string UCimg = DoUC();
+            string UCimg = GenerateCode();
             string name = UCimg + '.'+ eventView.File.ContentType.Substring(eventView.File.ContentType.IndexOf('/') + 1);
             string pathImage = "/posters/" + name;
             using (var fileStream = new FileStream(_appEnvironment.WebRootPath + pathImage, FileMode.Create))
@@ -56,14 +56,27 @@ namespace LetsGo.Services
             return @event;
         }
 
-        public static string DoUC()
+        public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
         {
-            string _numbers = "0123456789";
+            foreach (var item in ticketTypes)
+            {
+                item.EventId = eventId;
+                item.Sold = 0;
+                _goContext.EventTicketTypes.Add(item);
+            }
+            await _goContext.SaveChangesAsync();
+
+            return ticketTypes;
+
+        }
+
+        public static string GenerateCode()
+        {
             StringBuilder builder = new StringBuilder(6);
             Random random = new Random();
-            for (var i = 0; i < 6; i++)
+            for (var i = 1; i <= 12; i++)
             {
-                builder.Append(_numbers[random.Next(0, _numbers.Length)]);
+                builder.Append(random.Next(10));
             }
             string UC = builder.ToString();
             return UC;

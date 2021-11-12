@@ -559,7 +559,7 @@ body {
     max-width: 1020px;
     margin: 0 auto;
     border-radius: 5px;
-    background-color: #e5e5e5;
+    background-color: #fff;
 }
 
 .pn-page-head {
@@ -671,7 +671,9 @@ body {
     }
 
 .menu {
-    margin: 20px 0 0 30px;
+    background-color: #f7f7f7;
+    margin: 20px 0 0 0;
+    padding-left: 30px;
 }
 
 .section_box {
@@ -710,7 +712,28 @@ body {
 }
 
 .places {
-    margin: 100px auto;
+    background-color: #f7f7f7;
+    margin: 0 auto;
+    padding-top: 100px;
     padding-bottom: 100px;
     text-align: center;
+}
+.side_descr p{
+    color: gray;
+    font-size: 15px;
+}
+.side_descr h6{
+    color: #525252;
+    font-size: 15px;
+}
+.details_subheader {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 35px;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+    color: inherit;
+}
+.rounded {
+    border-radius: 5px;
 }

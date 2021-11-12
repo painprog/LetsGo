@@ -1,4 +1,4 @@
-﻿
+﻿@model DetailsViewModel
 @{ 
     ViewBag.Title = "Детальная страница мероприятия";
 } 
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="pn-head_image">
-                    <img src="~/events/@Model.Event.PosterImage" alt="">
+                    <img src="~/events/@Model.Event.PosterImage" alt="" class="rounded">
                 </div>
             </div>
             <div class="col-lg-8">
@@ -29,7 +29,7 @@
                     }
                 </div>
                 <div class="pn-head_buttons">
-                    <button class="btn btn-danger"><span>билеты</span></button>
+                    <button class="btn btn-danger" onclick="Scroll()"><span>билеты</span></button>
                     <button class="btn btn-light"><span>другие сеансы</span></button>
                 </div>
             </div>
@@ -75,6 +75,35 @@
             <div class="places">
                 <p>тут блок с местами</p>
             </div>
+            <div class="row mx-2 py-5">
+                <div class="col-8">
+                    <h5 class="details_subheader">О мероприятии</h5>
+                    <p>@Model.Event.Description</p>
+                    <h5 class="details_subheader pt-4">Фотографии</h5>
+                    <div class="card" style="width: 30%;">
+                        <img src="~/events/@Model.Event.PosterImage" alt="" class="rounded">
+                    </div>
+                </div>
+                <div class="col-4 side_descr">
+                    <div class="pb-3">
+                        <h6>Почему TicketBox?</h6>
+                        <p>У TicketBox заключен официальный договор на реализацию билетов. Все цены на билеты официальные.</p>
+                    </div>
+                    <div class="pb-3">
+                        <h6>Не откладывайте покупку</h6>
+                        <p>Ближе к датам мероприятий цены на билеты могут повышаться, а востребованные категории билетов заканчиваться.</p>
+                    </div>
+                    <div class="pb-3">
+                        <h6>Никаких сервисных сборов!</h6>
+                        <p>На мероприятие Интерстеллар. Simple Music Ensemble даже электронные билеты без сервисных сборов.</p>
+                    </div>
+                    <div>
+                        <h4 style="color:#525252;">Место проведения</h4>
+                        <p class="text-body">@Model.Event.Location.Name</p>
+                        <p>@Model.Event.Location.Address</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -92,5 +121,10 @@
             $('.section_box').css({ position: "absolute" });
         }
     });
+    function Scroll() {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".places").offset().top
+        }, 1000);
+    }
 </script>
 } 

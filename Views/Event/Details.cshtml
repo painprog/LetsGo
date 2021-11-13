@@ -42,11 +42,11 @@
                 <h1>@Model.Event.Name</h1>
                 <p>@Model.Event.EventStart.ToLongDateString() — @Model.Event.EventEnd.ToLongDateString()</p>
             </div>
-            <div class="menu">
+            <!--<div class="menu">
                 <button id="prices" class="btn btn-light">цены / места</button>
-                <div class="section_box">
+                <div class="section_box">-->
                     <!-- типы билетов, с ценами -->
-                    <div class="dynamic">
+                    <!--<div class="dynamic">
                         <div class="section_block">
                             <div class="color_bl" style="background-color: #e3ff00;"></div>
                             <div class="price">— 5000 руб.</div>
@@ -71,9 +71,30 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="places">
-                <p>тут блок с местами</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Count</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.eventTickets)
+                        {
+                        <tr>
+                            <th scope="row">@item.Name</th>
+                            <td>@item.Price</td>
+                            <td>0</td>
+                            <th><input type="button" class="btn btn-outline-success" value="+" onclick="AddCount(this)">
+                                <input type="button" class="btn btn-outline-danger" value=" - " onclick="DeleteTicket(this)"></th>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
             <div class="row mx-2 py-5">
                 <div class="col-8">
@@ -125,6 +146,6 @@
         $([document.documentElement, document.body]).animate({
             scrollTop: $(".places").offset().top
         }, 1000);
-    }
+    };
 </script>
 } 

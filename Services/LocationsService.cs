@@ -16,14 +16,23 @@ namespace LetsGo.Services
 
         public async void Create(CreateLocationViewModel model)
         {
-            var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new
+            if (model.LocationCategories.Where(x => x.Selected == true).Count() == 0)
             {
-                Id = x.Value,
-                Name = x.Text
-            }).ToList();
-            var categoriesJson = JsonConvert.SerializeObject(categories);
-            model.Location.Categories = categoriesJson;
-
+                var categories = _db.LocationCategories.Where(c => c.Name == "Другое");
+                var categoriesJson = JsonConvert.SerializeObject(categories);
+                model.Location.Categories = categoriesJson;
+            }   
+            else
+            {
+                var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new
+                {
+                    Id = x.Value,
+                    Name = x.Text
+                });
+                var categoriesJson = JsonConvert.SerializeObject(categories);
+                model.Location.Categories = categoriesJson;
+            }
+            
             List<string> phones = new List<string>();
             if (model.PhoneNums != null)
                 phones = model.PhoneNums.Split(',').ToList();

@@ -22,7 +22,7 @@ namespace LetsGo.Controllers
         {
             CreateLocationViewModel model = new CreateLocationViewModel()
             {
-                LocationCategories = _db.LocationCategories.Select(x => new SelectListItem()
+                LocationCategories = _db.LocationCategories.Where(c => c.Name != "Другое").Select(x => new SelectListItem()
                 {
                     Text = x.Name,
                     Value = x.Id

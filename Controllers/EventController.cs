@@ -62,7 +62,7 @@ namespace LetsGo.Controllers
                 Event = @event,
                 LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
                 EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
-                eventTickets = tickets
+                EventTickets = tickets
             };
 
             return View(viewModel);

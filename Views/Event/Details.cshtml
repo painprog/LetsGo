@@ -1,7 +1,7 @@
 ﻿@model DetailsViewModel
-@{ 
+@{
     ViewBag.Title = "Детальная страница мероприятия";
-} 
+}
 
 <div class="pn-page_section">
     <div class="pn-page-head">
@@ -45,8 +45,8 @@
             <!--<div class="menu">
                 <button id="prices" class="btn btn-light">цены / места</button>
                 <div class="section_box">-->
-                    <!-- типы билетов, с ценами -->
-                    <!--<div class="dynamic">
+            <!-- типы билетов, с ценами -->
+            <!--<div class="dynamic">
                         <div class="section_block">
                             <div class="color_bl" style="background-color: #e3ff00;"></div>
                             <div class="price">— 5000 руб.</div>
@@ -73,7 +73,7 @@
                 </div>
             </div>-->
             <div class="places">
-                <table class="table">
+                <table class="table tickets">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -83,18 +83,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.eventTickets)
+                        @foreach (var item in Model.EventTickets)
                         {
-                        <tr>
-                            <th scope="row">@item.Name</th>
-                            <td>@item.Price</td>
-                            <td>0</td>
-                            <th><input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
-                                <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)"></th>
-                        </tr>
+                            <tr>
+                                <td scope="row">@item.Name</td>
+                                <td>@item.Price</td>
+                                <td>0</td>
+                                <td>
+                                    <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
+                                    <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
+                                </td>
+                                <td><input id="typeId" type="hidden" asp-for="@item.Id" /></td>
+                            </tr>
                         }
                     </tbody>
                 </table>
+                <input type="button" class="btn btn-dark btn-lg" value="Оформить заказ" onclick="Checkout()">
+            </div>
+            <div id="checkout" style="display: none;" class="mx-4 py-5">
+                <h5>Куда и кому отправить билеты?</h5>
+                <p>Пожалуйста, будьте внимательны при вводе e-mail адреса!</p>
+                <form id="ticket-buyer-form">
+                    <div class="form-row">
+                        <div class="col">
+                            <input id="name" type="text" class="form-control" placeholder="Имя" required>
+                        </div>
+                        <div class="col">
+                            <input id="phone" type="text" class="form-control" placeholder="Номер телефона" required>
+                        </div>
+                        <div class="col email">
+                            <input id="email" type="text" class="form-control" placeholder="Email" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-dark mt-4 px-3 btn-lg">Оплатить</button>
+                </form>
             </div>
             <div class="row mx-2 py-5">
                 <div class="col-8">
@@ -128,30 +150,90 @@
         </div>
     </div>
 </div>
+<div class="position-fixed p-3" style="z-index: 11; position: sticky; top: 0; right:0;">
+    <div class="toast align-items-center text-dark bg-white rounded border-1 badge-dark"
+         role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">LetsGo</strong>
+            <button type="button" class="ml-auto mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Билеты отосланы вам на почту!
+        </div>
+    </div>
+</div>
 
 
-@section Scripts 
+@section Scripts
 {
-<script>
-    $('#prices').click(function () {
-        if ($('.section_box').is(':visible')) {
-            $('.section_box').hide();
+    <script>
+        $('#prices').click(function () {
+            if ($('.section_box').is(':visible')) {
+                $('.section_box').hide();
+            }
+            else {
+                $('.section_box').show();
+                $('.section_box').css({ position: "absolute" });
+            }
+        });
+        function Scroll() {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $(".places").offset().top
+            }, 1000);
+        };
+        function PlusCount(a) {
+            $(a).closest('tr').find('td').eq(2).text(parseInt($(a).closest('tr').find('td').eq(2).text()) + 1);
         }
-        else {
-            $('.section_box').show();
-            $('.section_box').css({ position: "absolute" });
+        function MinusCount(a) {
+            var t = $(a).closest('tr').find('td').eq(2).text();
+            if (t != 0) {
+                $(a).closest('tr').find('td').eq(2).text(parseInt(t) - 1);
+            }
         }
-    });
-    function Scroll() {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $(".places").offset().top
-        }, 1000);
-    };
-    function PlusCount(a) {
-        $(a).closest('tr').find('td').eq(1).text(parseInt($(a).closest('tr').find('td').eq(1).text()) + 1);
-    }
-    function MinusCount(a) {
-        $(a).closest('tr').find('td').eq(1).text(parseInt($(a).closest('tr').find('td').eq(1).text()) - 1);
-    }
-</script>
+        function Checkout() {
+            $('.tickets tbody tr').each(function () {
+                if ($(this).find('td').eq(2).text() != 0) {
+                    $('#checkout').show();
+                }
+            });
+        }
+        $('#ticket-buyer-form').submit(function (event) {
+            event.preventDefault();
+            var tickets = [];
+            $('.tickets tbody tr').each(function () {
+                tickets.push({
+                    Id: $(this).find('td').eq(4).find('input').val(),
+                    Name: $(this).find('td').eq(0).text(),
+                    Count: $(this).find('td').eq(2).text()
+                });
+            });
+            console.log(tickets);
+            $.ajax({
+                type: "POST",
+                url: "/Ticket/Create",
+                data: {
+                    'model': {
+                        'EventTickets': tickets,
+                        'Name': $('#name').val(),
+                        'Phone': $('#phone').val(),
+                        'Email': $('#email').val()
+                    }
+                }
+            }).done(function (response) {
+                console.log(response);
+                if (response.success) {
+                    console.log("OK");
+                    $('.toast').toast('show');
+                    setTimeout(function () {
+                        window.location.href = response.redirectToUrl;
+                    }, 2000);
+                }
+                else {
+                    $('.email').append('<p class="text-danger">Некорректный email адрес!</p>');
+                }
+            });
+        });
+    </script>
 } 

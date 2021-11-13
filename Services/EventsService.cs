@@ -36,7 +36,6 @@ namespace LetsGo.Services
             string jsonCateg = string.Empty;
             if (eventView.Categories.Length > 0)
                 jsonCateg = JsonSerializer.Serialize(eventView.Categories);
-
             Event @event = new Event
             {
                 Name = eventView.Name,
@@ -48,7 +47,7 @@ namespace LetsGo.Services
                 Categories = jsonCateg,
                 AgeLimit = Convert.ToInt32(eventView.AgeLimit),
                 TicketLimit = eventView.TicketLimit,
-                LocationId = eventView.LocationId
+                LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id
             };
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();

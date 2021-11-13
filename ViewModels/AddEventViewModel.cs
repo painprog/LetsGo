@@ -21,6 +21,10 @@ namespace LetsGo.ViewModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Display(Name = "Локация")]
+        public string Location { get; set; }
+
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Время начала")]
         public DateTime EventStart { get; set; }
 

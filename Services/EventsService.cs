@@ -47,7 +47,7 @@ namespace LetsGo.Services
                 Categories = jsonCateg,
                 AgeLimit = Convert.ToInt32(eventView.AgeLimit),
                 TicketLimit = eventView.TicketLimit,
-                LocationId = eventView.LocationId
+                LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id
             };
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();

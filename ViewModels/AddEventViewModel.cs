@@ -12,31 +12,28 @@ namespace LetsGo.ViewModels
     public class AddEventViewModel
     {
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле названия обязательна для заполнения")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле описания обязательна для заполнения")]
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле начала времени обязательна для заполнения")]
         [Display(Name = "Время начала")]
         public DateTime EventStart { get; set; }
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле конца времени обязательна для заполнения")]
         [Display(Name = "Время конца")]
         public DateTime EventEnd { get; set; }
 
         public string Categories { get; set; }
 
-        [Display(Name = "Возростное ограничение")]
+        [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]
         public string AgeLimit { get; set; }
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        [Display(Name = "Количество билетов")]
-        [Range(1, 1000000, ErrorMessage = "Ошибка количества билетов")]
         public int TicketLimit { get; set; }
 
         [Display(Name = "Место проведения")]

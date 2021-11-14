@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,25 +18,23 @@ namespace LetsGo.Services
     public class EventsService
     {
         private readonly LetsGoContext _goContext;
-        private IWebHostEnvironment _appEnvironment;
+        private IMemoryCache cache;
 
-        public EventsService(LetsGoContext goContext, IWebHostEnvironment appEnvironment)
+        public EventsService(LetsGoContext goContext, IMemoryCache cache)
         {
             _goContext = goContext;
-            _appEnvironment = appEnvironment;
+            this.cache = cache;
         }
 
         public async Task<Event> AddEvent(AddEventViewModel eventView)
         {
-            string UCimg = GenerateCode();
-            string name = UCimg + '.'+ eventView.File.ContentType.Substring(eventView.File.ContentType.IndexOf('/') + 1);
+            string name = GenerateCode() + '.'+ Path.GetExtension(eventView.File.FileName);
             string pathImage = "/posters/" + name;
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + pathImage, FileMode.Create))
+            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                 await eventView.File.CopyToAsync(fileStream);
 
             string jsonCateg = string.Empty;
-            if (eventView.Categories.Length > 0)
-                jsonCateg = JsonSerializer.Serialize(eventView.Categories);
+            jsonCateg = eventView.Categories != null ? JsonSerializer.Serialize(eventView.Categories) : "";
 
             Event @event = new Event
             {
@@ -52,6 +51,7 @@ namespace LetsGo.Services
             };
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();
+            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
             
             return @event;
         }
@@ -63,6 +63,7 @@ namespace LetsGo.Services
                 item.EventId = eventId;
                 item.Sold = 0;
                 _goContext.EventTicketTypes.Add(item);
+                cache.Set(item.Id, item, new MemoryCacheEntryOptions());
             }
             await _goContext.SaveChangesAsync();
 

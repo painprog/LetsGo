@@ -24,7 +24,10 @@ namespace LetsGo
             {
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var db = services.GetRequiredService<LetsGoContext>();
+
                 await SuperAdminInitializer.SeedAdminUser(rolesManager, userManager);
+                await LocationCategoriesInitializer.LocationCategoriesSeed(db);
             }
             catch (Exception ex)
             {

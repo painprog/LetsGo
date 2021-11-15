@@ -118,9 +118,9 @@ html {
     cursor: pointer;
 }
 
-.submenu-link:hover .submenu {
-    display: flex;
-}
+    .submenu-link:hover .submenu {
+        display: flex;
+    }
 
 /* .submenu-link:hover .overlay {
   display: block;
@@ -142,17 +142,39 @@ html {
     padding: 5px 30px 5px 5px;
 }
 
-.search span {
-    vertical-align: middle;
-    height: 30px;
+    .search span {
+        vertical-align: middle;
+        height: 30px;
+    }
+
+
+/* form */
+.form-header {
+    text-align: center;
 }
 
+.form-container {
+    max-width: 800px;
+    border: 1px solid #1b6ec2;
+    border-radius: 10px;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 30px 60px;
+}
 
+input#AgeLimit {
+    width: 100px;
+}
+
+.ticket-input {
+    display: inline-block;
+    width: 30%;
+    margin: 30px 15px 20px 0;
+}
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
-.container{
-    padding:0;
+.container {
+    padding: 0;
 }
 
 a.navbar-brand {
@@ -289,13 +311,13 @@ body {
     text-transform: uppercase;
 }
 
-.btn_icon:hover {
-    background-color: darkred;
-}
+    .btn_icon:hover {
+        background-color: darkred;
+    }
 
 .icon_btn {
-    font-weight:800;
-    margin-right:60px;
+    font-weight: 800;
+    margin-right: 60px;
 }
 
 .card_cont2 {
@@ -345,22 +367,22 @@ body {
     margin-bottom: 30px;
 }
 
-.events .card:hover img {
-    filter: brightness(0.8);
-}
+    .events .card:hover img {
+        filter: brightness(0.8);
+    }
 
-.events .card:hover {
-    box-shadow: 0 5px 10px 5px rgb(0 0 0 / 6%);
-}
+    .events .card:hover {
+        box-shadow: 0 5px 10px 5px rgb(0 0 0 / 6%);
+    }
 
-.events .card img {
-    border-radius: 10px 10px 0 0;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    vertical-align: middle;
-    cursor: pointer;
-}
+    .events .card img {
+        border-radius: 10px 10px 0 0;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        vertical-align: middle;
+        cursor: pointer;
+    }
 
 .card-block-img {
     width: 100%;
@@ -405,23 +427,23 @@ body {
     display: flex;
 }
 
-.card-tag a {
-    margin-right: 5px;
-    margin-bottom: 5px;
-    background-color: hsla(0, 0%, 100%, .8);
-    display: inline-block;
-    box-sizing: border-box;
-    max-width: 100%;
-    padding: 4px 10px;
-    font-weight: 500;
-    font-size: 9px;
-    white-space: nowrap;
-    text-transform: uppercase;
-    text-decoration: none;
-    text-overflow: ellipsis;
-    vertical-align: top;
-    border-radius: 4px;
-}
+    .card-tag a {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        background-color: hsla(0, 0%, 100%, .8);
+        display: inline-block;
+        box-sizing: border-box;
+        max-width: 100%;
+        padding: 4px 10px;
+        font-weight: 500;
+        font-size: 9px;
+        white-space: nowrap;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        border-radius: 4px;
+    }
 
 .more-btn {
     width: 40px;
@@ -434,14 +456,14 @@ body {
     align-items: center;
 }
 
-.more-btn .icon-more {
-    color: #9b9b9b;
-    font-size: 14px;
-}
+    .more-btn .icon-more {
+        color: #9b9b9b;
+        font-size: 14px;
+    }
 
-.more-btn:hover .icon-more {
-    color: #2b2b2b;
-}
+    .more-btn:hover .icon-more {
+        color: #2b2b2b;
+    }
 
 .card-block-description {
     display: flex;
@@ -551,4 +573,19 @@ body {
     line-height: 1.44;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+#create-location-form .label{
+    font-weight:500;
+}
+
+.add-more-phones {
+    cursor: pointer;
+    color:darkred !important;
+    float:right;
+    padding-top: 5px;
+}
+
+.add-more-phones:hover{
+    text-decoration: underline !important;
 }

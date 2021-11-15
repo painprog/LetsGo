@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/v5.11.1/css/free.min.css" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
 <body>
@@ -122,6 +122,22 @@
                                 <a class="submenu-item" href="#">Спорт</a>
                             </div>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white menu-link" asp-area="" asp-controller="Event" asp-action="Add">Добавить событие</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
+                        {
+                            <li class="nav-item ml-5">
+                                <a class="nav-link text-white menu-link" asp-controller="Locations" asp-action="Create">
+                                    Добавить площадку
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item ml-auto">
                             <button class="search align-bottom">
                                 <span class="d-inline-block material-icons">search</span>
@@ -142,7 +158,7 @@
                         @using (Html.BeginForm("Logout", "Account"))
                         {
                             <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>
-                        }
+                        }                       
                     }
                     else
                     {

@@ -1,4 +1,5 @@
 using LetsGo.Models;
+using LetsGo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,7 @@ namespace LetsGo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddTransient<EventsService>();
             services.AddDbContext<LetsGoContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0))))
                .AddIdentity<User, IdentityRole>()

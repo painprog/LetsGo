@@ -1,0 +1,85 @@
+﻿@model LetsGo.Models.User
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Личный кабинет администратора</h1>
+<div class="border d-flex">
+    <div class="flex-fill">
+        <h3 class="card-header">
+            @Model.UserName
+        </h3>
+        <p class="card-text">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Почта</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Номер телефона</td>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                </tbody>
+            </table>
+        </p>
+    </div>
+</div>
+<div>
+    @foreach (var ev in ViewBag.Events)
+    {
+        <div class="card m-2" id="card-@ev.Id">
+            <div class="card-body d-flex justify-content-around">
+                <div>
+                    @ev.Name
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-success accept" type="button" id="@ev.Id">Принять</button>
+                    <button class="btn btn-danger deny" type="button" id="@ev.Id">Отказать</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $('.accept').on('click', function() {
+        let _id = this.id;
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Event")',
+            type: 'POST',
+            data:
+            {
+                'status': "Accepted",
+                'eventId': _id
+            },
+            success: function (response) {
+                if (response.success) {
+                    cardRemove(_id);
+                }
+            }
+        })
+    })
+
+    $('.deny').on('click', function () {
+        console.log('click')
+        let _id = this.id;
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Event")',
+            type: 'POST',
+            data:
+            {
+                'status': "Denied",
+                'eventId': _id
+            },
+            success: function (response) {
+                if (response.success) {
+                    cardRemove(_id);
+                }
+            }
+        })
+    })
+    function cardRemove(id) {
+        $(`#card-${id}`).remove();
+    }
+</script>

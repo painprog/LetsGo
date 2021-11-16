@@ -59,6 +59,19 @@ namespace LetsGo.Services
             return @event;
         }
 
+        public async Task<bool> ChangeStatus(string status, string eventId)
+        {
+            var @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+            if (status != null && @event != null)
+            {
+                @event.Status = status == "Accepted" ? "published" : "rejected";
+                _goContext.Events.Update(@event);
+                await _goContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
         {
             foreach (var item in ticketTypes)

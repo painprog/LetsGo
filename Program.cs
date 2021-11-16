@@ -28,6 +28,7 @@ namespace LetsGo
 
                 await SuperAdminInitializer.SeedAdminUser(rolesManager, userManager);
                 await LocationCategoriesInitializer.LocationCategoriesSeed(db);
+                await OrganizerInitializer.SeedOrganizerRole(rolesManager);
             }
             catch (Exception ex)
             {

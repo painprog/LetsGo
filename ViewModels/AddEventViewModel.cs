@@ -44,6 +44,8 @@ namespace LetsGo.ViewModels
         [FromForm(Name = "locationId")]
         public string LocationId { get; set; }
 
+        public string UserId { get; set; }
+
         public string Tickets { get; set; }
         //public List<EventTicketType> Tickets { get; set; }
 

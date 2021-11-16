@@ -3,6 +3,7 @@ using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,11 +20,13 @@ namespace LetsGo.Controllers
     {
         private readonly EventsService _Service;
         private readonly LetsGoContext _goContext;
+        private readonly UserManager<User> _userManager;
 
-        public EventController(EventsService service, LetsGoContext goContext)
+        public EventController(EventsService service, LetsGoContext goContext, UserManager<User> userManager)
         {
             _Service = service;
             _goContext = goContext;
+            _userManager = userManager;
         }
 
 
@@ -50,6 +53,7 @@ namespace LetsGo.Controllers
             {
                 string tickets = model.Tickets;
                 List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
+                model.UserId = _userManager.GetUserId(User);
                 Event @event = await _Service.AddEvent(model);
                 ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
                 return Json(new { success = true, href = "/Home/Index" });

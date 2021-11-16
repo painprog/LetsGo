@@ -60,5 +60,18 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeStatus(string status, string eventId)
+        {
+            if(await _Service.ChangeStatus(status, eventId))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+        }
     }
 }

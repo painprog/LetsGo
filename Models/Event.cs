@@ -21,8 +21,12 @@ namespace LetsGo.Models
         public string Categories { get; set; }//json
         public int AgeLimit { get; set; }
         public int TicketLimit { get; set; }
+        public string Status { get; set; }
 
         public Location Location { get; set; }
         public string LocationId { get; set; }
+
+        public string UserId { get; set; }
+        public User User { get; set; }
     }
 }

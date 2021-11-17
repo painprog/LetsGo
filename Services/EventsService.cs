@@ -50,7 +50,7 @@ namespace LetsGo.Services
                 TicketLimit = eventView.TicketLimit,
                 Status = "checking",
                 LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id,
-                UserId = eventView.UserId
+                OrganizerId = eventView.OrganizerId
             };
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();

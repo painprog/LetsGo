@@ -31,7 +31,7 @@ namespace LetsGo.Controllers
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
-            if (User.IsInRole("organizer")) viewModel.Events = _context.Events.Where(e => e.OrganizerId == user.Id).ToList();
+            if (User.IsInRole("organizer")) viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
             else viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
             return View(viewModel);
         }

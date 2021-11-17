@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LetsGo.Controllers
 {
-    [Authorize(Roles = "superadmin, admin")]
+    [Authorize(Roles = "superadmin, admin, organizer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

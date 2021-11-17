@@ -36,6 +36,6 @@ namespace LetsGo.Models
         public string LocationId { get; set; }
 
         public string OrganizerId { get; set; }
-        public User Organizer { get; set; }
+        public User Organizer { get; set; } 
     }
 }

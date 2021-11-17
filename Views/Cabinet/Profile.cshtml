@@ -20,7 +20,7 @@
 <div>
     @foreach (var item in Model.Events)
     {
-    <div class="card">
+    <div class="row p-5">
         <div class="col-md-6">
             <p>@item.Name</p>
             <p>@item.Location.Name</p>
@@ -32,44 +32,46 @@
                 @switch (item.Status)
                 {
                     case Status.New:
-                        <p>ожидайте одобрения админа</p>
+                        <p>ожидайте одобрения админа</p><br />
                         break;
                     case Status.Rejected:
-                        <a class="btn btn-primary">отправить заявку заново</a>
+                        <a class="btn btn-primary">отправить заявку заново</a><br />
                         break;
                     case Status.Published:
-                        <a class="btn btn-primary">снять с публикации</a>
+                        <a class="btn btn-primary">снять с публикации</a><br />
                         break;
                     case Status.UnPublished:
-                        <a class="btn btn-primary">вернуть в публикации</a>
+                        <a class="btn btn-primary">вернуть в публикации</a><br />
                         break;
                     case Status.Expired:
-                        <p>мероприятия уже прошло</p>
+                        <p>мероприятия уже прошло</p><br />
                         break;
                 }
             }
             else
             {
-                <a class="btn btn-primary">редактировать</a>
-                <a class="btn btn-primary">редактировать</a>
+                @if (item.Status != Status.New)
+                {
+                    <a class="btn btn-primary mb-1">редактировать</a><br />
+                }
                 @switch (item.Status)
                 {
                     case Status.New:
                         <a class="btn btn-primary">одобрить</a>
                         <a class="btn btn-primary">отклонить</a>
-                        <span>создание</span>
+                        <span>создание</span><br />
                         break;
                     case Status.ReviewPublished:
-                        <a class="btn btn-primary">одобрить возвращение в публикации</a>
+                        <a class="btn btn-primary">одобрить возвращение в публикации</a><br />
                         break;
                     case Status.ReviewUnPublished:
-                        <a class="btn btn-primary">одобрить снятие с публикации</a>
+                        <a class="btn btn-primary">одобрить снятие с публикации</a><br />
                         break;
                     case Status.Published:
-                        <a class="btn btn-primary">снять с публикации</a>
+                        <a class="btn btn-primary">снять с публикации</a><br />
                         break;
                     case Status.UnPublished:
-                        <a class="btn btn-primary">вернуть в публикации</a>
+                        <a class="btn btn-primary">вернуть в публикации</a><br />
                         break;
                 }
             }

@@ -1,0 +1,79 @@
+﻿@model ProfileViewModel
+
+@{ 
+    ViewBag.Title = "Личный кабинет";
+}
+
+<div class="border p-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@Model.User.AvatarLink" alt="avatar" />
+        </div>
+        <div class="col-md-8">
+            <p>@Model.User.Email</p>
+            <p>@Model.User.PhoneNumber</p>
+            <p></p>
+        </div>
+    </div>
+</div>
+
+<div>
+    @foreach (var item in Model.Events)
+    {
+    <div class="card">
+        <div class="col-md-6">
+            <p>@item.Name</p>
+            <p>@item.Location.Name</p>
+            <p>@item.EventStart.ToLongTimeString()</p>
+        </div>
+        <div class="col-md-6">
+            @if (User.IsInRole("organizer"))
+            {
+                @switch (item.Status)
+                {
+                    case Status.New:
+                        <p>ожидайте одобрения админа</p>
+                        break;
+                    case Status.Rejected:
+                        <a class="btn btn-primary">отправить заявку заново</a>
+                        break;
+                    case Status.Published:
+                        <a class="btn btn-primary">снять с публикации</a>
+                        break;
+                    case Status.UnPublished:
+                        <a class="btn btn-primary">вернуть в публикации</a>
+                        break;
+                    case Status.Expired:
+                        <p>мероприятия уже прошло</p>
+                        break;
+                }
+            }
+            else
+            {
+                <a class="btn btn-primary">редактировать</a>
+                <a class="btn btn-primary">редактировать</a>
+                @switch (item.Status)
+                {
+                    case Status.New:
+                        <a class="btn btn-primary">одобрить</a>
+                        <a class="btn btn-primary">отклонить</a>
+                        <span>создание</span>
+                        break;
+                    case Status.ReviewPublished:
+                        <a class="btn btn-primary">одобрить возвращение в публикации</a>
+                        break;
+                    case Status.ReviewUnPublished:
+                        <a class="btn btn-primary">одобрить снятие с публикации</a>
+                        break;
+                    case Status.Published:
+                        <a class="btn btn-primary">снять с публикации</a>
+                        break;
+                    case Status.UnPublished:
+                        <a class="btn btn-primary">вернуть в публикации</a>
+                        break;
+                }
+            }
+        </div>
+    </div>
+    }
+</div>

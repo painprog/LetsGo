@@ -8,6 +8,8 @@
         Published = 3,
         UnPublished = 4,
         Edited = 5,
-        Expired = 6
+        Expired = 6,
+        ReviewPublished = 7,
+        ReviewUnPublished = 8
     }
 }

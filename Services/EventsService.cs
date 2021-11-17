@@ -50,6 +50,7 @@ namespace LetsGo.Services
                 AgeLimit = Convert.ToInt32(eventView.AgeLimit),
                 TicketLimit = eventView.TicketLimit,
                 Status = Status.New,
+                StatusUpdate = DateTime.Now,
                 LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id,
                 OrganizerId = eventView.OrganizerId
             };

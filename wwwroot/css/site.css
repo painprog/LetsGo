@@ -55,23 +55,23 @@ html {
     margin-bottom: 40px;
 }
 
-.sidenav ul li {
-    padding: 16px 30px;
-    max-width: 330px;
-}
+    .sidenav ul li {
+        padding: 16px 30px;
+        max-width: 330px;
+    }
 
-.sidenav ul li a {
-    text-decoration: none;
-    font-weight: 700;
-    color: #737373;
-}
+        .sidenav ul li a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #737373;
+        }
 
-.sidenav ul li:hover,
-.sidenav ul li:hover a {
-    cursor: pointer;
-    background-color: rgb(21, 21, 21);
-    color: #fff;
-}
+        .sidenav ul li:hover,
+        .sidenav ul li:hover a {
+            cursor: pointer;
+            background-color: rgb(21, 21, 21);
+            color: #fff;
+        }
 
 .icon-menu {
     cursor: pointer;
@@ -575,23 +575,112 @@ body {
     text-overflow: ellipsis;
 }
 
-#create-location-form .label{
-    font-weight:500;
+#create-location-form .label {
+    font-weight: 500;
 }
 
 .add-more-phones {
     cursor: pointer;
-    color:darkred !important;
-    float:right;
+    color: darkred !important;
+    float: right;
     padding-top: 5px;
 }
 
-.add-more-phones:hover{
-    text-decoration: underline !important;
-}
+    .add-more-phones:hover {
+        text-decoration: underline !important;
+    }
 
 .password-icon {
     float: right;
-    margin: -33px 10px;
+    margin: -31px 15px;
     cursor: pointer;
 }
+
+.entry-form {
+    background-color: white;
+    border-radius: 49.0901px;
+}
+
+    .entry-form h1 {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
+        text-align: center;
+        color: #374151;
+        margin-bottom: 25px;
+    }
+
+    .entry-form label {
+        font-size: 14px;
+        line-height: 20px;
+        color: #6B7280;
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .entry-form .input-field {
+        background: white;
+        border: 1.53407px solid #e3caff;
+        box-sizing: border-box;
+        border-radius: 10px;
+    }
+
+    .entry-form .checkbox {
+        width: 20px;
+        height: 20px;
+        border-radius: 25%;
+        vertical-align: middle;
+        border: 1px solid #D1D5DB;
+        -webkit-appearance: none;
+        outline: none;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+
+        .entry-form .checkbox:checked {
+            background: transparent url(../images/icons/chek.svg) no-repeat;
+            background-position: center;
+            background-color: #5048E5;
+        }
+
+    .entry-form .btn-submit {
+        align-items: center;
+        padding: 8px 16px;
+        background: #5048E5;
+        box-shadow: 0px 1px 2px rgba(31, 41, 55, 0.08);
+        border-radius: 4px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    .entry-form .link {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #5048E5;
+        text-align: center;
+        display: block;
+    }
+
+    .entry-form input[type=file]::file-selector-button {
+        background: white;
+        border: 1.53407px solid #e3caff;
+        box-sizing: border-box;
+        border-radius: 10px;
+        padding: 3px 50px;
+        color: #6B7280;
+        cursor:pointer;
+    }
+
+    .entry-form input:-webkit-autofill,
+    .entry-form input:-webkit-autofill:focus {
+        transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    .entry-form input[data-autocompleted] {
+        background-color: transparent !important;
+    }

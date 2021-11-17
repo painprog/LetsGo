@@ -58,10 +58,16 @@ namespace LetsGo.Controllers
                 var userEmailCheck = await _userManager.FindByEmailAsync(model.Email);
                 if (userEmailCheck == null)
                 {
-                    string name = EventsService.GenerateCode() + '.' + Path.GetExtension(model.Avatar.FileName);
-                    string pathImage = "/avatars/" + name;
-                    using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                        await model.Avatar.CopyToAsync(fileStream);
+                    string pathImage = string.Empty;
+                    if (model.Avatar is null)
+                        pathImage = "/images/default_avatar.png";
+                    else
+                    {
+                        string name = EventsService.GenerateCode() + Path.GetExtension(model.Avatar.FileName);
+                        pathImage = "/avatars/" + name;
+                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                            await model.Avatar.CopyToAsync(fileStream);
+                    }
 
                     User user = new User
                     {

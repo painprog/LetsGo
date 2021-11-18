@@ -31,6 +31,8 @@ namespace LetsGo.Models
         [EnumDataType(typeof(Status))]
         [Required]
         public Status Status { get; set; }
+        public DateTime StatusUpdate { get; set; }
+        public string StatusDescription { get; set; }
 
         public Location Location { get; set; }
         public string LocationId { get; set; }

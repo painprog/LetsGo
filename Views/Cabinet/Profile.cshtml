@@ -20,13 +20,14 @@
 <div>
     @foreach (var item in Model.Events)
     {
-    <div class="row p-5">
-        <div class="col-md-6">
+    <div class="row p-5" id="@item.Id">
+        <div class="descriptions col-md-6">
             <p>@item.Name</p>
             <p>@item.Location.Name</p>
             <p>@item.EventStart.ToLongTimeString()</p>
+            <p>@item.Status.ToString()</p>
         </div>
-        <div class="col-md-6">
+        <div class="buttons col-md-6">
             @if (User.IsInRole("organizer"))
             {
                 @switch (item.Status)
@@ -35,7 +36,7 @@
                         <p>ожидайте одобрения админа</p><br />
                         break;
                     case Status.Rejected:
-                        <a class="btn btn-primary">отправить заявку заново</a><br />
+                        <a class="btn btn-primary RequestForPublishAgain" onclick="RequestForPublish(@item.Id)">отправить заявку заново</a><br />
                         break;
                     case Status.Published:
                         <a class="btn btn-primary">снять с публикации</a><br />
@@ -79,3 +80,21 @@
     </div>
     }
 </div>
+
+@section scripts{ 
+    <script>
+        function RequestForPublish(e) {
+            $.ajax({
+                url: '@Url.Action("Cabinet", "RequestForPublish")',
+                type: 'POST',
+                dataType: false,
+                data: { 'id' : e},
+                success: function (response) {
+                   // $('#' + e + ' .decriptions').find('p').eq(3).text(response.ReviewPublished)
+                   // $('#' + e + ' .buttons .RequestForPublishAgain').hide()
+                }
+            })
+        }
+    </script>
+
+}

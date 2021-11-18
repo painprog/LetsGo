@@ -31,8 +31,20 @@ namespace LetsGo.Controllers
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
-            if (User.IsInRole("organizer")) viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
-            else viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
+
+            List<Event> events = _context.Events.ToList();
+            foreach (var item in events)
+            {
+                item.Status = Status.Rejected;
+                _context.Update(item);
+            }
+            _context.SaveChanges();
+
+
+            if (User.IsInRole("organizer")) 
+                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
+            else
+                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
             return View(viewModel);
         }
 
@@ -42,10 +54,10 @@ namespace LetsGo.Controllers
         {
             Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
             @event.Status = Status.ReviewPublished;           
-            @event.CreatedAt = DateTime.Now;
-            string ReviewPublished = Status.ReviewPublished.ToString();
+            @event.CreatedAt = DateTime.Now;            
             _context.Events.Update(@event);
             await _context.SaveChangesAsync();
+            string ReviewPublished = @event.Status.ToString();
             return Json(new { ReviewPublished });
         }
     }

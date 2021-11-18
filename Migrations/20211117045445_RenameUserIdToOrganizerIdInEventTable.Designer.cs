@@ -3,14 +3,16 @@ using System;
 using LetsGo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LetsGo.Migrations
 {
     [DbContext(typeof(LetsGoContext))]
-    partial class LetsGoContextModelSnapshot : ModelSnapshot
+    [Migration("20211117045445_RenameUserIdToOrganizerIdInEventTable")]
+    partial class RenameUserIdToOrganizerIdInEventTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,11 +55,8 @@ namespace LetsGo.Migrations
                     b.Property<string>("PosterImage")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("TicketLimit")
                         .HasColumnType("int");

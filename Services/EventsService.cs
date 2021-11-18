@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -48,9 +49,9 @@ namespace LetsGo.Services
                 Categories = jsonCateg,
                 AgeLimit = Convert.ToInt32(eventView.AgeLimit),
                 TicketLimit = eventView.TicketLimit,
-                Status = "checking",
+                Status = Status.New,
                 LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id,
-                UserId = eventView.UserId
+                OrganizerId = eventView.OrganizerId
             };
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();

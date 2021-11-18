@@ -115,7 +115,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-white menu-link" href="#">Экскурсия</a>
                         </li>
-                        <li class="nav-item submenu-link">
+                        <li class="nav-item submenu-link mr-5">
                             <a class="nav-link text-white menu-link">Еще</a>
                             <div class="submenu pt-4">
                                 <a class="submenu-item" href="#">Фестивали</a>
@@ -131,7 +131,7 @@
 
                         @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
                         {
-                            <li class="nav-item ml-5">
+                            <li class="nav-item">
                                 <a class="nav-link text-white menu-link" asp-controller="Locations" asp-action="Create">
                                     Добавить площадку
                                 </a>
@@ -154,7 +154,7 @@
                 <div class="login_group ml-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="text-white" asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a>
+                        <a class="text-white" asp-controller="Cabinet" asp-action="Profile">@User.Identity.Name</a>
                         @using (Html.BeginForm("Logout", "Account"))
                         {
                             <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>

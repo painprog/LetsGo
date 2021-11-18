@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LetsGo.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,12 +22,20 @@ namespace LetsGo.Models
         public string Categories { get; set; }//json
         public int AgeLimit { get; set; }
         public int TicketLimit { get; set; }
-        public string Status { get; set; }
+
+        public virtual int StatusId
+        {
+            get => (int)this.Status;
+            set => Status = (Status)value;
+        }
+        [EnumDataType(typeof(Status))]
+        [Required]
+        public Status Status { get; set; }
 
         public Location Location { get; set; }
         public string LocationId { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public string OrganizerId { get; set; }
+        public User Organizer { get; set; }
     }
 }

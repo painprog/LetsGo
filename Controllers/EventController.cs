@@ -53,7 +53,7 @@ namespace LetsGo.Controllers
             {
                 string tickets = model.Tickets;
                 List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
-                model.UserId = _userManager.GetUserId(User);
+                model.OrganizerId = _userManager.GetUserId(User);
                 Event @event = await _Service.AddEvent(model);
                 ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
                 return Json(new { success = true, href = "/Home/Index" });

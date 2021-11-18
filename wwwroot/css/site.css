@@ -621,7 +621,7 @@ body {
 
     .entry-form .input-field {
         background: white;
-        border: 1.53407px solid #e3caff;
+        border: 1.53407px solid #dddd;
         box-sizing: border-box;
         border-radius: 10px;
     }
@@ -654,17 +654,18 @@ body {
         font-weight: normal;
         font-size: 18px;
         line-height: 20px;
+        border:none;
     }
 
-    .entry-form .link {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 20px;
-        color: #5048E5;
-        text-align: center;
-        display: block;
-    }
+        .entry-form .link {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+            color: #5048E5;
+            text-align: center;
+            display: block;
+        }
 
     .entry-form input[type=file]::file-selector-button {
         background: white;

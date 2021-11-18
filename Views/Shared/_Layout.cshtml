@@ -159,12 +159,12 @@
                         <a class="text-white" asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a>
                         @using (Html.BeginForm("Logout", "Account"))
                         {
-                            <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>
+                            <button type="submit" class="btn btn-outline-danger flex-fill p-1">Выход</button>
                         }                       
                     }
                     else
                     {
-                        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Вход</a>
+                        <a class="btn btn-outline-light" asp-controller="Account" asp-action="Login">Вход</a>
                     }
                 </div>
             </div>

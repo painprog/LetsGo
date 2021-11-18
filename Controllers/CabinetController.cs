@@ -32,13 +32,13 @@ namespace LetsGo.Controllers
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
 
-            List<Event> events = _context.Events.ToList();
-            foreach (var item in events)
-            {
-                item.Status = Status.Published;
-                _context.Update(item);
-            }
-            _context.SaveChanges();
+          //  List<Event> events = _context.Events.ToList();
+          //  foreach (var item in events)
+          //  {
+          //      item.Status = Status.Rejected;
+          //      _context.Update(item);
+          //  }
+          //  _context.SaveChanges();
 
 
             if (User.IsInRole("organizer")) 
@@ -74,6 +74,19 @@ namespace LetsGo.Controllers
             return Json(new { publ = published, date = @event.CreatedAt });
         }
 
+
+        //Отправка запроса на модерацию мероприятия
+        [HttpPost]
+        public async Task<JsonResult> RequestForNew(string id)
+        {
+            Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+            @event.Status = Status.New;
+            @event.CreatedAt = DateTime.Now;
+            _context.Events.Update(@event);
+            await _context.SaveChangesAsync();
+            string neW = @event.Status.ToString();
+            return Json(new { nEw = neW, date = @event.CreatedAt });
+        }
 
     }
 }

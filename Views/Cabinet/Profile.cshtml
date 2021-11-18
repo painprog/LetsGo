@@ -29,16 +29,19 @@
             <p hidden>@item.Id</p>
             <p>@item.CreatedAt</p>
         </div>
-        <div class="buttons col-md-6">            
+        <div class="buttons col-md-6">
             @if (User.IsInRole("organizer"))
             {
                 @switch (item.Status)
                 {
-                    case Status.New:
-                        <p>ожидайте одобрения админа</p><br />
+                    case Status.NotDefined:
+                        <a class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</a><br />
                         break;
                     case Status.Rejected:
-                        <a class="btn btn-primary">отправить заявку заново</a><br />
+                        <a class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</a><br />
+                        break;
+                    case Status.New:
+                        <p>ожидайте одобрения админа</p><br />
                         break;
                     case Status.Published:
                         <a class="btn btn-primary requestForUnPublish" onclick="RequestForUnPublish(this)">снять с публикации</a><br />
@@ -86,6 +89,18 @@
 @section scripts{ 
     <script>
 
+
+        function RequestForNew(a) {
+            var divDescr = $(a).closest('.row').find('div').eq(0)
+            var buttons = $(a).closest('.row').find('div').eq(1)
+            var idS = divDescr.find('p').eq(4).html()
+            $.post('@Url.Action("RequestForNew", "Cabinet")', { id: idS }, function (response) {
+                divDescr.find('p').eq(3).text(response.nEw)
+                divDescr.find('p').eq(5).text(response.date)
+                buttons.children('.requestForNew').fadeOut()
+        });
+        }
+
         function RequestForUnPublish(a) {
             var divDescr = $(a).closest('.row').find('div').eq(0)
             var buttons = $(a).closest('.row').find('div').eq(1)
@@ -111,11 +126,6 @@
                   + 'onclick="RequestForUnPublish(this)">снять с публикации</a>')
         });
         }
-
-
-
-
-
 
     </script>
 

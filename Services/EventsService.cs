@@ -65,7 +65,7 @@ namespace LetsGo.Services
             var @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
             if (status != null && @event != null)
             {
-                @event.Status = status == "Accepted" ? "published" : "rejected";
+                @event.Status = status == "Accepted" ? Status.Published : Status.Rejected;
                 _goContext.Events.Update(@event);
                 await _goContext.SaveChangesAsync();
                 return true;

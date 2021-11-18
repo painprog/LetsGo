@@ -32,13 +32,13 @@ namespace LetsGo.Controllers
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
 
-          //  List<Event> events = _context.Events.ToList();
-          //  foreach (var item in events)
-          //  {
-          //      item.Status = Status.Rejected;
-          //      _context.Update(item);
-          //  }
-          //  _context.SaveChanges();
+            List<Event> events = _context.Events.ToList();
+            foreach (var item in events)
+            {
+                item.Status = Status.Rejected;
+                _context.Update(item);
+            }
+            _context.SaveChanges();
 
 
             if (User.IsInRole("organizer")) 

@@ -60,5 +60,10 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }
     }
 }

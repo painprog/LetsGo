@@ -9,7 +9,7 @@
         UnPublished = 4,//неопубликован
         Edited = 5,//отредактирован
         Expired = 6,//истекший
-        ReviewPublished = 7,//в ожидании публикации
-        ReviewUnPublished = 8//в ожидании снятия с публикации
+        ReviewPublished = 7,//комментарий опубликован
+        ReviewUnPublished = 8//комментарий не опубликован
     }
 }

@@ -36,9 +36,11 @@
                 {
                     case Status.NotDefined:
                         <a class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</a><br />
+                        <a class="btn btn-primary" asp-controller="Event" asp-action="Edit">Редактировать</a><br />
                         break;
                     case Status.Rejected:
                         <a class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</a><br />
+                        <a class="btn btn-primary" asp-controller="Event" asp-action="Edit">Редактировать</a><br />
                         break;
                     case Status.New:
                         <p>ожидайте одобрения админа</p><br />

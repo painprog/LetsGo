@@ -35,5 +35,18 @@ namespace LetsGo.Controllers
             else viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
             return View(viewModel);
         }
+
+        //Отправка запроса на публикацию мероприятия
+        [HttpPost]
+        public async Task<JsonResult> RequestForPublish(string id)
+        {
+            Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+            @event.Status = Status.ReviewPublished;           
+            @event.CreatedAt = DateTime.Now;
+            string ReviewPublished = Status.ReviewPublished.ToString();
+            _context.Events.Update(@event);
+            await _context.SaveChangesAsync();
+            return Json(new { ReviewPublished });
+        }
     }
 }

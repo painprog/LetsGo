@@ -1,81 +1,132 @@
 ﻿@model ProfileViewModel
 
-@{ 
+@{
     ViewBag.Title = "Личный кабинет";
 }
 
-<div class="border p-5">
-    <div class="row">
-        <div class="col-md-4">
-            <img src="@Model.User.AvatarLink" alt="avatar" />
-        </div>
-        <div class="col-md-8">
-            <p>@Model.User.Email</p>
-            <p>@Model.User.PhoneNumber</p>
-            <p></p>
-        </div>
+<h1>Личный кабинет администратора</h1>
+<div class="border d-flex">
+    <div class="flex-fill">
+        <h3 class="card-header">
+            @Model.User.UserName
+        </h3>
+        <p class="card-text">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Почта</td>
+                        <td>@Model.User.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Номер телефона</td>
+                        <td>@Model.User.PhoneNumber</td>
+                    </tr>
+                </tbody>
+            </table>
+        </p>
     </div>
 </div>
 
 <div>
     @foreach (var item in Model.Events)
     {
-    <div class="row p-5">
-        <div class="col-md-6">
-            <p>@item.Name</p>
-            <p>@item.Location.Name</p>
-            <p>@item.EventStart.ToLongTimeString()</p>
+        <div class="card m-1">
+            <div class="card-body d-flex justify-content-between">
+                <div>
+                    <p>Название: @item.Name</p>
+                    <p>Локация: @item.Location.Name</p>
+                    <p>Начало: @item.EventStart.ToLongTimeString()</p>
+                </div>
+                <div>
+                    @if (User.IsInRole("organizer"))
+                    {
+                        @switch (item.Status)
+                        {
+                            case Status.New:
+                                <p>ожидайте одобрения админа</p><br />
+                                break;
+                            case Status.Rejected:
+                                <a class="btn btn-primary">отправить заявку заново</a><br />
+                                break;
+                            case Status.Published:
+                                <a class="btn btn-primary">снять с публикации</a><br />
+                                break;
+                            case Status.UnPublished:
+                                <a class="btn btn-primary">вернуть в публикации</a><br />
+                                break;
+                            case Status.Expired:
+                                <p>мероприятия уже прошло</p><br />
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        @if (item.Status != Status.New)
+                        {
+                            <a class="btn btn-primary mb-1">Редактировать</a><br />
+                        }
+                        @switch (item.Status)
+                        {
+                            case Status.New:
+                                <button class="btn btn-success accept" type="button" id="@item.Id">Принять</button>
+                                <button class="btn btn-danger deny" type="button" id="@item.Id">Отказать</button>
+                                break;
+                            case Status.ReviewPublished:
+                                <a class="btn btn-primary">Одобрить возвращение в публикации</a><br />
+                                break;
+                            case Status.ReviewUnPublished:
+                                <a class="btn btn-primary">Одобрить снятие с публикации</a><br />
+                                break;
+                            case Status.Published:
+                                <a class="btn btn-primary">Снять с публикации</a><br />
+                                break;
+                            case Status.UnPublished:
+                                <a class="btn btn-primary">Вернуть в публикации</a><br />
+                                break;
+                        }
+                    }
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            @if (User.IsInRole("organizer"))
-            {
-                @switch (item.Status)
-                {
-                    case Status.New:
-                        <p>ожидайте одобрения админа</p><br />
-                        break;
-                    case Status.Rejected:
-                        <a class="btn btn-primary">отправить заявку заново</a><br />
-                        break;
-                    case Status.Published:
-                        <a class="btn btn-primary">снять с публикации</a><br />
-                        break;
-                    case Status.UnPublished:
-                        <a class="btn btn-primary">вернуть в публикации</a><br />
-                        break;
-                    case Status.Expired:
-                        <p>мероприятия уже прошло</p><br />
-                        break;
-                }
-            }
-            else
-            {
-                @if (item.Status != Status.New)
-                {
-                    <a class="btn btn-primary mb-1">редактировать</a><br />
-                }
-                @switch (item.Status)
-                {
-                    case Status.New:
-                        <a class="btn btn-primary">одобрить</a>
-                        <a class="btn btn-primary">отклонить</a>
-                        <span>создание</span><br />
-                        break;
-                    case Status.ReviewPublished:
-                        <a class="btn btn-primary">одобрить возвращение в публикации</a><br />
-                        break;
-                    case Status.ReviewUnPublished:
-                        <a class="btn btn-primary">одобрить снятие с публикации</a><br />
-                        break;
-                    case Status.Published:
-                        <a class="btn btn-primary">снять с публикации</a><br />
-                        break;
-                    case Status.UnPublished:
-                        <a class="btn btn-primary">вернуть в публикации</a><br />
-                        break;
-                }
-            }
-        </div>
-    </div>
     }
 </div>
+<script>
+        $('.accept').on('click', function() {
+        let _id = this.id;
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Event")',
+            type: 'POST',
+            data:
+            {
+                'status': "Accepted",
+                'eventId': _id
+            },
+            success: function (response) {
+                if (response.success) {
+                    cardRemove(_id);
+                }
+            }
+        })
+    })
+    $('.deny').on('click', function () {
+        console.log('click')
+        let _id = this.id;
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Event")',
+            type: 'POST',
+            data:
+            {
+                'status': "Denied",
+                'eventId': _id
+            },
+            success: function (response) {
+                if (response.success) {
+                    cardRemove(_id);
+                }
+            }
+        })
+    })
+    function cardRemove(id) {
+        $(`#card-${id}`).remove();
+    }
+</script>

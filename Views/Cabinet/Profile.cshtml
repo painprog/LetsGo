@@ -20,14 +20,16 @@
 <div>
     @foreach (var item in Model.Events)
     {
-    <div class="row p-5" id="@item.Id">
+    <div class="row p-5">
         <div class="descriptions col-md-6">
             <p>@item.Name</p>
             <p>@item.Location.Name</p>
             <p>@item.EventStart.ToLongTimeString()</p>
             <p>@item.Status.ToString()</p>
+            <p hidden>@item.Id</p>
+            <p>@item.CreatedAt</p>
         </div>
-        <div class="buttons col-md-6">
+        <div class="buttons col-md-6">            
             @if (User.IsInRole("organizer"))
             {
                 @switch (item.Status)
@@ -36,13 +38,13 @@
                         <p>ожидайте одобрения админа</p><br />
                         break;
                     case Status.Rejected:
-                        <a class="btn btn-primary RequestForPublishAgain" onclick="RequestForPublish(@item.Id)">отправить заявку заново</a><br />
+                        <a class="btn btn-primary">отправить заявку заново</a><br />
                         break;
                     case Status.Published:
-                        <a class="btn btn-primary">снять с публикации</a><br />
+                        <a class="btn btn-primary requestForUnPublish" onclick="RequestForUnPublish(this)">снять с публикации</a><br />
                         break;
                     case Status.UnPublished:
-                        <a class="btn btn-primary">вернуть в публикации</a><br />
+                        <a class="btn btn-primary requestForPublishAgain" onclick="RequestForPublishAgain(this)">вернуть в публикации</a><br />
                         break;
                     case Status.Expired:
                         <p>мероприятия уже прошло</p><br />
@@ -83,18 +85,38 @@
 
 @section scripts{ 
     <script>
-        function RequestForPublish(e) {
-            $.ajax({
-                url: '@Url.Action("Cabinet", "RequestForPublish")',
-                type: 'POST',
-                dataType: false,
-                data: { 'id' : e},
-                success: function (response) {
-                   // $('#' + e + ' .decriptions').find('p').eq(3).text(response.ReviewPublished)
-                   // $('#' + e + ' .buttons .RequestForPublishAgain').hide()
-                }
-            })
+
+        function RequestForUnPublish(a) {
+            var divDescr = $(a).closest('.row').find('div').eq(0)
+            var buttons = $(a).closest('.row').find('div').eq(1)
+            var idS = divDescr.find('p').eq(4).html()
+            $.post('@Url.Action("RequestForUnPublish", "Cabinet")', { id: idS }, function (response) {
+                divDescr.find('p').eq(3).text(response.unPubl)
+                divDescr.find('p').eq(5).text(response.date)
+              buttons.children('.requestForUnPublish').fadeOut()
+                  buttons.append('<a class="btn btn-primary requestForPublishAgain"'
+                  + 'onclick="RequestForPublishAgain(this)">вернуть в публикации</a>')
+        });
         }
+
+        function RequestForPublishAgain(a) {
+            var divDescr = $(a).closest('.row').find('div').eq(0)
+            var buttons = $(a).closest('.row').find('div').eq(1)
+            var idS = divDescr.find('p').eq(4).html()
+            $.post('@Url.Action("RequestForPublishAgain", "Cabinet")', { id: idS }, function (response) {
+                divDescr.find('p').eq(3).text(response.publ)
+                divDescr.find('p').eq(5).text(response.date)
+              buttons.children('.requestForPublishAgain').fadeOut()
+              buttons.append('<a class="btn btn-primary requestForUnPublish"'
+                  + 'onclick="RequestForUnPublish(this)">снять с публикации</a>')
+        });
+        }
+
+
+
+
+
+
     </script>
 
 }

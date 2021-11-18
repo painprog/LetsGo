@@ -35,7 +35,7 @@ namespace LetsGo.Controllers
             List<Event> events = _context.Events.ToList();
             foreach (var item in events)
             {
-                item.Status = Status.Rejected;
+                item.Status = Status.Published;
                 _context.Update(item);
             }
             _context.SaveChanges();
@@ -46,19 +46,34 @@ namespace LetsGo.Controllers
             else
                 viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
             return View(viewModel);
-        }
+        }  
 
-        //Отправка запроса на публикацию мероприятия
+        //Отправка запроса на снятие с пубилкации мероприятия
         [HttpPost]
-        public async Task<JsonResult> RequestForPublish(string id)
+        public async Task<JsonResult> RequestForUnPublish(string id)
         {
             Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
-            @event.Status = Status.ReviewPublished;           
-            @event.CreatedAt = DateTime.Now;            
+            @event.Status = Status.UnPublished;
+            @event.CreatedAt = DateTime.Now;
             _context.Events.Update(@event);
             await _context.SaveChangesAsync();
-            string ReviewPublished = @event.Status.ToString();
-            return Json(new { ReviewPublished });
+            string unPublished = @event.Status.ToString();
+            return Json(new { unPubl = unPublished, date = @event.CreatedAt });
         }
+
+        //Отправка запроса на возвращение в публикации мероприятия
+        [HttpPost]
+        public async Task<JsonResult> RequestForPublishAgain(string id)
+        {
+            Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+            @event.Status = Status.Published;
+            @event.CreatedAt = DateTime.Now;
+            _context.Events.Update(@event);
+            await _context.SaveChangesAsync();
+            string published = @event.Status.ToString();
+            return Json(new { publ = published, date = @event.CreatedAt });
+        }
+
+
     }
 }

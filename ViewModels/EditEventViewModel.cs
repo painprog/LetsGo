@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +12,15 @@ namespace LetsGo.ViewModels
 {
     public class EditEventViewModel
     {
-
+        public string Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string PosterImage { get; set; }
+        public virtual int StatusId
+        {
+            get => (int)this.Status;
+            set => Status = (Status)value;
+        }
+        public Status Status { get; set; }
         [Required(ErrorMessage = "Поле названия обязательна для заполнения")]
         [Display(Name = "Название")]
         public string Name { get; set; }
@@ -47,21 +56,6 @@ namespace LetsGo.ViewModels
         public string OrganizerId { get; set; }
 
         public string Tickets { get; set; }
-
-        public Event Event { get; set; } 
-        //public List<EventTicketType> Tickets { get; set; }
-
-        //[Required(ErrorMessage = "Название типа билета обязательна")]
-        //public string TicketTypeName { get; set; }
-
-        //[Required(ErrorMessage = "Количество типа билета обязательна")]
-        //[Range(1, 1000000, ErrorMessage = "Недопустимое значение количества билетов")]
-        //public int TicketTypeCount { get; set; }
-
-        //[Required(ErrorMessage = "Цена типа билета обязательна")]
-        //[Range(0, 100000000, ErrorMessage = "Недопустимое значение цены билета")]
-        //public int TicketTypePrice { get; set; }
-
 
         public IFormFile File { get; set; }
     }

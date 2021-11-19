@@ -30,7 +30,7 @@
 <div>
     @foreach (var item in Model.Events)
     {
-        <div class="card m-1">
+        <div class="card m-1" id="card-@item.Id">
             <div class="card-body d-flex justify-content-between">
                 <div>
                     <p>Название: @item.Name</p>
@@ -61,28 +61,30 @@
                     }
                     else
                     {
-                        @if (item.Status != Status.New)
-                        {
-                            <a class="btn btn-primary mb-1">Редактировать</a><br />
-                        }
                         @switch (item.Status)
                         {
                             case Status.New:
                                 <button class="btn btn-success accept" type="button" id="@item.Id">Принять</button>
-                                <button class="btn btn-danger deny" type="button" id="@item.Id">Отказать</button>
+                                <button type="button" class="btn btn-danger deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отказать
+                                </button>
                                 break;
                             case Status.ReviewPublished:
-                                <a class="btn btn-primary">Одобрить возвращение в публикации</a><br />
+                                <a class="btn btn-success">Одобрить возвращение в публикации</a><br />
                                 break;
                             case Status.ReviewUnPublished:
-                                <a class="btn btn-primary">Одобрить снятие с публикации</a><br />
+                                <a class="btn btn-success">Одобрить снятие с публикации</a><br />
                                 break;
                             case Status.Published:
-                                <a class="btn btn-primary">Снять с публикации</a><br />
+                                <a class="btn btn-danger">Снять с публикации</a><br />
                                 break;
                             case Status.UnPublished:
-                                <a class="btn btn-primary">Вернуть в публикации</a><br />
+                                <a class="btn btn-warning">Вернуть в публикации</a><br />
                                 break;
+                        }
+                        @if (item.Status != Status.New)
+                        {
+                            <a class="btn btn-warning mt-1" asp-action="Edit" asp-controller="Event" asp-route-eventId="@item.Id">Редактировать</a><br />
                         }
                     }
                 </div>
@@ -90,9 +92,29 @@
         </div>
     }
 </div>
+<!-- Modal Cause -->
+<div class="modal fade" id="causeModal" tabindex="-1" aria-labelledby="causeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="causeModalLabel">Введите причину</h5>
+            </div>
+            <div class="modal-body">
+               <div>
+                   <textarea class="form-control flex-fill" id="cause-text"></textarea>
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-success" id="cause-confirm" data-bs-dismiss="modal">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    let _id;
         $('.accept').on('click', function() {
-        let _id = this.id;
+        _id = this.id;
         $.ajax({
             url: '@Url.Action("ChangeStatus", "Event")',
             type: 'POST',
@@ -109,15 +131,20 @@
         })
     })
     $('.deny').on('click', function () {
-        console.log('click')
-        let _id = this.id;
+        _id = this.id;
+    })
+    $('#cause-confirm').on('click', () => {
+        console.log(_id);
+        let cause = $('textarea#cause-text').val();
+        $('textarea#cause-text').val('');
         $.ajax({
             url: '@Url.Action("ChangeStatus", "Event")',
             type: 'POST',
             data:
             {
-                'status': "Denied",
-                'eventId': _id
+                'status': "Rejected",
+                'eventId': _id,
+                'cause': cause
             },
             success: function (response) {
                 if (response.success) {

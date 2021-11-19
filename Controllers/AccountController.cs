@@ -1,5 +1,6 @@
 ﻿using LetsGo.Models;
 using LetsGo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -45,6 +46,21 @@ namespace LetsGo.Controllers
             }
             return View(model);
         }
+        
+        [Authorize(Roles = "superadmin")]
+        [HttpGet]
+        public IActionResult AddAdmin()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "superadmin")]
+        [HttpPost]
+        public IActionResult AddAdmin(AddAdminViewModel model)
+        {
+            return RedirectToAction("Index");
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -53,5 +69,15 @@ namespace LetsGo.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+
+        // Validations
+        public bool CheckEmailAuthorize(string email)
+        {
+            User user = _userManager.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
+            if (user.Email == email) return true;
+            return !_userManager.Users.Any(b => b.Email == email);
+        }
+
     }
 }

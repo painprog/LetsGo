@@ -62,9 +62,9 @@ namespace LetsGo.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangeStatus(string status, string eventId)
+        public async Task<JsonResult> ChangeStatus(string status, string eventId, string cause)
         {
-            if(await _Service.ChangeStatus(status, eventId))
+            if(await _Service.ChangeStatus(status, eventId, cause))
             {
                 return Json(new { success = true });
             }

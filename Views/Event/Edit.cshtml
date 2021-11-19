@@ -1,5 +1,199 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EditEventViewModel
 @{
+    ViewBag.Title = "Редактирование события";
+}
+
+<div class="form-container">
+    <h2 class="form-header">@ViewBag.Title</h2><hr />
+    <form id="add-event-form" asp-controller="Event" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name"></label><br />
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label><br />
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Location"></label><br />
+            <input asp-for="Location" class="form-control" list='locations' />
+            <datalist id='locations'>
+                <option selected>@Model.Location</option>
+                @foreach (var item in ViewBag.Locations)
+                {
+                    <option>@item.Name</option>
+                }
+            </datalist>
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventStart"></label><br />
+            <input asp-for="EventStart" type="datetime-local" class="form-control" />
+            <span asp-validation-for="EventStart" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventEnd"></label><br />
+            <input asp-for="EventEnd" type="datetime-local" class="form-control" />
+            <span asp-validation-for="EventEnd" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="File" class="control-label">Загрузка аватарки</label>
+            <input asp-for="File" type="file" class="form-control" />
+            <span asp-validation-for="File" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AgeLimit"></label>
+            <input asp-for="AgeLimit" type="number" min="0" max="18" value="@Model.AgeLimit" class="form-control" />
+            <span asp-validation-for="AgeLimit" class="text-danger"></span>
+
+        </div>
+        <div class="pt-5">
+            <h4>Категории</h4>
+            <input type="hidden" asp-for="Categories" />
+            <div id="checkbox">
+                @foreach (var item in ViewBag.Categories)
+                {
+                    @foreach (var elem in Model.CategoriesList)
+                    {
+                        if (item.Name == elem)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked value="@item.Name" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">@item.Name</label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@item.Name" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">@item.Name</label>
+                            </div>
+                        }
+                    }
+
+                }
+
+            </div>
+        </div>
+        <div class="pt-5">
+            <h4>Билеты</h4>
+            <p>Общее число билетов: <b><span id="total-tickets">@Model.TicketLimit</span></b></p>
+            <input type="hidden" asp-for="Tickets" />
+            <input type="hidden" asp-for="TicketLimit" />
+            <table class="table tickets-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Название</th>
+                        <th style="width: 30%;">Описание</th>
+                        <th style="width: 15%;">Количество</th>
+                        <th style="width: 15%;">Цена</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+            <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
+            <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
+            <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
+            <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2" rows="3" style="resize:none;"></textarea>
+            <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />
+        </div>
+        <hr />
+        <div class="form-group text-center">
+            <button id="add" type="submit" class="btn btn-success px-5 py-2">Добавить</button>
+        </div>
+    </form>
+
+</div>
+
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+              //  var categoriesExist = [];
+              //  for (var i = 0; i < length; i++) {
+              //
+              //  }
+
+     //   $(document).ready(
+     //       function () {                
+     //           $('#checkbox input').each(function () {
+     //               $(this).attr('checked', true);
+     //           }) }
+     //   )
+
+    let totalTickets = $('#total-tickets');
+
+
+    function AddTicket() {
+        var name = $('#ticket_name');
+        var desc = $('#ticket_desc');
+        var count = $('#ticket_count');
+        var price = $('#ticket_price');
+
+        if (name.val() != '' && count.val() != '' && price.val() != '') {
+            totalTickets.text(parseInt(totalTickets.text()) + parseInt(count.val()));
+
+            $('.tickets-table tbody').append('<tr><td><b>' + name.val() +
+                '</b></td><td>' + desc.val() +
+                '</b></td><td>' + count.val() +
+                '</td><td>' + price.val() +
+                '</td><td><input type="button" class="btn btn-outline-danger" value="✘" onclick="DeleteTicket(this)">' +
+                '</td></tr> ');
+            name.val('');
+            desc.val('');
+            count.val('');
+            price.val('');
+        }
+    }
+
+    function DeleteTicket(a) {
+        totalTickets.text(parseInt(totalTickets.text()) - parseInt($(a).closest('tr').find('td').eq(2).text()));
+        $(a).closest('tr').remove()
+    }
+
+    $('form').submit(function () {
+        event.preventDefault();
+        //ticketLimit
+        $('#TicketLimit').val(totalTickets.text());
+        // categories
+        var categories = [];
+        $('#checkbox input:checked').each(function () {
+            categories.push($(this).attr('value'));
+        })
+        $('#Categories').val(categories);
+        // tickets
+        var tickets = [];
+        $('.tickets-table tbody tr').each(function () {
+            tickets.push(
+                '{"Name":"' + $(this).find('td').eq(0).text() + '",' +
+                '"Description":"' + $(this).find('td').eq(1).text() + '",' +
+                '"Count":' + $(this).find('td').eq(2).text() + ',' +
+                '"Price":' + $(this).find('td').eq(3).text() + '}');
+        });
+        $('#Tickets').val("[" + tickets.join() + "]");
+        var formData = new FormData(this);
+        $.ajax({
+            url: '@Url.Action("Add", "Event")',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    window.location.href = response.href;
+                }
+            },
+        });
+    });
+    var locations = document.getElementById('locations')
+    console.log(locations)
+
+    </script>
 }

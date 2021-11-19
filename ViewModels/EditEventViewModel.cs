@@ -42,10 +42,11 @@ namespace LetsGo.ViewModels
         public DateTime EventEnd { get; set; }
 
         public string Categories { get; set; }
+        public List<string> CategoriesList { get; set; }
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]
-        public string AgeLimit { get; set; }
+        public int AgeLimit { get; set; }
 
         public int TicketLimit { get; set; }
 

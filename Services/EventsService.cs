@@ -91,6 +91,17 @@ namespace LetsGo.Services
         public async Task<EditEventViewModel> MakeEditEventViewModel(string id)
         {
             Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == id);
+            string categs = JsonSerializer.Deserialize<string>(@event.Categories);
+            List<string> CategoriesList = new List<string>();
+            if (categs.Contains(','))
+            { 
+                string[] catesgInArray = categs.Split(new char[] { ',' });
+                CategoriesList.AddRange(catesgInArray);
+            }
+            else
+                CategoriesList.Add(categs);
+           
+
             EditEventViewModel editEvent = new EditEventViewModel
             {
                 Id = @event.Id,
@@ -101,11 +112,12 @@ namespace LetsGo.Services
                 EventEnd = @event.EventEnd,
                 PosterImage = @event.PosterImage,
                 Categories = @event.Categories,
-                AgeLimit = @event.AgeLimit.ToString(),
+                AgeLimit = @event.AgeLimit,
                 TicketLimit = @event.TicketLimit,
                 StatusId = @event.StatusId,
                 Status = @event.Status,
-                LocationId = @event.LocationId,
+                CategoriesList = CategoriesList,
+                Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,
                 OrganizerId = @event.OrganizerId
             };
             return editEvent;
@@ -136,13 +148,13 @@ namespace LetsGo.Services
                 EventEnd = eventView.EventEnd,
                 PosterImage = pathImage,
                 Categories = jsonCateg,
-                AgeLimit = Convert.ToInt32(eventView.AgeLimit),
+                AgeLimit = eventView.AgeLimit,
                 TicketLimit = eventView.TicketLimit,
-                Status = Status.New,
+                Status = Status.Edited,
                 LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id,
                 OrganizerId = eventView.OrganizerId
             };
-            await _goContext.Events.AddAsync(@event);
+            _goContext.Events.Update(@event);
             await _goContext.SaveChangesAsync();
             cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
 

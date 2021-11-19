@@ -36,7 +36,7 @@ namespace LetsGo.ViewModels
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]
-        public string AgeLimit { get; set; }
+        public int AgeLimit { get; set; }
 
         public int TicketLimit { get; set; }
 

@@ -16,6 +16,11 @@ namespace LetsGo.ViewModels
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Имя пользователя")]
+        [Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Это имя пользователя уже занято")]
+        public string UserName { get; set; }
+
+        [Required]
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
 

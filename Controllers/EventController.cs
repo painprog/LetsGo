@@ -32,14 +32,6 @@ namespace LetsGo.Controllers
 
         public async Task<IActionResult> Add()
         {
-            if (!_goContext.EventCategories.Any())
-            {
-                EventCategory categoryPlay = new EventCategory { Name = "Спектакль" };
-                EventCategory categoryShow = new EventCategory { Name = "Шоу" };
-                await _goContext.EventCategories.AddAsync(categoryPlay);
-                await _goContext.EventCategories.AddAsync(categoryShow);
-                await _goContext.SaveChangesAsync();
-            }
             List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
             ViewBag.Categories = categories;
             ViewBag.Locations = await _goContext.Locations.ToListAsync();

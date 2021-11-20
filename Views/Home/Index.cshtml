@@ -1,4 +1,5 @@
-﻿<div class="body_part_2">
+﻿@model IndexPageViewModel
+<div class="body_part_2">
     <div class="cont_2_body d-flex pb-3">
         <div class="container-2 container-fluid mx-auto">
             <h1 class="main_page_start_text pt-1 mb-5 text-center">Быстрый поиск и покупка билетов</h1>
@@ -86,192 +87,40 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">12+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
+                            @foreach (var concert in Model.Concerts)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img">
+                                            <img src="@concert.PosterImage" alt="@concert.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@concert.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
+                                            <div class="card-tag">
+                                                <a href="#">Концерты</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <a class="card-title" href="#">Концерт "@concert.Name"</a>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
+                                                    @*с 18 декабря по 19 декабря 2021*@
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#">
+                                                        @concert.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ 1500 ₽
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">12+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">12+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">12+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">12+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">12+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
 
@@ -289,192 +138,40 @@
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-md-3">
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
+                            @foreach (var festival in Model.Festivals)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img">
+                                            <img src="@festival.PosterImage" alt="@festival.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@festival.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
+                                            <div class="card-tag">
+                                                <a href="#">Фестивали</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <a class="card-title" href="#">Фестиваль"@festival.Name"</a>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
+                                                    @*с 18 декабря по 19 декабря 2021*@
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#">
+                                                        @festival.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ 1500 ₽
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
 
@@ -492,192 +189,40 @@
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-md-3">
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
+                            @foreach (var performance in Model.Performances)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img">
+                                            <img src="@performance.PosterImage" alt="@performance.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@performance.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
+                                            <div class="card-tag">
+                                                <a href="#">Спектакли</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <a class="card-title" href="#">Спектакль"@performance.Name"</a>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#">
+                                                        @performance.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ 1500 ₽
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
 
@@ -695,192 +240,40 @@
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-md-3">
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
+                            @foreach (var forChildren in Model.ForChildren)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img">
+                                            <img src="@forChildren.PosterImage" alt="@forChildren.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@forChildren.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
+                                            <div class="card-tag">
+                                                <a href="#">Детям</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <a class="card-title" href="#">@forChildren.Name</a>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#">
+                                                        @forChildren.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ 1500 ₽
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img">
-                                        <img src="https://ponominalu.ru/media/in/320x171/82ffd8c7d4ca30c07c893f4091d8bda17c9c6daa.jpeg"
-                                             alt="Фестиваль «Bubble Comics Con»">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">16+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <a class="card-title" href="#">Фестиваль «Bubble Comics Con»</a>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                с 18 декабря по 19 декабря 2021
-                                            </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    Выставочный комплекс «Экспоцентр»
-                                                </a>
-                                            </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ 1500 ₽
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
 
@@ -898,58 +291,22 @@
                             </div>
                         </div>
                         <div class="row row-cols-1 row-cols-md-3">
-                            <div class="col-md-4 p-0">
-                                <div class="card venues-card">
-                                    <a href="#" class="venue">
-                                        <div class="venue-card-img-container">
-                                            <span class="venue-card-placeholder">Ц</span>
-                                        </div>
-                                        <div class="venue-card-content">
-                                            <p class="venue-card-type">Концертные залы</p>
-                                            <p class="venue-card-title">Центральный Дом Архитектора</p>
-                                        </div>
-                                    </a>
+                            @foreach (var location in Model.Locations)
+                            {
+                                <div class="col-md-4 p-0">
+                                    <div class="card venues-card">
+                                        <a href="#" class="venue">
+                                            <div class="venue-card-img-container">
+                                                <span class="venue-card-placeholder">@location.Name.Substring(0, 1)</span>
+                                            </div>
+                                            <div class="venue-card-content">
+                                                <p class="venue-card-type">@location.Categories</p>
+                                                <p class="venue-card-title">@location.Name</p>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 p-0">
-                                <div class="card venues-card">
-                                    <a href="#" class="venue">
-                                        <div class="venue-card-img-container">
-                                            <span class="venue-card-placeholder">М</span>
-                                        </div>
-                                        <div class="venue-card-content">
-                                            <p class="venue-card-type">Музеи</p>
-                                            <p class="venue-card-title">Музей-мастерская Зураба Церетели</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 p-0">
-                                <div class="card venues-card">
-                                    <a href="#" class="venue">
-                                        <div class="venue-card-img-container">
-                                            <span class="venue-card-placeholder">К</span>
-                                        </div>
-                                        <div class="venue-card-content">
-                                            <p class="venue-card-type">Другое</p>
-                                            <p class="venue-card-title">Культурный центр «Дом»</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 p-0">
-                                <div class="card venues-card">
-                                    <a href="#" class="venue">
-                                        <div class="venue-card-img-container">
-                                            <span class="venue-card-placeholder">Z</span>
-                                        </div>
-                                        <div class="venue-card-content">
-                                            <p class="venue-card-type">Другое</p>
-                                            <p class="venue-card-title">ZooDepo</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>

@@ -25,14 +25,17 @@ namespace LetsGo.Controllers
             _signInManager = signInManager;
             _context = context;
         }
+
+
         public IActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);
                 Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(
@@ -101,6 +104,56 @@ namespace LetsGo.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public IActionResult OrganizerSignUp() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> OrganizerSignUp(OrganizerSignUpViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userEmailCheck = await _userManager.FindByEmailAsync(model.Email);
+                if (userEmailCheck == null)
+                {
+                    string pathImage = string.Empty;
+                    if (model.Avatar is null)
+                        pathImage = "/images/default_avatar.png";
+                    else
+                    {
+                        string name = EventsService.GenerateCode() + Path.GetExtension(model.Avatar.FileName);
+                        pathImage = "/avatars/" + name;
+                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                            await model.Avatar.CopyToAsync(fileStream);
+                    }
+
+                    User user = new User
+                    {
+                        UserName = model.Username,
+                        Email = model.Email,
+                        AvatarLink = pathImage,
+                        PhoneNumber = model.PhoneNumber,
+                    };
+
+                    var result = await _userManager.CreateAsync(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, "organizer");
+                        await _signInManager.SignInAsync(user, false);
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError(string.Empty, error.Description);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, $"Пользователь с таким электронным адресом уже зарегистрирован.");
+                    return View(model);
+                }
+            }
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

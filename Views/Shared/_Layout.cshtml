@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LetsGo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/reset.css">
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/v5.11.1/css/free.min.css" media="all">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -117,7 +117,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-white menu-link" href="#">Экскурсия</a>
                         </li>
-                        <li class="nav-item submenu-link">
+                        <li class="nav-item submenu-link mr-5">
                             <a class="nav-link text-white menu-link">Еще</a>
                             <div class="submenu pt-4">
                                 <a class="submenu-item" href="#">Фестивали</a>
@@ -133,9 +133,14 @@
 
                         @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
                         {
-                            <li class="nav-item ml-5">
+                            <li class="nav-item">
                                 <a class="nav-link text-white menu-link" asp-controller="Locations" asp-action="Create">
                                     Добавить площадку
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white menu-link" asp-controller="Account" asp-action="AddAdmin">
+                                    Добавить админа
                                 </a>
                             </li>
                         }

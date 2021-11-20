@@ -1,12 +1,10 @@
 ﻿@model AddAdminViewModel
-
 @{
     ViewData["Title"] = "Register Admin";
 }
-
 <div class="w-50 mx-auto p-4 mt-4 entry-form">
-    <h1 class="text-center">Регистрация организатора</h1>
-    <form id="organizerSignUp-form" asp-controller="Account" asp-action="AddAdmin" method="post" enctype="multipart/form-data">
+    <h1 class="text-center">Регистрация администратора</h1>
+    <form id="addAdmin-form" asp-controller="Account" asp-action="AddAdmin" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>

@@ -72,10 +72,8 @@ namespace LetsGo.Controllers
 
 
         // Validations
-        public bool CheckEmailAuthorize(string email)
+        public bool CheckEmail(string email)
         {
-            User user = _userManager.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-            if (user.Email == email) return true;
             return !_userManager.Users.Any(b => b.Email == email);
         }
 

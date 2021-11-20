@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ namespace LetsGo.Services
                 await eventView.File.CopyToAsync(fileStream);
 
             string jsonCateg = string.Empty;
-            jsonCateg = eventView.Categories != null ? JsonSerializer.Serialize(eventView.Categories) : "";
+            jsonCateg = eventView.Categories != null ? JsonConvert.SerializeObject(eventView.Categories) : "";
 
             Event @event = new Event
             {

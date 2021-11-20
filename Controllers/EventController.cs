@@ -36,10 +36,14 @@ namespace LetsGo.Controllers
             {
                 EventCategory categoryPlay = new EventCategory { Name = "Спектакль" };
                 EventCategory categoryShow = new EventCategory { Name = "Шоу" };
+                EventCategory categoryConcert = new EventCategory { Name = "Концерт" };
+                EventCategory categoryFreekShow = new EventCategory { Name = "Фрик-шоу" };
                 await _goContext.EventCategories.AddAsync(categoryPlay);
                 await _goContext.EventCategories.AddAsync(categoryShow);
-                await _goContext.SaveChangesAsync();
+                await _goContext.EventCategories.AddAsync(categoryConcert);
+                await _goContext.EventCategories.AddAsync(categoryFreekShow);
             }
+            await _goContext.SaveChangesAsync();
             List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
             ViewBag.Categories = categories;
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
@@ -75,10 +79,14 @@ namespace LetsGo.Controllers
         {
             if (ModelState.IsValid)
             {
-                string tickets = viewModel.Tickets;
-                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
+                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
                 Event @event = await _Service.EditEvent(viewModel);
-                ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
+                await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
+                if (viewModel.TicketsForDel != null)
+                {
+                    List<EventTicketType> ticketTypesForDel = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.TicketsForDel);
+                    await _Service.DeleteEventTicketTypes(@event.Id, ticketTypesForDel);
+                }
                 return Json(new { success = true, href = "/Home/Index" });
             }
             return Json(new { succes = false });

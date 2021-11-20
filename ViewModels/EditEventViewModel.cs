@@ -57,7 +57,8 @@ namespace LetsGo.ViewModels
         public string OrganizerId { get; set; }
 
         public string Tickets { get; set; }
-
+        public List<EventTicketType> TicketsExist { get; set; }
+        public string TicketsForDel { get; set; }
         public IFormFile File { get; set; }
     }
 }

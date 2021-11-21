@@ -52,5 +52,8 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+
+        public IActionResult GetEventsByCategory(string category)
+            => Json(_goContext.Events.Include(e => e.Location).Where(e => e.Categories.Contains(category)));
     }
 }

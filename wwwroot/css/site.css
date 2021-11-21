@@ -737,3 +737,12 @@ body {
 .rounded {
     border-radius: 5px;
 }
+.event-card {
+    border-radius: 15px;
+    cursor: pointer;
+    flex-direction: row;
+}
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}

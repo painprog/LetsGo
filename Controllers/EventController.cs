@@ -21,7 +21,7 @@ namespace LetsGo.Controllers
             _goContext = goContext;
         }
 
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> Details(string id)
         {
             //Event @event = _Service.GetEvent(id).Result;
             //return View(@event);

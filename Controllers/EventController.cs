@@ -73,5 +73,28 @@ namespace LetsGo.Controllers
                 return Json(new { success = false });
             }
         }
+
+        public async Task<IActionResult> Edit(string eventId)
+        {
+            EventEditViewModel viewModel = new EventEditViewModel
+            {
+                Event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId),
+                EventTicketTypes = await _goContext.EventTicketTypes.Where(t => t.EventId == eventId).ToListAsync()
+            };
+            ViewBag.Categories = await _goContext.EventCategories.ToListAsync();
+            ViewBag.Locations = await _goContext.Locations.ToListAsync();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EventEditViewModel model)
+        {
+            if(await _Service.Edit(model))
+            {                
+                return View();
+            }
+            return BadRequest();
+        }
     }
 }

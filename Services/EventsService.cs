@@ -25,9 +25,9 @@ namespace LetsGo.Services
         public async Task<Event> GetEvent(string id)
         {
             Event Event = null;
-            if (!_cache.TryGetValue(Event, out Event))
+            if (!_cache.TryGetValue(id, out Event))
             {
-                Event = await _goContext.Events.FirstOrDefaultAsync(p => p.Id == id);
+                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
                 if (Event != null)
                 {
                     _cache.Set(Event.Id, Event, 

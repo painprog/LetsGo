@@ -740,10 +740,18 @@ body {
 .event-card {
     border-radius: 15px;
     cursor: pointer;
-    flex-direction: row;
     overflow: hidden;
 }
 .row {
     margin-left: 0;
     margin-right: 0;
+}
+.admin-event .material-icons {
+    cursor: pointer;
+    border-radius: 5px;
+}
+.admin-event .material-icons:hover {
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
 }

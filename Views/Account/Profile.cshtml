@@ -59,39 +59,50 @@
             </div>
             @foreach (var item in Model.Events)
             {
-                <div class="card mb-3 row event-card" onclick="eventDetails('@item.Id')">
-                    <div class="pn-page-head col-lg-10" style="border-radius: 0">
-                        <img class="blur_img" src="~/events/@item.PosterImage" alt="">
-                        <div class="row">
-                            <div class="col-lg-4 mr-5">
-                                <div class="pn-head_image">
-                                    <img src="~/events/@item.PosterImage" alt="" class="rounded">
+                <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
+                    <div class="row">
+                        <div class="pn-page-head col-lg-10" style="border-radius: 0">
+                            <img class="blur_img" src="~/events/@item.PosterImage" alt="">
+                            <div class="row">
+                                <div class="col-lg-4 mr-5">
+                                    <div class="pn-head_image">
+                                        <img src="~/events/@item.PosterImage" alt="" class="rounded">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="pn-head_title">
-                                    <h1>@item.Name</h1>
-                                    <span>@item.AgeLimit +</span>
-                                </div>
-                                <div class="pn-head_description">
-                                    <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
-                                    <div class="pn-head_place">@item.Location.Name</div>
+                                <div class="col-lg-7">
+                                    <div class="pn-head_title">
+                                        <h1>@item.Name</h1>
+                                        <span>@item.AgeLimit +</span>
+                                    </div>
+                                    <div class="pn-head_description">
+                                        <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
+                                        <div class="pn-head_place">@item.Location.Name</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-2 my-auto text-center">
+                            <h1 style="font-size: 22px;">Билетов</h1>
+                            <p>
+                                куплено: 10<br />
+                                осталось: 15
+                            </p>
+                            @*@if (item.Status == ...)
+            {
+                 ...
+            }*@
+                            <a href="#" class="btn btn-danger" onclick="Publish('@item.Id')">Опубликовать</a>
+                        </div>
                     </div>
-                    <div class="col-lg-2 my-auto text-center">
-                        <h1 style="font-size: 22px;">Билетов</h1>
-                        <p>
-                            куплено: 10<br />
-                            осталось: 15
-                        </p>
-                        @*@if (item.Status == ...)
-                            {
-                                 ...
-                            }*@
-                        <a href="#" class="btn btn-danger" onclick="Publish('@item.Id')">Опубликовать</a>
-                    </div>
+                    @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
+                    {
+                        <div class="text-light bg-danger text-center align-content-between admin-event pt-2">
+                            <a href="#" class="btn btn-danger px-3 ml-4 mb-2">Одобрить</a>
+                            <a href="#" class="btn btn-danger px-3 mb-2">Отклонить</a>
+                            <span class="material-icons my-auto px-3 py-2">edit</span>
+                            <span class="material-icons px-3 py-2">delete</span>
+                        </div>
+                    }
                 </div>
 
             }

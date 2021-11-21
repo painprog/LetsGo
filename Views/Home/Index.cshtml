@@ -67,6 +67,7 @@
         </div>
     </div>
 </div>
+
 <div class="events pt-3">
     <div class="container">
         <div class="row">
@@ -78,7 +79,7 @@
                                 <h2 class="category-header">Концерты</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
-                                <a href="#" class="more-btn round">
+                                <a id="concerts-link" class="more-btn round">
                                     <span class="icon-more">
                                         <i class="fas fa-arrow-right"></i>
                                     </span>
@@ -86,7 +87,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div id="all-concerts" class="row">
                             @foreach (var concert in Model.Concerts)
                             {
                                 <div class="col-md-4">
@@ -130,14 +131,14 @@
                                 <h2 class="category-header">Фестивали</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
-                                <a href="#" class="more-btn round">
+                                <a id="festivals-link" class="more-btn round">
                                     <span class="icon-more">
                                         <i class="fas fa-arrow-right"></i>
                                     </span>
                                 </a>
                             </div>
                         </div>
-                        <div class="row row-cols-1 row-cols-md-3">
+                        <div id="all-festivals" class="row row-cols-1 row-cols-md-3">
                             @foreach (var festival in Model.Festivals)
                             {
                                 <div class="col-md-4">
@@ -177,18 +178,18 @@
 
                     <div class="performances">
                         <div class="row justify-content-between">
-                            <div class="col-md-4">
+                            <div class="col-11">
                                 <h2 class="category-header">Спектакли</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
-                                <a href="#" class="more-btn round">
+                                <a id="performances-link" class="more-btn round">
                                     <span class="icon-more">
                                         <i class="fas fa-arrow-right"></i>
                                     </span>
                                 </a>
                             </div>
                         </div>
-                        <div class="row row-cols-1 row-cols-md-3">
+                        <div id="all-performances" class="row row-cols-1 row-cols-md-3">
                             @foreach (var performance in Model.Performances)
                             {
                                 <div class="col-md-4">
@@ -232,14 +233,14 @@
                                 <h2 class="category-header">Детям</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
-                                <a href="#" class="more-btn round">
+                                <a id="for-children-link" class="more-btn round">
                                     <span class="icon-more">
                                         <i class="fas fa-arrow-right"></i>
                                     </span>
                                 </a>
                             </div>
                         </div>
-                        <div class="row row-cols-1 row-cols-md-3">
+                        <div id="all-for-children" class="row row-cols-1 row-cols-md-3">
                             @foreach (var forChildren in Model.ForChildren)
                             {
                                 <div class="col-md-4">
@@ -283,14 +284,14 @@
                                 <h2 class="category-header">Площадки Бишкека</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
-                                <a href="#" class="more-btn round">
+                                <a id="venues-link" class="more-btn round">
                                     <span class="icon-more">
                                         <i class="fas fa-arrow-right"></i>
                                     </span>
                                 </a>
                             </div>
                         </div>
-                        <div class="row row-cols-1 row-cols-md-3">
+                        <div id="all-venues" class="row row-cols-1 row-cols-md-3">
                             @foreach (var location in Model.Locations)
                             {
                                 <div class="col-md-4 p-0">
@@ -317,3 +318,356 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        $(window).on('popstate', function (event) {
+            $('body').load(location.href);
+        });
+
+        $('#concerts-link').on("click", function () {
+            $.ajax({
+                type: "GET",
+                url: "/Event/GetEventsByCategory",
+                data: { category: "Концерты" },
+                success: function (result) {
+                    $('#concerts-link').hide();
+                    // This will create a new entry in the browser's history, without reloading
+                    //  window.history.pushState({}, '', '/Event/Concert');
+                    window.history.pushState({}, '', '');
+
+                    // This will replace the current entry in the browser's history, without reloading
+                    // window.history.replaceState({}, null, 'https://localhost:44377/Event/Concert');
+                    window.history.replaceState({}, null, 'https://localhost:44377');
+
+                    console.log(result);
+
+                    $('.festivals').remove();
+                    $('.performances').remove();
+                    $('.for-children').remove();
+                    $('#all-concerts').empty();
+                    $('.concerts .category-header').text("Афиша концерты Бишкека");
+                    result.forEach((concert) => {
+                        var eventStart = new Date(concert.eventStart);
+                        $('#all-concerts').append(`
+                                                    <div class="col-md-4">
+                                                        <div class="card p-0">
+                                                            <div class="card-block-img">
+                                                                <img src="${concert.posterImage}" alt="${concert.name}">
+                                                                <a href="#"></a>
+                                                                <div class="wrapper">
+                                                                    <div class="card-age">${concert.ageLimit}+</div>
+                                                                </div>
+                                                                <div class="card-tag">
+                                                                    <a href="#">Концерты</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block-description">
+                                                                <a class="card-title" href="#">Концерт "${concert.name}"</a>
+                                                                <div class="card-description">
+                                                                    <div class="card-date">
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { day: 'numeric' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { month: 'long' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { year: 'numeric' })} в
+                                                                        ${eventStart.toLocaleTimeString("ru-RU", { timeStyle: 'short' })}
+                                                                    </div>
+                                                                    <div class="card-venue">
+                                                                        <a class="card-venue-link" href="#">
+                                                                            ${concert.location.name}
+                                                                        </a>
+                                                                    </div>
+                                                                    <a href="#" class="card-price">
+                                                                        БИЛЕТЫ ОТ 1500 ₽
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
+                    });
+
+
+                    $('#all-concerts').btnLoadmore({
+                        showItem: 15, //default 6
+                        whenClickBtn: 15, //default 3
+                        textBtn: 'больше мероприятий',
+                        classBtn: 'btn-showmore'
+                    });
+
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        $('#festivals-link').on("click", function () {
+            $.ajax({
+                type: "GET",
+                url: "/Event/GetEventsByCategory",
+                data: { category: "Фестивали" },
+                success: function (result) {
+                    $('#festivals-link').hide();
+                    // This will create a new entry in the browser's history, without reloading
+                    // window.history.pushState({}, '', '/Event/Festivals');
+                    window.history.pushState({}, '', '');
+
+                    // This will replace the current entry in the browser's history, without reloading
+                    // window.history.replaceState({}, null, 'https://localhost:44377/Event/Festivals');
+                    window.history.replaceState({}, null, 'https://localhost:44377');
+
+                    console.log(result);
+                    $('.concerts').remove();
+                    $('.performances').remove();
+                    $('.for-children').remove();
+                    $('#all-festivals').empty();
+                    $('.festivals .category-header').text("Афиша фестивали Бишкека");
+                    result.forEach((festival) => {
+                        var eventStart = new Date(festival.eventStart);
+                        $('#all-festivals').append(`
+                                                    <div class="col-md-4">
+                                                        <div class="card p-0">
+                                                            <div class="card-block-img">
+                                                                <img src="${festival.posterImage}" alt="${festival.name}">
+                                                                <a href="#"></a>
+                                                                <div class="wrapper">
+                                                                    <div class="card-age">${festival.ageLimit}+</div>
+                                                                </div>
+                                                                <div class="card-tag">
+                                                                    <a href="#">Фестивали</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block-description">
+                                                                <a class="card-title" href="#">Фестиваль "${festival.name}"</a>
+                                                                <div class="card-description">
+                                                                    <div class="card-date">
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { day: 'numeric' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { month: 'long' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { year: 'numeric' })} в
+                                                                        ${eventStart.toLocaleTimeString("ru-RU", { timeStyle: 'short' })}
+                                                                    </div>
+                                                                    <div class="card-venue">
+                                                                        <a class="card-venue-link" href="#">
+                                                                            ${festival.location.name}
+                                                                        </a>
+                                                                    </div>
+                                                                    <a href="#" class="card-price">
+                                                                        БИЛЕТЫ ОТ 1500 ₽
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
+                    });
+                    $('#all-festivals').btnLoadmore({
+                        showItem: 15, //default 6
+                        whenClickBtn: 15, //default 3
+                        textBtn: 'больше мероприятий',
+                        classBtn: 'btn-showmore'
+                    });
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        $('#performances-link').on("click", function () {
+            $.ajax({
+                type: "GET",
+                url: "/Event/GetEventsByCategory",
+                data: { category: "Спектакли" },
+                success: function (result) {
+                    $('#performances-link').hide();
+                    // This will create a new entry in the browser's history, without reloading
+                    // window.history.pushState({}, '', '/Event/Performances');
+                    window.history.pushState({}, '', '');
+
+                    // This will replace the current entry in the browser's history, without reloading
+                    // window.history.replaceState({}, null, 'https://localhost:44377/Event/Performances');
+                    window.history.replaceState({}, null, 'https://localhost:44377');
+
+                    console.log(result);
+                    $('.concerts').remove();
+                    $('.festivals').remove();
+                    $('.for-children').remove();
+                    $('#all-performances').empty();
+                    $('.performances .category-header').text("Афиша спектакли Бишкека");
+                    result.forEach((performance) => {
+                        var eventStart = new Date(performance.eventStart);
+                        $('#all-performances').append(`
+                                                    <div class="col-md-4">
+                                                        <div class="card p-0">
+                                                            <div class="card-block-img">
+                                                                <img src="${performance.posterImage}" alt="${performance.name}">
+                                                                <a href="#"></a>
+                                                                <div class="wrapper">
+                                                                    <div class="card-age">${performance.ageLimit}+</div>
+                                                                </div>
+                                                                <div class="card-tag">
+                                                                    <a href="#">Спектакли</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block-description">
+                                                                <a class="card-title" href="#">Спектакль "${performance.name}"</a>
+                                                                <div class="card-description">
+                                                                    <div class="card-date">
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { day: 'numeric' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { month: 'long' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { year: 'numeric' })} в
+                                                                        ${eventStart.toLocaleTimeString("ru-RU", { timeStyle: 'short' })}
+                                                                    </div>
+                                                                    <div class="card-venue">
+                                                                        <a class="card-venue-link" href="#">
+                                                                            ${performance.location.name}
+                                                                        </a>
+                                                                    </div>
+                                                                    <a href="#" class="card-price">
+                                                                        БИЛЕТЫ ОТ 1500 ₽
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
+                    });
+                    $('#all-performances').btnLoadmore({
+                        showItem: 15, //default 6
+                        whenClickBtn: 15, //default 3
+                        textBtn: 'больше мероприятий',
+                        classBtn: 'btn-showmore'
+                    });
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        $('#for-children-link').on("click", function () {
+            $.ajax({
+                type: "GET",
+                url: "/Event/GetEventsByCategory",
+                data: { category: "Детям" },
+                success: function (result) {
+                    $('#for-children-link').hide();
+                    // This will create a new entry in the browser's history, without reloading
+                    // window.history.pushState({}, '', '/Event/Children');
+                    window.history.pushState({}, '', '');
+
+                    // This will replace the current entry in the browser's history, without reloading
+                    // window.history.replaceState({}, null, 'https://localhost:44377/Event/Children');
+                    window.history.replaceState({}, null, 'https://localhost:44377');
+
+                    console.log(result);
+
+                    $('.concerts').remove();
+                    $('.festivals').remove();
+                    $('.performances').remove();
+                    $('#all-for-children').empty();
+                    $('.for-children .category-header').text("Афиша детям Бишкека");
+                    result.forEach((performance) => {
+                        var eventStart = new Date(performance.eventStart);
+                        $('#all-for-children').append(`
+                                                    <div class="col-md-4">
+                                                        <div class="card p-0">
+                                                            <div class="card-block-img">
+                                                                <img src="${performance.posterImage}" alt="${performance.name}">
+                                                                <a href="#"></a>
+                                                                <div class="wrapper">
+                                                                    <div class="card-age">${performance.ageLimit}+</div>
+                                                                </div>
+                                                                <div class="card-tag">
+                                                                    <a href="#">Детям</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block-description">
+                                                                <a class="card-title" href="#">Спектакль "${performance.name}"</a>
+                                                                <div class="card-description">
+                                                                    <div class="card-date">
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { day: 'numeric' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { month: 'long' })}
+                                                                        ${eventStart.toLocaleDateString("ru-RU", { year: 'numeric' })} в
+                                                                        ${eventStart.toLocaleTimeString("ru-RU", { timeStyle: 'short' })}
+                                                                    </div>
+                                                                    <div class="card-venue">
+                                                                        <a class="card-venue-link" href="#">
+                                                                            ${performance.location.name}
+                                                                        </a>
+                                                                    </div>
+                                                                    <a href="#" class="card-price">
+                                                                        БИЛЕТЫ ОТ 1500 ₽
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
+                    });
+                    $('#all-for-children').btnLoadmore({
+                        showItem: 15, //default 6
+                        whenClickBtn: 15, //default 3
+                        textBtn: 'больше мероприятий',
+                        classBtn: 'btn-showmore'
+                    });
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+        $('#venues-link').on("click", function () {
+            $.ajax({
+                type: "GET",
+                url: "/Locations/GetAllLocations",
+                success: function (result) {
+                    $('#venues-link').hide();
+                    // This will create a new entry in the browser's history, without reloading
+                    // window.history.pushState({}, '', '/Locations/AllLocations');
+                    window.history.pushState({}, '', '');
+
+                    // This will replace the current entry in the browser's history, without reloading
+                    // window.history.replaceState({}, null, 'https://localhost:44377//Locations/AllLocations');
+                    window.history.replaceState({}, null, 'https://localhost:44377');
+
+                    console.log(result);
+
+                    $('.concerts').remove();
+                    $('.festivals').remove();
+                    $('.performances').remove();
+                    $('.for-children').remove();
+                    $('#all-venues').empty();
+                    $('.venues .category-header').text("Площадки в Бишкеке");
+                    result.forEach((venue) => {
+                        $('#all-venues').append(`
+                            <div class="col-md-4 p-0">
+                                    <div class="card venues-card">
+                                        <a href="#" class="venue">
+                                            <div class="venue-card-img-container">
+                                                <span class="venue-card-placeholder">${venue.name.charAt(0)}</span>
+                                            </div>
+                                            <div class="venue-card-content">
+                                                <p class="venue-card-type">${venue.categories}</p>
+                                                <p class="venue-card-title">${venue.name}</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                        `);
+                    });
+                    $('#all-venues').btnLoadmore({
+                        showItem: 15, //default 6
+                        whenClickBtn: 15, //default 3
+                        textBtn: 'показать еще',
+                        classBtn: 'btn-showmore'
+                    });
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+    </script>
+}

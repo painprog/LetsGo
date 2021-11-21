@@ -364,7 +364,7 @@ body {
     box-shadow: 0 15px 25px 0 rgb(0 0 0 / 5%);
     padding-left: 15px;
     padding-right: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
     .events .card:hover img {
@@ -414,7 +414,7 @@ body {
     margin: 15px 15px 0 0;
 }
 
-.events .card a:hover {
+.events .card a:hover, .btn-showmore:hover {
     color: crimson;
 }
 
@@ -454,6 +454,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor:pointer;
 }
 
     .more-btn .icon-more {
@@ -592,3 +593,32 @@ body {
 .add-more-phones:hover{
     text-decoration: underline !important;
 }
+
+.btn-showmore {
+    display:flex;
+    align-items:center;
+    margin:0 auto;
+    color: #2b2b2b;
+    font-weight: 600;
+    font-size: 12px;
+    font-family: Roboto, sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-color: #fff;
+    font-style:normal;
+    text-align: center;
+    height: 44px;
+    letter-spacing: normal;
+    line-height: 17.5px;
+    opacity: 1;
+    border-radius: 5px;
+    border: 1px solid #e6e6e6;
+    text-decoration:none;
+}
+
+    .btn-showmore:focus {
+        border: 1px solid #e6e6e6;
+        outline:none;
+        text-decoration:none;
+    }

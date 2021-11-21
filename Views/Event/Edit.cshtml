@@ -1,0 +1,126 @@
+﻿@model LetsGo.ViewModels.EventEditViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Редактироание мероприятия</h1>
+<div>
+    <form asp-action="Edit" asp-controller="Event">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h2>
+            Информация о мероприятии
+        </h2>
+        <div>
+            <input asp-for="@Model.Event.Id" hidden />
+            <input asp-for="@Model.Event.OrganizerId" hidden />
+            <input asp-for="@Model.Event.TicketLimit" hidden />
+            <div class="form-group">
+                <label asp-for="@Model.Event.Name">Название</label><br />
+                <input asp-for="@Model.Event.Name" class="form-control" />
+                <span asp-validation-for="@Model.Event.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.Description">Описание</label><br />
+                <input asp-for="@Model.Event.Description" class="form-control" />
+                <span asp-validation-for="@Model.Event.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.Location">Место проведения</label><br />
+                <input asp-for="@Model.Event.Location.Name" class="form-control" list='locations' />
+                <datalist id='locations'>
+                    @foreach (var item in ViewBag.Locations)
+                    {
+                        <option>@item.Name</option>
+                    }
+                </datalist>
+                <span asp-validation-for="@Model.Event.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventStart">Начало</label><br />
+                <input asp-for="@Model.Event.EventStart" type="datetime-local" class="form-control" />
+                <span asp-validation-for="@Model.Event.EventStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventEnd">Конец</label><br />
+                <input asp-for="@Model.Event.EventEnd" type="datetime-local" class="form-control" />
+                <span asp-validation-for="@Model.Event.EventEnd" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="File" class="control-label">Загрузка аватарки</label>
+            <input asp-for="File" type="file" class="form-control" />
+            <span asp-validation-for="File" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="@Model.Event.AgeLimit">Возрастной рейтинг</label>
+                <input asp-for="@Model.Event.AgeLimit" type="number" min="0" max="18" class="form-control" />
+                <span asp-validation-for="@Model.Event.AgeLimit" class="text-danger"></span>
+
+            </div>
+            <div class="pt-5">
+                <h4>Категории</h4>
+                <input type="hidden" asp-for="@Model.Event.Categories" />
+                <div id="checkbox">
+                    @foreach (var item in ViewBag.Categories)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="@item.Name" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">@item.Name</label>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <h2>
+            Информация о билетах
+        </h2>
+        <div id="tickets">
+            @foreach (var tickettype in Model.EventTicketTypes)
+            {
+            <div class="ticket">
+                <input type="hidden" asp-for="@tickettype.Id" class="ticket_id" />
+                <input type="hidden" asp-for="@tickettype.EventId" class="event_id" />
+                <div class="d-flex justify-content-between m-2">
+                    <label>Название</label>
+                    <input asp-for="@tickettype.Name" class="ticket_name" />
+                    <label>Описание</label>
+                    <input asp-for="@tickettype.Description" class="ticket_description" />
+                    <label>Цена</label>
+                    <input asp-for="@tickettype.Price" class="ticket_price" />
+                    <label>Количество</label>
+                    <input asp-for="@tickettype.Count" class="ticket_count" />
+                </div>
+            </div>
+            }
+            <input type="hidden" asp-for="Tickets" id="total_tickets"/>
+        </div>
+        <div class="form-group text-center">
+            <button id="add" type="submit" class="btn btn-warning px-5 py-2">Изменить</button>
+        </div>
+    </form>
+</div>
+<script>
+    function getTicketsData() {
+        let ticketsData = document.getElementById('tickets').getElementsByTagName('input');
+        let extickets = document.getElementsByClassName('ticket');
+        let tickets = [];
+
+        for (let i = 0; i < extickets.length; i++) {
+            tickets.push(
+                '{"Id":"' + ticketsData[0 + 6 * i].value + '",' +
+                '"Name":"' + ticketsData[2 + 6 * i].value + '",' +
+                '"Description":"' + ticketsData[3 + 6 * i].value + '",' +
+                '"Count":' + ticketsData[5 + 6 * i].value + ',' +
+                '"Price":' + ticketsData[4 + 6 * i].value + ',' +
+                '"EventId":"' + ticketsData[1 + 6 * i].value + '"}'
+            );
+        }        
+        return tickets;
+    }
+    console.log(getTicketsData());
+    $('#add').on('click', () => {
+        $('#total_tickets').val(`[${getTicketsData()}]`);
+    })
+</script>
+

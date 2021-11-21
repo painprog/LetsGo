@@ -76,10 +76,12 @@
                                 <a class="btn btn-success">Одобрить снятие с публикации</a><br />
                                 break;
                             case Status.Published:
-                                <a class="btn btn-danger">Снять с публикации</a><br />
+                                <button type="button" class="btn btn-danger unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Снять с публикации
+                                </button>
                                 break;
                             case Status.UnPublished:
-                                <a class="btn btn-warning">Вернуть в публикации</a><br />
+                                <button class="btn btn-success accept" type="button" id="@item.Id">Вернуть в публикации</button>
                                 break;
                         }
                         @if (item.Status != Status.New)
@@ -113,14 +115,16 @@
 </div>
 <script>
     let _id;
+    let _status;
         $('.accept').on('click', function() {
-        _id = this.id;
+            _id = this.id;
+            _status = 'Publish';
         $.ajax({
             url: '@Url.Action("ChangeStatus", "Event")',
             type: 'POST',
             data:
             {
-                'status': "Accepted",
+                'status': _status,
                 'eventId': _id
             },
             success: function (response) {
@@ -132,6 +136,11 @@
     })
     $('.deny').on('click', function () {
         _id = this.id;
+        _status = 'Rejected'
+    })
+    $('.unpublish').on('click', function () {
+        _id = this.id;
+        _status = 'Unpublish';
     })
     $('#cause-confirm').on('click', () => {
         console.log(_id);
@@ -142,7 +151,7 @@
             type: 'POST',
             data:
             {
-                'status': "Rejected",
+                'status': _status,
                 'eventId': _id,
                 'cause': cause
             },

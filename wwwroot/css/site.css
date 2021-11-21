@@ -741,6 +741,7 @@ body {
     border-radius: 15px;
     cursor: pointer;
     flex-direction: row;
+    overflow: hidden;
 }
 .row {
     margin-left: 0;

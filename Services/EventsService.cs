@@ -68,14 +68,15 @@ namespace LetsGo.Services
             {
                 switch(status)
                 {
-                    case "Accepted":
+                    case "Publish":
                         @event.Status = Status.Published;
+                        @event.StatusDescription = "ok";
                         break;
                     case "Rejected":
                         @event.Status = Status.Rejected;
                         @event.StatusDescription = cause;
                         break;
-                    case "Unpublished":
+                    case "Unpublish":
                         @event.Status = Status.UnPublished;
                         @event.StatusDescription = cause;
                         break;

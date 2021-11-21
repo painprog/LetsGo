@@ -24,17 +24,13 @@ namespace LetsGo.Controllers
         public async Task<IActionResult> Details(string id)
         {
             Event @event = _Service.GetEvent(id).Result;
-            var tickets = new List<EventTicketType> {
-                    new EventTicketType { Name = "vip", EventId = @event.Id, Count = 50, Sold = 0, Price = 800, Id = Guid.NewGuid().ToString() },
-                    new EventTicketType { Name = "classic", EventId = @event.Id, Count = 80, Sold = 0, Price = 400, Id = Guid.NewGuid().ToString() }
-                };
+            var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
             DetailsViewModel viewModel = new DetailsViewModel {
                 Event = @event,
                 LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
                 EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
                 EventTickets = tickets
             };
-
             return View(viewModel);
         }
     }

@@ -36,5 +36,12 @@ namespace LetsGo.Services
             }
             return Event;
         }
+        public async Task<List<Event>> GetEvents(string userId)
+        {
+            List<Event> Events = new List<Event>();
+            Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId);
+            return Events;
+        }
+
     }
 }

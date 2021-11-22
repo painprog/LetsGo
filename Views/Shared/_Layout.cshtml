@@ -154,7 +154,7 @@
                 <div class="login_group ml-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="text-white" asp-area="" asp-controller="" asp-action="">@User.Identity.Name</a>
+                        <a class="text-white" asp-area="" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
                         @using (Html.BeginForm("Logout", "Account"))
                         {
                             <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>

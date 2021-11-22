@@ -60,5 +60,18 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+        public async Task<IActionResult> Details(string id)
+        {
+            Event @event = _Service.GetEvent(id).Result;
+            var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
+            DetailsViewModel viewModel = new DetailsViewModel
+            {
+                Event = @event,
+                LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
+                EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
+                EventTickets = tickets
+            };
+            return View(viewModel);
+        }
     }
 }

@@ -75,7 +75,7 @@ namespace LetsGo.Services
 
         }
 
-        public async Task DeleteEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
+        public async Task DeleteEventTicketTypes(List<EventTicketType> ticketTypes)
         {
             foreach (var item in ticketTypes)
             {
@@ -136,25 +136,25 @@ namespace LetsGo.Services
 
         public async Task<Event> EditEvent(EditEventViewModel eventView)
         {
+            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventView.Id);
+
             if (eventView.File != null)
             {
                 string name = GenerateCode() + '.' + Path.GetExtension(eventView.File.FileName);
                 eventView.PosterImage = "/posters/" + name;
                 using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + eventView.PosterImage), FileMode.Create))
                     await eventView.File.CopyToAsync(fileStream);
+                @event.PosterImage = eventView.PosterImage;
             }
-           
+
             string jsonCateg = string.Empty;
             jsonCateg = eventView.Categories != null ? JsonSerializer.Serialize(eventView.Categories) : "";
-
-            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventView.Id);
 
             @event.Name = eventView.Name;
             @event.Description = eventView.Description;
             @event.CreatedAt = DateTime.Now;
             @event.EventStart = eventView.EventStart;
-            @event.EventEnd = eventView.EventEnd;
-            @event.PosterImage = eventView.PosterImage;
+            @event.EventEnd = eventView.EventEnd;              
             @event.Categories = jsonCateg;
             @event.AgeLimit = eventView.AgeLimit;
             @event.TicketLimit = eventView.TicketLimit;

@@ -141,8 +141,6 @@
                     }
                 }
             }
-           
-
             console.log(categAll)
             console.log(categExist)
         });
@@ -160,7 +158,7 @@
         if (name.val() != '' && count.val() != '' && price.val() != '') {
             totalTickets.text(parseInt(totalTickets.text()) + parseInt(count.val()));
 
-            $('.tickets-table tbody').append('<tr><td><b>' + name.val() +
+            $('.tickets-table tbody').append('<tr class="new"><td><b>' + name.val() +
                 '</b></td><td>' + desc.val() +
                 '</b></td><td>' + count.val() +
                 '</td><td>' + price.val() +
@@ -197,7 +195,7 @@
         $('#Categories').val(categories);
         // tickets
         var tickets = [];
-        $('.tickets-table tbody tr').each(function () {
+        $('.tickets-table tbody .new').each(function () {
             tickets.push(
                 '{"Name":"' + $(this).find('td').eq(0).text() + '",' +
                 '"Description":"' + $(this).find('td').eq(1).text() + '",' +

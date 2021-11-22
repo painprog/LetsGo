@@ -29,6 +29,7 @@ namespace LetsGo
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddTransient<EventsService>();
             services.AddTransient<LocationsService>();
+            services.AddTransient<CabinetService>();
             services.AddDbContext<LetsGoContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0))))
                .AddIdentity<User, IdentityRole>()

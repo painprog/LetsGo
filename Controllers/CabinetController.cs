@@ -17,12 +17,15 @@ namespace LetsGo.Controllers
     public class CabinetController : Controller
     {
         private readonly EventsService _service;
+        private readonly CabinetService _cabService;
         private readonly LetsGoContext _context;
         private readonly UserManager<User> _userManager;
 
-        public CabinetController(EventsService service, LetsGoContext context, UserManager<User> userManager)
+        public CabinetController(EventsService service, CabinetService cabService,
+            LetsGoContext context, UserManager<User> userManager)
         {
             _service = service;
+            _cabService = cabService;
             _context = context;
             _userManager = userManager;
         }
@@ -31,15 +34,6 @@ namespace LetsGo.Controllers
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
-
-            List<Event> events = _context.Events.ToList();
-            foreach (var item in events)
-            {
-                item.Status = Status.Rejected;
-                _context.Update(item);
-            }
-            _context.SaveChanges();
-
 
             if (User.IsInRole("organizer")) 
                 viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
@@ -52,26 +46,20 @@ namespace LetsGo.Controllers
         [HttpPost]
         public async Task<JsonResult> RequestForUnPublish(string id)
         {
-            Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
-            @event.Status = Status.UnPublished;
-            @event.CreatedAt = DateTime.Now;
-            _context.Events.Update(@event);
-            await _context.SaveChangesAsync();
-            string unPublished = @event.Status.ToString();
-            return Json(new { unPubl = unPublished, date = @event.CreatedAt });
+            Event @event = await _cabService.ChangeStatus(id, Status.UnPublished);
+            return Json(new { unPubl = "Снято с публикации",
+                unPublStat = "Не опубликовано",
+                date = @event.CreatedAt.ToString("f") });
         }
 
         //Отправка запроса на возвращение в публикации мероприятия
         [HttpPost]
         public async Task<JsonResult> RequestForPublishAgain(string id)
         {
-            Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
-            @event.Status = Status.Published;
-            @event.CreatedAt = DateTime.Now;
-            _context.Events.Update(@event);
-            await _context.SaveChangesAsync();
-            string published = @event.Status.ToString();
-            return Json(new { publ = published, date = @event.CreatedAt });
+            Event @event = await _cabService.ChangeStatus(id, Status.Published);
+            return Json(new { publ = "Возвращено в публикации",
+                publStat = "Опубликовано",
+                date = @event.CreatedAt.ToString("f") });
         }
 
 
@@ -79,13 +67,10 @@ namespace LetsGo.Controllers
         [HttpPost]
         public async Task<JsonResult> RequestForNew(string id)
         {
-            Event @event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
-            @event.Status = Status.New;
-            @event.CreatedAt = DateTime.Now;
-            _context.Events.Update(@event);
-            await _context.SaveChangesAsync();
-            string neW = @event.Status.ToString();
-            return Json(new { nEw = neW, date = @event.CreatedAt });
+            Event @event = await _cabService.ChangeStatus(id, Status.New);
+            return Json(new { nEw = "Отправлено на модерацию",
+                nEwStat = "Новое",
+                date = @event.CreatedAt.ToString("f") });
         }
 
     }

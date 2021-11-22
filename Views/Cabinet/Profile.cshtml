@@ -22,12 +22,41 @@
     {
     <div class="row p-5">
         <div class="descriptions col-md-6">
+            <p hidden>@item.Id</p>
+            <div><img src="@item.PosterImage" alt="Alternate Text" /></div>
             <p>@item.Name</p>
             <p>@item.Location.Name</p>
-            <p>@item.EventStart.ToLongTimeString()</p>
-            <p>@item.Status.ToString()</p>
-            <p hidden>@item.Id</p>
-            <p>@item.CreatedAt</p>
+            <p>@item.TicketLimit</p>
+            <p>@item.AgeLimit</p>
+            <p>@item.EventStart.ToString("f")</p>
+            <p>@item.EventEnd.ToString("f")</p>
+            <p>@item.CreatedAt.ToString("f")</p>
+            <div>
+                @switch (item.Status)
+                {
+                    case Status.NotDefined:
+                        <p>Не определено</p>
+                        break;
+                    case Status.Rejected:
+                        <p>Отклонено</p>
+                        break;
+                    case Status.New:
+                        <p>Новое</p>
+                        break;
+                    case Status.Published:
+                        <p>Опубликовано</p>
+                        break;
+                    case Status.UnPublished:
+                        <p>Не опубликовано</p>
+                        break;
+                    case Status.Expired:
+                        <p>Мероприятие уже прошло</p><br />
+                        break;
+                    case Status.Edited:
+                        <p>Отредактировано</p><br />
+                        break;
+                }
+            </div>
         </div>
         <div class="buttons col-md-6">
             @if (User.IsInRole("organizer"))
@@ -35,11 +64,15 @@
                 @switch (item.Status)
                 {
                     case Status.NotDefined:
-                        <a class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</a><br />
-                        <a class="btn btn-primary" asp-controller="Event" asp-action="Edit">Редактировать</a><br />
+                        <button type="button" class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</button><br />
+                        <a class="btn btn-primary" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a><br />
+                        break;
+                    case Status.Edited:
+                        <button type="button" class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</button><br />
+                        <a class="btn btn-primary" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a><br />
                         break;
                     case Status.Rejected:
-                        <a class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</a><br />
+                        <button type="button" class="btn btn-primary requestForNew" onclick="RequestForNew(this)">отправить заявку на модерацию</button><br />
                         <a class="btn btn-primary" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a><br />
                         break;
                     case Status.New:
@@ -47,10 +80,10 @@
                         <a class="btn btn-primary" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a><br />
                         break;
                     case Status.Published:
-                        <a class="btn btn-primary requestForUnPublish" onclick="RequestForUnPublish(this)">снять с публикации</a><br />
+                        <button type="button" class="btn btn-primary requestForUnPublish" onclick="RequestForUnPublish(this)">снять с публикации</button><br />
                         break;
                     case Status.UnPublished:
-                        <a class="btn btn-primary requestForPublishAgain" onclick="RequestForPublishAgain(this)">вернуть в публикации</a><br />
+                        <button type="button" class="btn btn-primary requestForPublishAgain" onclick="RequestForPublishAgain(this)">вернуть в публикации</button><br />
                         break;
                     case Status.Expired:
                         <p>мероприятия уже прошло</p><br />
@@ -89,28 +122,46 @@
     }
 </div>
 
+
+<div class="position-fixed p-3" style="z-index: 11; position: sticky; top: 60px; right:0;">
+    <div class="toast align-items-center text-dark bg-white rounded border-1 badge-dark"
+         role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">LetsGo</strong>
+            <button type="button" class="ml-auto mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+</div>
+
 @section scripts{ 
     <script>
 
 
         function RequestForNew(a) {
             var divDescr = $(a).closest('.row').find('div').eq(0)
-            var buttons = $(a).closest('.row').find('div').eq(1)
-            var idS = divDescr.find('p').eq(4).html()
-            $.post('@Url.Action("RequestForNew", "Cabinet")', { id: idS }, function (response) {
-                divDescr.find('p').eq(3).text(response.nEw)
-                divDescr.find('p').eq(5).text(response.date)
+            var buttons = $(a).closest('.row').find('div').eq(3)
+            var idS = divDescr.find('p').eq(0).html()
+            $.post('@Url.Action("RequestForNew", "Cabinet")', { id: idS }, function (response) {                
+                $('.toast-body').text(response.nEw)
+                $('.toast').toast('show');
+                divDescr.find('p').eq(7).text(response.date)
+                divDescr.find('div').eq(1).children("p").text(response.nEwStat)
                 buttons.children('.requestForNew').fadeOut()
         });
         }
 
         function RequestForUnPublish(a) {
             var divDescr = $(a).closest('.row').find('div').eq(0)
-            var buttons = $(a).closest('.row').find('div').eq(1)
-            var idS = divDescr.find('p').eq(4).html()
+            var buttons = $(a).closest('.row').find('div').eq(3)
+            var idS = divDescr.find('p').eq(0).html()
             $.post('@Url.Action("RequestForUnPublish", "Cabinet")', { id: idS }, function (response) {
-                divDescr.find('p').eq(3).text(response.unPubl)
-                divDescr.find('p').eq(5).text(response.date)
+                $('.toast-body').text(response.unPubl)
+                $('.toast').toast('show');
+                divDescr.find('p').eq(7).text(response.date)
+                divDescr.find('div').eq(1).children("p").text(response.unPublStat)
               buttons.children('.requestForUnPublish').fadeOut()
                   buttons.append('<a class="btn btn-primary requestForPublishAgain"'
                   + 'onclick="RequestForPublishAgain(this)">вернуть в публикации</a>')
@@ -119,11 +170,13 @@
 
         function RequestForPublishAgain(a) {
             var divDescr = $(a).closest('.row').find('div').eq(0)
-            var buttons = $(a).closest('.row').find('div').eq(1)
-            var idS = divDescr.find('p').eq(4).html()
+            var buttons = $(a).closest('.row').find('div').eq(3)
+            var idS = divDescr.find('p').eq(0).html()
             $.post('@Url.Action("RequestForPublishAgain", "Cabinet")', { id: idS }, function (response) {
-                divDescr.find('p').eq(3).text(response.publ)
-                divDescr.find('p').eq(5).text(response.date)
+                $('.toast-body').text(response.publ)
+                $('.toast').toast('show');
+                divDescr.find('p').eq(7).text(response.date)
+                divDescr.find('div').eq(1).children("p").text(response.publStat)
               buttons.children('.requestForPublishAgain').fadeOut()
               buttons.append('<a class="btn btn-primary requestForUnPublish"'
                   + 'onclick="RequestForUnPublish(this)">снять с публикации</a>')

@@ -37,11 +37,11 @@ namespace LetsGo.Controllers
                 EventCategory categoryPlay = new EventCategory { Name = "Спектакль" };
                 EventCategory categoryShow = new EventCategory { Name = "Шоу" };
                 EventCategory categoryConcert = new EventCategory { Name = "Концерт" };
-                EventCategory categoryFreekShow = new EventCategory { Name = "Фрик-шоу" };
+                EventCategory categoryFreakShow = new EventCategory { Name = "Фрик-шоу" };
                 await _goContext.EventCategories.AddAsync(categoryPlay);
                 await _goContext.EventCategories.AddAsync(categoryShow);
                 await _goContext.EventCategories.AddAsync(categoryConcert);
-                await _goContext.EventCategories.AddAsync(categoryFreekShow);
+                await _goContext.EventCategories.AddAsync(categoryFreakShow);
             }
             await _goContext.SaveChangesAsync();
             List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
@@ -85,7 +85,7 @@ namespace LetsGo.Controllers
                 if (viewModel.TicketsForDel != null)
                 {
                     List<EventTicketType> ticketTypesForDel = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.TicketsForDel);
-                    await _Service.DeleteEventTicketTypes(@event.Id, ticketTypesForDel);
+                    await _Service.DeleteEventTicketTypes(ticketTypesForDel);
                 }
                 return Json(new { success = true, href = "/Home/Index" });
             }

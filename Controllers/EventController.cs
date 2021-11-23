@@ -90,11 +90,14 @@ namespace LetsGo.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EventEditViewModel model)
         {
-            if(await _Service.Edit(model))
-            {                
-                return View();
+            if (await _Service.Edit(model))
+            {
+                return RedirectToAction("Profile","Cabinet");
             }
-            return BadRequest();
+            else
+            {
+                return BadRequest();
+            }            
         }
     }
 }

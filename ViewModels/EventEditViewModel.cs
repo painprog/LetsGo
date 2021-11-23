@@ -11,5 +11,6 @@ namespace LetsGo.ViewModels
         public Event Event { get; set; }
         public List<EventTicketType> EventTicketTypes { get; set; }
         public string Tickets { get; set; }
+        public string DeletedTickets { get; set; }
     }
 }

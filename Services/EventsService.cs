@@ -106,6 +106,56 @@ namespace LetsGo.Services
 
         }
 
+        public async Task<bool> Edit(EventEditViewModel model)
+        {
+            if(model != null)
+            {
+                string[] deletedIds = model.DeletedTickets == null ? null : model.DeletedTickets.Split(',');
+                List<EventTicketType> newTicketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(model.Tickets);
+                List<EventTicketType> oldTicketTypes = _goContext.EventTicketTypes.AsNoTracking().Where(t => t.EventId == model.Event.Id).ToList();
+                await TicketsHandler(newTicketTypes, oldTicketTypes, deletedIds, model.Event.Id);
+
+                model.Event.Location = await _goContext.Locations.FirstOrDefaultAsync(l => l.Name == model.Event.Location.Name);
+                model.Event.LocationId = model.Event.Location.Id;
+                _goContext.Events.Update(model.Event);
+                await _goContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task TicketsHandler(List<EventTicketType> newTicketTypes, List<EventTicketType> oldTicketTypes, 
+            string[] deletedIds, string eventId)
+        {
+            if(deletedIds != null)
+            {
+                for(int i = 0; i < deletedIds.Length; i++)
+                {
+                    foreach (var type in oldTicketTypes)
+                    {
+                        if (type.Id == deletedIds[i])
+                        {
+                            _goContext.EventTicketTypes.Remove(type);
+                        }
+                }
+                }
+            }
+            foreach(var type in newTicketTypes)
+            {
+                if(String.IsNullOrEmpty(type.Id))
+                {
+                    type.Id = null;
+                    type.EventId = eventId;                    
+                    _goContext.EventTicketTypes.Add(type);
+                }
+                else
+                {
+                    _goContext.EventTicketTypes.Update(type);
+                }
+            }
+            await _goContext.SaveChangesAsync();
+        }
+
         public static string GenerateCode()
         {
             StringBuilder builder = new StringBuilder(6);

@@ -51,10 +51,10 @@
                 <span asp-validation-for="@Model.Event.EventEnd" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <label asp-for="File" class="control-label">Загрузка аватарки</label>
-            <input asp-for="File" type="file" class="form-control" />
-            <span asp-validation-for="File" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="File" class="control-label">Загрузка аватарки</label>
+                    <input asp-for="File" type="file" class="form-control" />
+                    <span asp-validation-for="File" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="@Model.Event.AgeLimit">Возрастной рейтинг</label>
                 <input asp-for="@Model.Event.AgeLimit" type="number" min="0" max="18" class="form-control" />
@@ -131,53 +131,54 @@
         </div>
     </form>
 </div>
-<script>
-    let deletedTickets = [];
-    function getTicketsData() {
-        let ticketsData = document.getElementById('tickets').getElementsByTagName('input');
-        let extickets = document.getElementsByClassName('ticket');
-        let tickets = [];
-        for (let i = 0; i < extickets.length; i++) {
-            tickets.push(
-                '{"Id":"' + ticketsData[0 + 6 * i].value + '",' +
-                '"Name":"' + ticketsData[2 + 6 * i].value + '",' +
-                '"Description":"' + ticketsData[3 + 6 * i].value + '",' +
-                '"Count":' + ticketsData[4 + 6 * i].value + ',' +
-                '"Price":' + ticketsData[5 + 6 * i].value + ',' +
-                '"EventId":"' + ticketsData[1 + 6 * i].value + '"}'
-            );
+@section scripts{
+    <script>
+        let deletedTickets = [];
+        function getTicketsData() {
+            let ticketsData = document.getElementById('tickets').getElementsByTagName('input');
+            let extickets = document.getElementsByClassName('ticket');
+            let tickets = [];
+            for (let i = 0; i < extickets.length; i++) {
+                tickets.push(
+                    '{"Id":"' + ticketsData[0 + 6 * i].value + '",' +
+                    '"Name":"' + ticketsData[2 + 6 * i].value + '",' +
+                    '"Description":"' + ticketsData[3 + 6 * i].value + '",' +
+                    '"Count":' + ticketsData[4 + 6 * i].value + ',' +
+                    '"Price":' + ticketsData[5 + 6 * i].value + ',' +
+                    '"EventId":"' + ticketsData[1 + 6 * i].value + '"}'
+                );
+            }
+            return tickets;
         }
-        return tickets;
-    }
-    function DeleteTicket(t) {
-        $(t).closest('tr').remove();
-        if (t.closest('tr').id != "") {
-            deletedTickets.push(t.closest('tr').id)
+        function DeleteTicket(t) {
+            $(t).closest('tr').remove();
+            if (t.closest('tr').id != "") {
+                deletedTickets.push(t.closest('tr').id)
+            }
         }
-    }
-    function AddTicket() {
-        let name = $('#ticket_name');
-        let desc = $('#ticket_desc');
-        let count = $('#ticket_count');
-        let price = $('#ticket_price');
-        $('.tickets-table tbody').append(
-            '<tr class="ticket">' +
-            '<td hidden><input type="hidden" class="ticket_id"/></td>' +
-            '<td hidden><input type="hidden" class="event_id"/></td>' +
-            `<td><input class="ticket_name form-control" value="${name.val()}"/></td>` +
-            `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
-            `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
-            `<td><input class="ticket_price form-control" value="${price.val()}" type="number"/></td>` +
-            '</td><td><input type="button" class="btn btn-outline-danger" value="✘" onclick="DeleteTicket(this)">' +
-            '</td></tr>');
-        name.val('');
-        desc.val('');
-        count.val('');
-        price.val('');
-    }
-    $('#add').on('click', () => {
-        $('#total_tickets').val(`[${getTicketsData()}]`);
-        $('#deleted_tickets').val(deletedTickets);
-    })
-</script>
-
+        function AddTicket() {
+            let name = $('#ticket_name');
+            let desc = $('#ticket_desc');
+            let count = $('#ticket_count');
+            let price = $('#ticket_price');
+            $('.tickets-table tbody').append(
+                '<tr class="ticket">' +
+                '<td hidden><input type="hidden" class="ticket_id"/></td>' +
+                '<td hidden><input type="hidden" class="event_id"/></td>' +
+                `<td><input class="ticket_name form-control" value="${name.val()}"/></td>` +
+                `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
+                `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
+                `<td><input class="ticket_price form-control" value="${price.val()}" type="number"/></td>` +
+                '</td><td><input type="button" class="btn btn-outline-danger" value="✘" onclick="DeleteTicket(this)">' +
+                '</td></tr>');
+            name.val('');
+            desc.val('');
+            count.val('');
+            price.val('');
+        }
+        $('#add').on('click', () => {
+            $('#total_tickets').val(`[${getTicketsData()}]`);
+            $('#deleted_tickets').val(deletedTickets);
+        })
+    </script>
+}

@@ -113,7 +113,8 @@
         </div>
     </div>
 </div>
-<script>
+@section scripts{
+    <script>
     let _id;
     let _status;
         $('.accept').on('click', function() {
@@ -165,4 +166,5 @@
     function cardRemove(id) {
         $(`#card-${id}`).remove();
     }
-</script>
+    </script>
+}

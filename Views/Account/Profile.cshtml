@@ -60,13 +60,14 @@
             @foreach (var item in Model.Events)
             {
                 <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
+                    <p hidden>@item.Id</p>
                     <div class="row">
                         <div class="pn-page-head col-lg-10" style="border-radius: 0">
-                            <img class="blur_img" src="~/events/@item.PosterImage" alt="">
+                            <img class="blur_img" src="@item.PosterImage" alt="">
                             <div class="row">
                                 <div class="col-lg-4 mr-5">
                                     <div class="pn-head_image">
-                                        <img src="~/events/@item.PosterImage" alt="" class="rounded">
+                                        <img src="@item.PosterImage" alt="" class="rounded">
                                     </div>
                                 </div>
                                 <div class="col-lg-7">
@@ -81,17 +82,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 my-auto text-center">
+                        <div class="col-lg-2 my-auto text-center sideBox">  
                             <h1 style="font-size: 22px;">Билетов</h1>
                             <p>
                                 куплено: 10<br />
                                 осталось: 15
                             </p>
-                            @*@if (item.Status == ...)
-            {
-                 ...
-            }*@
-                            <a href="#" class="btn btn-danger" onclick="Publish('@item.Id')">Опубликовать</a>
+                            @switch (item.Status)
+                            {
+                                case Status.NotDefined:
+                                    <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
+                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                                    break;
+                                case Status.Edited:
+                                    <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
+                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                                    break;
+                                case Status.Rejected:
+                                    <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
+                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                                    break;
+                                case Status.New:
+                                    <p>ожидайте одобрения админа</p><br />
+                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                                    break;
+                                case Status.Published:
+                                    <button type="button" class="btn btn-danger requestForUnPublish" onclick="RequestForUnPublish(this)">Снять с публикации</button><br />
+                                    break;
+                                case Status.UnPublished:
+                                    <button type="button" class="btn btn-danger requestForPublishAgain" onclick="RequestForPublishAgain(this)">Вернуть в публикации</button><br />
+                                    break;
+                                case Status.Expired:
+                                    <p>Мероприятие уже прошло</p><br />
+                                    break;
+                            }
                         </div>
                     </div>
                     @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
@@ -114,15 +138,72 @@
     }
 </div>
 
+
+<div class="position-fixed p-3" style="z-index: 11; position: sticky; top: 60px; right:0;">
+    <div class="toast align-items-center text-dark bg-white rounded border-1 badge-dark"
+         role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">LetsGo</strong>
+            <button type="button" class="ml-auto mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script>
+
+
         function eventDetails(eventId) {
                 window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
         }
-        function Publish(eventId) {
+
+        let buttons;
+        let idS;
+        function getID(a) {
+            idS = $(a).closest('.event-card').find('p').eq(0).html()
+            console.log(idS)
+        }
+
+
+        function RequestForNew(a) {
             event.stopPropagation();
-            event.preventDefault();
+            buttons = $(a).closest('.sideBox')
+            getID(a)
+            $.post('@Url.Action("RequestForNew", "Cabinet")', { id: idS }, function (response) {
+                $('.toast-body').text(response.nEw)
+                $('.toast').toast('show');
+                buttons.children('.requestForNew').hide()
+        });
+        }
+
+        function RequestForUnPublish(a) {
+            event.stopPropagation();
+            buttons = $(a).closest('.sideBox')
+            getID(a)
+            $.post('@Url.Action("RequestForUnPublish", "Cabinet")', { id: idS }, function (response) {
+                $('.toast-body').text(response.unPubl)
+                $('.toast').toast('show');
+              buttons.children('.requestForUnPublish').hide()
+                buttons.append('<button type="button" class="btn btn-danger requestForPublishAgain"'
+                    + 'onclick="RequestForPublishAgain(this)">Вернуть в публикации</button>')
+        });
+        }
+
+        function RequestForPublishAgain(a) {
+            event.stopPropagation();
+            buttons = $(a).closest('.sideBox')
+            getID(a)
+            $.post('@Url.Action("RequestForPublishAgain", "Cabinet")', { id: idS }, function (response) {
+                $('.toast-body').text(response.publ)
+                $('.toast').toast('show');
+              buttons.children('.requestForPublishAgain').hide()
+                buttons.append('<button type="button" class="btn btn-danger requestForUnPublish"'
+                    + 'onclick="RequestForUnPublish(this)">Снять с публикации</button>')
+        });
         }
     </script>
 }

@@ -190,5 +190,22 @@ namespace LetsGo.Services
             Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
             return Events;
         }
+
+        public async Task<List<EventCategory>> GetEventCategories(string jsonEventCategories)
+        {
+            string eventCategories = JsonSerializer.Deserialize<string>(jsonEventCategories);
+            List<string> CategoriesList = new List<string>();
+            if (eventCategories.Contains(','))
+            {
+                string[] catesgInArray = eventCategories.Split(new char[] { ',' });
+                CategoriesList.AddRange(catesgInArray);
+            }
+            else
+                CategoriesList.Add(eventCategories);
+            List<EventCategory> Categories = new List<EventCategory>();
+            foreach (var item in CategoriesList)
+                Categories.Add(await _goContext.EventCategories.FirstOrDefaultAsync(e => e.Name == item));
+            return Categories;
+        }
     }
 }

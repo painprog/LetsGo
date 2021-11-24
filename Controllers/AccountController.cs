@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -26,21 +27,30 @@ namespace LetsGo.Controllers
             _context = context;
             _Service = service;
         }
+
         public IActionResult Profile()
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-            List<Event> events = _Service.GetEvents(user.Id).Result;
-            ProfileViewModel viewModel = new ProfileViewModel
+            User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
+            ProfileViewModel viewModel = new ProfileViewModel { User = user };
+
+            if (User.IsInRole("organizer"))
+                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
+            else
+                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
+
+            foreach (var item in viewModel.Events)
             {
-                Events = events,
-                User = user
-            };
+                item.Status = Status.Published;
+            }
+
             return View(viewModel);
         }
+
         public IActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

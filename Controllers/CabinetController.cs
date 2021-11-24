@@ -29,27 +29,14 @@ namespace LetsGo.Controllers
             _context = context;
             _userManager = userManager;
         }
-
-        public IActionResult Profile()
-        {
-            User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-            ProfileViewModel viewModel = new ProfileViewModel { User = user };
-
-            if (User.IsInRole("organizer")) 
-                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
-            else
-                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
-            return View(viewModel);
-        }  
+  
 
         //Отправка запроса на снятие с пубилкации мероприятия
         [HttpPost]
         public async Task<JsonResult> RequestForUnPublish(string id)
         {
             Event @event = await _cabService.ChangeStatus(id, Status.UnPublished);
-            return Json(new { unPubl = "Снято с публикации",
-                unPublStat = "Не опубликовано",
-                date = @event.CreatedAt.ToString("f") });
+            return Json(new { unPubl = "Снято с публикации"});
         }
 
         //Отправка запроса на возвращение в публикации мероприятия
@@ -57,9 +44,7 @@ namespace LetsGo.Controllers
         public async Task<JsonResult> RequestForPublishAgain(string id)
         {
             Event @event = await _cabService.ChangeStatus(id, Status.Published);
-            return Json(new { publ = "Возвращено в публикации",
-                publStat = "Опубликовано",
-                date = @event.CreatedAt.ToString("f") });
+            return Json(new { publ = "Возвращено в публикации"});
         }
 
 
@@ -68,9 +53,7 @@ namespace LetsGo.Controllers
         public async Task<JsonResult> RequestForNew(string id)
         {
             Event @event = await _cabService.ChangeStatus(id, Status.New);
-            return Json(new { nEw = "Отправлено на модерацию",
-                nEwStat = "Новое",
-                date = @event.CreatedAt.ToString("f") });
+            return Json(new { nEw = "Отправлено на модерацию"});
         }
 
     }

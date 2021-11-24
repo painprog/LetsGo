@@ -76,6 +76,17 @@ namespace LetsGo.Services
 
         }
 
+        public async Task DeleteEventTicketTypes(List<EventTicketType> ticketTypes)
+        {
+            foreach (var item in ticketTypes)
+            {
+                EventTicketType ticketType = await _goContext.EventTicketTypes.FirstOrDefaultAsync(e => e.Id == item.Id);
+                _goContext.EventTicketTypes.Remove(ticketType);
+            }
+            await _goContext.SaveChangesAsync();
+        }
+
+
         public static string GenerateCode()
         {
             StringBuilder builder = new StringBuilder(6);
@@ -87,6 +98,77 @@ namespace LetsGo.Services
             string UC = builder.ToString();
             return UC;
         }
+
+
+
+        public async Task<EditEventViewModel> MakeEditEventViewModel(string id)
+        {
+            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == id);
+
+            string categs = JsonSerializer.Deserialize<string>(@event.Categories);
+            List<string> CategoriesList = new List<string>();
+            if (categs.Contains(','))
+            { 
+                string[] catesgInArray = categs.Split(new char[] { ',' });
+                CategoriesList.AddRange(catesgInArray);
+            }
+            else
+                CategoriesList.Add(categs);
+           
+            EditEventViewModel editEvent = new EditEventViewModel
+            {
+                Id = @event.Id,
+                Name = @event.Name,
+                Description = @event.Description,
+                CreatedAt = @event.CreatedAt,
+                EventStart = @event.EventStart,
+                EventEnd = @event.EventEnd,
+                PosterImage = @event.PosterImage,
+                Categories = @event.Categories,
+                AgeLimit = @event.AgeLimit,
+                TicketLimit = @event.TicketLimit,
+                StatusId = @event.StatusId,
+                Status = @event.Status,
+                CategoriesList = CategoriesList,
+                Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,
+                TicketsExist = _goContext.EventTicketTypes.Where(e => e.EventId == @event.Id).ToList()
+        };
+            return editEvent;
+        }
+
+        public async Task<Event> EditEvent(EditEventViewModel eventView)
+        {
+            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventView.Id);
+
+            if (eventView.File != null)
+            {
+                string name = GenerateCode() + '.' + Path.GetExtension(eventView.File.FileName);
+                eventView.PosterImage = "/posters/" + name;
+                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + eventView.PosterImage), FileMode.Create))
+                    await eventView.File.CopyToAsync(fileStream);
+                @event.PosterImage = eventView.PosterImage;
+            }
+
+            string jsonCateg = string.Empty;
+            jsonCateg = eventView.Categories != null ? JsonSerializer.Serialize(eventView.Categories) : "";
+
+            @event.Name = eventView.Name;
+            @event.Description = eventView.Description;
+            @event.CreatedAt = DateTime.Now;
+            @event.EventStart = eventView.EventStart;
+            @event.EventEnd = eventView.EventEnd;              
+            @event.Categories = jsonCateg;
+            @event.AgeLimit = eventView.AgeLimit;
+            @event.TicketLimit = eventView.TicketLimit;
+            @event.Status = Status.Edited;
+            @event.LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id;
+
+            _goContext.Events.Update(@event);
+            await _goContext.SaveChangesAsync();
+            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
+            return @event;
+        }
+
         public async Task<Event> GetEvent(string id)
         {
             Event Event = null;
@@ -101,6 +183,7 @@ namespace LetsGo.Services
             }
             return Event;
         }
+      
         public async Task<List<Event>> GetEvents(string userId)
         {
             List<Event> Events = new List<Event>();

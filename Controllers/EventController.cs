@@ -36,10 +36,14 @@ namespace LetsGo.Controllers
             {
                 EventCategory categoryPlay = new EventCategory { Name = "Спектакль" };
                 EventCategory categoryShow = new EventCategory { Name = "Шоу" };
+                EventCategory categoryConcert = new EventCategory { Name = "Концерт" };
+                EventCategory categoryFreakShow = new EventCategory { Name = "Фрик-шоу" };
                 await _goContext.EventCategories.AddAsync(categoryPlay);
                 await _goContext.EventCategories.AddAsync(categoryShow);
-                await _goContext.SaveChangesAsync();
+                await _goContext.EventCategories.AddAsync(categoryConcert);
+                await _goContext.EventCategories.AddAsync(categoryFreakShow);
             }
+            await _goContext.SaveChangesAsync();
             List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
             ViewBag.Categories = categories;
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
@@ -60,6 +64,34 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
+            ViewBag.Categories = categories;
+            ViewBag.Locations = await _goContext.Locations.ToListAsync();
+            EditEventViewModel viewModel = await _Service.MakeEditEventViewModel(id);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditEventViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
+                Event @event = await _Service.EditEvent(viewModel);
+                await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
+                if (viewModel.TicketsForDel != null)
+                {
+                    List<EventTicketType> ticketTypesForDel = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.TicketsForDel);
+                    await _Service.DeleteEventTicketTypes(ticketTypesForDel);
+                }
+                return Json(new { success = true, href = "/Home/Index" });
+            }
+            return Json(new { succes = false });
+=======}
+
         public async Task<IActionResult> Details(string id)
         {
             Event @event = _Service.GetEvent(id).Result;

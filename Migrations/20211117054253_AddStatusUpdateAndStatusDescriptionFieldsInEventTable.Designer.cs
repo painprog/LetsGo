@@ -3,14 +3,16 @@ using System;
 using LetsGo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LetsGo.Migrations
 {
     [DbContext(typeof(LetsGoContext))]
-    partial class LetsGoContextModelSnapshot : ModelSnapshot
+    [Migration("20211117054253_AddStatusUpdateAndStatusDescriptionFieldsInEventTable")]
+    partial class AddStatusUpdateAndStatusDescriptionFieldsInEventTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace LetsGo.Migrations
                     b.Property<string>("Categories")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -47,9 +46,6 @@ namespace LetsGo.Migrations
                     b.Property<string>("LocationId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<double>("MinPrice")
-                        .HasColumnType("double");
-
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
@@ -58,9 +54,6 @@ namespace LetsGo.Migrations
 
                     b.Property<string>("PosterImage")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Sold")
-                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

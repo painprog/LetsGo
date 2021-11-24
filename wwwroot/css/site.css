@@ -55,23 +55,23 @@ html {
     margin-bottom: 40px;
 }
 
-.sidenav ul li {
-    padding: 16px 30px;
-    max-width: 330px;
-}
+    .sidenav ul li {
+        padding: 16px 30px;
+        max-width: 330px;
+    }
 
-.sidenav ul li a {
-    text-decoration: none;
-    font-weight: 700;
-    color: #737373;
-}
+        .sidenav ul li a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #737373;
+        }
 
-.sidenav ul li:hover,
-.sidenav ul li:hover a {
-    cursor: pointer;
-    background-color: rgb(21, 21, 21);
-    color: #fff;
-}
+        .sidenav ul li:hover,
+        .sidenav ul li:hover a {
+            cursor: pointer;
+            background-color: rgb(21, 21, 21);
+            color: #fff;
+        }
 
 .icon-menu {
     cursor: pointer;
@@ -173,6 +173,7 @@ input#AgeLimit {
 }
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+
 .container {
     padding: 0;
 }
@@ -575,17 +576,219 @@ body {
     text-overflow: ellipsis;
 }
 
-#create-location-form .label{
-    font-weight:500;
+/*Details Details Details */
+
+.pn-page_section {
+    max-width: 1020px;
+    margin: 0 auto;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.pn-page-head {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 30px;
+    border-radius: 15px 15px 0 0;
+}
+.blur_img {
+    margin-top: -30px;
+    margin-left: -30px;
+    padding-bottom: 10px;
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    filter: blur(20px);
+}
+.pn-head_image {
+    min-width: 300px;
+    height: 160px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+    .pn-head_image img {
+        height: 100%;
+    }
+
+.pn-head_title {
+    color: #fff;
+}
+
+    .pn-head_title h1 {
+        display: inline-block;
+        font-size: 22px;
+    }
+
+    .pn-head_title span {
+        opacity: 0.5;
+        font-size: 24px;
+    }
+
+.pn-head_description {
+    margin-top: 15px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.pn-head_tags {
+    margin-top: 30px;
+}
+
+.tag {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 4px 10px;
+    overflow: hidden;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 9px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    max-width: 100%;
+    border-radius: 4px;
+    color: #2b2b2b;
+    background-color: hsla(0,0%,100%,.8);
+}
+
+    .tag:hover {
+        text-decoration: none;
+        color: #2b2b2b;
+    }
+
+.pn-head_buttons {
+    margin-top: 20px;
+}
+
+    .pn-head_buttons button
+
+{
+    font-weight: 700;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    margin-right: 30px;
+    min-width: 44%;
+    height: 44px;
+}
+
+.info {
+    color: #2b2b2b;
+    background-color: #fff;
+    padding: 8px 30px;
+}
+
+    .info h1 {
+        font-size: 18px;
+    }
+
+    .info p {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+    }
+
+.menu {
+    background-color: #f7f7f7;
+    margin: 20px 0 0 0;
+    padding-left: 30px;
+}
+
+.section_box {
+    display: none;
+    position: absolute;
+    margin-top: 20px;
+    width: 265px;
+    background-color: #fff;
+    padding: 15px;
+    color: #2b2b2b;
+    font-size: 16px;
+}
+
+.section_status {
+    padding: 10px 0;
+}
+
+.section_block {
+    padding-top: 5px;
+    display: inline-block;
+}
+
+.section_fix {
+    padding-top: 5px;
+}
+
+.color_bl {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 20px;
+    height: 20px;
+}
+
+.price {
+    display: inline-block;
+}
+
+.places {
+    background-color: #f7f7f7;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    text-align: center;
+}
+.side_descr p{
+    color: gray;
+    font-size: 15px;
+}
+.side_descr h6{
+    color: #525252;
+    font-size: 15px;
+}
+.details_subheader {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 35px;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+    color: inherit;
+}
+.rounded {
+    border-radius: 5px;
+}
+.event-card {
+    border-radius: 15px;
+    cursor: pointer;
+    overflow: hidden;
+}
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+.admin-event .material-icons {
+    cursor: pointer;
+    border-radius: 5px;
+}
+.admin-event .material-icons:hover {
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+#create-location-form .label {
+    font-weight: 500;
 }
 
 .add-more-phones {
     cursor: pointer;
-    color:darkred !important;
-    float:right;
+    color: darkred !important;
+    float: right;
     padding-top: 5px;
 }
 
-.add-more-phones:hover{
-    text-decoration: underline !important;
-}
+    .add-more-phones:hover {
+        text-decoration: underline !important;
+    }

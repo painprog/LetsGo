@@ -155,6 +155,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a class="text-white" asp-controller="Cabinet" asp-action="Profile">@User.Identity.Name</a>
+                        
                         @using (Html.BeginForm("Logout", "Account"))
                         {
                             <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>

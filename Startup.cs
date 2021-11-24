@@ -34,6 +34,8 @@ namespace LetsGo
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0))))
                .AddIdentity<User, IdentityRole>()
                .AddEntityFrameworkStores<LetsGoContext>();
+            services.AddTransient<EventsService>();
+            services.AddMemoryCache();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

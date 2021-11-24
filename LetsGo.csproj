@@ -16,4 +16,11 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Cabinet\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\posters\" />
+    <Folder Include="wwwroot\posters\" />
+  </ItemGroup>
+
 </Project>

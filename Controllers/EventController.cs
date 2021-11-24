@@ -52,8 +52,18 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
-
-        public IActionResult GetEventsByCategory(string category)
-            => Json(_goContext.Events.Include(e => e.Location).Where(e => e.Categories.Contains(category)));
+        public async Task<IActionResult> Details(string id)
+        {
+            Event @event = _Service.GetEvent(id).Result;
+            var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
+            DetailsViewModel viewModel = new DetailsViewModel
+            {
+                Event = @event,
+                LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
+                EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
+                EventTickets = tickets
+            };
+            return View(viewModel);
+        }
     }
 }

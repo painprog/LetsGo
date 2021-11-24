@@ -63,9 +63,9 @@ namespace LetsGo.Services
         }
 
         public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
-        {
-            foreach (var item in ticketTypes)
             {
+            foreach (var item in ticketTypes)
+                {
                 item.EventId = eventId;
                 item.Sold = 0;
                 _goContext.EventTicketTypes.Add(item);
@@ -87,6 +87,26 @@ namespace LetsGo.Services
             }
             string UC = builder.ToString();
             return UC;
+        }
+        public async Task<Event> GetEvent(string id)
+        {
+            Event Event = null;
+            if (!cache.TryGetValue(id, out Event))
+            {
+                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
+                if (Event != null)
+                {
+                    cache.Set(Event.Id, Event,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+            }
+            return Event;
+        }
+        public async Task<List<Event>> GetEvents(string userId)
+        {
+            List<Event> Events = new List<Event>();
+            Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
+            return Events;
         }
     }
 }

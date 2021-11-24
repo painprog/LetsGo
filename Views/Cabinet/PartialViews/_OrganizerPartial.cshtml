@@ -47,8 +47,8 @@
                     <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
                     break;
                 case Status.New:
-                    <p>ожидайте одобрения админа</p><br />
                     <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                    <p>Ожидайте одобрения админа</p><br />
                     break;
                 case Status.Published:
                     <button type="button" class="btn btn-danger requestForUnPublish" onclick="RequestForUnPublish(this)">Снять с публикации</button><br />

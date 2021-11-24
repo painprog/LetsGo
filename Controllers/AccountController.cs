@@ -38,11 +38,6 @@ namespace LetsGo.Controllers
             else
                 viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.StatusId != (int)Status.Expired).ToList();
 
-            foreach (var item in viewModel.Events)
-            {
-                item.Status = Status.Rejected;
-            }
-
             return View(viewModel);
         }
 

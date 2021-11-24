@@ -96,9 +96,6 @@ namespace LetsGo.Controllers
         {
             Event @event = await _Service.GetEvent(id);
             var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
-
-            
-
             DetailsViewModel viewModel = new DetailsViewModel
             {
                 Event = @event,

@@ -104,7 +104,8 @@
             $.post('@Url.Action("RequestForNew", "Cabinet")', { id: idS }, function (response) {
                 $('.toast-body').text(response.nEw)
                 $('.toast').toast('show');
-                buttons.children('.requestForNew').hide()
+                buttons.append('<p>Ожидайте одобрения админа</p><br/>')
+                buttons.children('.requestForNew').hide()               
         });
         }
 

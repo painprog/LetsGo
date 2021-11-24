@@ -792,3 +792,8 @@ body {
     .add-more-phones:hover {
         text-decoration: underline !important;
     }
+
+.btn-loadmore {
+    display: flex;
+    margin: 0 auto;
+}

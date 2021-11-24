@@ -57,79 +57,10 @@
                 </div>
                 <a href="#" class="btn btn-danger px-3" >+ Добавить мероприятие</a>
             </div>
-            @foreach (var item in Model.Events)
-            {
-                <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
-                    <p hidden>@item.Id</p>
-                    <div class="row">
-                        <div class="pn-page-head col-lg-10" style="border-radius: 0">
-                            <img class="blur_img" src="@item.PosterImage" alt="">
-                            <div class="row">
-                                <div class="col-lg-4 mr-5">
-                                    <div class="pn-head_image">
-                                        <img src="@item.PosterImage" alt="" class="rounded">
-                                    </div>
-                                </div>
-                                <div class="col-lg-7">
-                                    <div class="pn-head_title">
-                                        <h1>@item.Name</h1>
-                                        <span>@item.AgeLimit +</span>
-                                    </div>
-                                    <div class="pn-head_description">
-                                        <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
-                                        <div class="pn-head_place">@item.Location.Name</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 my-auto text-center sideBox">  
-                            <h1 style="font-size: 22px;">Билетов</h1>
-                            <p>
-                                куплено: 10<br />
-                                осталось: 15
-                            </p>
-                            @switch (item.Status)
-                            {
-                                case Status.NotDefined:
-                                    <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
-                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
-                                    break;
-                                case Status.Edited:
-                                    <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
-                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
-                                    break;
-                                case Status.Rejected:
-                                    <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
-                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
-                                    break;
-                                case Status.New:
-                                    <p>ожидайте одобрения админа</p><br />
-                                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
-                                    break;
-                                case Status.Published:
-                                    <button type="button" class="btn btn-danger requestForUnPublish" onclick="RequestForUnPublish(this)">Снять с публикации</button><br />
-                                    break;
-                                case Status.UnPublished:
-                                    <button type="button" class="btn btn-danger requestForPublishAgain" onclick="RequestForPublishAgain(this)">Вернуть в публикации</button><br />
-                                    break;
-                                case Status.Expired:
-                                    <p>Мероприятие уже прошло</p><br />
-                                    break;
-                            }
-                        </div>
-                    </div>
-                    @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
-                    {
-                        <div class="text-light bg-danger text-center align-content-between admin-event pt-2">
-                            <a href="#" class="btn btn-danger px-3 ml-4 mb-2">Одобрить</a>
-                            <a href="#" class="btn btn-danger px-3 mb-2">Отклонить</a>
-                            <span class="material-icons my-auto px-3 py-2">edit</span>
-                            <span class="material-icons px-3 py-2">delete</span>
-                        </div>
-                    }
-                </div>
-
-            }
+           @if (User.IsInRole("organizer"))
+           {
+               await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+           } 
         </div>
     }
     else
@@ -155,12 +86,9 @@
 @section Scripts
 {
     <script>
-
-
         function eventDetails(eventId) {
                 window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
         }
-
         let buttons;
         let idS;
         function getID(a) {
@@ -205,5 +133,6 @@
                     + 'onclick="RequestForUnPublish(this)">Снять с публикации</button>')
         });
         }
+
     </script>
 }

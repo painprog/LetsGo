@@ -9,9 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace LetsGo.Controllers
 {
@@ -60,15 +61,28 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+        // public async Task<IActionResult> Details(string id)
+        // {
+        //     Event @event = _Service.GetEvent(id).Result;
+        //     var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
+        //     DetailsViewModel viewModel = new DetailsViewModel
+        //     {
+        //         Event = @event,
+        //         LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
+        //         EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
+        //         EventTickets = tickets
+        //     };
+        //     return View(viewModel);
+        // }
+        
         public async Task<IActionResult> Details(string id)
         {
             Event @event = _Service.GetEvent(id).Result;
-            var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
+            var tickets =  _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
             DetailsViewModel viewModel = new DetailsViewModel
             {
                 Event = @event,
-                LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
-                EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
+                LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(@event.Location.Categories),
                 EventTickets = tickets
             };
             return View(viewModel);

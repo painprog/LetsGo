@@ -5,11 +5,11 @@
 
 <div class="pn-page_section">
     <div class="pn-page-head">
-        <img class="blur_img" src="~/events/@Model.Event.PosterImage" alt="">
+        <img class="blur_img" src="@Model.Event.PosterImage" alt="">
         <div class="row">
             <div class="col-lg-4">
                 <div class="pn-head_image">
-                    <img src="~/events/@Model.Event.PosterImage" alt="" class="rounded">
+                    <img src="@Model.Event.PosterImage" alt="" class="rounded">
                 </div>
             </div>
             <div class="col-lg-8">
@@ -23,14 +23,22 @@
                     <div class="pn-head_place">@Model.Event.Location.Name</div>
                 </div>
                 <div class="pn-head_tags">
-                    @foreach (var item in Model.EventCategories)
+                    @if (Model.Event.Categories != null)
                     {
-                        <a href="#" class="tag">@item.Name</a>
+                        @foreach (var item in Model.EventCategories)
+                        {
+                            <a href="#" class="tag">@item.Name</a>
+                        }
                     }
+
                 </div>
                 <div class="pn-head_buttons">
-                    <button class="btn btn-danger" onclick="Scroll()"><span>билеты</span></button>
-                    <button class="btn btn-light"><span>другие сеансы</span></button>
+                    <button class="btn btn-danger" onclick="Scroll()">
+                        <span>билеты</span>
+                    </button>
+                    <button class="btn btn-light">
+                        <span>другие сеансы</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -43,59 +51,61 @@
                 <p>@Model.Event.EventStart.ToLongDateString() — @Model.Event.EventEnd.ToLongDateString()</p>
             </div>
             <!--<div class="menu">
-                <button id="prices" class="btn btn-light">цены / места</button>
-                <div class="section_box">-->
+            <button id="prices" class="btn btn-light">цены / места</button>
+            <div class="section_box">-->
             <!-- типы билетов, с ценами -->
             <!--<div class="dynamic">
-                        <div class="section_block">
-                            <div class="color_bl" style="background-color: #e3ff00;"></div>
-                            <div class="price">— 5000 руб.</div>
-                        </div>
-                        <div class="section_block">
-                            <div class="color_bl" style="background-color: #ef0000;"></div>
-                            <div class="price">— 4000 руб.</div>
-                        </div>
-                        <div class="section_block">
-                            <div class="color_bl" style="background-color: bisque;"></div>
-                            <div class="price">— 3000 руб.</div>
-                        </div>
-                    </div>
-                    <div class="section_status">
-                        <div class="section_fix">
-                            <div class="color_bl" style="background-color: #2b2b2b;"></div>
-                            <div class="price">Забронированные места</div>
-                        </div>
-                        <div class="section_fix">
-                            <div class="color_bl" style="background-color: #e1e1e1;"></div>
-                            <div class="price">Выкупленные места</div>
-                        </div>
-                    </div>
+                <div class="section_block">
+                    <div class="color_bl" style="background-color: #e3ff00;"></div>
+                    <div class="price">— 5000 руб.</div>
                 </div>
+                <div class="section_block">
+                    <div class="color_bl" style="background-color: #ef0000;"></div>
+                    <div class="price">— 4000 руб.</div>
+                </div>
+                <div class="section_block">
+                    <div class="color_bl" style="background-color: bisque;"></div>
+                    <div class="price">— 3000 руб.</div>
+                </div>
+            </div>
+            <div class="section_status">
+                <div class="section_fix">
+                    <div class="color_bl" style="background-color: #2b2b2b;"></div>
+                    <div class="price">Забронированные места</div>
+                </div>
+                <div class="section_fix">
+                    <div class="color_bl" style="background-color: #e1e1e1;"></div>
+                    <div class="price">Выкупленные места</div>
+                </div>
+            </div>
+            </div>
             </div>-->
             <div class="places">
                 <table class="table tickets">
                     <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Count</th>
-                            <th></th>
-                        </tr>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Count</th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.EventTickets)
-                        {
-                            <tr>
-                                <td scope="row">@item.Name</td>
-                                <td>@item.Price</td>
-                                <td>0</td>
-                                <td>
-                                    <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
-                                    <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
-                                </td>
-                                <td><input id="typeId" type="hidden" asp-for="@item.Id" /></td>
-                            </tr>
-                        }
+                    @foreach (var item in Model.EventTickets)
+                    {
+                        <tr>
+                            <td scope="row">@item.Name</td>
+                            <td>@item.Price</td>
+                            <td>0</td>
+                            <td>
+                                <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
+                                <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
+                            </td>
+                            <td>
+                                <input id="typeId" type="hidden" asp-for="@item.Id"/>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
                 <input type="button" class="btn btn-dark btn-lg" value="Оформить заказ" onclick="Checkout()">
@@ -124,7 +134,7 @@
                     <p>@Model.Event.Description</p>
                     <h5 class="details_subheader pt-4">Фотографии</h5>
                     <div class="card" style="width: 30%;">
-                        <img src="~/events/@Model.Event.PosterImage" alt="" class="rounded">
+                        <img src="@Model.Event.PosterImage" alt="" class="rounded">
                     </div>
                 </div>
                 <div class="col-4 side_descr">
@@ -236,4 +246,4 @@
             });
         });
     </script>
-} 
+}

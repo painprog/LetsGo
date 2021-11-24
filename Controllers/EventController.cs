@@ -87,7 +87,7 @@ namespace LetsGo.Controllers
                     List<EventTicketType> ticketTypesForDel = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.TicketsForDel);
                     await _Service.DeleteEventTicketTypes(ticketTypesForDel);
                 }
-                return Json(new { success = true, href = "/Home/Index" });
+                return Json(new { success = true, href = "/Account/Profile" });
             }
             return Json(new { succes = false });
         }

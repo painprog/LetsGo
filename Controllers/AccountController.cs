@@ -40,7 +40,7 @@ namespace LetsGo.Controllers
 
             foreach (var item in viewModel.Events)
             {
-                item.Status = Status.Published;
+                item.Status = Status.Rejected;
             }
 
             return View(viewModel);

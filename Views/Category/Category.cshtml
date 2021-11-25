@@ -1,6 +1,7 @@
 ﻿@model CategoryViewModel
+
 @{
-    @ViewBag.Title = "Category Page";
+    ViewData["Title"] = "Category Page";
 }
 
 @foreach (var item in Model.Events)
@@ -27,7 +28,7 @@
                         </a>
                     </div>
                     <a href="#" class="card-price">
-                        БИЛЕТЫ ОТ 1500 ₽
+                        БИЛЕТЫ ОТ @item.MinPrice KGS
                     </a>
                 </div>
             </div>

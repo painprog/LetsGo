@@ -30,9 +30,10 @@ namespace LetsGo.Services
 
         public async Task<Event> AddEvent(AddEventViewModel eventView)
         {
-            string name = GenerateCode() + '.'+ Path.GetExtension(eventView.File.FileName);
+            string name = GenerateCode() + '.' + Path.GetExtension(eventView.File.FileName);
             string pathImage = "/posters/" + name;
-            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+            using (var fileStream =
+                new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                 await eventView.File.CopyToAsync(fileStream);
 
             string jsonCateg = string.Empty;
@@ -57,23 +58,23 @@ namespace LetsGo.Services
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();
             cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
-            
+
             return @event;
         }
 
         public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
-            {
+        {
             foreach (var item in ticketTypes)
-                {
+            {
                 item.EventId = eventId;
                 item.Sold = 0;
                 _goContext.EventTicketTypes.Add(item);
                 cache.Set(item.Id, item, new MemoryCacheEntryOptions());
             }
+
             await _goContext.SaveChangesAsync();
 
             return ticketTypes;
-
         }
 
         public static string GenerateCode()
@@ -84,9 +85,11 @@ namespace LetsGo.Services
             {
                 builder.Append(random.Next(10));
             }
+
             string UC = builder.ToString();
             return UC;
         }
+
         public async Task<Event> GetEvent(string id)
         {
             Event Event = null;
@@ -99,8 +102,10 @@ namespace LetsGo.Services
                         new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 }
             }
+
             return Event;
         }
+
         public async Task<List<Event>> GetEvents(string userId)
         {
             List<Event> Events = new List<Event>();

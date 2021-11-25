@@ -61,25 +61,13 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
-        // public async Task<IActionResult> Details(string id)
-        // {
-        //     Event @event = _Service.GetEvent(id).Result;
-        //     var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
-        //     DetailsViewModel viewModel = new DetailsViewModel
-        //     {
-        //         Event = @event,
-        //         LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
-        //         EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
-        //         EventTickets = tickets
-        //     };
-        //     return View(viewModel);
-        // }
+       
         
-        public async Task<IActionResult> Details(string id)
+        public  IActionResult Details(string id = "3a96a734-e280-4933-a4c9-3e9594ba7eab")
         {
-            Event @event = _Service.GetEvent(id).Result;
+            var @event = _Service.GetEvent(id).Result;
             var tickets =  _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
-            DetailsViewModel viewModel = new DetailsViewModel
+            var viewModel = new DetailsViewModel
             {
                 Event = @event,
                 LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(@event.Location.Categories),
@@ -87,5 +75,7 @@ namespace LetsGo.Controllers
             };
             return View(viewModel);
         }
+        
+        
     }
 }

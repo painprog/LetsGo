@@ -41,11 +41,12 @@ namespace LetsGo.Controllers
                         _goContext.PurchasedTickets.Add(ticket);
                     }
                 }
-                _goContext.SaveChanges();
-                return Json(new { success = true, redirectToUrl = Url.Action("Index", "Home") });
-            }
-            return Json(new { success = false });
-        }
 
+                _goContext.SaveChanges();
+                return Json(new {success = true, redirectToUrl = Url.Action("Index", "Home")});
+            }
+
+            return Json(new {success = false});
+        }
     }
 }

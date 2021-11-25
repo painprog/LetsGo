@@ -4,7 +4,7 @@
     ViewData["Title"] = "Category Page";
 }
 <div class="category-page">
-    <h2>Афиша концерты Бишкека</h2>
+    <h2>Афиша <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> Бишкека</h2>
     <div class="events row">
         @foreach (var item in Model.Events)
         {

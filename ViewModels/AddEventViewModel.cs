@@ -27,11 +27,11 @@ namespace LetsGo.ViewModels
 
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Время начала")]
-        public DateTime EventStart { get; set; }
+        public DateTime? EventStart { get; set; }
 
         [Required(ErrorMessage = "Поле конца времени обязательна для заполнения")]
         [Display(Name = "Время конца")]
-        public DateTime EventEnd { get; set; }
+        public DateTime? EventEnd { get; set; }
 
         public IList<SelectListItem> Categories { get; set; }
 

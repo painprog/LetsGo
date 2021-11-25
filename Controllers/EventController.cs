@@ -40,7 +40,9 @@ namespace LetsGo.Controllers
                 {
                     Text = x.Name,
                     Value = x.Id
-                }).ToList()
+                }).ToList(),
+                EventStart = null,
+                EventEnd = null
             };
 
             ViewBag.Locations = await _goContext.Locations.ToListAsync();

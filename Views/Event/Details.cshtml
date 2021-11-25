@@ -253,10 +253,13 @@
             }
         }
         function Basket() {
+            $('#checkout').show();
             $('.tickets tbody tr').each(function () {
-                if ($(this).find('td').eq(2).text() != 0) {
-                    $('#checkout').show()
-                    ;
+                for (var i = 0; i < parseInt($(this).find('td').eq(2).text()); i++) {
+                    $('.table-basket tbody').append('<tr><td>' + $(this).find('td').eq(0).text() +
+                        '</td><td>' + $(this).find('td').eq(0).text() +
+                        '</td><td>' + $(this).find('td').eq(1).text() +
+                        '<input type="button" class="btn btn-danger float-right" value="✖" onclick="Delete(this)" /></td></tr>');
                 }
             });
         

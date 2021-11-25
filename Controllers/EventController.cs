@@ -63,7 +63,7 @@ namespace LetsGo.Controllers
         }
        
         
-        public  IActionResult Details(string id = "3a96a734-e280-4933-a4c9-3e9594ba7eab")
+        public  IActionResult Details(string id = "697c34b6-3607-49fc-9c89-307f615e8931")
         {
             var @event = _Service.GetEvent(id).Result;
             var tickets =  _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();

@@ -51,7 +51,7 @@
                     <p>Ожидайте одобрения админа</p><br />
                     break;
                 case Status.Published:
-                    <button type="button" class="btn btn-danger requestForUnPublish" onclick="RequestForUnPublish(this)">Снять с публикации</button><br />
+                    <button type="button" class="btn btn-danger unpublish">Снять с публикации</button><br />
                     break;
                 case Status.UnPublished:
                     <button type="button" class="btn btn-danger requestForPublishAgain" onclick="RequestForPublishAgain(this)">Вернуть в публикации</button><br />
@@ -62,15 +62,6 @@
             }
         </div>
     </div> 
-    @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
-    {
-        <div class="text-light bg-danger text-center align-content-between admin-event pt-2">
-            <a href="#" class="btn btn-danger px-3 ml-4 mb-2">Одобрить</a>
-            <a href="#" class="btn btn-danger px-3 mb-2">Отклонить</a>
-            <span class="material-icons my-auto px-3 py-2">edit</span>
-            <span class="material-icons px-3 py-2">delete</span>
-        </div>
-    }
 </div>
 }
 

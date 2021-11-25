@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,18 @@ namespace LetsGo.Controllers
 
         public async Task<IActionResult> Add()
         {
-            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
-            ViewBag.Categories = categories;
+            AddEventViewModel model = new AddEventViewModel()
+            {
+                Categories = _goContext.EventCategories.Where(c => c.Name != "Другое")
+                .Select(x => new SelectListItem()
+                {
+                    Text = x.Name,
+                    Value = x.Id
+                }).ToList()
+            };
+
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
-            return View();
+            return View(model);
         }
 
         [HttpPost]

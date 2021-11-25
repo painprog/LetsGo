@@ -31,13 +31,26 @@ namespace LetsGo.Services
 
         public async Task<Event> AddEvent(AddEventViewModel eventView)
         {
-            string name = GenerateCode() + '.'+ Path.GetExtension(eventView.File.FileName);
+            string name = GenerateCode() + Path.GetExtension(eventView.File.FileName);
             string pathImage = "/posters/" + name;
             using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                 await eventView.File.CopyToAsync(fileStream);
 
-            string jsonCateg = string.Empty;
-            jsonCateg = eventView.Categories != null ? JsonConvert.SerializeObject(eventView.Categories) : "";
+            string categoriesJson = String.Empty;
+            if (eventView.Categories.Where(x => x.Selected == true).Count() == 0)
+            {
+                var categories = _goContext.EventCategories.Where(c => c.Name == "Другое");
+                categoriesJson = JsonConvert.SerializeObject(categories);
+            }
+            else
+            {
+                var categories = eventView.Categories.Where(x => x.Selected).Select(x => new
+                {
+                    Id = x.Value,
+                    Name = x.Text
+                });
+                categoriesJson = JsonConvert.SerializeObject(categories);
+            }
 
             Event @event = new Event
             {
@@ -47,7 +60,7 @@ namespace LetsGo.Services
                 EventStart = eventView.EventStart,
                 EventEnd = eventView.EventEnd,
                 PosterImage = pathImage,
-                Categories = jsonCateg,
+                Categories = categoriesJson,
                 AgeLimit = Convert.ToInt32(eventView.AgeLimit),
                 TicketLimit = eventView.TicketLimit,
                 Status = Status.New,

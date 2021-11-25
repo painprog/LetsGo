@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LetsGo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/v5.11.1/css/free.min.css" media="all">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -115,7 +117,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-white menu-link" href="#">Экскурсия</a>
                         </li>
-                        <li class="nav-item submenu-link">
+                        <li class="nav-item submenu-link mr-5">
                             <a class="nav-link text-white menu-link">Еще</a>
                             <div class="submenu pt-4">
                                 <a class="submenu-item" href="#">Фестивали</a>
@@ -131,9 +133,14 @@
 
                         @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
                         {
-                            <li class="nav-item ml-5">
+                            <li class="nav-item">
                                 <a class="nav-link text-white menu-link" asp-controller="Locations" asp-action="Create">
                                     Добавить площадку
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white menu-link" asp-controller="Account" asp-action="AddAdmin">
+                                    Добавить админа
                                 </a>
                             </li>
                         }
@@ -157,12 +164,12 @@
                         <a class="text-white" asp-area="" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
                         @using (Html.BeginForm("Logout", "Account"))
                         {
-                            <button type="submit" class="btn btn-danger flex-fill p-1">Выход</button>
+                            <button type="submit" class="btn btn-outline-danger flex-fill p-1">Выход</button>
                         }                       
                     }
                     else
                     {
-                        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Вход</a>
+                        <a class="btn btn-outline-light" asp-controller="Account" asp-action="Login">Вход</a>
                     }
                 </div>
             </div>

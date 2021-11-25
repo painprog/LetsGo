@@ -87,7 +87,7 @@ namespace LetsGo.Controllers
                 {
                     await _Service.DeleteEventTicketTypes(deletedIds);
                 }
-                return Json(new { success = true, href = "/Account/Profile" });
+                return Json(new { success = true, href = "/Cabinet/Profile" });
             }
             return Json(new { succes = false });
         }

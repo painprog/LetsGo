@@ -62,9 +62,9 @@ namespace LetsGo.Services
         }
 
         public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
-            {
+        {
             foreach (var item in ticketTypes)
-                {
+            {
                 item.EventId = eventId;
                 item.Sold = 0;
                 _goContext.EventTicketTypes.Add(item);
@@ -73,14 +73,33 @@ namespace LetsGo.Services
             await _goContext.SaveChangesAsync();
 
             return ticketTypes;
-
         }
 
-        public async Task DeleteEventTicketTypes(List<EventTicketType> ticketTypes)
+        public async Task<List<EventTicketType>> UpdateEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
         {
-            foreach (var item in ticketTypes)
+            foreach (var type in ticketTypes)
             {
-                EventTicketType ticketType = await _goContext.EventTicketTypes.FirstOrDefaultAsync(e => e.Id == item.Id);
+                if (String.IsNullOrEmpty(type.Id))
+                {
+                    type.Id = null;
+                    type.EventId = eventId;
+                    _goContext.EventTicketTypes.Add(type);
+                }
+                else
+                {
+                    _goContext.EventTicketTypes.Update(type);
+                }
+                cache.Set(type.Id, type, new MemoryCacheEntryOptions());
+            }
+            await _goContext.SaveChangesAsync();
+            return ticketTypes;
+        }
+
+        public async Task DeleteEventTicketTypes(string[] deletedIds)
+        {
+            foreach (var id in deletedIds)
+            {
+                EventTicketType ticketType = await _goContext.EventTicketTypes.FirstOrDefaultAsync(e => e.Id == id);
                 _goContext.EventTicketTypes.Remove(ticketType);
             }
             await _goContext.SaveChangesAsync();
@@ -206,6 +225,36 @@ namespace LetsGo.Services
             foreach (var item in CategoriesList)
                 Categories.Add(await _goContext.EventCategories.FirstOrDefaultAsync(e => e.Name == item));
             return Categories;
+        }
+
+        public async Task<bool> ChangeStatus(string status, string eventId, string cause)
+        {
+            var @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+            if (status != null && @event != null)
+            {
+                switch (status)
+                {
+                    case "Publish":
+                        @event.Status = Status.Published;
+                        @event.StatusDescription = "Ok";
+                        break;
+                    case "Rejected":
+                        @event.Status = Status.Rejected;
+                        @event.StatusDescription = cause;
+                        break;
+                    case "Unpublish":
+                        @event.Status = Status.UnPublished;
+                        @event.StatusDescription = cause;
+                        break;
+                    default:
+                        break;
+                }
+                @event.StatusUpdate = DateTime.Now;
+                _goContext.Events.Update(@event);
+                await _goContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

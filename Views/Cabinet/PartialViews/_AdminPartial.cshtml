@@ -1,0 +1,118 @@
+﻿@model ProfileViewModel
+@foreach (var item in Model.Events)
+{
+<div class="card mb-3 event-card" style="border-radius: 15px">
+    <p hidden>@item.Id</p>
+    <div class="row" onclick="eventDetails('@item.Id')">
+        <div class="pn-page-head col-lg-10" style="border-radius: 0">
+            <img class="blur_img" src="@item.PosterImage" alt="">
+            <div class="row">
+                <div class="col-lg-4 mr-5">
+                    <div class="pn-head_image">
+                        <img src="@item.PosterImage" alt="" class="rounded">
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="pn-head_title">
+                        <h1>@item.Name</h1>
+                        <span>@item.AgeLimit +</span>
+                    </div>
+                    <div class="pn-head_description">
+                        <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
+                        <div class="pn-head_place">@item.Location.Name</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 my-auto text-center sideBox">
+            <h1 style="font-size: 22px;">Билетов</h1>
+            <p>
+                куплено: @item.Sold<br />
+                @{ var remainder = item.TicketLimit - item.Sold;}
+                осталось: @remainder
+            </p>
+            @*@switch (item.Status)
+                {
+                    case Status.NotDefined:
+                        <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">?</button><br />
+                        <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                        break;
+                    case Status.Edited:
+                        <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Принять изменения</button><br />
+                        <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                        break;
+                    case Status.Rejected:
+                        <button type="button" class="btn btn-danger requestForNew" onclick="RequestForNew(this)">Отправить заявку на модерацию</button><br />
+                        <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                        break;
+                    case Status.New:
+                        <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                        <p>Ожидайте одобрения админа</p><br />
+                        break;
+                    case Status.Published:
+                        <button type="button" class="btn btn-danger requestForUnPublish" onclick="RequestForUnPublish(this)">Снять с публикации</button><br />
+                        break;
+                    case Status.UnPublished:
+                        <button type="button" class="btn btn-danger requestForPublishAgain" onclick="RequestForPublishAgain(this)">Вернуть в публикации</button><br />
+                        break;
+                    case Status.Expired:
+                        <p>Мероприятие уже прошло</p><br />
+                        break;
+                }*@
+        </div>
+    </div>
+    <div class="text-light bg-danger text-center align-content-between admin-event pt-2">
+        @switch (item.Status)
+        {
+            case Status.NotDefined:
+                <button type="button" class="btn btn-danger requestForNew px-3 ml-4 mb-2" onclick="RequestForNew(this)">?</button>
+                break;
+            case Status.Edited:
+                <button type="button" class="btn btn-danger requestForNew px-3 ml-4 mb-2" onclick="RequestForNew(this)">Принять изменения</button>
+                break;
+            case Status.Rejected:
+                <button type="button" class="btn btn-danger requestForNew px-3 ml-4 mb-2" onclick="RequestForNew(this)">Отправить заявку на модерацию</button>
+                break;
+            case Status.New:
+                <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять</button>
+                <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                    Отклонить
+                </button>
+                break;
+            case Status.Published:
+                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                    Снять с публикации
+                </button>
+                break;
+            case Status.UnPublished:
+                <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
+                break;
+            case Status.Expired:
+                <p>Мероприятие уже прошло</p><br />
+                break;
+        }
+        <span class="material-icons my-auto px-3 py-2">edit</span>
+        <span class="material-icons px-3 py-2">delete</span>
+    </div>
+</div>
+}
+
+<!-- Modal Cause -->
+<div class="modal fade" id="causeModal" tabindex="-1" aria-labelledby="causeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="causeModalLabel">Введите причину</h5>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <textarea class="form-control flex-fill" id="cause-text"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-success" id="cause-confirm" data-bs-dismiss="modal">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+</div>

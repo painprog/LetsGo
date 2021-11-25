@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace LetsGo.Controllers
             if (ModelState.IsValid)
             {
                 string tickets = model.Tickets;
-                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
+                List<EventTicketType> ticketTypes = System.Text.Json.JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
                 model.OrganizerId = _userManager.GetUserId(User);
                 Event @event = await _Service.AddEvent(model);
                 ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
@@ -70,8 +71,8 @@ namespace LetsGo.Controllers
             DetailsViewModel viewModel = new DetailsViewModel
             {
                 Event = @event,
-                LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
-                EventCategories = JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories),
+                LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(@event.Location.Categories),
+                EventCategories = JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories),
                 EventTickets = tickets
             };
             return View(viewModel);

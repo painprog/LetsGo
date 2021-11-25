@@ -74,5 +74,15 @@ namespace LetsGo.Controllers
             };
             return View("Category", viewModel);
         }
+
+        public IActionResult Other()
+        {
+            ViewBag.CategoryName = "Другое";
+            CategoryViewModel viewModel = new CategoryViewModel()
+            {
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Другое")).ToList()
+            };
+            return View("Category", viewModel);
+        }
     }
 }

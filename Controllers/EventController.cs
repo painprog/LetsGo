@@ -81,11 +81,11 @@ namespace LetsGo.Controllers
             {
                 List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
                 Event @event = await _Service.EditEvent(viewModel);
-                await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
-                if (viewModel.TicketsForDel != null)
+                await _Service.UpdateEventTicketTypes(@event.Id, ticketTypes);
+                string[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',');
+                if (deletedIds != null)
                 {
-                    List<EventTicketType> ticketTypesForDel = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.TicketsForDel);
-                    await _Service.DeleteEventTicketTypes(ticketTypesForDel);
+                    await _Service.DeleteEventTicketTypes(deletedIds);
                 }
                 return Json(new { success = true, href = "/Account/Profile" });
             }
@@ -104,6 +104,19 @@ namespace LetsGo.Controllers
                 EventTickets = tickets
             };
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeStatus(string status, string eventId, string cause)
+        {
+            if (await _Service.ChangeStatus(status, eventId, cause))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
         }
     }
 }

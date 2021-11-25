@@ -392,7 +392,7 @@ body {
     filter: invert(100%) sepia(0%) saturate(7482%) hue-rotate(20deg) brightness(118%) contrast(93%);
 }
 
-h1 {
+.container-2 h1 {
     font-size: 36px;
     font-weight: 900;
     text-align: center;

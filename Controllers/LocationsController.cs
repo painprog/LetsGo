@@ -3,6 +3,8 @@ using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LetsGo.Controllers
@@ -41,6 +43,18 @@ namespace LetsGo.Controllers
                 return Json("success");
             }
             return View(model);
+        }
+
+        public IActionResult GetAllLocations()
+        {
+            var locations = _db.Locations;
+            foreach (var location in locations)
+            {
+                List<LocationCategory> categories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories);
+                location.Categories = categories[0].Name;
+            }
+
+            return Json(locations);
         }
     }
 }

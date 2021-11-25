@@ -1,5 +1,7 @@
+
 /* Button Load more - v1.0.0 - 2018-02-28
 * Copyright (c) 2018 NTTPS; */
+
 (function ($) {
     $.fn.btnLoadmore = function (options) {
         var defaults = {
@@ -7,8 +9,7 @@
             whenClickBtn: 3,
             textBtn: 'Loadmore ...',
             classBtn: '',
-            setCookies: false,
-            delayToScroll: 2000,
+            setCookies: false
         },
             options = $.extend(defaults, options);
 
@@ -21,7 +22,7 @@
             $childrenClass.hide();
 
             //Show Element from Options
-            $childrenClass.slice(0, defaults.showItem).show();
+            $childrenClass.slice(0, defaults.showItem).show("slow");
 
             //Show Button when item in contents != 0
             if ($childrenClass.filter(":hidden").length > 0) {
@@ -32,10 +33,9 @@
                 e.preventDefault();
                 $childrenClass.filter(':hidden').slice(0, defaults.whenClickBtn).slideDown();
                 if ($childrenClass.filter(":hidden").length == 0) {
-                    $(".btn-loadmore").fadeOut('slow');
+                    $(".btn-loadmore").hide();// $(".btn-loadmore").fadeOut('slow');
                 }
-                scrollDown();
-
+               // scrollDown();
             });
 
             function scrollDown() {

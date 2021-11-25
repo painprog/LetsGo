@@ -17,7 +17,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom text-white box-shadow mb-3 nav-start w-100">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom text-white box-shadow border-0 nav-start w-100">
             <div class="container-fluid">
                 <div id="sideNav" class="sidenav">
                     <a><span onclick="closeNav()" class="material-icons icon-close" id="closeSpan">close</span></a>
@@ -103,19 +103,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white menu-link" href="#">Концерты</a>
+                            <a class="nav-link text-white menu-link" asp-controller="Category" asp-action="Concerts">Концерты</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white menu-link" href="#">Спектакли</a>
+                            <a class="nav-link text-white menu-link" asp-controller="Category" asp-action="Performances">Спектакли</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white menu-link" href="#">Детям</a>
+                            <a class="nav-link text-white menu-link" asp-controller="Category" asp-action="Children">Детям</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white menu-link" href="#">Классика</a>
+                            <a class="nav-link text-white menu-link" asp-controller="Category" asp-action="Classic">Классика</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white menu-link" href="#">Экскурсия</a>
+                            <a class="nav-link text-white menu-link" asp-controller="Category" asp-action="Excursion">Экскурсия</a>
                         </li>
                         <li class="nav-item submenu-link mr-5">
                             <a class="nav-link text-white menu-link">Еще</a>
@@ -208,6 +208,7 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/btnloadmore.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 

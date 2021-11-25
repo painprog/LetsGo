@@ -9,7 +9,7 @@
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Name"></label><br />
-            <input asp-for="Name" class="form-control"/>
+            <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -73,46 +73,60 @@
             </div>
         </div>
         <div class="pt-5">
-            <h4>Билеты</h4>
-            <p>Общее число билетов: <b><span id="total-tickets">@Model.TicketLimit</span></b></p>
-            <input type="hidden" asp-for="Tickets" />
-            <input type="hidden" asp-for="TicketLimit" />
-            <input type="hidden" asp-for="TicketsForDel" />
-            <table class="table tickets-table">
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">Название</th>
-                        <th style="width: 30%;">Описание</th>
-                        <th style="width: 15%;">Количество</th>
-                        <th style="width: 15%;">Цена</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.TicketsExist)
-                    {
-                    <tr class="exist">
-                        <td><b>@item.Name</b></td>
-                        <td><b>@item.Description</b></td>
-                        <td><b>@item.Count</b></td>
-                        <td><b>@item.Price</b></td>
-                        <td hidden>@item.Id</td>
-                        <td>
-                            <input type="button" class="btn btn-outline-danger" value="✘" onclick="DeleteExistTicket(this)">
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
-            <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
-            <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
-            <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2" rows="3" style="resize:none;"></textarea>
-            <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />
-        </div>
-        <hr />
-        <div class="form-group text-center">
-            <button id="add" type="submit" class="btn btn-success px-5 py-2">Редактировать</button>
+            <h2>
+                Информация о билетах
+            </h2>
+            <div>
+                <p>Общее число билетов: <b><span id="total-tickets">@Model.TicketLimit</span></b></p>
+                <table class="table tickets-table text-center">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Название</th>
+                            <th style="width: 30%;">Описание</th>
+                            <th style="width: 15%;">Количество</th>
+                            <th style="width: 15%;">Цена</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tickets">
+                        @foreach (var tickettype in Model.TicketsExist)
+                        {
+                            <tr class="ticket" id="@tickettype.Id">
+                                <td hidden><input type="hidden" asp-for="@tickettype.Id" class="ticket_id" /></td>
+                                <td hidden><input type="hidden" asp-for="@tickettype.EventId" class="event_id" /></td>
+                                <td>
+                                    <input asp-for="@tickettype.Name" class="ticket_name form-control" />
+                                </td>
+                                <td>
+                                    <input asp-for="@tickettype.Description" class="ticket_description form-control" />
+                                </td>
+                                <td>
+                                    <input asp-for="@tickettype.Count" class="ticket_count form-control" type="number" />
+                                </td>
+                                <td>
+                                    <input asp-for="@tickettype.Price" class="ticket_price form-control" type="number" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-danger" onclick="DeleteTicket(this)">✘</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h5>Добавление нового билета</h5>
+                <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
+                <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
+                <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
+                <div class="input-group mb-3">
+                    <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2" rows="3" style="resize:none;" aria-describedby="button-addon2"></textarea>
+                    <button class="btn btn-primary" type="button" id="button-addon2" onclick="AddTicket()">Добавить билет</button>
+                </div>
+                <input type="hidden" asp-for="Tickets" id="final_tickets" />
+                <input type="hidden" asp-for="TicketsForDel" id="deleted_tickets" />
+            </div>
+            <div class="form-group text-center">
+                <button id="add" type="submit" class="btn btn-warning px-5 py-2">Изменить</button>
+            </div>
         </div>
     </form>
 
@@ -158,33 +172,49 @@
         if (name.val() != '' && count.val() != '' && price.val() != '') {
             totalTickets.text(parseInt(totalTickets.text()) + parseInt(count.val()));
 
-            $('.tickets-table tbody').append('<tr class="new"><td><b>' + name.val() +
-                '</b></td><td>' + desc.val() +
-                '</b></td><td>' + count.val() +
-                '</td><td>' + price.val() +
+            $('.tickets-table tbody').append(
+                '<tr class="ticket">' +
+                '<td hidden><input type="hidden" class="ticket_id"/></td>' +
+                '<td hidden><input type="hidden" class="event_id"/></td>' +
+                `<td><input class="ticket_name form-control" value="${name.val()}"/></td>` +
+                `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
+                `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
+                `<td><input class="ticket_price form-control" value="${price.val()}" type="number"/></td>` +
                 '</td><td><input type="button" class="btn btn-outline-danger" value="✘" onclick="DeleteTicket(this)">' +
-                '</td></tr> ');
+                '</td></tr>');
             name.val('');
             desc.val('');
             count.val('');
             price.val('');
         }
     }
+        function DeleteTicket(t) {
+            $(t).closest('tr').remove();
+            totalTickets.text(parseInt(totalTickets.text()) - parseInt($(t).closest('tr').find('td').eq(2).text()));
 
-    function DeleteTicket(a) {
-        totalTickets.text(parseInt(totalTickets.text()) - parseInt($(a).closest('tr').find('td').eq(2).text()));
-        $(a).closest('tr').remove()
+            if (t.closest('tr').id != "") {
+                ticketsForDel.push(t.closest('tr').id)
+            }
         }
-
-        // TicketsForDel 
-        function DeleteExistTicket(a) {
-            DeleteTicket(a);            
-                ticketsForDel.push(
-                    '{"Id":"' + $(a).closest('tr').find('td').eq(4).text() + '"}');   
-                }
-
+        function getTicketsData() {
+            let ticketsData = document.getElementById('tickets').getElementsByTagName('input');
+            let extickets = document.getElementsByClassName('ticket');
+            let tickets = [];
+            for (let i = 0; i < extickets.length; i++) {
+                tickets.push(
+                    '{"Id":"' + ticketsData[0 + 6 * i].value + '",' +
+                    '"Name":"' + ticketsData[2 + 6 * i].value + '",' +
+                    '"Description":"' + ticketsData[3 + 6 * i].value + '",' +
+                    '"Count":' + ticketsData[4 + 6 * i].value + ',' +
+                    '"Price":' + ticketsData[5 + 6 * i].value + ',' +
+                    '"EventId":"' + ticketsData[1 + 6 * i].value + '"}'
+                );
+            }
+            return tickets;
+        }
     $('form').submit(function () {
         event.preventDefault();
+        getTicketsData();
         //ticketLimit
         $('#TicketLimit').val(totalTickets.text());
         // categories
@@ -194,19 +224,11 @@
         })
         $('#Categories').val(categories);
         // tickets
-        var tickets = [];
-        $('.tickets-table tbody .new').each(function () {
-            tickets.push(
-                '{"Name":"' + $(this).find('td').eq(0).text() + '",' +
-                '"Description":"' + $(this).find('td').eq(1).text() + '",' +
-                '"Count":' + $(this).find('td').eq(2).text() + ',' +
-                '"Price":' + $(this).find('td').eq(3).text() + '}');
-        });
-        $('#Tickets').val("[" + tickets.join() + "]");
+        $('#final_tickets').val(`[${getTicketsData()}]`);
         // ticketsdel
-        $('#TicketsForDel').val("[" + ticketsForDel.join() + "]");
-        console.log($('#TicketsForDel').val())
-       
+        $('#deleted_tickets').val(ticketsForDel);
+        console.log($('#deleted_tickets').val())
+
         var formData = new FormData(this);
         $.ajax({
             url: '@Url.Action("Edit", "Event")',

@@ -13,12 +13,15 @@ namespace LetsGo.ViewModels
         public List<EventTicketType> EventTickets { get; set; }
         public List<LocationCategory> LocationCategories { get; set; }
         public List<EventCategory> EventCategories { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Имя пользователя обязательно для заполнения")]
+        [Display(Name = "Имя пользоователя")]
         public string Name { get; set; }
-        [Required]
-        public string Phone { get; set; }
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Номер телефона обязательно для заполнения")]
+        [Display(Name = "Номер телефона")]
+        public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Почта обязательно для заполнения")]
+        [Display(Name = "Почта")]
+        [EmailAddress(ErrorMessage = "Некорректно введенная почта")]
         public string Email { get; set; }
     }
 }

@@ -85,7 +85,7 @@ namespace LetsGo.Services
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();
             cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
-            
+
             return @event;
         }
 
@@ -99,6 +99,7 @@ namespace LetsGo.Services
                 _goContext.EventTicketTypes.Add(item);
                 cache.Set(item.Id, item, new MemoryCacheEntryOptions());
             }
+
             await _goContext.SaveChangesAsync();
 
             return ticketTypes;
@@ -143,6 +144,7 @@ namespace LetsGo.Services
             {
                 builder.Append(random.Next(10));
             }
+
             string UC = builder.ToString();
             return UC;
         }
@@ -227,9 +229,10 @@ namespace LetsGo.Services
                         new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 }
             }
+
             return Event;
         }
-      
+
         public async Task<List<Event>> GetEvents(string userId)
         {
             List<Event> Events = new List<Event>();

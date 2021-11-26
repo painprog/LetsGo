@@ -749,6 +749,15 @@ body {
         height: 44px;
     }
 
+.places {
+
+}
+
+.places-title {
+    font-size: 30px;
+    font-weight: 900;
+}
+
 .info {
     color: #2b2b2b;
     background-color: #fff;

@@ -4,151 +4,210 @@
 }
 
 <div class="pn-page_section">
-    <div class="pn-page-head">
-        <img class="blur_img" src="@Model.Event.PosterImage" alt="">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="pn-head_image">
-                    <img src="@Model.Event.PosterImage" alt="" class="rounded">
-                </div>
+<div class="pn-page-head">
+    <img class="blur_img" src="@Model.Event.PosterImage" alt="">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="pn-head_image">
+                <img src="@Model.Event.PosterImage" alt="" class="rounded">
             </div>
-            <div class="col-lg-8">
-                <div class="pn-head_title">
-                    <h1>@Model.Event.Name</h1>
-                    <span>@Model.Event.AgeLimit +</span>
-                </div>
-                <div class="pn-head_description">
-                    <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
-                    <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
-                    <div class="pn-head_place">@Model.Event.Location.Name</div>
-                </div>
-                <div class="pn-head_tags">
-                    @foreach (var item in Model.EventCategories)
-                    {
-                        <a href="#" class="tag">@item.Name</a>
-                    }
-                </div>
-                <div class="pn-head_buttons">
-                    <button class="btn btn-danger" onclick="Scroll()"><span>билеты</span></button>
-                    <button class="btn btn-light"><span>другие сеансы</span></button>
-                </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="pn-head_title">
+                <h1>@Model.Event.Name</h1>
+                <span>@Model.Event.AgeLimit +</span>
+            </div>
+            <div class="pn-head_description">
+                <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
+                <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
+                <div class="pn-head_place">@Model.Event.Location.Name</div>
+            </div>
+            <div class="pn-head_tags">
+                @* @if (Model.Event.Categories != null) *@
+                @* { *@
+                @*     @foreach (var item in Model.EventCategories) *@
+                @*     { *@
+                @*         <a href="#" class="tag">@item.Name</a> *@
+                @*     } *@
+                @* } *@
+
+            </div>
+            <div class="pn-head_buttons">
+                <button class="btn btn-danger" onclick="Scroll()">
+                    <span>билеты</span>
+                </button>
+                <button class="btn btn-light">
+                    <span>другие сеансы</span>
+                </button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="content">
-        <div class="event">
-            <div class="info">
-                <h1>@Model.Event.Name</h1>
-                <p>@Model.Event.EventStart.ToLongDateString() — @Model.Event.EventEnd.ToLongDateString()</p>
+<div class="content">
+    <div class="event">
+        <div class="info">
+            <h1>@Model.Event.Name</h1>
+            <p>@Model.Event.EventStart.ToLongDateString() — @Model.Event.EventEnd.ToLongDateString()</p>
+        </div>
+        <!--<div class="menu">
+        <button id="prices" class="btn btn-light">цены / места</button>
+        <div class="section_box">-->
+        <!-- типы билетов, с ценами -->
+        <!--<div class="dynamic">
+            <div class="section_block">
+                <div class="color_bl" style="background-color: #e3ff00;"></div>
+                <div class="price">— 5000 руб.</div>
             </div>
-            <!--<div class="menu">
-                <button id="prices" class="btn btn-light">цены / места</button>
-                <div class="section_box">-->
-            <!-- типы билетов, с ценами -->
-            <!--<div class="dynamic">
-                        <div class="section_block">
-                            <div class="color_bl" style="background-color: #e3ff00;"></div>
-                            <div class="price">— 5000 руб.</div>
-                        </div>
-                        <div class="section_block">
-                            <div class="color_bl" style="background-color: #ef0000;"></div>
-                            <div class="price">— 4000 руб.</div>
-                        </div>
-                        <div class="section_block">
-                            <div class="color_bl" style="background-color: bisque;"></div>
-                            <div class="price">— 3000 руб.</div>
-                        </div>
-                    </div>
-                    <div class="section_status">
-                        <div class="section_fix">
-                            <div class="color_bl" style="background-color: #2b2b2b;"></div>
-                            <div class="price">Забронированные места</div>
-                        </div>
-                        <div class="section_fix">
-                            <div class="color_bl" style="background-color: #e1e1e1;"></div>
-                            <div class="price">Выкупленные места</div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
+            <div class="section_block">
+                <div class="color_bl" style="background-color: #ef0000;"></div>
+                <div class="price">— 4000 руб.</div>
+            </div>
+            <div class="section_block">
+                <div class="color_bl" style="background-color: bisque;"></div>
+                <div class="price">— 3000 руб.</div>
+            </div>
+        </div>
+        <div class="section_status">
+            <div class="section_fix">
+                <div class="color_bl" style="background-color: #2b2b2b;"></div>
+                <div class="price">Забронированные места</div>
+            </div>
+            <div class="section_fix">
+                <div class="color_bl" style="background-color: #e1e1e1;"></div>
+                <div class="price">Выкупленные места</div>
+            </div>
+        </div>
+        </div>
+        </div>-->
+        <div>
+
             <div class="places">
+                <div class="places-title mb-5">
+                    Выберите билеты
+                </div>
                 <table class="table tickets">
                     <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Count</th>
-                            <th></th>
-                        </tr>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Count</th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.EventTickets)
-                        {
-                            <tr>
-                                <td scope="row">@item.Name</td>
-                                <td>@item.Price</td>
-                                <td>0</td>
-                                <td>
-                                    <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
-                                    <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
-                                </td>
-                                <td><input id="typeId" type="hidden" asp-for="@item.Id" /></td>
-                            </tr>
-                        }
+                    @foreach (var item in Model.EventTickets)
+                    {
+                        <tr>
+                            <td scope="row">@item.Name</td>
+                            <td>@item.Price</td>
+                            <td>0</td>
+                            <td>
+                                <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
+                                <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
+                            </td>
+                            <td style="display: none;">
+                                @item.Id
+                            </td>
+                            <td style="display: none;">
+                                @{ var res = item.Count - item.Sold; }
+                                @res
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
-                <input type="button" class="btn btn-dark btn-lg" value="Оформить заказ" onclick="Checkout()">
+                <div class="mini" style="display: none;">
+                    <p><span class="ticketsCount">0</span> билетов на сумму <span class="ticketsSum">0</span></p>
+                    <button class="btn btn-dark btn-lg btn-buy" onclick=" Checkout()">Оформить заказ</button>
+                </div>
+
             </div>
-            <div id="checkout" style="display: none;" class="mx-4 py-5">
+
+
+            <div id="checkout" class="mx-4 py-5" style="display: none;">
+                <h5>Корзина</h5>
+                <hr style="color: black">
+                <form id="basket">
+                    <div class="b-title">
+                        <h5>@Model.Event.Name</h5>
+                        <span>@Model.Event.AgeLimit +</span>
+                    </div>
+                    <div class="b-description">
+                        <div class="b-text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
+                        <div class="b-place">@Model.Event.Location.Name</div>
+                    </div>
+                    <table class="table table-hover table-basket mt-5 mb-5">
+                        <thead style="color: gray">
+                        <tr>
+                            <th scope="col">Билет</th>
+                            <th scope="col">Цена</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="text-right mb-5">
+                        <div class="pb-3">
+                            <h5>Итого к оплате — <span class="totalSum"></span></h5>
+                        </div>
+                    </div>
+                </form>
+
+
                 <h5>Куда и кому отправить билеты?</h5>
                 <p>Пожалуйста, будьте внимательны при вводе e-mail адреса!</p>
                 <form id="ticket-buyer-form">
                     <div class="form-row">
                         <div class="col">
-                            <input id="name" type="text" class="form-control" placeholder="Имя" required>
+                            <input class="form-control" asp-for="Name" placeholder="Имя">
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <div class="col">
-                            <input id="phone" type="text" class="form-control" placeholder="Номер телефона" required>
+                            <input class="form-control" asp-for="PhoneNumber" placeholder="Номер телефона">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
-                        <div class="col email">
-                            <input id="email" type="text" class="form-control" placeholder="Email" required>
+                        <div class="col">
+                            <input class="form-control" asp-for="Email" placeholder="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-dark mt-4 px-3 btn-lg">Оплатить</button>
                 </form>
             </div>
-            <div class="row mx-2 py-5">
-                <div class="col-8">
-                    <h5 class="details_subheader">О мероприятии</h5>
-                    <p>@Model.Event.Description</p>
-                    <h5 class="details_subheader pt-4">Фотографии</h5>
-                    <div class="card" style="width: 30%;">
-                        <img src="~/events/@Model.Event.PosterImage" alt="" class="rounded">
-                    </div>
+
+        </div>
+        <div class="row mx-2 py-5">
+            <div class="col-8">
+                <h5 class="details_subheader">О мероприятии</h5>
+                <p>@Model.Event.Description</p>
+                <h5 class="details_subheader pt-4">Фотографии</h5>
+                <div class="card" style="width: 30%;">
+                    <img src="@Model.Event.PosterImage" alt="" class="rounded">
                 </div>
-                <div class="col-4 side_descr">
-                    <div class="pb-3">
-                        <h6>Почему TicketBox?</h6>
-                        <p>У TicketBox заключен официальный договор на реализацию билетов. Все цены на билеты официальные.</p>
-                    </div>
-                    <div class="pb-3">
-                        <h6>Не откладывайте покупку</h6>
-                        <p>Ближе к датам мероприятий цены на билеты могут повышаться, а востребованные категории билетов заканчиваться.</p>
-                    </div>
-                    <div class="pb-3">
-                        <h6>Никаких сервисных сборов!</h6>
-                        <p>На мероприятие Интерстеллар. Simple Music Ensemble даже электронные билеты без сервисных сборов.</p>
-                    </div>
-                    <div>
-                        <h4 style="color:#525252;">Место проведения</h4>
-                        <p class="text-body">@Model.Event.Location.Name</p>
-                        <p>@Model.Event.Location.Address</p>
-                    </div>
+            </div>
+            <div class="col-4 side_descr">
+                <div class="pb-3">
+                    <h6>Почему TicketBox?</h6>
+                    <p>У TicketBox заключен официальный договор на реализацию билетов. Все цены на билеты официальные.</p>
+                </div>
+                <div class="pb-3">
+                    <h6>Не откладывайте покупку</h6>
+                    <p>Ближе к датам мероприятий цены на билеты могут повышаться, а востребованные категории билетов заканчиваться.</p>
+                </div>
+                <div class="pb-3">
+                    <h6>Никаких сервисных сборов!</h6>
+                    <p>На мероприятие Интерстеллар. Simple Music Ensemble даже электронные билеты без сервисных сборов.</p>
+                </div>
+                <div>
+                    <h4 style="color:#525252;">Место проведения</h4>
+                    <p class="text-body">@Model.Event.Location.Name</p>
+                    <p>@Model.Event.Location.Address</p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <div class="position-fixed p-3" style="z-index: 11; position: sticky; top: 0; right:0;">
     <div class="toast align-items-center text-dark bg-white rounded border-1 badge-dark"
@@ -168,7 +227,12 @@
 
 @section Scripts
 {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script>
+        var ticketsCount = $('.ticketsCount');
+        var ticketsSum = $('.ticketsSum');
+        let pressed = false;
+
         $('#prices').click(function () {
             if ($('.section_box').is(':visible')) {
                 $('.section_box').hide();
@@ -184,29 +248,65 @@
             }, 1000);
         };
         function PlusCount(a) {
-            $(a).closest('tr').find('td').eq(2).text(parseInt($(a).closest('tr').find('td').eq(2).text()) + 1);
+            if (!pressed) {
+                $('.mini').show();
+                pressed = true;
+            }
+            var row = $(a).closest('tr');
+            var notsold = row.find('td').eq(5);
+            if ((parseInt(notsold.text()) - 1) > 0) {
+                notsold.text(parseInt(notsold.text()) - 1);
+                row.find('td').eq(2).text(parseInt(row.find('td').eq(2).text()) + 1);
+                ticketsCount.text(parseInt(ticketsCount.text()) + 1);
+                ticketsSum.text(parseInt(ticketsSum.text()) + parseInt(row.find('td').eq(1).text()));
+            }
+            else {
+                console.log("Нельзя взять больше билетов");
+            }
+            if (ticketsCount.text().trim() != '0') {
+                $('.btn-buy').removeAttr("disabled");
+            }
         }
         function MinusCount(a) {
-            var t = $(a).closest('tr').find('td').eq(2).text();
+            var row = $(a).closest('tr');
+
+            var notsold = row.find('td').eq(5);
+            var t = row.find('td').eq(2).text();
             if (t != 0) {
-                $(a).closest('tr').find('td').eq(2).text(parseInt(t) - 1);
+                notsold.text(parseInt(notsold.text()) + 1);
+                row.find('td').eq(2).text(parseInt(t) - 1);
+                ticketsCount.text(parseInt(ticketsCount.text()) - 1);
+                ticketsSum.text(parseInt(ticketsSum.text()) - parseInt(row.find('td').eq(1).text()));
+            }
+            if (ticketsCount.text().trim() == '0') {
+                $('.btn-buy').prop('disabled', true);
             }
         }
         function Checkout() {
+            $('.places').hide(); 
+            $('#checkout').show();
+            var sum = 0;
             $('.tickets tbody tr').each(function () {
-                if ($(this).find('td').eq(2).text() != 0) {
-                    $('#checkout').show();
+                for (var i = 0; i < parseInt($(this).find('td').eq(2).text()); i++) {
+                    sum += parseInt($(this).find('td').eq(1).text());
+                    $('.table-basket tbody').append('<tr><td>' + $(this).find('td').eq(0).text() +
+                        '</td><td>' + $(this).find('td').eq(1).text() +
+                        '</td><td style="display: none;">' + $(this).find('td').eq(4).text().trim() + "</td><td>" + 
+                        '<input type="button" class="btn btn-outline-danger float-right" value="✖" onclick="Delete(this)" /></td></tr>');
                 }
             });
+            console.log(sum);
+            $('.totalSum').text(sum);
+        
         }
         $('#ticket-buyer-form').submit(function (event) {
             event.preventDefault();
             var tickets = [];
-            $('.tickets tbody tr').each(function () {
+            $('.table-basket tbody tr').each(function () {
                 tickets.push({
-                    Id: $(this).find('td').eq(4).find('input').val(),
+                    Id: $(this).find('td').eq(2).text(),
                     Name: $(this).find('td').eq(0).text(),
-                    Count: $(this).find('td').eq(2).text()
+                    Count: 1
                 });
             });
             console.log(tickets);
@@ -216,9 +316,9 @@
                 data: {
                     'model': {
                         'EventTickets': tickets,
-                        'Name': $('#name').val(),
-                        'Phone': $('#phone').val(),
-                        'Email': $('#email').val()
+                        'Name': $('#Name').val(),
+                        'PhoneNumber': $('#PhoneNumber').val(),
+                        'Email': $('#Email').val()
                     }
                 }
             }).done(function (response) {
@@ -230,10 +330,17 @@
                         window.location.href = response.redirectToUrl;
                     }, 2000);
                 }
-                else {
-                    $('.email').append('<p class="text-danger">Некорректный email адрес!</p>');
-                }
             });
         });
+        
+        
+        function Delete(a) {
+            $('.totalSum').text(parseInt($('.totalSum').text()) - parseInt($(a).closest('tr').find('td').eq(1).text()));
+            $(a).closest('tr').remove();
+            @* if ($('.table-basket tbody tr').length == 0) {
+                $('.places').show(); 
+                $('#checkout').hide();
+            } *@
+        }
     </script>
-} 
+}

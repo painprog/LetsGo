@@ -48,19 +48,19 @@
             <input asp-for="AgeLimit" type="number" min="0" max="18" value="0" class="form-control" />
             <span asp-validation-for="AgeLimit" class="text-danger"></span>
         </div>
-        <div class="pt-5">
-            <h4>Категории</h4>
-            <input type="hidden" asp-for="Categories" />
-            <div id="checkbox">
-                @foreach (var item in ViewBag.Categories)
-                {
+        <div class="form-group">
+            <label class="label">Выберите категории</label>
+            @for (int i = 0; i < Model.Categories.Count; i++)
+            {
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="@item.Name" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">@item.Name</label>
+                    <input type="hidden" asp-for="@Model.Categories[i].Value" />
+                    <input type="hidden" asp-for="@Model.Categories[i].Text" />
+                    <input class="form-check-input" asp-for="Categories[i].Selected" />
+                    <label class="form-check-label">
+                        @Model.Categories[i].Text
+                    </label>
                 </div>
-                }
-
-            </div>
+            }
         </div>
         <div class="pt-5">
             <h4>Билеты</h4>
@@ -98,7 +98,7 @@
 @section scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-<script>
+    <script>
     let totalTickets = $('#total-tickets');
 
     function AddTicket() {
@@ -166,5 +166,5 @@
     var locations = document.getElementById('locations')
     console.log(locations)
 
-</script>
+    </script>
 }

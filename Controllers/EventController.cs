@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,22 +34,20 @@ namespace LetsGo.Controllers
 
         public async Task<IActionResult> Add()
         {
-            if (!_goContext.EventCategories.Any())
+            AddEventViewModel model = new AddEventViewModel()
             {
-                EventCategory categoryPlay = new EventCategory { Name = "Спектакль" };
-                EventCategory categoryShow = new EventCategory { Name = "Шоу" };
-                EventCategory categoryConcert = new EventCategory { Name = "Концерт" };
-                EventCategory categoryFreakShow = new EventCategory { Name = "Фрик-шоу" };
-                await _goContext.EventCategories.AddAsync(categoryPlay);
-                await _goContext.EventCategories.AddAsync(categoryShow);
-                await _goContext.EventCategories.AddAsync(categoryConcert);
-                await _goContext.EventCategories.AddAsync(categoryFreakShow);
-            }
-            await _goContext.SaveChangesAsync();
-            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
-            ViewBag.Categories = categories;
+                Categories = _goContext.EventCategories.Where(c => c.Name != "Другое")
+                .Select(x => new SelectListItem()
+                {
+                    Text = x.Name,
+                    Value = x.Id
+                }).ToList(),
+                EventStart = null,
+                EventEnd = null
+            };
+
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -56,7 +56,7 @@ namespace LetsGo.Controllers
             if (ModelState.IsValid)
             {
                 string tickets = model.Tickets;
-                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
+                List<EventTicketType> ticketTypes = System.Text.Json.JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
                 model.OrganizerId = _userManager.GetUserId(User);
                 Event @event = await _Service.AddEvent(model);
                 ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
@@ -99,8 +99,8 @@ namespace LetsGo.Controllers
             DetailsViewModel viewModel = new DetailsViewModel
             {
                 Event = @event,
-                LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
-                EventCategories = await _Service.GetEventCategories(@event.Categories),
+                LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(@event.Location.Categories),
+                EventCategories = JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories),
                 EventTickets = tickets
             };
             return View(viewModel);

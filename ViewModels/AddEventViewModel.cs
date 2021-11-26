@@ -1,6 +1,7 @@
 ﻿using LetsGo.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,13 +27,13 @@ namespace LetsGo.ViewModels
 
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Время начала")]
-        public DateTime EventStart { get; set; }
+        public DateTime? EventStart { get; set; }
 
         [Required(ErrorMessage = "Поле конца времени обязательна для заполнения")]
         [Display(Name = "Время конца")]
-        public DateTime EventEnd { get; set; }
+        public DateTime? EventEnd { get; set; }
 
-        public string Categories { get; set; }
+        public IList<SelectListItem> Categories { get; set; }
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]

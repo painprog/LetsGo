@@ -42,30 +42,5 @@ namespace LetsGo.Controllers
 
             return View(viewModel);
         }
-        //Отправка запроса на снятие с пубилкации мероприятия
-        [HttpPost]
-        public async Task<JsonResult> RequestForUnPublish(string id)
-        {
-            Event @event = await _cabService.ChangeStatus(id, Status.UnPublished);
-            return Json(new { unPubl = "Снято с публикации"});
-        }
-
-        //Отправка запроса на возвращение в публикации мероприятия
-        [HttpPost]
-        public async Task<JsonResult> RequestForPublishAgain(string id)
-        {
-            Event @event = await _cabService.ChangeStatus(id, Status.Published);
-            return Json(new { publ = "Возвращено в публикации"});
-        }
-
-
-        //Отправка запроса на модерацию мероприятия
-        [HttpPost]
-        public async Task<JsonResult> RequestForNew(string id)
-        {
-            Event @event = await _cabService.ChangeStatus(id, Status.New);
-            return Json(new { nEw = "Отправлено на модерацию"});
-        }
-
     }
 }

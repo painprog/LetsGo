@@ -64,9 +64,37 @@ namespace LetsGo.Controllers
             }
             return Json(new { succes = false });
         }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
+            ViewBag.Categories = categories;
+            ViewBag.Locations = await _goContext.Locations.ToListAsync();
+            EditEventViewModel viewModel = await _Service.MakeEditEventViewModel(id);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditEventViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                List<EventTicketType> ticketTypes = System.Text.Json.JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
+                Event @event = await _Service.EditEvent(viewModel);
+                await _Service.UpdateEventTicketTypes(@event.Id, ticketTypes);
+                string[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',');
+                if (deletedIds != null)
+                {
+                    await _Service.DeleteEventTicketTypes(deletedIds);
+                }
+                return Json(new { success = true, href = "/Cabinet/Profile" });
+            }
+            return Json(new { succes = false });
+        }
+
         public async Task<IActionResult> Details(string id)
         {
-            Event @event = _Service.GetEvent(id).Result;
+            Event @event = await _Service.GetEvent(id);
             var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
             DetailsViewModel viewModel = new DetailsViewModel
             {
@@ -76,6 +104,19 @@ namespace LetsGo.Controllers
                 EventTickets = tickets
             };
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeStatus(string status, string eventId, string cause)
+        {
+            if (await _Service.ChangeStatus(status, eventId, cause))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
         }
     }
 }

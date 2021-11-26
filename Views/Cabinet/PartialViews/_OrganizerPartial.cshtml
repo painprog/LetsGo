@@ -42,10 +42,10 @@
                     break;
                 case Status.Rejected:
                     <button type="button" class="btn btn-danger requestForPublish m-1" id="@item.Id">Отправить заявку повтороно</button><br />
-                    <span class="btn btn-danger material-icons my-auto px-3 py-2">edit</span>
+                    <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                     break;
                 case Status.New:
-                    <a class="btn btn-danger" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a><br />
+                    <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                     <p>Ожидайте одобрения админа</p>
                     break;
                 case Status.Published:
@@ -53,7 +53,7 @@
                     break;
                 case Status.UnPublished:
                     <button type="button" class="btn btn-danger requestForPublish m-1" id="@item.Id">Отправить заявку повтороно</button><br />
-                    <span class="btn btn-danger material-icons my-auto px-3 py-2">edit</span>
+                    <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                     break;
                 case Status.Expired:
                     <p>Мероприятие уже прошло</p><br />
@@ -61,7 +61,7 @@
             }
         </div>
     </div> 
-            <div class="text-light bg-danger text-center align-content-between admin-event pt-2">
+            <div class="text-light bg-danger text-center align-content-between admin-event px-2">
             @switch (item.Status)
             {
                 case Status.Rejected:

@@ -162,5 +162,9 @@
         function eventDetails(eventId) {
             window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
         }
+
+        function eventEdit(eventId) {
+            window.location.href = '@Url.Action("Edit","Event")?id=' + eventId;
+        }
     </script>
 }

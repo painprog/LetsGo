@@ -92,9 +92,8 @@
                             {
                                 <div class="col-md-4">
                                     <div class="card p-0">
-                                        <div class="card-block-img">
+                                        <div class="card-block-img" onclick="Details('@concert.Id')">
                                             <img src="@concert.PosterImage" alt="@concert.Name">
-                                            <a href="#"></a>
                                             <div class="wrapper">
                                                 <div class="card-age">@concert.AgeLimit+</div>
                                             </div>
@@ -103,7 +102,9 @@
                                             </div>
                                         </div>
                                         <div class="card-block-description">
-                                            <a class="card-title" href="#">Концерт "@concert.Name"</a>
+                                            <div class="card-title" onclick="Details('@concert.Id')">
+                                                Концерт "@concert.Name"
+                                            </div>
                                             <div class="card-description">
                                                 <div class="card-date">
                                                     @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
@@ -114,7 +115,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ 1500 ₽
+                                                    БИЛЕТЫ ОТ @concert.MinPrice сом
                                                 </a>
                                             </div>
                                         </div>
@@ -142,7 +143,7 @@
                             {
                                 <div class="col-md-4">
                                     <div class="card p-0">
-                                        <div class="card-block-img">
+                                        <div class="card-block-img" onclick="Details('@festival.Id')">
                                             <img src="@festival.PosterImage" alt="@festival.Name">
                                             <a href="#"></a>
                                             <div class="wrapper">
@@ -153,11 +154,10 @@
                                             </div>
                                         </div>
                                         <div class="card-block-description">
-                                            <a class="card-title" href="#">Фестиваль"@festival.Name"</a>
+                                            <div class="card-title" onclick="Details('@festival.Id')">Фестиваль"@festival.Name"</div>
                                             <div class="card-description">
                                                 <div class="card-date">
                                                     @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
-                                                    @*с 18 декабря по 19 декабря 2021*@
                                                 </div>
                                                 <div class="card-venue">
                                                     <a class="card-venue-link" href="#">
@@ -165,7 +165,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ 1500 ₽
+                                                    БИЛЕТЫ ОТ @festival.MinPrice сом
                                                 </a>
                                             </div>
                                         </div>
@@ -193,7 +193,7 @@
                             {
                                 <div class="col-md-4">
                                     <div class="card p-0">
-                                        <div class="card-block-img">
+                                        <div class="card-block-img" onclick="Details('@performance.Id')">
                                             <img src="@performance.PosterImage" alt="@performance.Name">
                                             <a href="#"></a>
                                             <div class="wrapper">
@@ -204,7 +204,9 @@
                                             </div>
                                         </div>
                                         <div class="card-block-description">
-                                            <a class="card-title" href="#">Спектакль"@performance.Name"</a>
+                                            <div class="card-title" onclick="Details('@performance.Id')">
+                                                Спектакль"@performance.Name"
+                                            </div>
                                             <div class="card-description">
                                                 <div class="card-date">
                                                     c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
@@ -216,7 +218,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ 1500 ₽
+                                                    БИЛЕТЫ ОТ @performance.MinPrice сом
                                                 </a>
                                             </div>
                                         </div>
@@ -244,7 +246,7 @@
                             {
                                 <div class="col-md-4">
                                     <div class="card p-0">
-                                        <div class="card-block-img">
+                                        <div class="card-block-img" onclick="Details('@forChildren.Id')">
                                             <img src="@forChildren.PosterImage" alt="@forChildren.Name">
                                             <a href="#"></a>
                                             <div class="wrapper">
@@ -255,7 +257,7 @@
                                             </div>
                                         </div>
                                         <div class="card-block-description">
-                                            <a class="card-title" href="#">@forChildren.Name</a>
+                                            <div class="card-title" onclick="Details('@forChildren.Id')">@forChildren.Name</div>
                                             <div class="card-description">
                                                 <div class="card-date">
                                                     c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
@@ -267,7 +269,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ 1500 ₽
+                                                    БИЛЕТЫ ОТ @forChildren.MinPrice сом
                                                 </a>
                                             </div>
                                         </div>
@@ -348,20 +350,20 @@
                     $('.venues .category-header').text("Площадки в Бишкеке");
                     result.forEach((venue) => {
                         $('#all-venues').append(`
-                            <div class="col-md-4 p-0">
-                                    <div class="card venues-card">
-                                        <a href="#" class="venue">
-                                            <div class="venue-card-img-container">
-                                                <span class="venue-card-placeholder">${venue.name.charAt(0)}</span>
-                                            </div>
-                                            <div class="venue-card-content">
-                                                <p class="venue-card-type">${venue.categories}</p>
-                                                <p class="venue-card-title">${venue.name}</p>
-                                            </div>
-                                        </a>
+                                <div class="col-md-4 p-0">
+                                        <div class="card venues-card">
+                                            <a href="#" class="venue">
+                                                <div class="venue-card-img-container">
+                                                    <span class="venue-card-placeholder">${venue.name.charAt(0)}</span>
+                                                </div>
+                                                <div class="venue-card-content">
+                                                    <p class="venue-card-type">${venue.categories}</p>
+                                                    <p class="venue-card-title">${venue.name}</p>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                        `);
+                            `);
                     });
                     $('#all-venues').btnLoadmore({
                         showItem: 15, //default 6
@@ -375,5 +377,9 @@
                 }
             });
         });
+
+        function Details(eventId) {
+                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+        }
     </script>
 }

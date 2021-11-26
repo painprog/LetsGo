@@ -120,20 +120,21 @@
                         <li class="nav-item submenu-link mr-5">
                             <a class="nav-link text-white menu-link">Еще</a>
                             <div class="submenu pt-4">
-                                <a class="submenu-item" href="#">Фестивали</a>
-                                <a class="submenu-item" href="#">Спорт</a>
+                                <a class="submenu-item" asp-controller="Category" asp-action="Festivals">Фестивали</a>
+                                <a class="submenu-item" asp-controller="Category" asp-action="Other">Другое</a>
                             </div>
                         </li>
+                        
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
+                            <li class="nav-item ml-auto">
                                 <a class="nav-link text-white menu-link" asp-area="" asp-controller="Event" asp-action="Add">Добавить событие</a>
                             </li>
                         }
 
                         @if (User.IsInRole("admin") || User.IsInRole("superadmin"))
                         {
-                            <li class="nav-item">
+                            <li class="nav-item ml-3">
                                 <a class="nav-link text-white menu-link" asp-controller="Locations" asp-action="Create">
                                     Добавить площадку
                                 </a>

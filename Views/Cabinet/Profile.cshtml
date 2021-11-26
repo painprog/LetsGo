@@ -92,7 +92,43 @@
     <script>
         let _id;
         let _status;
+        //Скрипты для действий в один клик
+        $('.requestForUnpublish').on('click', function () {
+            _id = this.id;
+            _status = 'ReviewUnPublished';
+            quickSend();
+        })
 
+        $('.requestForPublish').on('click', function () {
+            _id = this.id;
+            _status = 'ReviewPublished';
+            quickSend();
+        })
+
+        $('.accept').on('click', function() {
+            _id = this.id;
+            _status = 'Publish';
+            quickSend();
+        })
+
+        function quickSend() {
+            $.ajax({
+                url: '@Url.Action("ChangeStatus", "Event")',
+                type: 'POST',
+                data:
+                {
+                    'status': _status,
+                    'eventId': _id
+                },
+                success: function (response) {
+                    if (response.success) {
+                        //to do smth
+                    }
+                }
+            })
+        }
+
+        //Скрипты для действий с указанием причины
         $('.deny').on('click', function () {
             _id = this.id;
             _status = 'Rejected'
@@ -103,97 +139,28 @@
             _status = 'Unpublish';
         })
 
-        $('.accept').on('click', function() {
-            _id = this.id;
-            _status = 'Publish';
-        $.ajax({
-            url: '@Url.Action("ChangeStatus", "Event")',
-            type: 'POST',
-            data:
-            {
-                'status': _status,
-                'eventId': _id
-            },
-            success: function (response) {
-                if (response.success) {
-                    cardRemove(_id);
+        $('#cause-confirm').on('click', () => {
+            let cause = $('textarea#cause-text').val();
+            $('textarea#cause-text').val('');
+            $.ajax({
+                url: '@Url.Action("ChangeStatus", "Event")',
+                type: 'POST',
+                data:
+                {
+                    'status': _status,
+                    'eventId': _id,
+                    'cause': cause
+                },
+                success: function (response) {
+                    if (response.success) {
+                        //to do smth
+                    }
                 }
-            }
+            })
         })
-        })
-
-    $('#cause-confirm').on('click', () => {
-        console.log(_id);
-        let cause = $('textarea#cause-text').val();
-        $('textarea#cause-text').val('');
-        $.ajax({
-            url: '@Url.Action("ChangeStatus", "Event")',
-            type: 'POST',
-            data:
-            {
-                'status': _status,
-                'eventId': _id,
-                'cause': cause
-            },
-            success: function (response) {
-                if (response.success) {
-                    cardRemove(_id);
-                }
-            }
-        })
-    })
-
-    function cardRemove(id) {
-        $(`#card-${id}`).remove();
-        }
 
         function eventDetails(eventId) {
-                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
-        }
-
-        let buttons;
-        let idS;
-        function getID(a) {
-            idS = $(a).closest('.event-card').find('p').eq(0).html()
-            console.log(idS)
-        }
-
-        function RequestForNew(a) {
-            event.stopPropagation();
-            buttons = $(a).closest('.sideBox')
-            getID(a)
-            $.post('@Url.Action("RequestForNew", "Cabinet")', { id: idS }, function (response) {
-                $('.toast-body').text(response.nEw)
-                $('.toast').toast('show');
-                buttons.append('<p>Ожидайте одобрения админа</p><br/>')
-                buttons.children('.requestForNew').hide()
-        });
-        }
-
-        function RequestForUnPublish(a) {
-            event.stopPropagation();
-            buttons = $(a).closest('.sideBox')
-            getID(a)
-            $.post('@Url.Action("RequestForUnPublish", "Cabinet")', { id: idS }, function (response) {
-                $('.toast-body').text(response.unPubl)
-                $('.toast').toast('show');
-              buttons.children('.requestForUnPublish').hide()
-                buttons.append('<button type="button" class="btn btn-danger requestForPublishAgain"'
-                    + 'onclick="RequestForPublishAgain(this)">Вернуть в публикации</button>')
-        });
-        }
-
-        function RequestForPublishAgain(a) {
-            event.stopPropagation();
-            buttons = $(a).closest('.sideBox')
-            getID(a)
-            $.post('@Url.Action("RequestForPublishAgain", "Cabinet")', { id: idS }, function (response) {
-                $('.toast-body').text(response.publ)
-                $('.toast').toast('show');
-              buttons.children('.requestForPublishAgain').hide()
-                buttons.append('<button type="button" class="btn btn-danger requestForUnPublish"'
-                    + 'onclick="RequestForUnPublish(this)">Снять с публикации</button>')
-        });
+            window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
         }
     </script>
 }

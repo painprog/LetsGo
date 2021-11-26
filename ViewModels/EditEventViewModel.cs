@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,9 +10,17 @@ using System.Threading.Tasks;
 
 namespace LetsGo.ViewModels
 {
-    public class AddEventViewModel
+    public class EditEventViewModel
     {
-
+        public string Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string PosterImage { get; set; }
+        public virtual int StatusId
+        {
+            get => (int)this.Status;
+            set => Status = (Status)value;
+        }
+        public Status Status { get; set; }
         [Required(ErrorMessage = "Поле названия обязательна для заполнения")]
         [Display(Name = "Название")]
         public string Name { get; set; }
@@ -33,6 +42,7 @@ namespace LetsGo.ViewModels
         public DateTime EventEnd { get; set; }
 
         public string Categories { get; set; }
+        public List<string> CategoriesList { get; set; }
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]
@@ -47,20 +57,8 @@ namespace LetsGo.ViewModels
         public string OrganizerId { get; set; }
 
         public string Tickets { get; set; }
-        //public List<EventTicketType> Tickets { get; set; }
-
-        //[Required(ErrorMessage = "Название типа билета обязательна")]
-        //public string TicketTypeName { get; set; }
-
-        //[Required(ErrorMessage = "Количество типа билета обязательна")]
-        //[Range(1, 1000000, ErrorMessage = "Недопустимое значение количества билетов")]
-        //public int TicketTypeCount { get; set; }
-
-        //[Required(ErrorMessage = "Цена типа билета обязательна")]
-        //[Range(0, 100000000, ErrorMessage = "Недопустимое значение цены билета")]
-        //public int TicketTypePrice { get; set; }
-
-
+        public List<EventTicketType> TicketsExist { get; set; }
+        public string TicketsForDel { get; set; }
         public IFormFile File { get; set; }
     }
 }

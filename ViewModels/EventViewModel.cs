@@ -36,6 +36,7 @@ namespace LetsGo.ViewModels
         [FromForm(Name = "categories")]
         public string Categories { get; set; }
 
+        public string[] CategoriesInArray { get; set; }
         [FromForm(Name = "ageLimit")]
         public string AgeLimit { get; set; }
 

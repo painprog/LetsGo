@@ -1,10 +1,14 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
+using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LetsGo.Controllers
@@ -14,17 +18,20 @@ namespace LetsGo.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private LetsGoContext _context;
+        private readonly EventsService _Service;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, LetsGoContext context)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, LetsGoContext context, EventsService service)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _Service = service;
         }
         public IActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

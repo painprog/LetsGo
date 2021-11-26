@@ -36,10 +36,14 @@ namespace LetsGo.Controllers
             {
                 EventCategory categoryPlay = new EventCategory { Name = "Спектакль" };
                 EventCategory categoryShow = new EventCategory { Name = "Шоу" };
+                EventCategory categoryConcert = new EventCategory { Name = "Концерт" };
+                EventCategory categoryFreakShow = new EventCategory { Name = "Фрик-шоу" };
                 await _goContext.EventCategories.AddAsync(categoryPlay);
                 await _goContext.EventCategories.AddAsync(categoryShow);
-                await _goContext.SaveChangesAsync();
+                await _goContext.EventCategories.AddAsync(categoryConcert);
+                await _goContext.EventCategories.AddAsync(categoryFreakShow);
             }
+            await _goContext.SaveChangesAsync();
             List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
             ViewBag.Categories = categories;
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
@@ -61,10 +65,51 @@ namespace LetsGo.Controllers
             return Json(new { succes = false });
         }
 
+        public async Task<IActionResult> Edit(string id)
+        {
+            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
+            ViewBag.Categories = categories;
+            ViewBag.Locations = await _goContext.Locations.ToListAsync();
+            EditEventViewModel viewModel = await _Service.MakeEditEventViewModel(id);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditEventViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
+                Event @event = await _Service.EditEvent(viewModel);
+                await _Service.UpdateEventTicketTypes(@event.Id, ticketTypes);
+                string[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',');
+                if (deletedIds != null)
+                {
+                    await _Service.DeleteEventTicketTypes(deletedIds);
+                }
+                return Json(new { success = true, href = "/Cabinet/Profile" });
+            }
+            return Json(new { succes = false });
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            Event @event = await _Service.GetEvent(id);
+            var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
+            DetailsViewModel viewModel = new DetailsViewModel
+            {
+                Event = @event,
+                LocationCategories = JsonSerializer.Deserialize<List<LocationCategory>>(@event.Location.Categories),
+                EventCategories = await _Service.GetEventCategories(@event.Categories),
+                EventTickets = tickets
+            };
+            return View(viewModel);
+        }
+
         [HttpPost]
         public async Task<JsonResult> ChangeStatus(string status, string eventId, string cause)
         {
-            if(await _Service.ChangeStatus(status, eventId, cause))
+            if (await _Service.ChangeStatus(status, eventId, cause))
             {
                 return Json(new { success = true });
             }
@@ -72,32 +117,6 @@ namespace LetsGo.Controllers
             {
                 return Json(new { success = false });
             }
-        }
-
-        public async Task<IActionResult> Edit(string eventId)
-        {
-            EventEditViewModel viewModel = new EventEditViewModel
-            {
-                Event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId),
-                EventTicketTypes = await _goContext.EventTicketTypes.Where(t => t.EventId == eventId).ToListAsync()
-            };
-            ViewBag.Categories = await _goContext.EventCategories.ToListAsync();
-            ViewBag.Locations = await _goContext.Locations.ToListAsync();
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(EventEditViewModel model)
-        {
-            if (await _Service.Edit(model))
-            {
-                return RedirectToAction("Profile","Cabinet");
-            }
-            else
-            {
-                return BadRequest();
-            }            
         }
     }
 }

@@ -61,35 +61,6 @@ namespace LetsGo.Services
             return @event;
         }
 
-        public async Task<bool> ChangeStatus(string status, string eventId, string cause)
-        {
-            var @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
-            if (status != null && @event != null)
-            {
-                switch(status)
-                {
-                    case "Publish":
-                        @event.Status = Status.Published;
-                        @event.StatusDescription = "ok";
-                        break;
-                    case "Rejected":
-                        @event.Status = Status.Rejected;
-                        @event.StatusDescription = cause;
-                        break;
-                    case "Unpublish":
-                        @event.Status = Status.UnPublished;
-                        @event.StatusDescription = cause;
-                        break;
-                    default:
-                        break;
-                }
-                @event.StatusUpdate = DateTime.Now;
-                _goContext.Events.Update(@event);
-                await _goContext.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
 
         public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
         {
@@ -147,8 +118,6 @@ namespace LetsGo.Services
             string UC = builder.ToString();
             return UC;
         }
-
-
 
         public async Task<EditEventViewModel> MakeEditEventViewModel(string id)
         {
@@ -274,6 +243,18 @@ namespace LetsGo.Services
                         break;
                     case "Unpublish":
                         @event.Status = Status.UnPublished;
+                        @event.StatusDescription = cause;
+                        break;
+                    case "Edited":
+                        @event.Status = Status.Edited;
+                        @event.StatusDescription = cause;
+                        break;
+                    case "ReviewUnPublished":
+                        @event.Status = Status.ReviewUnPublished;
+                        @event.StatusDescription = cause;
+                        break;
+                    case "ReviewPublished":
+                        @event.Status = Status.ReviewPublished;
                         @event.StatusDescription = cause;
                         break;
                     default:

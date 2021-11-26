@@ -79,7 +79,7 @@ namespace LetsGo.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<EventTicketType> ticketTypes = JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
+                List<EventTicketType> ticketTypes = System.Text.Json.JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
                 Event @event = await _Service.EditEvent(viewModel);
                 await _Service.UpdateEventTicketTypes(@event.Id, ticketTypes);
                 string[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',');

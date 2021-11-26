@@ -151,15 +151,15 @@ namespace LetsGo.Services
         {
             Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == id);
 
-            string categs = JsonSerializer.Deserialize<string>(@event.Categories);
-            List<string> CategoriesList = new List<string>();
-            if (categs.Contains(','))
-            { 
-                string[] catesgInArray = categs.Split(new char[] { ',' });
-                CategoriesList.AddRange(catesgInArray);
-            }
-            else
-                CategoriesList.Add(categs);
+            //string categs = System.Text.Json.JsonSerializer.Deserialize<string>(@event.Categories);
+            //List<string> CategoriesList = new List<string>();
+            //if (categs.Contains(','))
+            //{ 
+            //    string[] catesgInArray = categs.Split(new char[] { ',' });
+            //    CategoriesList.AddRange(catesgInArray);
+            //}
+            //else
+            //    CategoriesList.Add(categs);
            
             EditEventViewModel editEvent = new EditEventViewModel
             {
@@ -175,7 +175,7 @@ namespace LetsGo.Services
                 TicketLimit = @event.TicketLimit,
                 StatusId = @event.StatusId,
                 Status = @event.Status,
-                CategoriesList = CategoriesList,
+                //CategoriesList = CategoriesList,
                 Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,
                 TicketsExist = _goContext.EventTicketTypes.Where(e => e.EventId == @event.Id).ToList()
         };
@@ -196,7 +196,7 @@ namespace LetsGo.Services
             }
 
             string jsonCateg = string.Empty;
-            jsonCateg = eventView.Categories != null ? JsonSerializer.Serialize(eventView.Categories) : "";
+            jsonCateg = eventView.Categories != null ? System.Text.Json.JsonSerializer.Serialize(eventView.Categories) : "";
 
             @event.Name = eventView.Name;
             @event.Description = eventView.Description;
@@ -239,7 +239,7 @@ namespace LetsGo.Services
 
         public async Task<List<EventCategory>> GetEventCategories(string jsonEventCategories)
         {
-            string eventCategories = JsonSerializer.Deserialize<string>(jsonEventCategories);
+            string eventCategories = System.Text.Json.JsonSerializer.Deserialize<string>(jsonEventCategories);
             List<string> CategoriesList = new List<string>();
             if (eventCategories.Contains(','))
             {

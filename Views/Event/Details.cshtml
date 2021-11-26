@@ -83,6 +83,9 @@
         <div>
 
             <div class="places">
+                <div class="places-title mb-5">
+                    Выберите билеты
+                </div>
                 <table class="table tickets">
                     <thead>
                     <tr>
@@ -103,18 +106,26 @@
                                 <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
                                 <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
                             </td>
-                            <td>
-                                <input id="typeId" type="hidden" asp-for="@item.Id"/>
+                            <td style="display: none;">
+                                @item.Id
+                            </td>
+                            <td style="display: none;">
+                                @{ var res = item.Count - item.Sold; }
+                                @res
                             </td>
                         </tr>
                     }
                     </tbody>
                 </table>
-                <input type="button" class="btn btn-dark btn-lg" value="Оформить заказ" onclick="Basket()">
+                <div class="mini" style="display: none;">
+                    <p><span class="ticketsCount">0</span> билетов на сумму <span class="ticketsSum">0</span></p>
+                    <button class="btn btn-dark btn-lg btn-buy" onclick=" Checkout()">Оформить заказ</button>
+                </div>
+
             </div>
 
 
-            <div id="checkout" style="display: none;" class="mx-4 py-5">
+            <div id="checkout" class="mx-4 py-5" style="display: none;">
                 <h5>Корзина</h5>
                 <hr style="color: black">
                 <form id="basket">
@@ -131,29 +142,14 @@
                         <tr>
                             <th scope="col">Билет</th>
                             <th scope="col">Цена</th>
-                            <th scope="col">Сумма</th>
-                            <th scope="col">Удалить</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            @foreach (var i in Model.EventTickets)
-                            {
-                                <th scope="row">@i.Name</th>
-                                <td>@i.Price</td>
-                                <td>Sum</td>
-                                <td><a onclick="del('@i.Id')" style="cursor: pointer"><i class="fas fa-times"></i></a></td>
-                            }
-                        </tr>
                         </tbody>
                     </table>
                     <div class="text-right mb-5">
                         <div class="pb-3">
-                            @foreach (var i in Model.EventTickets)
-                            {
-                                <h6>билет на сумму: </h6>
-                                <p>Итого к оплате: </p>
-                            }
+                            <h5>Итого к оплате — <span class="totalSum"></span></h5>
                         </div>
                     </div>
                 </form>
@@ -164,13 +160,16 @@
                 <form id="ticket-buyer-form">
                     <div class="form-row">
                         <div class="col">
-                            <input id="name" type="text" class="form-control" placeholder="Имя" required>
+                            <input class="form-control" asp-for="Name" placeholder="Имя">
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <div class="col">
-                            <input id="phone" type="text" class="form-control" placeholder="Номер телефона" required>
+                            <input class="form-control" asp-for="PhoneNumber" placeholder="Номер телефона">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
-                        <div class="col email">
-                            <input id="email" type="text" class="form-control" placeholder="Email" required>
+                        <div class="col">
+                            <input class="form-control" asp-for="Email" placeholder="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-dark mt-4 px-3 btn-lg">Оплатить</button>
@@ -228,7 +227,12 @@
 
 @section Scripts
 {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script>
+        var ticketsCount = $('.ticketsCount');
+        var ticketsSum = $('.ticketsSum');
+        let pressed = false;
+
         $('#prices').click(function () {
             if ($('.section_box').is(':visible')) {
                 $('.section_box').hide();
@@ -244,34 +248,65 @@
             }, 1000);
         };
         function PlusCount(a) {
-            $(a).closest('tr').find('td').eq(2).text(parseInt($(a).closest('tr').find('td').eq(2).text()) + 1);
-        }
-        function MinusCount(a) {
-            var t = $(a).closest('tr').find('td').eq(2).text();
-            if (t != 0) {
-                $(a).closest('tr').find('td').eq(2).text(parseInt(t) - 1);
+            if (!pressed) {
+                $('.mini').show();
+                pressed = true;
+            }
+            var row = $(a).closest('tr');
+            var notsold = row.find('td').eq(5);
+            if ((parseInt(notsold.text()) - 1) > 0) {
+                notsold.text(parseInt(notsold.text()) - 1);
+                row.find('td').eq(2).text(parseInt(row.find('td').eq(2).text()) + 1);
+                ticketsCount.text(parseInt(ticketsCount.text()) + 1);
+                ticketsSum.text(parseInt(ticketsSum.text()) + parseInt(row.find('td').eq(1).text()));
+            }
+            else {
+                console.log("Нельзя взять больше билетов");
+            }
+            if (ticketsCount.text().trim() != '0') {
+                $('.btn-buy').removeAttr("disabled");
             }
         }
-        function Basket() {
+        function MinusCount(a) {
+            var row = $(a).closest('tr');
+
+            var notsold = row.find('td').eq(5);
+            var t = row.find('td').eq(2).text();
+            if (t != 0) {
+                notsold.text(parseInt(notsold.text()) + 1);
+                row.find('td').eq(2).text(parseInt(t) - 1);
+                ticketsCount.text(parseInt(ticketsCount.text()) - 1);
+                ticketsSum.text(parseInt(ticketsSum.text()) - parseInt(row.find('td').eq(1).text()));
+            }
+            if (ticketsCount.text().trim() == '0') {
+                $('.btn-buy').prop('disabled', true);
+            }
+        }
+        function Checkout() {
+            $('.places').hide(); 
             $('#checkout').show();
+            var sum = 0;
             $('.tickets tbody tr').each(function () {
                 for (var i = 0; i < parseInt($(this).find('td').eq(2).text()); i++) {
+                    sum += parseInt($(this).find('td').eq(1).text());
                     $('.table-basket tbody').append('<tr><td>' + $(this).find('td').eq(0).text() +
-                        '</td><td>' + $(this).find('td').eq(0).text() +
                         '</td><td>' + $(this).find('td').eq(1).text() +
-                        '<input type="button" class="btn btn-danger float-right" value="✖" onclick="Delete(this)" /></td></tr>');
+                        '</td><td style="display: none;">' + $(this).find('td').eq(4).text().trim() + "</td><td>" + 
+                        '<input type="button" class="btn btn-outline-danger float-right" value="✖" onclick="Delete(this)" /></td></tr>');
                 }
             });
+            console.log(sum);
+            $('.totalSum').text(sum);
         
         }
         $('#ticket-buyer-form').submit(function (event) {
             event.preventDefault();
             var tickets = [];
-            $('.tickets tbody tr').each(function () {
+            $('.table-basket tbody tr').each(function () {
                 tickets.push({
-                    Id: $(this).find('td').eq(4).find('input').val(),
+                    Id: $(this).find('td').eq(2).text(),
                     Name: $(this).find('td').eq(0).text(),
-                    Count: $(this).find('td').eq(2).text()
+                    Count: 1
                 });
             });
             console.log(tickets);
@@ -281,9 +316,9 @@
                 data: {
                     'model': {
                         'EventTickets': tickets,
-                        'Name': $('#name').val(),
-                        'Phone': $('#phone').val(),
-                        'Email': $('#email').val()
+                        'Name': $('#Name').val(),
+                        'PhoneNumber': $('#PhoneNumber').val(),
+                        'Email': $('#Email').val()
                     }
                 }
             }).done(function (response) {
@@ -295,18 +330,17 @@
                         window.location.href = response.redirectToUrl;
                     }, 2000);
                 }
-                else {
-                    $('.email').append('<p class="text-danger">Некорректный email адрес!</p>');
-                }
             });
         });
         
         
-        function del(a) {
-                      const t = $(a).closest('tr').find('td').eq(2).text();
-                                  if (t !== 0) {
-                                      $(a).closest('tr').find('td').eq(2).text(parseInt(t) - 1);
-                                  }
-                   }
+        function Delete(a) {
+            $('.totalSum').text(parseInt($('.totalSum').text()) - parseInt($(a).closest('tr').find('td').eq(1).text()));
+            $(a).closest('tr').remove();
+            @* if ($('.table-basket tbody tr').length == 0) {
+                $('.places').show(); 
+                $('#checkout').hide();
+            } *@
+        }
     </script>
 }

@@ -24,7 +24,13 @@ namespace LetsGo.Controllers
                 foreach (var item in model.EventTickets)
                 {
                     var type = _goContext.EventTicketTypes.FirstOrDefault(t => t.Id == item.Id);
-                    type.Count -= item.Count;
+                    Event @event = _goContext.Events.FirstOrDefault(e => e.Id == type.EventId);
+
+                    string message = $"" +
+                        $"Здравствуйте, {model.Name}. " +
+                        $"Вы совершили покупки билетов на {@event.Name} с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
+                        $"Вот ваши билеты:<br />";
+
                     type.Sold += item.Count;
                     for (int i = 0; i < item.Count; i++)
                     {
@@ -32,7 +38,7 @@ namespace LetsGo.Controllers
                         {
                             CustomerEmail = model.Email,
                             CustomerName = model.Name,
-                            CustomerPhone = model.Phone,
+                            CustomerPhone = model.PhoneNumber,
                             EventTicketTypeId = item.Id,
                             Id = Guid.NewGuid().ToString(),
                             PurchaseDate = DateTime.Now,

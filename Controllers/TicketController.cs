@@ -1,4 +1,6 @@
-﻿using LetsGo.Models;
+﻿using IronBarCode;
+using LetsGo.Models;
+using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,7 +19,7 @@ namespace LetsGo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(DetailsViewModel model)
+        public async Task<IActionResult> Create(DetailsViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -27,9 +29,9 @@ namespace LetsGo.Controllers
                     Event @event = _goContext.Events.FirstOrDefault(e => e.Id == type.EventId);
 
                     string message = $"" +
-                        $"Здравствуйте, {model.Name}. " +
+                        $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
                         $"Вы совершили покупки билетов на {@event.Name} с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
-                        $"Вот ваши билеты:<br />";
+                        $"</p>";
 
                     type.Sold += item.Count;
                     for (int i = 0; i < item.Count; i++)
@@ -45,6 +47,13 @@ namespace LetsGo.Controllers
                             Scanned = false
                         };
                         _goContext.PurchasedTickets.Add(ticket);
+                        GeneratedBarcode QR = QRCodeWriter.CreateQrCode("https://localhost:44377/Home/Index/" + ticket.Id, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
+                        EmailService emailService = new EmailService();
+                        await emailService.Send(
+                            model.Email,
+                            "Билет",
+                            message + $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br/> <br />покажите его на входе"
+                        );
                     }
                 }
 

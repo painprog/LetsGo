@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -29,19 +30,6 @@ namespace LetsGo.Controllers
             _context = context;
             _Service = service;
         }
-        public IActionResult Profile()
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-            List<Event> events = _Service.GetEvents(user.Id).Result;
-            ProfileViewModel viewModel = new ProfileViewModel
-            {
-                Events = events,
-                User = user
-            };
-            return View(viewModel);
-        }
-
-
         public IActionResult Login()
         {
             return View();

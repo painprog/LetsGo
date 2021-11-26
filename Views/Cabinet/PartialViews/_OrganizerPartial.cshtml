@@ -1,0 +1,77 @@
+﻿@model ProfileViewModel
+<div id="all-events">
+    @foreach (var item in Model.Events)
+    {
+        <div class="card mb-3 event-card" style="border-radius: 15px">
+            <div id="event-status" style="display:none;" onclick="eventDetails('@item.Id')">@item.Status</div>
+            <div class="row">
+                <div class="pn-page-head col-lg-10" style="border-radius: 0">
+                    <img class="blur_img" src="@item.PosterImage" alt="">
+                    <div class="row">
+                        <div class="col-lg-4 mr-5">
+                            <div class="pn-head_image">
+                                <img src="@item.PosterImage" alt="" class="rounded">
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="pn-head_title">
+                                <h1>@item.Name</h1>
+                                <span>@item.AgeLimit +</span>
+                            </div>
+                            <div class="pn-head_description">
+                                <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
+                                <div class="pn-head_place">@item.Location.Name</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 my-auto text-center sideBox">
+                    <h1 style="font-size: 22px;">Билетов</h1>
+                    <p>
+                        куплено: @item.Sold<br />
+                        @{ var remainder = item.TicketLimit - item.Sold;}
+                        осталось: @remainder
+                    </p>
+                    @switch (item.Status)
+                    {
+                        case Status.NotDefined:
+                            //to do smth
+                            break;
+                        case Status.Edited:
+                            //to do smth
+                            break;
+                        case Status.Rejected:
+                            <button type="button" class="btn btn-danger requestForPublish m-1" id="@item.Id">Отправить заявку повтороно</button><br />
+                            <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                            break;
+                        case Status.New:
+                            <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                            <p>Ожидайте одобрения админа</p>
+                            break;
+                        case Status.Published:
+                            <button type="button" class="btn btn-danger  requestForPublish" id="@item.Id">Снять с публикации</button>
+                            break;
+                        case Status.UnPublished:
+                            <button type="button" class="btn btn-danger requestForPublish m-1" id="@item.Id">Отправить заявку повтороно</button><br />
+                            <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                            break;
+                        case Status.Expired:
+                            <p>Мероприятие уже прошло</p><br />
+                            break;
+                    }
+                </div>
+            </div>
+            <div class="text-light bg-danger text-center align-content-between admin-event px-2">
+                @switch (item.Status)
+                {
+                    case Status.Rejected:
+                        <span>Отказано по причине: @item.StatusDescription</span>
+                        break;
+                    case Status.UnPublished:
+                        <span>Снято с публикации по причине: @item.StatusDescription</span>
+                        break;
+                }
+            </div>
+        </div>
+    }
+    </div>

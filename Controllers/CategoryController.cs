@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Концерты";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Концерты")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Концерты") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }
@@ -30,7 +31,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Спектакли";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Спектакли")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Спектакли") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }
@@ -40,7 +41,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Детям";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Детям")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Детям") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }
@@ -50,7 +51,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Классика";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Классика")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Классика") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }
@@ -60,7 +61,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Экскурсии";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Классика")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Классика") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }
@@ -70,7 +71,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Фестивали";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Фестивали")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Фестивали") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }
@@ -80,7 +81,7 @@ namespace LetsGo.Controllers
             ViewBag.CategoryName = "Другое";
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Другое")).ToList()
+                Events = _context.Events.Include(e => e.Location).Where(e => e.Categories.Contains("Другое") && e.Status == Status.Published).ToList()
             };
             return View("Category", viewModel);
         }

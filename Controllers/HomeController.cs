@@ -1,4 +1,5 @@
-﻿using LetsGo.Models;
+﻿using LetsGo.Enums;
+using LetsGo.Models;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,25 +26,25 @@ namespace LetsGo.Controllers
 
             model.Concerts = _db.Events.Include(e => e.Location)
                 .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Концерты"))
+                .Where(e => e.Categories.Contains("Концерты") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
             model.Festivals = _db.Events.Include(e => e.Location)
                 .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Фестивали"))
+                .Where(e => e.Categories.Contains("Фестивали") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
             model.Performances = _db.Events.Include(e => e.Location)
                 .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Спектакли"))
+                .Where(e => e.Categories.Contains("Спектакли") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
             model.ForChildren = _db.Events.Include(e => e.Location)
                 .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Детям"))
+                .Where(e => e.Categories.Contains("Детям") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 

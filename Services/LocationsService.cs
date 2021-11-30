@@ -31,7 +31,7 @@ namespace LetsGo.Services
             if (categories.Count() == 0)
             {
                 var category = _db.LocationCategories.FirstOrDefault(c => c.Name == "Другое");
-                var categoriesJson = JsonConvert.SerializeObject(category);
+                var categoriesJson = JsonConvert.SerializeObject(new List<LocationCategory> { category });
                 location.Categories = categoriesJson;
             }   
             else

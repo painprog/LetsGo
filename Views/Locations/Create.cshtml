@@ -33,7 +33,7 @@
                     <input type="hidden" asp-for="@Model.LocationCategories[i].Value" />
                     <input type="hidden" asp-for="@Model.LocationCategories[i].Text" />
                     <input class="form-check-input" asp-for="LocationCategories[i].Selected" />
-                    <label class="form-check-label">
+                    <label class="form-check-label" asp-for="LocationCategories[i].Selected">
                         @Model.LocationCategories[i].Text
                     </label>
                 </div>

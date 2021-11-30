@@ -41,6 +41,14 @@ namespace LetsGo.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);
+                if (user != null)
+                {
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                        return View(model);
+                    }
+                }
                 Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(
                   user,
                   model.Password,
@@ -51,8 +59,11 @@ namespace LetsGo.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                
             }
+            else
+                ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+
             return View(model);
         }
         
@@ -141,11 +152,20 @@ namespace LetsGo.Controllers
 
                     if (result.Succeeded)
                     {
-                        await _userManager.AddToRoleAsync(user, "organizer");
-                        await _signInManager.SignInAsync(user, false);
-                        return RedirectToAction("Index", "Home");
-                    }
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
+                        EmailService emailService = new EmailService();
+                        await emailService.Send(model.Email, "Подтвердите ваш аккаунт",
+                            $"Подтвердите регистрацию, перейдя по ссылке:" +
+                            $" <a href='{callbackUrl}'>ссылка</a>");
 
+                        return Content("Для завершения регистрации проверьте" +
+                            " электронную почту и перейдите по ссылке, указанной в письме");
+                    }
                     foreach (var error in result.Errors)
                         ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -156,6 +176,26 @@ namespace LetsGo.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+                return View("Error");
         }
 
         [HttpPost]

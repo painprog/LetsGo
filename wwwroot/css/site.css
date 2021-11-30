@@ -158,20 +158,6 @@ html {
     }
 
 
-/* form */
-.form-header {
-    text-align: center;
-}
-
-.form-container {
-    max-width: 800px;
-    border: 1px solid #1b6ec2;
-    border-radius: 10px;
-    background-color: #fff;
-    margin: 0 auto;
-    padding: 30px 60px;
-}
-
 input#AgeLimit {
     width: 100px;
 }
@@ -938,6 +924,9 @@ body {
 }
 
 .entry-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 1.5rem;
     background-color: white;
     border-radius: 49.0901px;
 }
@@ -953,11 +942,15 @@ body {
     }
 
     .entry-form label {
-        font-size: 14px;
+        font-size: 16px;
         line-height: 20px;
         color: #6B7280;
         font-style: normal;
         font-weight: 500;
+    }
+
+    .entry-form p, tr {
+        font-size: 14px;
     }
 
     .entry-form .input-field {
@@ -1026,3 +1019,9 @@ body {
     .entry-form input[data-autocompleted] {
         background-color: transparent !important;
     }
+
+.form-container {
+    max-width: 900px;
+}
+
+

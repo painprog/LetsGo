@@ -55,7 +55,7 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </div>
-                <a href="#" class="btn btn-danger px-3" >+ Добавить мероприятие</a>
+                <a asp-action="Add" asp-controller="Event" class="btn btn-danger px-3" >+ Добавить мероприятие</a>
             </div>
            @if (User.IsInRole("organizer"))
            {

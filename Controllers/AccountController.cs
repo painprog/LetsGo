@@ -240,8 +240,8 @@ namespace LetsGo.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
                     protocol: HttpContext.Request.Scheme);
                 EmailService emailService = new EmailService();
-                await emailService.Send(model.Email, "Сброс пароля",
-                    $"Для сброса пароля пройдите по ссылке: <a href='{callbackUrl}'>ссылка</a>");
+                await emailService.Send(model.Email, "Восстановление пароля",
+                    $"Для восстановления пароля пройдите по ссылке: <a href='{callbackUrl}'>ссылка</a>");
                 return View("ForgotPasswordConfirmation");
             }
             return View(model);

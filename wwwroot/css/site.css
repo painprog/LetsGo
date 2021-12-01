@@ -105,7 +105,6 @@ html {
     flex-direction: column;
 }
 
-
 .submenu-item {
     display: block;
     text-decoration: none;
@@ -1036,8 +1035,16 @@ body {
     color: white;
     cursor:pointer;
 }
-@media (max-width: 1200px) 
-{
+
+#sign-out-btn:hover {
+    background-color: #F8F9Fa;
+}
+
+#sign-out-btn {
+    background-color: white;
+}
+
+@media (max-width: 1200px) {
     a.navbar-brand {
         background-image: url(../images/logo.png);
         background-repeat: no-repeat;
@@ -1045,5 +1052,58 @@ body {
         background-size: cover;
         width: 30px;
         height: 30px;
+    }
+}
+
+#excursions-link2 {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    #excursions-link1{
+        display:none;
+    }
+
+    #excursions-link2 {
+        display:block;
+    }
+}
+
+#category-link {
+    display: none;
+}
+
+.close-icon{
+    color: green;
+}
+
+@media screen and (max-width: 770px) {
+    #category-link{
+        display:block;
+    }
+
+    #children-link, #concerts-link, #performances-link, #classic-link, #excursions-link {
+        display: none;
+    }
+
+    .category-header a {
+        display: block;
+        text-align: right;
+        height:40px;
+    }
+
+    .category-links a {
+        display: block;
+        padding: 9px 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #2b2b2b;
+        font-weight: 400;
+        font-family: Roboto,sans-serif;
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 22px;
+        cursor: pointer;
     }
 }

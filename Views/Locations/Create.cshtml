@@ -93,10 +93,10 @@
                 data: $('#create-location-form').serialize()
             }).done(function (data) {
                 console.log(data);
-                if (data == "success") {
+                if (data.success) {
                     $('.toast').toast('show');
                     setTimeout(function () {
-                        window.location.href = '/Home/Index';
+                        window.location.href = data.href;
                     }, 2000);
                 }
             });

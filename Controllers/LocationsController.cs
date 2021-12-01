@@ -30,7 +30,7 @@ namespace LetsGo.Controllers
             CreateLocationViewModel model = new CreateLocationViewModel()
             {
                 LocationCategories = categories
-            };
+            };  
 
             return View(model);
         }
@@ -41,9 +41,9 @@ namespace LetsGo.Controllers
             if (ModelState.IsValid)
             {
                 await _service.Create(model);
-                return Json("success");
+                return Json(new { success = true, href = "/Home/Index" });
             }
-            return View(model);
+            return Json(new { success = false });
         }
 
         public IActionResult GetAllLocations()

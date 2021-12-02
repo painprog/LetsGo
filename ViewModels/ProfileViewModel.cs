@@ -9,6 +9,7 @@ namespace LetsGo.ViewModels
     public class ProfileViewModel
     {
         public User User { get; set; }
+        public bool IsOrganizer { get; set; }
         public List<Event> Events { get; set; }
     }
 }

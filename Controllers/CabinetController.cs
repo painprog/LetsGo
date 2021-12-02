@@ -33,9 +33,13 @@ namespace LetsGo.Controllers
         public IActionResult Profile()
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-            ProfileViewModel viewModel = new ProfileViewModel { User = user };
+            ProfileViewModel viewModel = new ProfileViewModel 
+            { 
+                User = user,
+                IsOrganizer = User.IsInRole("organizer")
+            };
 
-            if (User.IsInRole("organizer"))
+            if (viewModel.IsOrganizer)
                 viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
             else
                 viewModel.Events = _context.Events.Include(e => e.Location).OrderBy(e => e.Status).ThenByDescending(e => e.CreatedAt).ToList();

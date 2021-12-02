@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace LetsGo.ViewModels
@@ -10,6 +11,7 @@ namespace LetsGo.ViewModels
 
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Эта почта уже занята")]
         public string Email { get; set; }
 
         [DataType(DataType.PhoneNumber)]

@@ -170,7 +170,6 @@
     </div>
 
     <footer class="footer">
-        @*<div class="container">*@
         <div class="row footer-container">
             <div class="col-lg-3 footer-link-news">
                 <div class="footer-link-title">новости</div>
@@ -195,7 +194,6 @@
                 </p>
             </div>
         </div>
-        @*</div>*@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/btnloadmore.js"></script>
@@ -208,12 +206,12 @@
             $('.fog').show();
         }
         function closeNav() {
-            $("#sideNav").animate({ left: '-330px' });
+            $("#sideNav").animate({ left: '-1000px' });
             $('.fog').hide();
         }
 
         $('.fog').click(function () {
-            $('#sideNav').animate({ left: '-330px' });
+            $('#sideNav').animate({ left: '-1000px' });
             $('.fog').hide();
         });
 

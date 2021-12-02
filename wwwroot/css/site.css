@@ -32,7 +32,7 @@ html {
     position: fixed;
     z-index: 100;
     top: 0;
-    left: -330px;
+    left: -1000px;
     background-color: #000;
     overflow-x: hidden;
     padding-top: 0.25rem;
@@ -1175,5 +1175,9 @@ body {
         font-size: 14px;
         line-height: 22px;
         cursor: pointer;
+    }
+
+    .sidenav{
+        width:100vw;
     }
 }

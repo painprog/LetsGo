@@ -4,8 +4,10 @@ using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LetsGo.Controllers
 {
@@ -56,5 +58,18 @@ namespace LetsGo.Controllers
 
             return Json(locations);
         }
+        public async Task<IActionResult> Details(string id)
+        {
+            Location location = await _service.GetLocation(id);
+            var events = await _service.GetLocationEvents(id);
+            LocationDetailsViewModel viewModel = new LocationDetailsViewModel
+            {
+                Location = location,
+                FutureEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList(),
+                PastEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList()
+            };
+            return View(viewModel);
+        }
+
     }
 }

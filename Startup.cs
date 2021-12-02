@@ -33,7 +33,8 @@ namespace LetsGo
             services.AddDbContext<LetsGoContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0))))
                .AddIdentity<User, IdentityRole>()
-               .AddEntityFrameworkStores<LetsGoContext>();
+               .AddEntityFrameworkStores<LetsGoContext>()
+               .AddDefaultTokenProviders();
             services.AddTransient<EventsService>();
             services.AddMemoryCache();
         }

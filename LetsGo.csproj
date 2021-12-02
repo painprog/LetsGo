@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\avatars\" />
     <Folder Include="Views\Cabinet\" />
+    <Folder Include="wwwroot\avatars\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\posters\" />
   </ItemGroup>

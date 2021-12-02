@@ -639,7 +639,7 @@ body {
 .pn-page_section {
     max-width: 1020px;
     margin: 0 auto;
-    border-radius: 5px;
+    border-radius: 15px;
     background-color: #fff;
 }
 
@@ -692,6 +692,9 @@ body {
     margin-top: 15px;
     color: #fff;
     font-size: 14px;
+}
+.pn-head_place{
+    cursor: pointer;
 }
 
 .pn-head_tags {

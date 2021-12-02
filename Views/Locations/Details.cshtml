@@ -1,0 +1,113 @@
+﻿@model LocationDetailsViewModel
+@{
+    ViewBag.Title = Model.Location.Name;
+}
+
+<div class="pn-page_section my-4">
+    <div class="pn-page-head bg-dark">
+        @*<img class="blur_img" src="@Model.Location.PosterImage" alt="">*@
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="pn-head_image">
+                    @*<img src="@Model.Event.PosterImage" alt="" class="rounded">*@
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="pn-head_title">
+                    <h1>@Model.Location.Name</h1>
+                </div>
+                <div class="pn-head_description">
+                    <div class="pn-head_text">Адрес: @Model.Location.Address</div>
+                    <div class="pn-head_place">@Model.FutureEvents.Count предстоящих мероприятий в @Model.Location.Name</div>
+                </div>
+                <div class="pn-head_tags">
+                     @if (Model.Location.Categories != null) 
+                     { 
+                         @foreach (var item in Model.LocationCategories) 
+                         { 
+                             <a href="#" class="tag">@item.Name</a> 
+                         } 
+                     } 
+                </div>
+                <div class="pn-head_buttons">
+                    <button class="btn btn-dark" onclick="Scroll()">
+                        <span>Афиша</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="location">            
+            <div class="row mx-2 py-5">
+                <div class="col-8">
+                    <h5 class="details_subheader">@Model.Location.Name</h5>
+                    <p class="mr-3">@Model.Location.Description</p>
+                    @if (Model.FutureEvents.Count != 0)
+                    {
+                        <h5 class="events details_subheader pt-5">Расписание мероприятий</h5>
+                        <div class="container">
+                            <hr />
+                            @foreach (var item in Model.FutureEvents)
+                            {
+                                <div class="row py-2">
+                                    <div class="col-3">@item.EventStart</div>
+                                    <div class="col-6">
+                                        <h6>@item.Name</h6>
+                                        <p>@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
+                                    </div>
+                                    <div class="col-3"><button class="btn btn-danger">Билеты от @item.MinPrice som</button></div>
+                                </div>
+                                <hr />
+                            }
+                        </div>
+                    }
+                    @if (Model.PastEvents.Count != 0)
+                    {
+                        <h5 class="details_subheader pt-5">Прошедшие события</h5>
+                        <div class="container">
+                            <hr />
+                            @foreach (var item in Model.FutureEvents)
+                            {
+                                <div class="row py-2">
+                                    <div class="col-3">@item.EventStart</div>
+                                    <div class="col-6">
+                                        <h6>@item.Name</h6>
+                                        <p>@Model.Location.Name</p>
+                                    </div>
+                                    <div class="col-3"><button class="btn btn-light">Билеты от @item.MinPrice som</button></div>
+                                </div>
+                                <hr />
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-4 side_descr">
+                    <div class="pb-3">
+                        <p>*календарик, если надо будет</p>
+                    </div>
+                    <div class="pb-3">
+                        <h6>Как добраться до @Model.Location.Name</h6>
+                        <p>Адрес: @Model.Location.Address</p>
+                    </div>
+                    <div class="pb-3">
+                        <p>*карта, если надо будет</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        function Scroll() {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $(".events").offset().top
+            }, 1000);
+        };
+    </script>
+}

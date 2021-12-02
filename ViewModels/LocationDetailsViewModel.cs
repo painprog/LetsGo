@@ -11,5 +11,6 @@ namespace LetsGo.ViewModels
         public Location Location { get; set; }
         public List<Event> FutureEvents { get; set; }
         public List<Event> PastEvents { get; set; }
+        public List<LocationCategory> LocationCategories { get; set; }
     }
 }

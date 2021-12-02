@@ -65,8 +65,9 @@ namespace LetsGo.Controllers
             LocationDetailsViewModel viewModel = new LocationDetailsViewModel
             {
                 Location = location,
+                LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories),
                 FutureEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList(),
-                PastEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList()
+                PastEvents = events.Where(e => e.EventStart < DateTime.Now).ToList()
             };
             return View(viewModel);
         }

@@ -3,7 +3,7 @@
     ViewBag.Title = "Детальная страница мероприятия";
 }
 
-<div class="pn-page_section">
+<div class="pn-page_section my-4">
 <div class="pn-page-head">
     <img class="blur_img" src="@Model.Event.PosterImage" alt="">
     <div class="row">
@@ -20,17 +20,16 @@
             <div class="pn-head_description">
                 <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
                 <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
-                <div class="pn-head_place">@Model.Event.Location.Name</div>
+                <div class="pn-head_place" onclick="LocationDetails('@Model.Event.LocationId')">@Model.Event.Location.Name</div>
             </div>
             <div class="pn-head_tags">
-                @* @if (Model.Event.Categories != null) *@
-                @* { *@
-                @*     @foreach (var item in Model.EventCategories) *@
-                @*     { *@
-                @*         <a href="#" class="tag">@item.Name</a> *@
-                @*     } *@
-                @* } *@
-
+                 @if (Model.Event.Categories != null) 
+                 { 
+                     @foreach (var item in Model.EventCategories) 
+                     { 
+                         <a href="#" class="tag">@item.Name</a> 
+                     } 
+                 } 
             </div>
             <div class="pn-head_buttons">
                 <button class="btn btn-danger" onclick="Scroll()">
@@ -228,7 +227,7 @@
 @section Scripts
 {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script>
+<script>
         var ticketsCount = $('.ticketsCount');
         var ticketsSum = $('.ticketsSum');
         let pressed = false;
@@ -283,7 +282,7 @@
             }
         }
         function Checkout() {
-            $('.places').hide(); 
+            $('.places').hide();
             $('#checkout').show();
             var sum = 0;
             $('.tickets tbody tr').each(function () {
@@ -291,13 +290,13 @@
                     sum += parseInt($(this).find('td').eq(1).text());
                     $('.table-basket tbody').append('<tr><td>' + $(this).find('td').eq(0).text() +
                         '</td><td>' + $(this).find('td').eq(1).text() +
-                        '</td><td style="display: none;">' + $(this).find('td').eq(4).text().trim() + "</td><td>" + 
+                        '</td><td style="display: none;">' + $(this).find('td').eq(4).text().trim() + "</td><td>" +
                         '<input type="button" class="btn btn-outline-danger float-right" value="✖" onclick="Delete(this)" /></td></tr>');
                 }
             });
             console.log(sum);
             $('.totalSum').text(sum);
-        
+
         }
         $('#ticket-buyer-form').submit(function (event) {
             event.preventDefault();
@@ -332,15 +331,19 @@
                 }
             });
         });
-        
-        
+
+
         function Delete(a) {
             $('.totalSum').text(parseInt($('.totalSum').text()) - parseInt($(a).closest('tr').find('td').eq(1).text()));
             $(a).closest('tr').remove();
             @* if ($('.table-basket tbody tr').length == 0) {
-                $('.places').show(); 
+                $('.places').show();
                 $('#checkout').hide();
             } *@
+        };
+
+        function LocationDetails(locationId) {
+            window.location.href = '@Url.Action("Details","Locations")?id=' + locationId;
         }
-    </script>
+</script>
 }

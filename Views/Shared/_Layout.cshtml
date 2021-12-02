@@ -100,9 +100,9 @@
                 </div>
                 <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index"></a>
                 @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>*@
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>*@
                 <div class="nav-item">
                     <a id="category-link" class="nav-link text-white menu-link">Категории</a>
                 </div>
@@ -169,31 +169,33 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="footer-link-tittle text-muted">НОВОСТИ</div>
-                    <div class="footer-link">Ежедневное издание «Сова»</div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="footer-link-tittle text-muted">МОБИЛЬНОЕ ПРИЛОЖЕНИЕ</div>
-                    <div class="footer-link">App Store</div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="footer-link-tittle text-muted">МЫ ПРИНИМАЕМ</div>
-                    <div class="footer-link">тут карты</div>
-                </div>
-                <div class="col-md-3">
-                    <p>
-                        © 2021 ООО «МДТЗК»<br>
-                        ул. 2-ая Брестская, д.43, Москва, 123056<br>
-                        Телефон:  <span class="text-white">8-495-134-77-77</span><br>
-                        <span class="text-white">Форма для обратной связи</span>
-                    </p>
+    <footer class="footer">
+        @*<div class="container">*@
+        <div class="row footer-container">
+            <div class="col-lg-3 footer-link-news">
+                <div class="footer-link-title">новости</div>
+                <div class="footer-link">Ежедневное издание «Сова»</div>
+            </div>
+            <div class="col-lg-3 footer-link-apps">
+                <div class="footer-link-title">мобильное приложение</div>
+                <div class="footer-link"><span class="apple-ic"><i class="bi bi-apple"></i></span> App Store</div>
+            </div>
+            <div class="col-lg-3 footer-link-cards">
+                <div class="footer-link-title">мы принимаем</div>
+                <div class="footer-link">
+                    <span class="bank-card"><i class="fab fa-cc-visa"></i></span>
                 </div>
             </div>
+            <div class="col-md-3 footer-address">
+                <p>
+                    © 2021 ООО «МДТЗК»<br>
+                    ул. 2-ая Брестская, д.43, Москва, 123056<br>
+                    Телефон:  <span class="text-white">8-495-134-77-77</span><br>
+                    <span class="text-white">Форма для обратной связи</span>
+                </p>
+            </div>
         </div>
+        @*</div>*@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/btnloadmore.js"></script>
@@ -234,26 +236,25 @@
         });
 
         $('#category-link').on("click", function () {
-            console.log("weukfnwej");
             $('body').html(`
 <div class="category-header">
-    <a href="Home/Index">
-        <span class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
-    </a>
+        <a href="Home/Index">
+            <span class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
+        </a>
 </div>
-    <div class="category-links">
-        <div class="row">
-            <div class="col-md-9">
-                <a class="" href="/Category/Concerts">Концерты</a>
-                <a class="" href="/Category/Performances">Спектакли</a>
-                <a class="" href="/Category/Children">Детям</a>
-                <a class="" href="/Category/Classic">Классика</a>
-                <a class="" href="/Category/Excursion">Экскурсия</a>
-                <a class="" href="/Category/Festivals">Фестивали</a>
-                <a class="" href="/Category/Other">Другое</a>
+        <div class="category-links">
+            <div class="row">
+                <div class="col-md-9">
+                    <a class="" href="/Category/Concerts">Концерты</a>
+                    <a class="" href="/Category/Performances">Спектакли</a>
+                    <a class="" href="/Category/Children">Детям</a>
+                    <a class="" href="/Category/Classic">Классика</a>
+                    <a class="" href="/Category/Excursion">Экскурсия</a>
+                    <a class="" href="/Category/Festivals">Фестивали</a>
+                    <a class="" href="/Category/Other">Другое</a>
+                </div>
             </div>
-        </div>
-    </div>`);
+        </div>`);
         });
 
     </script>

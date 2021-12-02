@@ -68,8 +68,6 @@ namespace LetsGo.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
-            ViewBag.Categories = categories;
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
             EditEventViewModel viewModel = await _Service.MakeEditEventViewModel(id);
             return View(viewModel);

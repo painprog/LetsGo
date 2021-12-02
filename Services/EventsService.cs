@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
@@ -111,7 +112,6 @@ namespace LetsGo.Services
             {
                 if (String.IsNullOrEmpty(type.Id))
                 {
-                    type.Id = null;
                     type.EventId = eventId;
                     _goContext.EventTicketTypes.Add(type);
                 }
@@ -144,7 +144,6 @@ namespace LetsGo.Services
             {
                 builder.Append(random.Next(10));
             }
-
             string UC = builder.ToString();
             return UC;
         }
@@ -162,7 +161,12 @@ namespace LetsGo.Services
             //}
             //else
             //    CategoriesList.Add(categs);
-           
+
+            var categories = _goContext.LocationCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
+            var other = categories.FirstOrDefault(l => l.Text == "Другое");
+            categories.Remove(other);
+            categories.Add(other);
+
             EditEventViewModel editEvent = new EditEventViewModel
             {
                 Id = @event.Id,
@@ -172,7 +176,7 @@ namespace LetsGo.Services
                 EventStart = @event.EventStart,
                 EventEnd = @event.EventEnd,
                 PosterImage = @event.PosterImage,
-                Categories = @event.Categories,
+                EventCategories = categories,
                 AgeLimit = @event.AgeLimit,
                 TicketLimit = @event.TicketLimit,
                 StatusId = @event.StatusId,
@@ -184,32 +188,46 @@ namespace LetsGo.Services
             return editEvent;
         }
 
-        public async Task<Event> EditEvent(EditEventViewModel eventView)
+        public async Task<Event> EditEvent(EditEventViewModel model)
         {
-            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventView.Id);
+            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == model.Id);
 
-            if (eventView.File != null)
+            if (model.File != null)
             {
-                string name = GenerateCode() + '.' + Path.GetExtension(eventView.File.FileName);
-                eventView.PosterImage = "/posters/" + name;
-                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + eventView.PosterImage), FileMode.Create))
-                    await eventView.File.CopyToAsync(fileStream);
-                @event.PosterImage = eventView.PosterImage;
+                System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + @event.PosterImage));
+                string filename = GenerateCode() + Path.GetExtension(model.File.FileName);
+                filename = "/posters/" + filename;
+                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + filename), FileMode.Create))
+                    await model.File.CopyToAsync(fileStream);
+                @event.PosterImage = filename;
             }
 
-            string jsonCateg = string.Empty;
-            jsonCateg = eventView.Categories != null ? System.Text.Json.JsonSerializer.Serialize(eventView.Categories) : "";
+            var categories = model.EventCategories.Where(x => x.Selected).Select(x => new
+            {
+                Id = x.Value,
+                Name = x.Text
+            });
+            if (categories.Count() == 0)
+            {
+                var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
+                var categoriesJson = JsonConvert.SerializeObject(new List<EventCategory> { category });
+                @event.Categories = categoriesJson;
+            }
+            else
+            {
+                var categoriesJson = JsonConvert.SerializeObject(categories);
+                @event.Categories = categoriesJson;
+            }
 
-            @event.Name = eventView.Name;
-            @event.Description = eventView.Description;
+            @event.Name = model.Name;
+            @event.Description = model.Description;
             @event.CreatedAt = DateTime.Now;
-            @event.EventStart = eventView.EventStart;
-            @event.EventEnd = eventView.EventEnd;              
-            @event.Categories = jsonCateg;
-            @event.AgeLimit = eventView.AgeLimit;
-            @event.TicketLimit = eventView.TicketLimit;
-            @event.Status = Status.Edited;
-            @event.LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id;
+            @event.EventStart = model.EventStart;
+            @event.EventEnd = model.EventEnd;
+            @event.AgeLimit = model.AgeLimit;
+            @event.TicketLimit = model.TicketLimit;
+            @event.Status = Status.New;
+            @event.LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == model.Location).Id;
 
             _goContext.Events.Update(@event);
             await _goContext.SaveChangesAsync();

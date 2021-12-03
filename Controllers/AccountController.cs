@@ -139,8 +139,11 @@ namespace LetsGo.Controllers
 
                     if (result.Succeeded)
                     {
-                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                            await model.Avatar.CopyToAsync(fileStream);
+                        if (pathImage != "/images/default_avatar.png")
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                                await model.Avatar.CopyToAsync(fileStream);
+                        }
                         await _userManager.AddToRoleAsync(user, "organizer");
                         await _signInManager.SignInAsync(user, false);
                         return RedirectToAction("Index", "Home");

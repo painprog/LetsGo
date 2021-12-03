@@ -119,6 +119,7 @@
                     <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
                     <button class="btn btn-primary" type="button" onclick="AddTicket()">Добавить билет</button>
                 </div>
+                <input type="hidden" asp-for="Tickets" />
                 <input type="hidden" asp-for="TicketsForDel" id="deleted_tickets" />
             </div>
             <hr />
@@ -232,7 +233,7 @@
             })
             $('#Categories').val(categories);
             // tickets
-            $('#final_tickets').val(`[${getTicketsData()}]`);
+            $('#Tickets').val(`[${getTicketsData()}]`);
             console.log(getTicketsData());
             // ticketsdel
             $('#deleted_tickets').val(ticketsForDel);

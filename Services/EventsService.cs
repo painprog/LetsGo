@@ -96,7 +96,6 @@ namespace LetsGo.Services
             foreach (var item in ticketTypes)
             {
                 item.EventId = eventId;
-                item.Sold = 0;
                 _goContext.EventTicketTypes.Add(item);
                 cache.Set(item.Id, item, new MemoryCacheEntryOptions());
             }
@@ -112,6 +111,7 @@ namespace LetsGo.Services
             {
                 if (String.IsNullOrEmpty(type.Id))
                 {
+                    type.Id = Guid.NewGuid().ToString();
                     type.EventId = eventId;
                     _goContext.EventTicketTypes.Add(type);
                 }

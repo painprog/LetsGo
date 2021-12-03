@@ -159,6 +159,9 @@ html {
         height: 30px;
     }
 
+input, textarea {
+    font-size: 15px !important;
+}
 
 input#AgeLimit {
     width: 100px;

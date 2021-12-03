@@ -1,0 +1,24 @@
+﻿@model System.Collections.Generic.List<LetsGo.Models.Event>
+
+
+
+@foreach (var item in Model)
+{
+    <div class="container">
+        <a asp-controller="Event" asp-action="Details" asp-route-id="@item.Id">
+            <div class="search-tag" id="@item.Id">
+                <div class="search-tag-detail">@item.Name</div>
+            </div>
+        </a>
+    </div>
+}
+@* @foreach (var item in Model) *@
+@* { *@
+@*     <div class="d-flex"> *@
+@*         <a asp-controller="Locations" asp-action="Details" asp-route-id="@item.Id"> *@
+@*             <div class="search-tag" id="@item.Id" > *@
+@*                 <div class="search-tag-detail">@item.Name</div> *@
+@*             </div> *@
+@*         </a> *@
+@*     </div> *@
+@* } *@

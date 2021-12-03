@@ -4,17 +4,29 @@
         <div class="container-2 container-fluid mx-auto">
             <h1 class="pt-1 mb-5 text-center">Быстрый поиск и покупка билетов</h1>
             <div class="container_basic_content">
-                <div class="search_wrapper d-flex justify-content-center">
+                <div class="search_wrapper d-flex justify-content-center position-relative">
                     <div class="seacrh_input input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fas fa-search"></i>
+                            </span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
+                        <input id="livestream" name="livestream" type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-outline-light" type="button">Город</button>
                         </div>
                     </div>
+                    <div id="search-page" class="search-page bg-white seacrh_input position-absolute">
+                        <div>
+                         @*для площадок*@
+                        </div>
+                    
+                        <div id="search-events">
+                            <div id="result" class="tag-results d-flex flex-column"></div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="links">
                     <a href="#" class="link_day" role="button" aria-pressed="true">Афиша</a>
                     <a href="#" class="link_day" role="button" aria-pressed="true">Сегодня</a>
@@ -31,7 +43,9 @@
     <div class="main_info_card card_group row mx-0 justify-content-center mt-5">
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">Все</h2>
                 </div>
@@ -40,7 +54,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">билеты</h2>
                 </div>
@@ -49,7 +65,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">без</h2>
                 </div>
@@ -58,7 +76,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">наценки</h2>
                 </div>
@@ -69,255 +89,255 @@
 </div>
 
 <div class="events pt-3">
-    <div class="container">
-        <div class="row">
-            <div class="col-10">
-                <div class="categories">
-                    <div class="concerts">
-                        <div class="row justify-content-between">
-                            <div class="col-11">
-                                <h2 class="category-header">Концерты</h2>
-                            </div>
-                            <div class="col-1 p-0 ps-4">
-                                <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
-                                    <span class="icon-more">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+<div class="container">
+<div class="row">
+<div class="col-10">
+<div class="categories">
+<div class="concerts">
+    <div class="row justify-content-between">
+        <div class="col-11">
+            <h2 class="category-header">Концерты</h2>
+        </div>
+        <div class="col-1 p-0 ps-4">
+            <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
+                <span class="icon-more">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
 
-                        <div id="all-concerts" class="row">
-                            @foreach (var concert in Model.Concerts)
-                            {
-                                <div class="col-md-4">
-                                    <div class="card p-0">
-                                        <div class="card-block-img" onclick="Details('@concert.Id')">
-                                            <img src="@concert.PosterImage" alt="@concert.Name">
-                                            <div class="wrapper">
-                                                <div class="card-age">@concert.AgeLimit+</div>
-                                            </div>
-                                            <div class="card-tag">
-                                                <a href="#">Концерты</a>
-                                            </div>
-                                        </div>
-                                        <div class="card-block-description">
-                                            <div class="card-title" onclick="Details('@concert.Id')">
-                                                Концерт "@concert.Name"
-                                            </div>
-                                            <div class="card-description">
-                                                <div class="card-date">
-                                                    @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
-                                                </div>
-                                                <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
-                                                        @concert.Location.Name
-                                                    </a>
-                                                </div>
-                                                <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @concert.MinPrice сом
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
+    <div id="all-concerts" class="row">
+        @foreach (var concert in Model.Concerts)
+        {
+            <div class="col-md-4">
+                <div class="card p-0">
+                    <div class="card-block-img" onclick="Details('@concert.Id')">
+                        <img src="@concert.PosterImage" alt="@concert.Name">
+                        <div class="wrapper">
+                            <div class="card-age">@concert.AgeLimit+</div>
+                        </div>
+                        <div class="card-tag">
+                            <a href="#">Концерты</a>
                         </div>
                     </div>
-
-                    <div class="festivals">
-                        <div class="row justify-content-between">
-                            <div class="col-11">
-                                <h2 class="category-header">Фестивали</h2>
+                    <div class="card-block-description">
+                        <div class="card-title" onclick="Details('@concert.Id')">
+                            Концерт "@concert.Name"
+                        </div>
+                        <div class="card-description">
+                            <div class="card-date">
+                                @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
                             </div>
-                            <div class="col-1 p-0 ps-4">
-                                <a asp-controller="Category" asp-action="Festivals" class="more-btn round">
-                                    <span class="icon-more">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
+                            <div class="card-venue">
+                                <a class="card-venue-link" href="#">
+                                    @concert.Location.Name
                                 </a>
                             </div>
-                        </div>
-                        <div id="all-festivals" class="row row-cols-1 row-cols-md-3">
-                            @foreach (var festival in Model.Festivals)
-                            {
-                                <div class="col-md-4">
-                                    <div class="card p-0">
-                                        <div class="card-block-img" onclick="Details('@festival.Id')">
-                                            <img src="@festival.PosterImage" alt="@festival.Name">
-                                            <a href="#"></a>
-                                            <div class="wrapper">
-                                                <div class="card-age">@festival.AgeLimit+</div>
-                                            </div>
-                                            <div class="card-tag">
-                                                <a href="#">Фестивали</a>
-                                            </div>
-                                        </div>
-                                        <div class="card-block-description">
-                                            <div class="card-title" onclick="Details('@festival.Id')">Фестиваль"@festival.Name"</div>
-                                            <div class="card-description">
-                                                <div class="card-date">
-                                                    @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
-                                                </div>
-                                                <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
-                                                        @festival.Location.Name
-                                                    </a>
-                                                </div>
-                                                <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @festival.MinPrice сом
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div class="performances">
-                        <div class="row justify-content-between">
-                            <div class="col-11">
-                                <h2 class="category-header">Спектакли</h2>
-                            </div>
-                            <div class="col-1 p-0 ps-4">
-                                <a asp-controller="Category" asp-action="Performances" class="more-btn round">
-                                    <span class="icon-more">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                        <div id="all-performances" class="row row-cols-1 row-cols-md-3">
-                            @foreach (var performance in Model.Performances)
-                            {
-                                <div class="col-md-4">
-                                    <div class="card p-0">
-                                        <div class="card-block-img" onclick="Details('@performance.Id')">
-                                            <img src="@performance.PosterImage" alt="@performance.Name">
-                                            <a href="#"></a>
-                                            <div class="wrapper">
-                                                <div class="card-age">@performance.AgeLimit+</div>
-                                            </div>
-                                            <div class="card-tag">
-                                                <a href="#">Спектакли</a>
-                                            </div>
-                                        </div>
-                                        <div class="card-block-description">
-                                            <div class="card-title" onclick="Details('@performance.Id')">
-                                                Спектакль"@performance.Name"
-                                            </div>
-                                            <div class="card-description">
-                                                <div class="card-date">
-                                                    c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                    по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                </div>
-                                                <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
-                                                        @performance.Location.Name
-                                                    </a>
-                                                </div>
-                                                <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @performance.MinPrice сом
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div class="for-children">
-                        <div class="row justify-content-between">
-                            <div class="col-11">
-                                <h2 class="category-header">Детям</h2>
-                            </div>
-                            <div class="col-1 p-0 ps-4">
-                                <a asp-controller="Category" asp-action="Children" class="more-btn round">
-                                    <span class="icon-more">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                        <div id="all-for-children" class="row row-cols-1 row-cols-md-3">
-                            @foreach (var forChildren in Model.ForChildren)
-                            {
-                                <div class="col-md-4">
-                                    <div class="card p-0">
-                                        <div class="card-block-img" onclick="Details('@forChildren.Id')">
-                                            <img src="@forChildren.PosterImage" alt="@forChildren.Name">
-                                            <a href="#"></a>
-                                            <div class="wrapper">
-                                                <div class="card-age">@forChildren.AgeLimit+</div>
-                                            </div>
-                                            <div class="card-tag">
-                                                <a href="#">Детям</a>
-                                            </div>
-                                        </div>
-                                        <div class="card-block-description">
-                                            <div class="card-title" onclick="Details('@forChildren.Id')">@forChildren.Name</div>
-                                            <div class="card-description">
-                                                <div class="card-date">
-                                                    c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                    по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                </div>
-                                                <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
-                                                        @forChildren.Location.Name
-                                                    </a>
-                                                </div>
-                                                <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @forChildren.MinPrice сом
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div class="venues">
-                        <div class="row justify-content-between">
-                            <div class="col-11">
-                                <h2 class="category-header">Площадки Бишкека</h2>
-                            </div>
-                            <div class="col-1 p-0 ps-4">
-                                <a id="venues-link" class="more-btn round">
-                                    <span class="icon-more">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                        <div id="all-venues" class="row row-cols-1 row-cols-md-3">
-                            @foreach (var location in Model.Locations)
-                            {
-                                <div class="col-md-4 p-0">
-                                    <div class="card venues-card">
-                                        <a href="#" class="venue">
-                                            <div class="venue-card-img-container">
-                                                <span class="venue-card-placeholder">@location.Name.Substring(0, 1)</span>
-                                            </div>
-                                            <div class="venue-card-content">
-                                                <p class="venue-card-type">@location.Categories</p>
-                                                <p class="venue-card-title">@location.Name</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            }
+                            <a href="#" class="card-price">
+                                БИЛЕТЫ ОТ @concert.MinPrice сом
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-2">
-                @*фильтрация*@
-            </div>
+        }
+    </div>
+</div>
+
+<div class="festivals">
+    <div class="row justify-content-between">
+        <div class="col-11">
+            <h2 class="category-header">Фестивали</h2>
+        </div>
+        <div class="col-1 p-0 ps-4">
+            <a asp-controller="Category" asp-action="Festivals" class="more-btn round">
+                <span class="icon-more">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
         </div>
     </div>
+    <div id="all-festivals" class="row row-cols-1 row-cols-md-3">
+        @foreach (var festival in Model.Festivals)
+        {
+            <div class="col-md-4">
+                <div class="card p-0">
+                    <div class="card-block-img" onclick="Details('@festival.Id')">
+                        <img src="@festival.PosterImage" alt="@festival.Name">
+                        <a href="#"></a>
+                        <div class="wrapper">
+                            <div class="card-age">@festival.AgeLimit+</div>
+                        </div>
+                        <div class="card-tag">
+                            <a href="#">Фестивали</a>
+                        </div>
+                    </div>
+                    <div class="card-block-description">
+                        <div class="card-title" onclick="Details('@festival.Id')">Фестиваль"@festival.Name"</div>
+                        <div class="card-description">
+                            <div class="card-date">
+                                @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
+                            </div>
+                            <div class="card-venue">
+                                <a class="card-venue-link" href="#">
+                                    @festival.Location.Name
+                                </a>
+                            </div>
+                            <a href="#" class="card-price">
+                                БИЛЕТЫ ОТ @festival.MinPrice сом
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="performances">
+    <div class="row justify-content-between">
+        <div class="col-11">
+            <h2 class="category-header">Спектакли</h2>
+        </div>
+        <div class="col-1 p-0 ps-4">
+            <a asp-controller="Category" asp-action="Performances" class="more-btn round">
+                <span class="icon-more">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+    <div id="all-performances" class="row row-cols-1 row-cols-md-3">
+        @foreach (var performance in Model.Performances)
+        {
+            <div class="col-md-4">
+                <div class="card p-0">
+                    <div class="card-block-img" onclick="Details('@performance.Id')">
+                        <img src="@performance.PosterImage" alt="@performance.Name">
+                        <a href="#"></a>
+                        <div class="wrapper">
+                            <div class="card-age">@performance.AgeLimit+</div>
+                        </div>
+                        <div class="card-tag">
+                            <a href="#">Спектакли</a>
+                        </div>
+                    </div>
+                    <div class="card-block-description">
+                        <div class="card-title" onclick="Details('@performance.Id')">
+                            Спектакль"@performance.Name"
+                        </div>
+                        <div class="card-description">
+                            <div class="card-date">
+                                c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                            </div>
+                            <div class="card-venue">
+                                <a class="card-venue-link" href="#">
+                                    @performance.Location.Name
+                                </a>
+                            </div>
+                            <a href="#" class="card-price">
+                                БИЛЕТЫ ОТ @performance.MinPrice сом
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="for-children">
+    <div class="row justify-content-between">
+        <div class="col-11">
+            <h2 class="category-header">Детям</h2>
+        </div>
+        <div class="col-1 p-0 ps-4">
+            <a asp-controller="Category" asp-action="Children" class="more-btn round">
+                <span class="icon-more">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+    <div id="all-for-children" class="row row-cols-1 row-cols-md-3">
+        @foreach (var forChildren in Model.ForChildren)
+        {
+            <div class="col-md-4">
+                <div class="card p-0">
+                    <div class="card-block-img" onclick="Details('@forChildren.Id')">
+                        <img src="@forChildren.PosterImage" alt="@forChildren.Name">
+                        <a href="#"></a>
+                        <div class="wrapper">
+                            <div class="card-age">@forChildren.AgeLimit+</div>
+                        </div>
+                        <div class="card-tag">
+                            <a href="#">Детям</a>
+                        </div>
+                    </div>
+                    <div class="card-block-description">
+                        <div class="card-title" onclick="Details('@forChildren.Id')">@forChildren.Name</div>
+                        <div class="card-description">
+                            <div class="card-date">
+                                c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                            </div>
+                            <div class="card-venue">
+                                <a class="card-venue-link" href="#">
+                                    @forChildren.Location.Name
+                                </a>
+                            </div>
+                            <a href="#" class="card-price">
+                                БИЛЕТЫ ОТ @forChildren.MinPrice сом
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="venues">
+    <div class="row justify-content-between">
+        <div class="col-11">
+            <h2 class="category-header">Площадки Бишкека</h2>
+        </div>
+        <div class="col-1 p-0 ps-4">
+            <a id="venues-link" class="more-btn round">
+                <span class="icon-more">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+    <div id="all-venues" class="row row-cols-1 row-cols-md-3">
+        @foreach (var location in Model.Locations)
+        {
+            <div class="col-md-4 p-0">
+                <div class="card venues-card">
+                    <a href="#" class="venue">
+                        <div class="venue-card-img-container">
+                            <span class="venue-card-placeholder">@location.Name.Substring(0, 1)</span>
+                        </div>
+                        <div class="venue-card-content">
+                            <p class="venue-card-type">@location.Categories</p>
+                            <p class="venue-card-title">@location.Name</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+</div>
+</div>
+<div class="col-2">
+    @*фильтрация*@
+</div>
+</div>
+</div>
 </div>
 
 @section scripts{
@@ -379,7 +399,35 @@
         });
 
         function Details(eventId) {
-                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+                window.location.href = '@Url.Action("Details", "Event")?id=' + eventId;
         }
+        
+        document.getElementById('livestream').addEventListener('keyup', function (e) {
+                    LiveSearch()
+                   });
+        function LiveSearch() {
+            let value = document.getElementById('livestream').value
+            $.ajax({
+                type: "GET", 
+                url: '@Url.Action("Search", "Home")',
+                data: {search: value },
+                datatype: "html",
+                success: 
+                 function (data) {
+                    console.log('OK')
+                          $('#result').html(data);
+                         }
+                });
+            
+            let timeout = null;
+            
+            document.getElementById('livestream').addEventListener('keyup', function (e) {  
+                  clearTimeout(timeout);
+            
+                  timeout = setTimeout(function () {
+                         LiveSearch()
+                  }, 200);
+             });
+        }    
     </script>
 }

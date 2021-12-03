@@ -305,6 +305,12 @@ body {
     max-width: 960px;
 }
 
+.search-page{
+    width: 100%;
+    top: 50px;
+    border-radius: 3px;
+}
+
 .link_day {
     color: #2b2b2b;
     font-weight: 700;

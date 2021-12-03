@@ -136,18 +136,6 @@ namespace LetsGo.Services
         }
 
 
-        public static string GenerateCode()
-        {
-            StringBuilder builder = new StringBuilder(6);
-            Random random = new Random();
-            for (var i = 1; i <= 12; i++)
-            {
-                builder.Append(random.Next(10));
-            }
-            string UC = builder.ToString();
-            return UC;
-        }
-
         public async Task<EditEventViewModel> MakeEditEventViewModel(string id)
         {
             Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == id);
@@ -166,6 +154,10 @@ namespace LetsGo.Services
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
             categories.Remove(other);
             categories.Add(other);
+            foreach (var item in System.Text.Json.JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories))
+            {
+                categories.FirstOrDefault(c => c.Text == item.Name).Selected = true;
+            }
 
             EditEventViewModel editEvent = new EditEventViewModel
             {
@@ -315,6 +307,24 @@ namespace LetsGo.Services
                 return true;
             }
             return false;
+        }
+
+
+
+
+
+
+
+        public static string GenerateCode()
+        {
+            StringBuilder builder = new StringBuilder(6);
+            Random random = new Random();
+            for (var i = 1; i <= 12; i++)
+            {
+                builder.Append(random.Next(10));
+            }
+            string UC = builder.ToString();
+            return UC;
         }
     }
 }

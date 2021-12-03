@@ -57,19 +57,19 @@
                 </div>
                 <a asp-action="Add" asp-controller="Event" class="btn btn-danger px-3" >+ Добавить мероприятие</a>
             </div>
-           @if (User.IsInRole("organizer"))
+           @if (Model.IsOrganizer)
            {
                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
            }
-                else
-                {
-                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
-                }
+            else
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+            }
         </div>
     }
     else
-    { 
-        <p>Мероприятия еще не былии добавлены.</p>
+    {
+        <p>Мероприятия еще не были добавлены.</p>
     }
 </div>
 

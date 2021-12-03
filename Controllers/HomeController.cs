@@ -59,7 +59,8 @@ namespace LetsGo.Controllers
         
         public IActionResult Search(string search)
         {
-            var result = _db.Events.Where(x => x.Name.Contains(search) || x.Location.Name.Contains(search)).ToList();
+            var result = _db.Events.Include(x => x.Location).
+                Where(x => x.Name.Contains(search) || x.Location.Name.Contains(search)).ToList();
             return PartialView(result);
         }
 

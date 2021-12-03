@@ -10,11 +10,12 @@ html {
 }
 
 .page-content {
-    margin-bottom: 180px;
+    margin-bottom: 50px;
 }
 
 .navbar {
     z-index: 98;
+    top:0;
 }
 
 .nav-start {

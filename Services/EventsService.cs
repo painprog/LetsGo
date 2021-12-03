@@ -44,10 +44,10 @@ namespace LetsGo.Services
                 pathImage = "/images/gradient.jpeg";
 
             string categoriesJson = String.Empty;
-            if (eventView.Categories.Where(x => x.Selected == true).Count() == 0)
+            if (eventView.Categories.Where(x => x.Selected).Count() == 0)
             {
-                var categories = _goContext.EventCategories.Where(c => c.Name == "Другое");
-                categoriesJson = JsonConvert.SerializeObject(categories);
+                var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
+                categoriesJson = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {

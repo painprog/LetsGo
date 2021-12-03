@@ -35,16 +35,13 @@ namespace LetsGo.Controllers
 
         public async Task<IActionResult> Add()
         {
+            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
+            var other = categories.FirstOrDefault(l => l.Text == "Другое");
+            categories.Remove(other);
+            categories.Add(other);
             AddEventViewModel model = new AddEventViewModel()
             {
-                Categories = _goContext.EventCategories.Where(c => c.Name != "Другое")
-                .Select(x => new SelectListItem()
-                {
-                    Text = x.Name,
-                    Value = x.Id
-                }).ToList(),
-                EventStart = null,
-                EventEnd = null
+                Categories = categories
             };
 
             ViewBag.Locations = await _goContext.Locations.ToListAsync();

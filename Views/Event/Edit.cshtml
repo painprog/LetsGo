@@ -119,7 +119,6 @@
                     <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
                     <button class="btn btn-primary" type="button" onclick="AddTicket()">Добавить билет</button>
                 </div>
-                <input type="hidden" asp-for="Tickets" id="final_tickets" />
                 <input type="hidden" asp-for="TicketsForDel" id="deleted_tickets" />
             </div>
             <hr />
@@ -186,8 +185,7 @@
                     `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
                     `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
                     `<td><input class="ticket_price form-control" value="${price.val()}" type="number"/></td>` +
-                    '</td><td><input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" />' +
-                    '</td></tr>');
+                    '</td><td><input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" /></td></tr>');
                 name.val('');
                 desc.val('');
                 count.val('');

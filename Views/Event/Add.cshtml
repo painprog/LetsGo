@@ -142,6 +142,18 @@
     function DeleteTicket(a) {
         totalTickets.text(parseInt(totalTickets.text()) - parseInt($(a).closest('tr').find('td').eq(2).text()));
         $(a).closest('tr').remove()
+        }
+
+    function getTicketsData() {
+        var tickets = [];
+        $('.tickets-table tbody tr').each(function () {
+            tickets.push(
+                '{"Name":"' + $(this).find('input').eq(0).val() + '",' +
+                '"Description":"' + $(this).find('input').eq(1).val() + '",' +
+                '"Count":' + $(this).find('input').eq(2).val() + ',' +
+                '"Price":' + $(this).find('input').eq(3).val() + '}');
+        });
+        return tickets;
     }
 
     $('form').submit(function () {
@@ -155,15 +167,8 @@
         })
         $('#Categories').val(categories);
         // tickets
-        var tickets = [];
-        $('.tickets-table tbody tr').each(function () {
-            tickets.push(
-                '{"Name":"' + $(this).find('input').eq(0).val() + '",' +
-                '"Description":"' + $(this).find('input').eq(1).val() + '",' +
-                '"Count":' + $(this).find('input').eq(2).val() + ',' +
-                '"Price":' + $(this).find('input').eq(3).val() + '}');
-        });
-        $('#Tickets').val("[" + tickets.join() + "]");
+        
+        $('#Tickets').val("[" + getTicketsData().join() + "]");
         var formData = new FormData(this);
         $.ajax({
             url: '@Url.Action("Add", "Event")',

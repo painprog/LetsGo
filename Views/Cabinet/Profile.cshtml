@@ -93,7 +93,7 @@
         let _id;
         let _status;
         //Скрипты для действий в один клик
-        $('.requestForUnpublish').on('click', function () {
+        $('.requestForUnPublish').on('click', function () {
             _id = this.id;
             _status = 'ReviewUnPublished';
             quickSend();
@@ -107,11 +107,24 @@
 
         $('.accept').on('click', function() {
             _id = this.id;
-            _status = 'Publish';
+            _status = 'Published';
             quickSend();
         })
 
+        $('.cancelReviewPublish').click(function () {
+            _id = this.id;
+            _status = 'UnPublished';
+            quickSend();
+        });
+
+        $('.cancelReviewUnPublish').click(function () {
+            _id = this.id;
+            _status = 'Published';
+            quickSend();
+        });
+
         function quickSend() {
+            event.preventDefault();
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
                 type: 'POST',
@@ -136,10 +149,11 @@
 
         $('.unpublish').on('click', function () {
             _id = this.id;
-            _status = 'Unpublish';
+            _status = 'UnPublished';
         })
 
         $('#cause-confirm').on('click', () => {
+            event.preventDefault();
             let cause = $('textarea#cause-text').val();
             $('textarea#cause-text').val('');
             $.ajax({

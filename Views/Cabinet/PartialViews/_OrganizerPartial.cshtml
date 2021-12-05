@@ -3,8 +3,8 @@
     @foreach (var item in Model.Events)
     {
         <div class="card mb-3 event-card" style="border-radius: 15px">
-            <div id="event-status" style="display:none;" onclick="eventDetails('@item.Id')">@item.Status</div>
-            <div class="row">
+            <div id="event-status" style="display:none;">@item.Status</div>
+            <div class="row" onclick="eventDetails('@item.Id')">
                 <div class="pn-page-head col-lg-10" style="border-radius: 0">
                     <img class="blur_img" src="@item.PosterImage" alt="">
                     <div class="row">
@@ -30,38 +30,80 @@
                     <p>
                         куплено: @item.Sold<br />
                         @{ var remainder = item.TicketLimit - item.Sold;}
-                        осталось: @remainder
+                        осталось: <text>@(@item.Count - @item.Sold)</text>
                     </p>
-                    @switch (item.Status)
-                    {
-                        case Status.NotDefined:
-                            //to do smth
-                            break;
-                        case Status.Edited:
-                            //to do smth
-                            break;
-                        case Status.Rejected:
-                            <button type="button" class="btn btn-danger requestForPublish m-1" id="@item.Id">Отправить заявку повтороно</button><br />
-                            <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
-                            break;
-                        case Status.New:
-                            <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
-                            <p>Ожидайте одобрения админа</p>
-                            break;
-                        case Status.Published:
-                            <button type="button" class="btn btn-danger  requestForPublish" id="@item.Id">Снять с публикации</button>
-                            break;
-                        case Status.UnPublished:
-                            <button type="button" class="btn btn-danger requestForPublish m-1" id="@item.Id">Отправить заявку повтороно</button><br />
-                            <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
-                            break;
-                        case Status.Expired:
-                            <p>Мероприятие уже прошло</p><br />
-                            break;
-                    }
+                </div> 
+            </div>
+            <div class="text-center align-content-between admin-event pt-2">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <span>Статус: </span>
+                        @switch (item.Status) 
+                        {
+                            case Status.NotDefined:
+                                <span>Ошибка</span>
+                                break;
+                            case Status.Edited:
+                                // feature
+                                break;
+                            case Status.Rejected:
+                                <span>Отклонен</span>
+                                break;
+                            case Status.New:
+                                <span>Ожидание принятия</span>
+                                break;
+                            case Status.Published:
+                                <span>Опубликован</span>
+                                break;
+                            case Status.UnPublished:
+                                <span>Снят с публикации</span>
+                                break;
+                            case Status.ReviewPublished:
+                                <span>Ожидание добавления</span>
+                                break;
+                            case Status.ReviewUnPublished:
+                                <span>Ожидание снятия</span>
+                                break;
+                            case Status.Expired:
+                                <span>Мероприятие уже прошло</span>
+                                break;
+                        }
+                    </div>
+                    <div class="col-lg-10">
+                        @switch (item.Status)
+                        {
+                            case Status.NotDefined:
+                                //to do smth
+                                break;
+                            case Status.Edited:
+                                //to do smth
+                                break;
+                            case Status.Rejected:
+                                <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span> Отредактировать и отправить снова</a>
+                                break;
+                            case Status.New:
+                                <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                                break;
+                            case Status.Published:
+                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 requestForUnPublish" id="@item.Id">Снять с публикации</button>
+                                break;
+                            case Status.UnPublished:
+                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 requestForPublish" id="@item.Id">Отправить заявку повтороно</button><br />
+                                <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                                break;
+                            case Status.ReviewPublished:
+                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 cancelReviewPublish" id="@item.Id">Отменить запрос возвращения</button>
+                                break;
+                            case Status.ReviewUnPublished:
+                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 cancelReviewUnPublish">Отменить запрос снятия</button>
+                                break;
+                            case Status.Expired:
+                                break;
+                        }
+                    </div>
                 </div>
             </div>
-            <div class="text-light bg-danger text-center align-content-between admin-event px-2">
+            <div class="text-light bg-danger text-center align-content-between admin-event px-2" style="line-height: 40px">
                 @switch (item.Status)
                 {
                     case Status.Rejected:

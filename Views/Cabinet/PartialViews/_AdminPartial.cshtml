@@ -30,50 +30,88 @@
                     <p>
                         куплено: @item.Sold<br />
                         @{ var remainder = item.TicketLimit - item.Sold;}
-                        осталось: @remainder
+                        осталось: <text>@(@item.Count - @item.Sold)</text>
                     </p>
                 </div>
             </div>
-            <div class="text-light bg-danger text-center align-content-between admin-event pt-2">
-                @switch (item.Status)
-                {
-                    case Status.NotDefined:
-                        //?
-                        break;
-                    case Status.Edited:
-                        //Что-то к edit
-                        break;
-                    case Status.Rejected:
-                        //Что-то к отказу
-                        break;
-                    case Status.New:
-                        <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять</button>
-                        <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
-                            Отклонить
-                        </button>
-                        break;
-                    case Status.Published:
-                        <button type="button" class="btn btn-danger px-3 ml-4 mb-2 unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
-                            Снять с публикации
-                        </button>
-                        break;
-                    case Status.UnPublished:
-                        <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
-                        break;
-                    case Status.Expired:
-                        <p>Мероприятие уже прошло</p><br />
-                        break;
-                    case Status.ReviewPublished:
-                        <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять повторно (?)</button>
-                        <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
-                            Отклонить
-                        </button>
-                        break;
-                    case Status.ReviewUnPublished:
-                        break;
-                }
-                <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')">edit</span>
-                <span class="material-icons px-3 py-2">delete</span>
+            <div class="text-center align-content-between admin-event pt-2">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <span>Статус: </span>
+                        @switch (item.Status) 
+                        {
+                            case Status.NotDefined:
+                                <span>Ошибка</span>
+                                break;
+                            case Status.Edited:
+                                // feature
+                                break;
+                            case Status.Rejected:
+                                <span>Отклонен</span>
+                                break;
+                            case Status.New:
+                                <span>Ожидание принятия</span>
+                                break;
+                            case Status.Published:
+                                <span>Опубликован</span>
+                                break;
+                            case Status.UnPublished:
+                                <span>Снят с публикации</span>
+                                break;
+                            case Status.ReviewPublished:
+                                <span>Ожидание добавления</span>
+                                break;
+                            case Status.ReviewUnPublished:
+                                <span>Ожидание снятия</span>
+                                break;
+                            case Status.Expired:
+                                <span>Мероприятие уже прошло</span>
+                                break;
+                        }
+                    </div>
+                    <div class="col-lg-10">
+                        @switch (item.Status)
+                        {
+                            case Status.NotDefined:
+                                //?
+                                break;
+                            case Status.Edited:
+                                //Что-то к edit
+                                break;
+                            case Status.Rejected:
+                                //Что-то к отказу
+                                break;
+                            case Status.New:
+                                <button class="btn btn-success px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отклонить
+                                </button>
+                                break;
+                            case Status.Published:
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Снять с публикации
+                                </button>
+                                break;
+                            case Status.UnPublished:
+                                <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
+                                break;
+                            case Status.Expired:
+                                <p>Мероприятие уже прошло</p><br />
+                                break;
+                            case Status.ReviewPublished:
+                                <button class="btn btn-primary px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Одобрить возвращение в публикации</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отклонить
+                                </button>
+                                break;
+                            case Status.ReviewUnPublished:
+                                <button class="btn btn-primary">Одобрить снятие с публикации</button>
+                                break;
+                        }
+                        <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')">edit</span>
+                        @*<span class="material-icons px-3 py-2">delete</span>*@
+                    </div>
+                </div>
             </div>
         </div>
     }

@@ -107,6 +107,7 @@ namespace LetsGo.Services
 
         public async Task<List<EventTicketType>> UpdateEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
         {
+            int count = 0;
             foreach (var type in ticketTypes)
             {
                 if (String.IsNullOrEmpty(type.Id))
@@ -118,8 +119,12 @@ namespace LetsGo.Services
                 {
                     _goContext.EventTicketTypes.Update(type);
                 }
+                count += type.Count;
                 cache.Set(type.Id, type, new MemoryCacheEntryOptions());
             }
+            Event @event = _goContext.Events.FirstOrDefault(e => e.Id == eventId);
+            @event.Count = count;
+            _goContext.Events.Update(@event);
             await _goContext.SaveChangesAsync();
             return ticketTypes;
         }
@@ -149,7 +154,7 @@ namespace LetsGo.Services
             //else
             //    CategoriesList.Add(categs);
 
-            var categories = _goContext.LocationCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
+            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
             categories.Remove(other);
             categories.Add(other);
@@ -238,7 +243,6 @@ namespace LetsGo.Services
                         new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                 }
             }
-
             return Event;
         }
 
@@ -249,22 +253,22 @@ namespace LetsGo.Services
             return Events;
         }
 
-        public async Task<List<EventCategory>> GetEventCategories(string jsonEventCategories)
-        {
-            string eventCategories = System.Text.Json.JsonSerializer.Deserialize<string>(jsonEventCategories);
-            List<string> CategoriesList = new List<string>();
-            if (eventCategories.Contains(','))
-            {
-                string[] catesgInArray = eventCategories.Split(new char[] { ',' });
-                CategoriesList.AddRange(catesgInArray);
-            }
-            else
-                CategoriesList.Add(eventCategories);
-            List<EventCategory> Categories = new List<EventCategory>();
-            foreach (var item in CategoriesList)
-                Categories.Add(await _goContext.EventCategories.FirstOrDefaultAsync(e => e.Name == item));
-            return Categories;
-        }
+        //public async Task<List<EventCategory>> GetEventCategories(string jsonEventCategories)
+        //{
+        //    string eventCategories = System.Text.Json.JsonSerializer.Deserialize<string>(jsonEventCategories);
+        //    List<string> CategoriesList = new List<string>();
+        //    if (eventCategories.Contains(','))
+        //    {
+        //        string[] catesgInArray = eventCategories.Split(new char[] { ',' });
+        //        CategoriesList.AddRange(catesgInArray);
+        //    }
+        //    else
+        //        CategoriesList.Add(eventCategories);
+        //    List<EventCategory> Categories = new List<EventCategory>();
+        //    foreach (var item in CategoriesList)
+        //        Categories.Add(await _goContext.EventCategories.FirstOrDefaultAsync(e => e.Name == item));
+        //    return Categories;
+        //}
 
         public async Task<bool> ChangeStatus(string status, string eventId, string cause)
         {
@@ -273,7 +277,7 @@ namespace LetsGo.Services
             {
                 switch (status)
                 {
-                    case "Publish":
+                    case "Published":
                         @event.Status = Status.Published;
                         @event.StatusDescription = "Ok";
                         break;
@@ -281,7 +285,7 @@ namespace LetsGo.Services
                         @event.Status = Status.Rejected;
                         @event.StatusDescription = cause;
                         break;
-                    case "Unpublish":
+                    case "UnPublished":
                         @event.Status = Status.UnPublished;
                         @event.StatusDescription = cause;
                         break;

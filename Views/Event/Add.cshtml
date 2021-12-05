@@ -56,7 +56,7 @@
                     <input type="hidden" asp-for="@Model.Categories[i].Value" />
                     <input type="hidden" asp-for="@Model.Categories[i].Text" />
                     <input class="form-check-input" asp-for="Categories[i].Selected" />
-                    <label class="form-check-label">
+                    <label class="form-check-label" asp-for="Categories[i].Selected">
                         @Model.Categories[i].Text
                     </label>
                 </div>

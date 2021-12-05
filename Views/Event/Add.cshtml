@@ -19,13 +19,13 @@
         </div>
         <div class="form-group">
             <label asp-for="Location"></label><br />
-            <input asp-for="Location" class="form-control input-field" list='locations'/>
-            <datalist id='locations'>
+            <select id="locations" asp-for="Location" style="width: 100%">
+                <option></option>
                 @foreach (var item in ViewBag.Locations)
                 {
-                    <option>@item.Name</option>
+                    <option id="@item.Name">@item.Name</option>
                 }
-            </datalist>
+            </select>
             <span asp-validation-for="Location" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -97,8 +97,17 @@
 
 @section scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
     <script>
+        $(document).ready(function () {
+            $('#locations').select2({
+                placeholder: "Выберите место проведения",
+                allowClear: true,
+                theme: "bootstrap-5"
+            });
+        });
     let totalTickets = $('#total-tickets');
 
     function AddTicket() {

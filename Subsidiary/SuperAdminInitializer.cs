@@ -26,6 +26,7 @@ namespace LetsGo.Subsidiary
             if (await _userManager.FindByNameAsync(superAdminEmail) == null)
             {
                 User superAdmin = new User { Email = superAdminEmail, UserName = superAdminLogin};
+                superAdmin.EmailConfirmed = true;
                 IdentityResult result = await _userManager.CreateAsync(superAdmin, superAdminPassword);
                 if (result.Succeeded)
                     await _userManager.AddToRoleAsync(superAdmin, "superadmin");

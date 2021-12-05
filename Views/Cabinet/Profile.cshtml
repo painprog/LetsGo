@@ -111,7 +111,8 @@
             quickSend();
         })
 
-        $('.cancelReviewPublish').click(function () {
+        $('.cancelReviewPublish').add('.unPublished').on('click', function () {
+            console.log('asdladasda');
             _id = this.id;
             _status = 'UnPublished';
             quickSend();
@@ -150,6 +151,11 @@
         $('.unpublish').on('click', function () {
             _id = this.id;
             _status = 'UnPublished';
+        })
+
+        $('.denyUnPublished').on('click', function () {
+            _id = this.id;
+            _status = 'Published';
         })
 
         $('#cause-confirm').on('click', () => {

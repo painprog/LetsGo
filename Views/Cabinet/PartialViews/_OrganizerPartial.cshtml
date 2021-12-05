@@ -85,7 +85,7 @@
                                 <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                                 break;
                             case Status.Published:
-                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 requestForUnPublish" id="@item.Id">Снять с публикации</button>
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 requestForUnPublish" id="@item.Id">Снять с публикации</button>
                                 break;
                             case Status.UnPublished:
                                 <button type="button" class="btn btn-info px-3 ml-4 mb-2 requestForPublish" id="@item.Id">Отправить заявку повтороно</button><br />

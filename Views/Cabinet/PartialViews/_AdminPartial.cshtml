@@ -95,9 +95,6 @@
                             case Status.UnPublished:
                                 <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
                                 break;
-                            case Status.Expired:
-                                <p>Мероприятие уже прошло</p><br />
-                                break;
                             case Status.ReviewPublished:
                                 <button class="btn btn-primary px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Одобрить возвращение в публикации</button>
                                 <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
@@ -105,7 +102,13 @@
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
-                                <button class="btn btn-primary">Одобрить снятие с публикации</button>
+                                <button class="btn btn-primary px-3 ml-4 mb-2 unPublished" type="button" id="@item.Id">Одобрить снятие с публикации</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2 denyUnPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отклонить
+                                </button>
+                                break;
+                            case Status.Expired:
+                                <p>Мероприятие уже прошло</p><br />
                                 break;
                         }
                         <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')">edit</span>

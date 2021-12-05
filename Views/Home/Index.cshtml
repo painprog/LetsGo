@@ -16,10 +16,10 @@
                     </div>
                 </div>
                 <div class="links">
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Афиша</a>
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Сегодня</a>
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Завтра</a>
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Выходные</a>
+                    <a onclick="Afisha()" role="button" aria-pressed="true">Афиша</a>
+                    <a onclick="Today()" role="button" aria-pressed="true">Сегодня</a>
+                    <a onclick="Tomorrow()" role="button" aria-pressed="true">Завтра</a>
+                    <a onclick="Weekends()" role="button" aria-pressed="true">Выходные</a>
                 </div>
                 <div class="icon_buttons align-content-center">
                     <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn far fa-calendar-alt"></i>Календарь</button>
@@ -380,6 +380,22 @@
 
         function Details(eventId) {
                 window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+        }
+
+        function Afisha() {
+                window.location.href = '@Url.Action("Afisha", "Event")';
+        }
+
+        function Today() {
+                window.location.href = '@Url.Action("Today", "Event")';
+        }
+
+        function Tomorrow() {
+                window.location.href = '@Url.Action("Tomorrow", "Event")';
+        }
+
+        function Weekends() {
+                window.location.href = '@Url.Action("Weekends", "Event")';
         }
     </script>
 }

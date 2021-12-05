@@ -245,6 +245,8 @@ body {
     color: rgb(43, 43, 43);
     background-color: rgb(247, 247, 247);
     line-height: 1.42857;
+    position: relative;
+    min-height: 100vh;
 }
 
 .footer {
@@ -258,6 +260,10 @@ body {
     line-height: 1.42857;
     display: flex;
     justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 10rem;
 }
 
 .footer-flex {
@@ -349,7 +355,7 @@ body {
     max-width: 960px;
 }
 
-.link_day {
+.links a {
     color: #2b2b2b;
     font-weight: 700;
     font-size: 12px;
@@ -460,7 +466,7 @@ body {
     font-size: 24px;
     font-weight: 700;
     margin-top: 7px;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
     line-height: 1.1;
 }
 
@@ -520,7 +526,7 @@ body {
     margin: 15px 15px 0 0;
 }
 
-.events .card a:hover, .btn-showmore:hover, .link_day:hover, .events .card-title:hover {
+.events .card a:hover, .btn-showmore:hover, .links a:hover:not([tabindex]), .events .card-title:hover {
     color: crimson;
     text-decoration: none;
 }
@@ -959,18 +965,18 @@ body {
     text-decoration: underline !important;
 }
 
-.category-page {
+.events-page {
     margin: 20px 200px 20px 0;
 }
 
-    .category-page h2 {
+    .events-page h2 {
         margin-bottom: 30px;
         font-size: 24px;
         font-weight: 700;
         line-height: 1.1;
     }
 
-    .category-page .col-md-4 {
+    .events-page .col-md-4 {
         padding-left: 0;
     }
 
@@ -1180,5 +1186,13 @@ body {
 
     .sidenav{
         width:100vw;
+    }
+
+    .footer {
+        height: 14rem;
+    }
+
+    .entry-form{
+        margin: 20px;
     }
 }

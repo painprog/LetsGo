@@ -208,8 +208,9 @@
             let extickets = document.getElementsByClassName('ticket');
             let tickets = [];
             for (let i = 0; i < extickets.length; i++) {
+                var ticketId = ticketsData[0 + 7 * i].value;
                 tickets.push(
-                    '{"Id":"' + ticketsData[0 + 7 * i].value + '",' +
+                    '{"Id":' + (ticketId != "" ? '"' + ticketId + '"': null) + ',' +
                     '"Name":"' + ticketsData[2 + 7 * i].value + '",' +
                     '"Description":"' + ticketsData[3 + 7 * i].value + '",' +
                     '"Count":' + ticketsData[4 + 7 * i].value + ',' +

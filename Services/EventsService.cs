@@ -111,7 +111,6 @@ namespace LetsGo.Services
             {
                 if (String.IsNullOrEmpty(type.Id))
                 {
-                    type.Id = Guid.NewGuid().ToString();
                     type.EventId = eventId;
                     _goContext.EventTicketTypes.Add(type);
                 }

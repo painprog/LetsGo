@@ -79,17 +79,16 @@
                                 //to do smth
                                 break;
                             case Status.Rejected:
-                                <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span> Отредактировать и отправить снова</a>
+                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span> Отредактировать и отправить снова</a>
                                 break;
                             case Status.New:
-                                <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                                 break;
                             case Status.Published:
-                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 requestForUnPublish" id="@item.Id">Снять с публикации</button>
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 requestForUnPublish" id="@item.Id">Отправить заявку: снять с публикации</button>
                                 break;
                             case Status.UnPublished:
-                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 requestForPublish" id="@item.Id">Отправить заявку повтороно</button><br />
-                                <a class="btn btn-danger p-0 m-1" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                                <button type="button" class="btn btn-info px-3 ml-4 mb-2 requestForPublish" id="@item.Id">Отправить заявку: опубликовать</button><br />
                                 break;
                             case Status.ReviewPublished:
                                 <button type="button" class="btn btn-info px-3 ml-4 mb-2 cancelReviewPublish" id="@item.Id">Отменить запрос возвращения</button>
@@ -104,16 +103,23 @@
                 </div>
             </div>
             <div class="text-light bg-danger text-center align-content-between admin-event px-2" style="line-height: 40px">
-                @switch (item.Status)
+                @if (item.StatusDescription != null && item.StatusDescription != "Ok")
                 {
-                    case Status.Rejected:
-                        <span>Отказано по причине: @item.StatusDescription</span>
-                        break;
-                    case Status.UnPublished:
-                        <span>Снято с публикации по причине: @item.StatusDescription</span>
-                        break;
+                    @switch (item.Status)
+                    {
+                        case Status.Published:
+                            <span>Отказано в снятии по причине: </span>
+                            break;
+                        case Status.UnPublished:
+                            <span>Отказано в публикации по причине: </span>
+                            break;
+                        case Status.Rejected:
+                            <span>Отказано по причине: </span>
+                            break;
+                    }
+                    <span>@item.StatusDescription</span>
                 }
             </div>
         </div>
     }
-    </div>
+</div>

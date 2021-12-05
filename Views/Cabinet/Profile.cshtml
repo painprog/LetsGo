@@ -105,7 +105,7 @@
             quickSend();
         })
 
-        $('.accept').on('click', function() {
+        $('.accept').add('.cancelReviewUnPublish').on('click', function() {
             _id = this.id;
             _status = 'Published';
             quickSend();
@@ -115,12 +115,6 @@
             console.log('asdladasda');
             _id = this.id;
             _status = 'UnPublished';
-            quickSend();
-        });
-
-        $('.cancelReviewUnPublish').click(function () {
-            _id = this.id;
-            _status = 'Published';
             quickSend();
         });
 
@@ -148,7 +142,7 @@
             _status = 'Rejected'
         })
 
-        $('.unpublish').on('click', function () {
+        $('.unpublish').add('.denyPublished').on('click', function () {
             _id = this.id;
             _status = 'UnPublished';
         })

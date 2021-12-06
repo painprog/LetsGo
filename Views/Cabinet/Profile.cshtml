@@ -92,33 +92,34 @@
     <script>
         let _id;
         let _status;
+        let _div;
         //Скрипты для действий в один клик
         $('.requestForUnPublish').on('click', function () {
             _id = this.id;
             _status = 'ReviewUnPublished';
-            quickSend();
+            quickSend(this);
         })
 
         $('.requestForPublish').on('click', function () {
             _id = this.id;
             _status = 'ReviewPublished';
-            quickSend();
+            quickSend(this);
         })
 
         $('.accept').add('.cancelReviewUnPublish').on('click', function() {
             _id = this.id;
             _status = 'Published';
-            quickSend();
+            quickSend(this);
         })
 
         $('.cancelReviewPublish').add('.unPublished').on('click', function () {
-            console.log('asdladasda');
             _id = this.id;
             _status = 'UnPublished';
-            quickSend();
+            quickSend(this);
         });
 
-        function quickSend() {
+        function quickSend(elem) {
+            console.log(_id + " " + _status)
             event.preventDefault();
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
@@ -130,7 +131,8 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        //to do smth
+                        var div = $(elem).closest('.card');
+                        div.hide('slow');
                     }
                 }
             })
@@ -139,17 +141,20 @@
         //Скрипты для действий с указанием причины
         $('.deny').on('click', function () {
             _id = this.id;
-            _status = 'Rejected'
+            _status = 'Rejected';
+            _div = $(this).closest('.card');
         })
 
         $('.unpublish').add('.denyPublished').on('click', function () {
             _id = this.id;
             _status = 'UnPublished';
+            _div = $(this).closest('.card');
         })
 
         $('.denyUnPublished').on('click', function () {
             _id = this.id;
             _status = 'Published';
+            _div = $(this).closest('.card');
         })
 
         $('#cause-confirm').on('click', () => {
@@ -167,11 +172,15 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        //to do smth
+                        _div.hide('slow');
                     }
                 }
             })
         })
+
+        function disableCard(elem) {
+            $(elem).closest('card').prop('disabled', true);
+        }
 
         function eventDetails(eventId) {
             window.location.href = '@Url.Action("Details","Event")?id=' + eventId;

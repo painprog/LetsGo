@@ -1,4 +1,5 @@
 ﻿using LetsGo.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,10 @@ namespace LetsGo.ViewModels
     {
         public User User { get; set; }
         public List<Event> Events { get; set; }
+        public DateTime DateBefore { get; set; }
+        public DateTime DateFrom { get; set; }
+        public string Status { get; set; }
+        public List<EventCategory> EventCategories { get; set; }
+        public string EventCategory { get; set; }
     }
 }

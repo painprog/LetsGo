@@ -2,9 +2,9 @@
 <div id="all-events">
     @foreach (var item in Model.Events)
     {
-        <div class="card mb-3 event-card" style="border-radius: 15px" >
+        <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
             <div id="event-status" style="display:none;">@item.Status</div>
-            <div class="row" onclick="eventDetails('@item.Id')">
+            <div class="row">
                 <div class="pn-page-head col-lg-10" style="border-radius: 0">
                     <img class="blur_img" src="@item.PosterImage" alt="">
                     <div class="row">

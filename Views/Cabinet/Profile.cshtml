@@ -57,19 +57,19 @@
                 </div>
                 <a asp-action="Add" asp-controller="Event" class="btn btn-danger px-3" >+ Добавить мероприятие</a>
             </div>
-           @if (User.IsInRole("organizer"))
+           @if (Model.IsOrganizer)
            {
                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
            }
-                else
-                {
-                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
-                }
+            else
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+            }
         </div>
     }
     else
-    { 
-        <p>Мероприятия еще не былии добавлены.</p>
+    {
+        <p>Мероприятия еще не были добавлены.</p>
     }
 </div>
 
@@ -90,28 +90,38 @@
 @section Scripts
 {
     <script>
+
         let _id;
         let _status;
+        let _div;
         //Скрипты для действий в один клик
-        $('.requestForUnpublish').on('click', function () {
+        $('.requestForUnPublish').on('click', function () {
             _id = this.id;
             _status = 'ReviewUnPublished';
-            quickSend();
+            quickSend(this);
         })
 
         $('.requestForPublish').on('click', function () {
             _id = this.id;
             _status = 'ReviewPublished';
-            quickSend();
+            quickSend(this);
         })
 
-        $('.accept').on('click', function() {
+        $('.accept').add('.cancelReviewUnPublish').on('click', function() {
             _id = this.id;
-            _status = 'Publish';
-            quickSend();
+            _status = 'Published';
+            quickSend(this);
         })
 
-        function quickSend() {
+        $('.cancelReviewPublish').add('.unPublished').on('click', function () {
+            _id = this.id;
+            _status = 'UnPublished';
+            quickSend(this);
+        });
+
+        function quickSend(elem) {
+            console.log(_id + " " + _status)
+            event.preventDefault();
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
                 type: 'POST',
@@ -122,7 +132,8 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        //to do smth
+                        var div = $(elem).closest('.card');
+                        div.hide('slow');
                     }
                 }
             })
@@ -131,15 +142,24 @@
         //Скрипты для действий с указанием причины
         $('.deny').on('click', function () {
             _id = this.id;
-            _status = 'Rejected'
+            _status = 'Rejected';
+            _div = $(this).closest('.card');
         })
 
-        $('.unpublish').on('click', function () {
+        $('.unpublish').add('.denyPublished').on('click', function () {
             _id = this.id;
-            _status = 'Unpublish';
+            _status = 'UnPublished';
+            _div = $(this).closest('.card');
+        })
+
+        $('.denyUnPublished').on('click', function () {
+            _id = this.id;
+            _status = 'Published';
+            _div = $(this).closest('.card');
         })
 
         $('#cause-confirm').on('click', () => {
+            event.preventDefault();
             let cause = $('textarea#cause-text').val();
             $('textarea#cause-text').val('');
             $.ajax({
@@ -153,11 +173,15 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        //to do smth
+                        _div.hide('slow');
                     }
                 }
             })
         })
+
+        function disableCard(elem) {
+            $(elem).closest('card').prop('disabled', true);
+        }
 
         function eventDetails(eventId) {
             window.location.href = '@Url.Action("Details","Event")?id=' + eventId;

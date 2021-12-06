@@ -23,17 +23,17 @@ namespace LetsGo.Controllers
         {
             if (ModelState.IsValid)
             {
+                Event @event = _goContext.Events.FirstOrDefault(e => e.Id == model.EventId);
                 foreach (var item in model.EventTickets)
                 {
                     var type = _goContext.EventTicketTypes.FirstOrDefault(t => t.Id == item.Id);
-                    Event @event = _goContext.Events.FirstOrDefault(e => e.Id == type.EventId);
-
                     string message = $"" +
                         $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
                         $"Вы совершили покупки билетов на {@event.Name} с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
                         $"</p>";
 
                     type.Sold += item.Count;
+                    @event.Sold += item.Count;
                     for (int i = 0; i < item.Count; i++)
                     {
                         var ticket = new PurchasedTicket()
@@ -56,8 +56,8 @@ namespace LetsGo.Controllers
                         );
                     }
                 }
-
-                _goContext.SaveChanges();
+                _goContext.Events.Update(@event);
+                await _goContext.SaveChangesAsync();
                 return Json(new {success = true, redirectToUrl = Url.Action("Index", "Home")});
             }
 

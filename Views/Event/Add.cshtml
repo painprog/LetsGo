@@ -49,14 +49,14 @@
             <span asp-validation-for="AgeLimit" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label class="label">Выберите категории</label>
+            <label>Категории</label>
             @for (int i = 0; i < Model.Categories.Count; i++)
             {
                 <div class="form-check">
                     <input type="hidden" asp-for="@Model.Categories[i].Value" />
                     <input type="hidden" asp-for="@Model.Categories[i].Text" />
                     <input class="form-check-input" asp-for="Categories[i].Selected" />
-                    <label class="form-check-label">
+                    <label class="form-check-label" asp-for="Categories[i].Selected">
                         @Model.Categories[i].Text
                     </label>
                 </div>
@@ -81,11 +81,28 @@
                 </tbody>
             </table>
 
-            <input id="ticket_name" placeholder="название" class="ticket-input form-control input-field" />
-            <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control input-field" />
-            <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control input-field" />
-            <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field" rows="3" style="resize:none;"></textarea>
-            <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />
+            <h6 class="pt-3">Добавление нового билета</h6>
+            <div class="row mt-4">
+                <div class="col-md-4 mb-3">
+                    <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
+                <button class="btn btn-primary" type="button" onclick="AddTicket()">Добавить билет</button>
+            </div>
+
+            @*<input id="ticket_name" placeholder="название" class="ticket-input input-field" />
+        <input id="ticket_count" type="number" placeholder="количество" class="ticket-input input-field" />
+        <input id="ticket_price" type="number" placeholder="цена" class="ticket-input input-field" />
+        <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field" rows="3" style="resize:none;"></textarea>
+        <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />*@
         </div>
         <hr />
         <div class="form-group">
@@ -119,12 +136,11 @@
         if (name.val() != '' && count.val() != '' && price.val() != '') {
             totalTickets.text(parseInt(totalTickets.text()) + parseInt(count.val()));
 
-            $('.tickets-table tbody').append('<tr><td><b>' + name.val() +
-                '</b></td><td>' + desc.val() +
-                '</b></td><td>' + count.val() +
-                '</td><td>' + price.val() +
-                '</td><td><input type="button" class="btn btn-outline-danger" style="font-size: 0.5rem;" value="✘" onclick="DeleteTicket(this)">' +
-                '</td></tr> ');
+            $('.tickets-table tbody').append(`<tr><td><input class="ticket_name form-control" value="${name.val()}"/></td>` +
+                `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
+                `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
+                `<td><input class="ticket_price form-control" value="${price.val()}" type="number"/></td>` +
+                '</td><td><input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" /></td></tr>');
             name.val('');
             desc.val('');
             count.val('');
@@ -135,6 +151,18 @@
     function DeleteTicket(a) {
         totalTickets.text(parseInt(totalTickets.text()) - parseInt($(a).closest('tr').find('td').eq(2).text()));
         $(a).closest('tr').remove()
+        }
+
+    function getTicketsData() {
+        var tickets = [];
+        $('.tickets-table tbody tr').each(function () {
+            tickets.push(
+                '{"Name":"' + $(this).find('input').eq(0).val() + '",' +
+                '"Description":"' + $(this).find('input').eq(1).val() + '",' +
+                '"Count":' + $(this).find('input').eq(2).val() + ',' +
+                '"Price":' + $(this).find('input').eq(3).val() + '}');
+        });
+        return tickets;
     }
 
     $('form').submit(function () {
@@ -148,15 +176,8 @@
         })
         $('#Categories').val(categories);
         // tickets
-        var tickets = [];
-        $('.tickets-table tbody tr').each(function () {
-            tickets.push(
-                '{"Name":"' + $(this).find('td').eq(0).text() + '",' +
-                '"Description":"' + $(this).find('td').eq(1).text() + '",' +
-                '"Count":' + $(this).find('td').eq(2).text() + ',' +
-                '"Price":' + $(this).find('td').eq(3).text() + '}');
-        });
-        $('#Tickets').val("[" + tickets.join() + "]");
+        
+        $('#Tickets').val("[" + getTicketsData().join() + "]");
         var formData = new FormData(this);
         $.ajax({
             url: '@Url.Action("Add", "Event")',

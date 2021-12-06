@@ -136,8 +136,6 @@ namespace LetsGo.Controllers
                     {
                         string name = EventsService.GenerateCode() + Path.GetExtension(model.Avatar.FileName);
                         pathImage = "/avatars/" + name;
-                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                            await model.Avatar.CopyToAsync(fileStream);
                     }
 
                     User user = new User

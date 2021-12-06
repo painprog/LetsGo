@@ -14,6 +14,8 @@ html {
 }
 
 .navbar {
+    top: 0;
+    left: 0;
     z-index: 98;
     top:0;
 }
@@ -157,15 +159,16 @@ html {
         height: 30px;
     }
 
+input, textarea {
+    font-size: 15px !important;
+}
 
 input#AgeLimit {
     width: 100px;
 }
 
 .ticket-input {
-    display: inline-block;
-    width: 30%;
-    margin: 30px 15px 20px 0;
+    margin-right: 15px;
 }
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
@@ -1042,6 +1045,7 @@ body {
         }
 
     .entry-form .btn-submit {
+        color: #fff;
         align-items: center;
         padding: 8px 16px;
         background: #5048E5;

@@ -159,6 +159,7 @@
                 <p>Пожалуйста, будьте внимательны при вводе e-mail адреса!</p>
                 <form id="ticket-buyer-form">
                     <div class="form-row">
+                        <input type="hidden" asp-for="@Model.Event.Id" />
                         <div class="col">
                             <input class="form-control" asp-for="Name" placeholder="Имя">
                             <span asp-validation-for="Name" class="text-danger"></span>
@@ -315,6 +316,7 @@
                 url: "/Ticket/Create",
                 data: {
                     'model': {
+                        'EventId': $('#Event_Id').val(),
                         'EventTickets': tickets,
                         'Name': $('#Name').val(),
                         'PhoneNumber': $('#PhoneNumber').val(),

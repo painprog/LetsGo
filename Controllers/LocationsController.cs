@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LetsGo.Controllers
 {
@@ -22,27 +23,27 @@ namespace LetsGo.Controllers
 
         public IActionResult Create()
         {
+            var categories = _db.LocationCategories.Select(x => new SelectListItem(){ Text = x.Name, Value = x.Id }).ToList();
+            var other = categories.FirstOrDefault(l => l.Text == "Другое");
+            categories.Remove(other);
+            categories.Add(other);
             CreateLocationViewModel model = new CreateLocationViewModel()
             {
-                LocationCategories = _db.LocationCategories.Where(c => c.Name != "Другое").Select(x => new SelectListItem()
-                {
-                    Text = x.Name,
-                    Value = x.Id
-                }).ToList()
-            };
+                LocationCategories = categories
+            };  
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(CreateLocationViewModel model)
+        public async Task<IActionResult> Create(CreateLocationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _service.Create(model);
-                return Json("success");
+                await _service.Create(model);
+                return Json(new { success = true, href = "/Home/Index" });
             }
-            return View(model);
+            return Json(new { success = false });
         }
 
         public IActionResult GetAllLocations()

@@ -52,7 +52,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <form asp-controller="Cabinet" asp-action="Profile" method="get">
                             <div class="radio-buttons-1 ml-1">
-                                Категория:
+                                <p class="font-weight-bold">Категория:</p>
                                 <div class="form-check ml-1">
                                     <input class="form-check-input" type="radio" asp-for="@Model.EventCategory" value="" checked>
                                     <label class="form-check-label" asp-for="@Model.EventCategory">Любая</label>
@@ -65,8 +65,8 @@
                                     </div>
                                 }
                             </div>
-                            <div class="radio-buttons-2 ml-1">
-                                Статус:
+                            <div class="radio-buttons-2 ml-1 fw-bold">
+                                <p class="font-weight-bold">Статус:</p>                               
                                 <div class="form-check ml-1">
                                     <input class="form-check-input" type="radio" asp-for="@Model.Status" value="" checked>
                                     <label class="form-check-label" asp-for="@Model.Status">Любое</label>
@@ -97,8 +97,8 @@
                                     <label class="form-check-label" asp-for="@Model.Status">Истекло</label>
                                 </div>
                             </div>
-                            <div class="datetimes ml-1">
-                                Дата:
+                            <div class="datetimes ml-1 fw-bold">
+                                <p class="font-weight-bold">Дата:</p>                                
                                 <div class="row g-3 align-items-center">
                                     <div class="col-auto">
                                         <label for="dateFrom" class="col-form-label">От</label>

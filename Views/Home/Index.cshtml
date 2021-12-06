@@ -431,14 +431,23 @@
              });
         }   
         
-        // const input = document.getElementById('livestream');
-        // const log = document.getElementById('values');
-        //
-        // input.addEventListener('#livestream', updateValue);
+        const input         = document.getElementById('livestream');
+        const searchPage    = document.getElementById('search-page');
+        
+        
+        input.addEventListener('input', function(e) {
+          if (input.value === null || input.value === ""){
+            console.log("1")
+            searchPage.style.display = 'none';
+          } else { 
+            searchPage.style.display = 'block';
+          }
+        });
         //
         // function updateValue(e) {
         //   log.textContent = e.target.value;
         // }
-
+        
+        
     </script>
 }

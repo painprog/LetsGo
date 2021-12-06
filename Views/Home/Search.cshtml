@@ -26,8 +26,6 @@
             </div>
         </a>
     }
-    
-    
     <h3 class="ml-4 mt-3" style="color: grey">Локации</h3>
     @foreach (var item in Model)
     {
@@ -35,7 +33,7 @@
 
             <div class="search-tag" id="@item.Location.Id">
                 <div class="p-image">
-                    <img src="" alt="" class="rounded" style="width: 10rem;">
+                    <img src="/images/gradient.jpeg" alt="" class="rounded" style="width: 10rem;">
                 </div>
             </div>
             <div class="col-lg-8">
@@ -46,15 +44,9 @@
                     <p>@item.Location.Address , @item.Location.Name</p>
                 </div>
             </div>
-
+            <div class="button-l d-flex justify-content-center w-100">
+                <button class="btn btn-light m-auto">Перейти</button>
+            </div>
         </div>
     }
 </div>
-
-@section Scripts
-{
-    <script>
-    
-    </script>
-}
-

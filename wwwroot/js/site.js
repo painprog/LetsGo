@@ -1,11 +1,6 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
-$('#all-events').btnLoadmore({
-    showItem: 20, //default 6
-    whenClickBtn: 5, //default 3
-    textBtn: 'Больше мероприятий',
-    classBtn: 'btn btn-danger btn-loadmore'
-});
+
 
 function filterEvents() {
     var input, filter, cards, cardContainer, h5, i, title, location, eventStatus;
@@ -26,4 +21,11 @@ function filterEvents() {
         }
     }
 }
+
+$('#all-events').btnLoadmore({
+    showItem: 20, //default 6
+    whenClickBtn: 5, //default 3
+    textBtn: 'Больше мероприятий',
+    classBtn: 'btn btn-danger btn-loadmore'
+});
 // Write your JavaScript code.

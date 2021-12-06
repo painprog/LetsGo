@@ -30,14 +30,14 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile()
+        public IActionResult Profile(string EventCategory, Status status, DateTime DateTimeFrom, DateTime DateTimeBefore)
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-           //IQueryable Events = _context.Events.Include(e => e.Location).OrderBy(e => e.Status).ThenByDescending(e => e.CreatedAt);
-           //if (true)
-           //{
-           //
-           //}
+            IQueryable Events = _context.Events.Include(e => e.Location).OrderBy(e => e.Status).ThenByDescending(e => e.CreatedAt);
+            if (!string.IsNullOrEmpty(EventCategory))
+            {
+            
+            }
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
             viewModel.EventCategories = _context.EventCategories.ToList();
 

@@ -3,49 +3,49 @@
     ViewBag.Title = "Добавление нового события";
 }
 
-<div class="entry-form form-container">
-    <h1 class="form-header">@ViewBag.Title</h1><hr />
+<div class="form-container">
+    <h2 class="form-header">@ViewBag.Title</h2><hr />
     <form id="add-event-form" asp-controller="Event" asp-action="Add" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Name"></label><br />
-            <input asp-for="Name" class="form-control input-field" />
+            <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Description"></label><br />
-            <input asp-for="Description" class="form-control input-field" />
+            <input asp-for="Description" class="form-control" />
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Location"></label><br />
-            <select id="locations" asp-for="Location" style="width: 100%">
-                <option></option>
+            <input asp-for="Location" class="form-control" list='locations'/>
+            <datalist id='locations'>
                 @foreach (var item in ViewBag.Locations)
                 {
-                    <option id="@item.Name">@item.Name</option>
+                    <option>@item.Name</option>
                 }
-            </select>
+            </datalist>
             <span asp-validation-for="Location" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="EventStart"></label><br />
-            <input asp-for="EventStart" type="datetime-local" class="form-control input-field" />
+            <input asp-for="EventStart" type="datetime-local" class="form-control" />
             <span asp-validation-for="EventStart" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="EventEnd"></label><br />
-            <input asp-for="EventEnd" type="datetime-local" class="form-control input-field" />
+            <input asp-for="EventEnd" type="datetime-local" class="form-control" />
             <span asp-validation-for="EventEnd" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="File" class="control-label">Загрузка аватарки</label>
-            <input asp-for="File" type="file" class="form-control-file" />
+            <input asp-for="File" type="file" class="form-control" />
             <span asp-validation-for="File" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="AgeLimit"></label>
-            <input asp-for="AgeLimit" type="number" min="0" max="18" value="0" class="form-control input-field" />
+            <input asp-for="AgeLimit" type="number" min="0" max="18" value="0" class="form-control" />
             <span asp-validation-for="AgeLimit" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -63,7 +63,7 @@
             }
         </div>
         <div class="pt-5">
-            <label>Билеты</label>
+            <h4>Билеты</h4>
             <p>Общее число билетов: <b><span id="total-tickets">0</span></b></p>
             <input type="hidden" asp-for="Tickets" />
             <input type="hidden" asp-for="TicketLimit" />
@@ -81,15 +81,15 @@
                 </tbody>
             </table>
 
-            <input id="ticket_name" placeholder="название" class="ticket-input form-control input-field" />
-            <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control input-field" />
-            <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control input-field" />
-            <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field" rows="3" style="resize:none;"></textarea>
+            <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
+            <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
+            <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
+            <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2" rows="3" style="resize:none;"></textarea>
             <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />
         </div>
         <hr />
-        <div class="form-group">
-            <button id="add" type="submit" class="btn btn-primary form-control btn-submit">Добавить</button>
+        <div class="form-group text-center">
+            <button id="add" type="submit" class="btn btn-success px-5 py-2">Добавить</button>
         </div>
     </form>
 
@@ -97,17 +97,8 @@
 
 @section scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
+
     <script>
-        $(document).ready(function () {
-            $('#locations').select2({
-                placeholder: "Выберите место проведения",
-                allowClear: true,
-                theme: "bootstrap-5"
-            });
-        });
     let totalTickets = $('#total-tickets');
 
     function AddTicket() {
@@ -123,7 +114,7 @@
                 '</b></td><td>' + desc.val() +
                 '</b></td><td>' + count.val() +
                 '</td><td>' + price.val() +
-                '</td><td><input type="button" class="btn btn-outline-danger" style="font-size: 0.5rem;" value="✘" onclick="DeleteTicket(this)">' +
+                '</td><td><input type="button" class="btn btn-outline-danger" value="✘" onclick="DeleteTicket(this)">' +
                 '</td></tr> ');
             name.val('');
             desc.val('');

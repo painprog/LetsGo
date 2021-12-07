@@ -10,6 +10,7 @@ namespace LetsGo.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
+        public string ParentId { get; set; }
         public string Name { get; set; }
     }
 }

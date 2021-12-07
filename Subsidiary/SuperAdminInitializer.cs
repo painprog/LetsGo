@@ -16,7 +16,7 @@ namespace LetsGo.Subsidiary
             string superAdminEmail = "superadmin@admin.com";
             string superAdminLogin = "superadmin";
             string superAdminPassword = "Password123!";
-            var roles = new[] { "superadmin", "admin", "organiser"};
+            var roles = new[] { "superadmin", "admin", "organizer"};
             foreach (var role in roles)
             {
                 if (await _roleManager.FindByNameAsync(role) is null)

@@ -34,7 +34,7 @@ namespace LetsGo.Controllers
         {
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel 
-            { 
+            {
                 User = user,
                 IsOrganizer = User.IsInRole("organizer")
             };

@@ -24,11 +24,13 @@
             </div>
         </div>
     </div>
-    @if (Model.Events.Count != 0)
-    {
-        <div>
-            <div class="row my-4">
-                <h4 class="mr-auto">Мероприятия</h4>
+    <div>
+        <div class="row my-4">
+            <h2 class="mr-auto">Мероприятия</h2>
+            <a asp-action="Add" asp-controller="Event" class="btn btn-danger px-3">+ Добавить мероприятие</a>
+            <br />
+            @if (Model.Events.Count != 0)
+            {
                 <form id="search" class="mr-2">
                     <div class="form-outline">
                         <input style="text-align: center;" type="text" id="searchbox-input" class="form-control" placeholder="Поиск"
@@ -55,22 +57,21 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </div>
-                <a asp-action="Add" asp-controller="Event" class="btn btn-danger px-3" >+ Добавить мероприятие</a>
-            </div>
-           @if (Model.IsOrganizer)
-           {
-               await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
-           }
+                @if (Model.IsOrganizer)
+                {
+                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+                }
+                else
+                {
+                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+                }
+            }
             else
             {
-                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+                <p>Мероприятия еще не были добавлены.</p>
             }
         </div>
-    }
-    else
-    {
-        <p>Мероприятия еще не были добавлены.</p>
-    }
+        </div>
 </div>
 
 

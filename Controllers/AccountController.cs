@@ -160,7 +160,7 @@ namespace LetsGo.Controllers
                         await emailService.Send(model.Email, "Подтвердите ваш аккаунт",
                             $"Подтвердите регистрацию, перейдя по ссылке:" +
                             $" <a href='{callbackUrl}'>ссылка</a>");
-                        await _userManager.AddToRoleAsync(user, "organiser");
+                        await _userManager.AddToRoleAsync(user, "organizer");
 
                         return View("ConfirmRegistration");
                     }

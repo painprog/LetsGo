@@ -66,39 +66,17 @@
                                 }
                             </div>
                             <div class="radio-buttons-2 ml-1 fw-bold">
-                                <p class="font-weight-bold">Статус:</p>                               
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="" checked>
-                                    <label class="form-check-label" asp-for="@Model.Status">Любое</label>
-                                </div>
-
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Status.New">
-                                    <label class="form-check-label" asp-for="@Model.Status">Новое</label>
-                                </div>
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Status.Rejected">
-                                    <label class="form-check-label" asp-for="@Model.Status">Отклонено</label>
-                                </div>
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Status.Published">
-                                    <label class="form-check-label" asp-for="@Model.Status">Опубликовано</label>
-                                </div>
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Status.UnPublished">
-                                    <label class="form-check-label" asp-for="@Model.Status">Не опубликовано</label>
-                                </div>
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Status.Edited">
-                                    <label class="form-check-label" asp-for="@Model.Status">Отредактировано</label>
-                                </div>
-                                <div class="form-check ml-1">
-                                    <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Status.Expired">
-                                    <label class="form-check-label" asp-for="@Model.Status">Истекло</label>
-                                </div>
+                                <p class="font-weight-bold">Статус:</p>  
+                                @for (int i = 0; i < Model.Stats.Keys.Count - 2; i++)
+                                {
+                                 <div class="form-check ml-1">
+                                     <input class="form-check-input" type="radio" asp-for="@Model.Status" value="@Model.Stats.ElementAt(i).Value">
+                                     <label class="form-check-label" asp-for="@Model.Status">@Model.Stats.ElementAt(i).Key</label>
+                                 </div>
+                                }
                             </div>
                             <div class="datetimes ml-1 fw-bold">
-                                <p class="font-weight-bold">Дата:</p>                                
+                                <p class="font-weight-bold">Дата начала:</p>                                
                                 <div class="row g-3 align-items-center">
                                     <div class="col-auto">
                                         <label for="dateFrom" class="col-form-label">От</label>

@@ -17,5 +17,6 @@ namespace LetsGo.ViewModels
         public Status Status { get; set; }
         public List<EventCategory> EventCategories { get; set; }
         public string EventCategory { get; set; }
+        public Dictionary<string, Status> Stats { get; set; }
     }
 }

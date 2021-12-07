@@ -48,11 +48,33 @@
                     {
                         <h5 class="events details_subheader pt-5">Расписание мероприятий</h5>
                         <div class="container">
+                            <div class="row">
+                                <div class="col-1"><button id="slideBack" type="button" class="btn btn-light"><i class="fas fa-arrow-left"></i></button></div>
+                                <div class="col-10">
+                                    <div class="scoll-pane" id="container">
+                                        <ul class="photos scroll-list">
+                                            <li>
+                                                <img src="https://robohash.org/test">
+                                            </li>
+                                            <li>
+                                                <img src="https://robohash.org/test">
+                                            </li>
+                                            <li>
+                                                <img src="https://robohash.org/test">
+                                            </li>
+                                            <li>
+                                                <img src="https://robohash.org/test">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-1"><button id="slide" type="button" class="btn btn-light"><i class="fas fa-arrow-right"></i></button></div>
+                            </div>
                             <hr />
                             @foreach (var item in Model.FutureEvents)
                             {
                                 <div class="row py-2">
-                                    <div class="col-3">@item.EventStart</div>
+                                    <div class="col-3 text-right">@item.EventStart.Day @item.EventStart.Month.ToString()<br />@item.EventStart.DayOfWeek</div>
                                     <div class="col-6">
                                         <h6>@item.Name</h6>
                                         <p>@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
@@ -109,5 +131,31 @@
                 scrollTop: $(".events").offset().top
             }, 1000);
         };
+        var button = document.getElementById('slide');
+        button.onclick = function () {
+            var container = document.getElementById('container');
+            sideScroll(container, 'right', 25, 100, 10);
+        };
+
+        var back = document.getElementById('slideBack');
+        back.onclick = function () {
+            var container = document.getElementById('container');
+            sideScroll(container, 'left', 25, 100, 10);
+        };
+
+        function sideScroll(element, direction, speed, distance, step) {
+            scrollAmount = 0;
+            var slideTimer = setInterval(function () {
+                if (direction == 'left') {
+                    element.scrollLeft -= step;
+                } else {
+                    element.scrollLeft += step;
+                }
+                scrollAmount += step;
+                if (scrollAmount >= distance) {
+                    window.clearInterval(slideTimer);
+                }
+            }, speed);
+        }
     </script>
 }

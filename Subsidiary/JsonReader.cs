@@ -14,7 +14,6 @@ namespace LetsGo.Subsidiary
             try
             {
                 string objects = File.ReadAllText(filepath);
-                var bruh = JsonConvert.DeserializeObject<List<T>>(objects);
                 return JsonConvert.DeserializeObject<List<T>>(objects);
             }
             catch (FileNotFoundException ex)

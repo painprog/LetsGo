@@ -14,7 +14,6 @@ namespace LetsGo.Models
         public string Id { get; set; }
         public string ParentId { get; set; }
         public string Name { get; set; }
-        [EnumDataType(typeof(ParentStatus))]
-        public ParentStatus ParentStatus { get; set; }
+        public bool HasParent { get; set; }
     }
 }

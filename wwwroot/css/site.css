@@ -1045,9 +1045,10 @@ body {
     margin: 0;
 }
 
-.scroll-list li img {
-    width: 300px;
-    height: 180px;
+.scroll-list li{
+    padding: 7px 20px 7px 20px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 .scoll-pane::-webkit-scrollbar {
@@ -1055,3 +1056,6 @@ body {
     /* Safari and Chrome*/
 }
 
+.future-events {
+    font-size: 13px;
+}

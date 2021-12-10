@@ -52,19 +52,7 @@
                                 <div class="col-1"><button id="slideBack" type="button" class="btn btn-light"><i class="fas fa-arrow-left"></i></button></div>
                                 <div class="col-10">
                                     <div class="scoll-pane" id="container">
-                                        <ul class="photos scroll-list">
-                                            <li>
-                                                <img src="https://robohash.org/test">
-                                            </li>
-                                            <li>
-                                                <img src="https://robohash.org/test">
-                                            </li>
-                                            <li>
-                                                <img src="https://robohash.org/test">
-                                            </li>
-                                            <li>
-                                                <img src="https://robohash.org/test">
-                                            </li>
+                                        <ul class="months scroll-list">
                                         </ul>
                                     </div>
                                 </div>
@@ -73,13 +61,13 @@
                             <hr />
                             @foreach (var item in Model.FutureEvents)
                             {
-                                <div class="row py-2">
-                                    <div class="col-3 text-right">@item.EventStart.Day @item.EventStart.Month.ToString()<br />@item.EventStart.DayOfWeek</div>
+                                <div class="future-events row py-2">
+                                    <div class="col-2 row p-0 mx-3"><div class="col-5 p-0">@item.EventStart.Day</div><div class="col-7 p-0">@item.EventStart.ToString("MMMM")<br />@item.EventStart.DayOfWeek</div></div>
                                     <div class="col-6">
                                         <h6>@item.Name</h6>
                                         <p>@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
                                     </div>
-                                    <div class="col-3"><button class="btn btn-danger">Билеты от @item.MinPrice som</button></div>
+                                    <div class="col-3 p-0 text-right"><button class="btn btn-danger future-events"><span>Билеты от @item.MinPrice с</span></button></div>
                                 </div>
                                 <hr />
                             }
@@ -125,7 +113,7 @@
 @section Scripts
 {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script>
+<script>
         function Scroll() {
             $([document.documentElement, document.body]).animate({
                 scrollTop: $(".events").offset().top
@@ -156,6 +144,27 @@
                     window.clearInterval(slideTimer);
                 }
             }, speed);
-        }
-    </script>
+        };
+
+        $(document).ready(function () {
+            var resultList = [];
+            var date = new Date();
+            var endDate = new Date(parseInt(@(Model.MaxDate.Year)), parseInt(@(Model.MaxDate.Month))-1, parseInt(@(Model.MaxDate.Day)));
+            console.log(date);
+            console.log(endDate);
+            var monthNameList = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            while (date <= endDate) {
+                var stringDate = monthNameList[date.getMonth()] + " " + date.getFullYear();
+                resultList.push(stringDate);
+                date.setMonth(date.getMonth() + 1);
+            }
+            var count = 0;
+            resultList.forEach(function () {
+                $('.months').append('<li>' + resultList[count] + '</li>');
+                count = count + 1;
+                console.log(count);
+            });
+        });
+
+</script>
 }

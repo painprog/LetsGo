@@ -62,12 +62,14 @@ namespace LetsGo.Controllers
         {
             Location location = await _service.GetLocation(id);
             var events = await _service.GetLocationEvents(id);
+            DateTime maxDate = events.Max(p => p.EventStart);
             LocationDetailsViewModel viewModel = new LocationDetailsViewModel
             {
                 Location = location,
                 LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories),
                 FutureEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList(),
-                PastEvents = events.Where(e => e.EventStart < DateTime.Now).ToList()
+                PastEvents = events.Where(e => e.EventStart < DateTime.Now).ToList(),
+                MaxDate = maxDate
             };
             return View(viewModel);
         }

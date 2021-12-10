@@ -10,6 +10,7 @@ namespace LetsGo.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
+        public string TicketIdentifier { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerPhone { get; set; }
         public string CustomerName { get; set; }

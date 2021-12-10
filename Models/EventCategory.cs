@@ -1,5 +1,7 @@
-﻿using System;
+﻿using LetsGo.Enums;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace LetsGo.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
+        public string ParentId { get; set; }
         public string Name { get; set; }
+        public bool HasParent { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using LetsGo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LetsGo.Migrations
 {
     [DbContext(typeof(LetsGoContext))]
-    partial class LetsGoContextModelSnapshot : ModelSnapshot
+    [Migration("20211207105133_LG-31ParentIdTicketIdentifierLocationImage")]
+    partial class LG31ParentIdTicketIdentifierLocationImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +94,6 @@ namespace LetsGo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<bool>("HasParent")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
@@ -104,119 +103,6 @@ namespace LetsGo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EventCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            HasParent = false,
-                            Name = "Концерты"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            HasParent = false,
-                            Name = "Фестивали"
-                        },
-                        new
-                        {
-                            Id = "3",
-                            HasParent = false,
-                            Name = "Спектакли"
-                        },
-                        new
-                        {
-                            Id = "4",
-                            HasParent = false,
-                            Name = "Детям"
-                        },
-                        new
-                        {
-                            Id = "5",
-                            HasParent = false,
-                            Name = "Классика"
-                        },
-                        new
-                        {
-                            Id = "6",
-                            HasParent = false,
-                            Name = "Экскурсии"
-                        },
-                        new
-                        {
-                            Id = "7",
-                            HasParent = false,
-                            Name = "Экскурсии"
-                        },
-                        new
-                        {
-                            Id = "8",
-                            HasParent = false,
-                            Name = "Другое"
-                        },
-                        new
-                        {
-                            Id = "9",
-                            HasParent = true,
-                            Name = "Поп-Музыка",
-                            ParentId = "1"
-                        },
-                        new
-                        {
-                            Id = "10",
-                            HasParent = true,
-                            Name = "Рок",
-                            ParentId = "1"
-                        },
-                        new
-                        {
-                            Id = "11",
-                            HasParent = true,
-                            Name = "Хип-Хоп",
-                            ParentId = "1"
-                        },
-                        new
-                        {
-                            Id = "12",
-                            HasParent = true,
-                            Name = "Комедии",
-                            ParentId = "3"
-                        },
-                        new
-                        {
-                            Id = "13",
-                            HasParent = true,
-                            Name = "Драмы",
-                            ParentId = "3"
-                        },
-                        new
-                        {
-                            Id = "14",
-                            HasParent = true,
-                            Name = "Мелодрамы",
-                            ParentId = "3"
-                        },
-                        new
-                        {
-                            Id = "15",
-                            HasParent = true,
-                            Name = "Опера",
-                            ParentId = "5"
-                        },
-                        new
-                        {
-                            Id = "16",
-                            HasParent = true,
-                            Name = "Балет",
-                            ParentId = "5"
-                        },
-                        new
-                        {
-                            Id = "17",
-                            HasParent = true,
-                            Name = "Вокал",
-                            ParentId = "5"
-                        });
                 });
 
             modelBuilder.Entity("LetsGo.Models.EventTicketType", b =>
@@ -277,44 +163,6 @@ namespace LetsGo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            Address = "21, 11 Аалы Токомбаева көчөсү, Бишкек",
-                            Categories = "[{\"Id\":\"7\",\"Name\":\"Клубы\"}, {\"Id\":\"8\",\"Name\":\"Бары\"}]",
-                            Description = "Художественный центр в Бишкеке",
-                            Name = "Асанбай Центр",
-                            Phones = "[\"+996775979500\"]"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            Address = "24 просп. Мира, Бишкек",
-                            Categories = "[{\"Id\":\"7\",\"Name\":\"Клубы\"}, {\"Id\":\"8\",\"Name\":\"Бары\"}]",
-                            Description = "Концертный зал",
-                            Name = "Ретро-Метро",
-                            Phones = "[\"+996705 000 888\"]"
-                        },
-                        new
-                        {
-                            Id = "3",
-                            Address = "17 ул. Тоголок Молдо, Бишкек",
-                            Categories = "[{\"Id\":\"5\",\"Name\":\"Cпортивные комплексы\"}, {\"Id\":\"10\",\"Name\":\"Другое\"}]",
-                            Description = "Концертный зал",
-                            Name = "Стадион Спартак",
-                            Phones = "[\"+996705 000 888\"]"
-                        },
-                        new
-                        {
-                            Id = "4",
-                            Address = "167 Советская, Бишкек",
-                            Categories = "[{\"Id\":\"1\",\"Name\":\"Театры\"}]",
-                            Description = "Театр оперы и балета",
-                            Name = "Театр Оперы и Балета",
-                            Phones = "[\"0312 621 619\"]"
-                        });
                 });
 
             modelBuilder.Entity("LetsGo.Models.LocationCategory", b =>
@@ -329,43 +177,6 @@ namespace LetsGo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LocationCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            Name = "Концерты"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            Name = "Фестивали"
-                        },
-                        new
-                        {
-                            Id = "3",
-                            Name = "Спектакли"
-                        },
-                        new
-                        {
-                            Id = "4",
-                            Name = "Детям"
-                        },
-                        new
-                        {
-                            Id = "5",
-                            Name = "Классика"
-                        },
-                        new
-                        {
-                            Id = "6",
-                            Name = "Экскурсии"
-                        },
-                        new
-                        {
-                            Id = "7",
-                            Name = "Другое"
-                        });
                 });
 
             modelBuilder.Entity("LetsGo.Models.PurchasedTicket", b =>

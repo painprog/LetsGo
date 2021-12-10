@@ -1,0 +1,104 @@
+﻿[
+  {
+    "Id": "1",
+    "ParentId": null,
+    "Name": "Концерты",
+    "HasParent": false
+  },
+  {
+    "Id": "2",
+    "ParentId": null,
+    "Name": "Фестивали",
+    "HasParent": false
+  },
+  {
+    "Id": "3",
+    "ParentId": null,
+    "Name": "Спектакли",
+    "HasParent": false
+  },
+  {
+    "Id": "4",
+    "ParentId": null,
+    "Name": "Детям",
+    "HasParent": false
+  },
+  {
+    "Id": "5",
+    "ParentId": null,
+    "Name": "Классика",
+    "HasParent": false
+  },
+  {
+    "Id": "6",
+    "ParentId": null,
+    "Name": "Экскурсии",
+    "HasParent": false
+  },
+  {
+    "Id": "7",
+    "ParentId": null,
+    "Name": "Экскурсии",
+    "HasParent": false
+  },
+  {
+    "Id": "8",
+    "ParentId": null,
+    "Name": "Другое",
+    "HasParent": false
+  },
+  {
+    "Id": "9",
+    "ParentId": "1",
+    "Name": "Поп-Музыка",
+    "HasParent": true
+  },
+  {
+    "Id": "10",
+    "ParentId": "1",
+    "Name": "Рок",
+    "HasParent": true
+  },
+  {
+    "Id": "11",
+    "ParentId": "1",
+    "Name": "Хип-Хоп",
+    "HasParent": true
+  },
+  {
+    "Id": "12",
+    "ParentId": "3",
+    "Name": "Комедии",
+    "HasParent": true
+  },
+  {
+    "Id": "13",
+    "ParentId": "3",
+    "Name": "Драмы",
+    "HasParent": true
+  },
+  {
+    "Id": "14",
+    "ParentId": "3",
+    "Name": "Мелодрамы",
+    "HasParent": true
+  },
+  {
+    "Id": "15",
+    "ParentId": "5",
+    "Name": "Опера",
+    "HasParent": true
+  },
+  {
+    "Id": "16",
+    "ParentId": "5",
+    "Name": "Балет",
+    "HasParent": true
+  },
+  {
+    "Id": "17",
+    "ParentId": "5",
+    "Name": "Вокал",
+    "HasParent": true
+  }
+]

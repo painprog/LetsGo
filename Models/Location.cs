@@ -11,5 +11,6 @@ namespace LetsGo.Models
         public string Phones { get; set; }//json
         public string Description { get; set; }
         public string Categories { get; set; }//json
+        public string LocationImage { get; set; }
     }
 }

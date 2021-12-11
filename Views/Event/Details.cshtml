@@ -365,7 +365,8 @@
                 center: [x, y],
                 // Уровень масштабирования. Допустимые значения:
                 // от 0 (весь мир) до 19.
-                zoom: 15
+                zoom: 15,
+                controls: ['zoomControl']
             });
             // Создание геообъекта с типом точка (метка).
             var myGeoObject = new ymaps.GeoObject({
@@ -376,12 +377,14 @@
             });
 
             var myPlacemark = new ymaps.Placemark([x, y], {}, {
-                preset: 'islands#blackIcon'
+                preset: 'islands#redIcon'
             });
 
             // Размещение геообъекта на карте.
             //myMap.geoObjects.add(myGeoObject);  // синий (default)
             myMap.geoObjects.add(myPlacemark);  // какой хочешь
+
+
         }
 
     </script>

@@ -21,7 +21,9 @@ namespace LetsGo.Services
             {
                 Name = model.Name,
                 Address = model.Address,
-                Description = model.Description
+                Description = model.Description,
+                X = double.Parse(model.X.Replace('.', ',')),
+                Y = double.Parse(model.Y.Replace('.', ','))
             };
             var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new
             {

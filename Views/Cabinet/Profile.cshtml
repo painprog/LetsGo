@@ -199,6 +199,7 @@
         }
 
         function eventEdit(eventId) {
+            event.stopPropagation();
             window.location.href = '@Url.Action("Edit","Event")?id=' + eventId;
         }
     </script>

@@ -3,14 +3,16 @@ using System;
 using LetsGo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LetsGo.Migrations
 {
     [DbContext(typeof(LetsGoContext))]
-    partial class LetsGoContextModelSnapshot : ModelSnapshot
+    [Migration("20211211192714_AddCoordinatesInLocation")]
+    partial class AddCoordinatesInLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

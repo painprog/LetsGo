@@ -877,12 +877,13 @@ body {
 
 .side_descr p {
     color: gray;
-    font-size: 15px;
+    font-size: 14px;
+    margin: 9px 0 27px;
 }
 
-.side_descr h6 {
-    color: #525252;
-    font-size: 15px;
+.side_descr h2, h3 {
+    color: #737373;
+    font-weight: 800;
 }
 
 .details_subheader {
@@ -892,6 +893,29 @@ body {
     line-height: 1.1;
     letter-spacing: 0.5px;
     color: inherit;
+}
+
+.map-div h2 {
+    color: #737373;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.map-name {
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.map-address {
+    margin-top: 10px;
+    color: gray;
+    font-size: 14px;
+}
+
+.map-card {
+    margin-top: 30px;
 }
 
 .rounded {

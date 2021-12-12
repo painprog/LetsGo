@@ -3,14 +3,16 @@ using System;
 using LetsGo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LetsGo.Migrations
 {
     [DbContext(typeof(LetsGoContext))]
-    partial class LetsGoContextModelSnapshot : ModelSnapshot
+    [Migration("20211211192714_AddCoordinatesInLocation")]
+    partial class AddCoordinatesInLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,8 +295,8 @@ namespace LetsGo.Migrations
                             Description = "Художественный центр в Бишкеке",
                             Name = "Асанбай Центр",
                             Phones = "[\"+996775979500\"]",
-                            X = 42.817987000000002,
-                            Y = 74.620718999999994
+                            X = 0.0,
+                            Y = 0.0
                         },
                         new
                         {
@@ -304,8 +306,8 @@ namespace LetsGo.Migrations
                             Description = "Концертный зал",
                             Name = "Ретро-Метро",
                             Phones = "[\"+996705 000 888\"]",
-                            X = 42.855733999999998,
-                            Y = 74.587316000000001
+                            X = 0.0,
+                            Y = 0.0
                         },
                         new
                         {
@@ -315,8 +317,8 @@ namespace LetsGo.Migrations
                             Description = "Концертный зал",
                             Name = "Стадион Спартак",
                             Phones = "[\"+996705 000 888\"]",
-                            X = 42.880873000000001,
-                            Y = 74.596663000000007
+                            X = 0.0,
+                            Y = 0.0
                         },
                         new
                         {
@@ -326,8 +328,8 @@ namespace LetsGo.Migrations
                             Description = "Театр оперы и балета",
                             Name = "Театр Оперы и Балета",
                             Phones = "[\"0312 621 619\"]",
-                            X = 42.878090999999998,
-                            Y = 74.612414999999999
+                            X = 0.0,
+                            Y = 0.0
                         });
                 });
 

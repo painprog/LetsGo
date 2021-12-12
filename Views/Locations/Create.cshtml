@@ -21,6 +21,17 @@
             <span asp-validation-for="@Model.Address" class="text-danger"></span>
         </div>
         <div class="mb-3">
+            <label>Координаты</label><br />
+            <label asp-for="@Model.X" class="label"></label>
+            <input asp-for="@Model.X" class="input-field px-3" />
+            <span asp-validation-for="@Model.X" class="text-danger"></span><br />
+            <label asp-for="@Model.Y" class="label mt-2"></label>
+            <input asp-for="@Model.Y" class="input-field px-3" />
+            <span asp-validation-for="@Model.Y" class="text-danger"></span><br />
+            <p class="mt-2 mr-2 d-inline-block">Найти координаты можно по</p><a target="_blank" href="https://yandex.ru/maps/10309/bishkek/?ll=74.603710%2C42.876366&z=12">ссылке</a>
+            <p>нажать ЛКМ на объект, нажать "что здесь?", в панели слева появится информация</p>
+        </div>
+        <div class="mb-3">
             <label class="label" asp-for="@Model.Description">Описание</label>
             <textarea class="form-control input-field" asp-for="@Model.Description" rows="4"></textarea>
             <span asp-validation-for="@Model.Description" class="text-danger"></span>

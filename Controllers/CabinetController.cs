@@ -30,19 +30,25 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile()
+        public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs)
         {
-            User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-            ProfileViewModel viewModel = new ProfileViewModel 
-            {
-                User = user,
-                IsOrganizer = User.IsInRole("organizer")
-            };
+            List<string> EventCategories = new List<string>();
+            if (!string.IsNullOrEmpty(EventCategs))
+                EventCategories = EventCategs.Split(',').ToList();
 
-            if (viewModel.IsOrganizer)
-                viewModel.Events = _context.Events.Include(e => e.Location).Where(e => e.OrganizerId == user.Id).ToList();
+            User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
+            ProfileViewModel viewModel = new ProfileViewModel { User = user };
+            Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
+            viewModel.Stats = Stats;
+            viewModel.EventCategories = _context.EventCategories.ToList();
+
+            IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(EventCategories, Status,
+                DateTimeFrom, DateTimeBefore);
+
+            if (User.IsInRole("organizer"))
+                viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
             else
-                viewModel.Events = _context.Events.Include(e => e.Location).OrderBy(e => e.Status).ThenByDescending(e => e.CreatedAt).ToList();
+                viewModel.Events = Events.ToList();
 
             return View(viewModel);
         }

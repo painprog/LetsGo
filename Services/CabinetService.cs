@@ -31,5 +31,44 @@ namespace LetsGo.Services
             await _context.SaveChangesAsync();
             return @event;
         }
+
+        public IQueryable<Event> QueryableEventsAfterFilter(List<string> EventCategories, Status Status,
+           DateTime DateTimeFrom, DateTime DateTimeBefore)
+        {
+            IQueryable<Event> Events = _context.Events.Include(e => e.Location).OrderBy(e => e.Status).ThenByDescending(e => e.CreatedAt);
+
+            if (EventCategories.Count > 0)
+            {
+                foreach (var item in EventCategories)
+                    Events = Events.Where(e => e.Categories.Contains(item));
+            }
+            if (Status != Status.NotDefined)
+                Events = Events.Where(e => e.Status == Status);
+            if (DateTimeFrom != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart >= DateTimeFrom);
+            if (DateTimeBefore != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart <= DateTimeBefore);
+            if (DateTimeFrom != DateTime.MinValue && DateTimeBefore != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart >= DateTimeFrom && e.EventStart <= DateTimeBefore);
+
+            return Events;
+        }
+
+        public Dictionary<string, Status> GetDictionaryStats()
+        {
+            Dictionary<string, Status> Stats = new Dictionary<string, Status>
+            {
+                ["Не определено"] = Status.NotDefined,
+                ["Новое"] = Status.New,
+                ["Отклонено"] = Status.Rejected,
+                ["Опубликовано"] = Status.Published,
+                ["Не опубликовано"] = Status.UnPublished,
+                ["Отредактировано"] = Status.Edited,
+                ["Истекло"] = Status.Expired,
+                ["Обзор опубликован"] = Status.ReviewPublished,
+                ["Обзор не опубликован"] = Status.ReviewUnPublished,
+            };
+            return Stats;
+        }
     }
 }

@@ -39,17 +39,8 @@ namespace LetsGo.Services
 
             if (EventCategories.Count > 0)
             {
-                int i = 0;
                 foreach (var item in EventCategories)
-                {
                     Events = Events.Where(e => e.Categories.Contains(item));
-                    if (Events.ToList().Count > 0)
-                    {
-                        i++;
-                        if (i == EventCategories.Count)
-                            Events = Events.Where(e => e.Categories.Contains(item));
-                    }
-                }
             }
             if (Status != Status.NotDefined)
                 Events = Events.Where(e => e.Status == Status);

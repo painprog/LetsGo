@@ -10,7 +10,7 @@
             @if (User.IsInRole("superadmin"))
             {
                 <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light mr-3 mt-auto float-right">+ Добавить админа</a>
-            } 
+            }
             <a href="#" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
             <div class="row">
                 <div class="col-lg-2">
@@ -47,14 +47,73 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="btn btn-dark dropdown-toggle mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="dropdown" id="dd">
+                    <button class="btn btn-dark mr-2 px-3" type="button" id="dropdownMenuButtonFiltr" onclick="ActionDivFiltr()">
                         Фильтрация
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonFiltr" style="display:none" id="Filtr">
+                        <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFiltr">
+                            <div class="categories ml-1">
+                                <p class="font-weight-bold">Категория:</p>
+                                @foreach (var item in Model.EventCategories)
+                                {
+                                    if (!item.HasParent)
+                                    {
+                                      <div class="containerForCateg">
+                                          <p>
+                                              <a class="text-decoration-none text-reset ml-1" data-bs-toggle="collapse" href="#collapseExample_@item.Id" aria-expanded="false" aria-controls="collapseExample_@item.Id">
+                                                  @item.Name
+                                              </a>
+                                          </p>
+                                          <div class="collapse ml-3" id="collapseExample_@item.Id">
+                                             @foreach (var elem in Model.EventCategories)
+                                             {
+                                                 if (elem.ParentId == item.Id)
+                                                 {
+                                                   <div class="form-check ml-1">
+                                                       <input class="form-check-input" type="checkbox" asp-for="@Model.EventCategory" value="@elem.Id">
+                                                       <label class="form-check-label" asp-for="@Model.EventCategory">@elem.Name</label>
+                                                   </div>
+                                                 }
+                                             }
+                                          </div>
+                                      </div>
+                                    }
+
+                                }
+                            </div>
+                            <div class="ml-1">
+                                <p class="font-weight-bold">Статус:</p>
+                                <select class="form-select" asp-for="@Model.Status" aria-label="Default select example">
+                                    @for (int i = 0; i < Model.Stats.Keys.Count - 2; i++)
+                                    {
+                    <option value="@Model.Stats.ElementAt(i).Value">@Model.Stats.ElementAt(i).Key</option>}
+                                </select>
+                            </div>
+                            <div class="datetimes ml-1 fw-bold">
+                                <p class="font-weight-bold">Дата начала:</p>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="dateFrom" class="col-form-label">От</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="datetime-local" id="dateFrom" asp-for="@Model.DateTimeFrom" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="dateBefore" class="col-form-label">До</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="datetime-local" id="dateBefore" asp-for="@Model.DateTimeBefore" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <input id="EventCategoriesHidden" asp-for="EventCategs" hidden />
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-success px-5 py-2 mt-2">Фильтр</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 @if (User.IsInRole("superadmin"))
@@ -97,6 +156,10 @@
         <div class="toast-body"></div>
     </div>
 </div>
+
+
+
+
 
 @section Scripts
 {
@@ -201,5 +264,33 @@
         function eventEdit(eventId) {
             window.location.href = '@Url.Action("Edit","Event")?id=' + eventId;
         }
+
+        //фильтрация
+        var i = 0;
+        function ActionDivFiltr() {
+            i++;
+            if (i % 2 != 0) {
+                $('#Filtr').show()
+            }
+            if (i % 2 == 0) {
+                $('#Filtr').hide()
+            }
+            console.log(i)
+        }
+
+        let eventCategs = [];
+        let strCateg;
+        $('#formFiltr').on("submit", function Filtr() {
+            $('.categories input:checked').each(function Fill() {
+                eventCategs.push($(this).val())
+            })
+            console.log(eventCategs)
+            strCateg = eventCategs.join()
+            console.log(strCateg)
+            $('#EventCategoriesHidden').val(strCateg)
+            console.log($('#EventCategoriesHidden').val())
+        }
+        )
+
     </script>
 }

@@ -30,12 +30,13 @@
         </div>
         <div class="form-group">
             <label asp-for="EventStart"></label><br />
-            <input asp-for="EventStart" type="datetime-local" class="form-control input-field" />
+            <input asp-for="EventStart" type="text" class="form-control input-field" id="eventStart" />
+            <span></span>
             <span asp-validation-for="EventStart" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="EventEnd"></label><br />
-            <input asp-for="EventEnd" type="datetime-local" class="form-control input-field" />
+            <input asp-for="EventEnd" type="text" class="form-control input-field" id="eventEnd" />
             <span asp-validation-for="EventEnd" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -99,10 +100,10 @@
             </div>
 
             @*<input id="ticket_name" placeholder="название" class="ticket-input input-field" />
-        <input id="ticket_count" type="number" placeholder="количество" class="ticket-input input-field" />
-        <input id="ticket_price" type="number" placeholder="цена" class="ticket-input input-field" />
-        <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field" rows="3" style="resize:none;"></textarea>
-        <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />*@
+                <input id="ticket_count" type="number" placeholder="количество" class="ticket-input input-field" />
+                <input id="ticket_price" type="number" placeholder="цена" class="ticket-input input-field" />
+                <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field" rows="3" style="resize:none;"></textarea>
+                <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />*@
         </div>
         <hr />
         <div class="form-group">
@@ -117,6 +118,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
     <script>
         $(document).ready(function () {
             $('#locations').select2({
@@ -125,6 +131,29 @@
                 theme: "bootstrap-5"
             });
         });
+
+        let startpicker = flatpickr('#eventStart', {
+            altInput: false,
+            enableTime: true,
+            dateFormat: "d.m.Y H:i",
+            minDate: "today",
+            "locale": "ru",
+            onClose: function (selectedDates, dateStr, instance) {
+                endpicker.set('minDate', dateStr);
+            },
+        });
+
+        let endpicker = flatpickr('#eventEnd', {
+            altInput: false,
+            enableTime: true,
+            dateFormat: "d.m.Y H:i",
+            minDate: "today",
+            "locale": "ru",
+            onClose: function (selectedDates, dateStr, instance) {
+                startpicker.set('maxDate', dateStr);
+            }
+        });
+
     let totalTickets = $('#total-tickets');
 
     function AddTicket() {
@@ -176,7 +205,7 @@
         })
         $('#Categories').val(categories);
         // tickets
-        
+
         $('#Tickets').val("[" + getTicketsData().join() + "]");
         var formData = new FormData(this);
         $.ajax({
@@ -193,8 +222,5 @@
             },
         });
     });
-    var locations = document.getElementById('locations')
-    console.log(locations)
-
     </script>
 }

@@ -57,6 +57,13 @@ namespace LetsGo.Controllers
             
             return View(model);
         }
+        
+        public IActionResult Search(string search)
+        {
+            var result = _db.Events.Include(x => x.Location).
+                Where(x => x.Name.Contains(search) || x.Location.Name.Contains(search)).ToList();
+            return PartialView(result);
+        }
 
     }
 }

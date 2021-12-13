@@ -1,0 +1,52 @@
+﻿@model System.Collections.Generic.List<LetsGo.Models.Event>
+
+<div class="scroll">
+    <h3 class=" ml-4 mt-3" style="color: grey">Мероприятия</h3>
+    @foreach (var item in Model)
+    {
+        <a asp-controller="Event" asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; ">
+            <div class=" d-flex ml-4 mt-3">
+
+                <div class="search-tag" id="@item.Id">
+                    <div class="p-image">
+                        <img src="@item.PosterImage" alt="" class="rounded" style="width: 10rem;">
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="search-tag-detail font-weight-bold" style="color: black">
+                        <p>@item.Name</p>
+                    </div>
+                    <div class="e-location" style="color: gray">
+                        <p>@item.CreatedAt , @item.Location.Name</p>
+                    </div>
+                </div>
+                <div class="button-price d-flex justify-content-center w-100">
+                    <button class="btn btn-light m-auto">Билеты от @item.MinPrice</button>
+                </div>
+            </div>
+        </a>
+    }
+    <h3 class="ml-4 mt-3" style="color: grey">Локации</h3>
+    @foreach (var item in Model)
+    {
+        <div class="d-flex ml-4 mt-3">
+
+            <div class="search-tag" id="@item.Location.Id">
+                <div class="p-image">
+                    <img src="/images/gradient.jpeg" alt="" class="rounded" style="width: 10rem;">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="search-tag-detail font-weight-bold" style="color: black">
+                    <p>@item.Location.Name</p>
+                </div>
+                <div class="e-location" style="color: gray">
+                    <p>@item.Location.Address , @item.Location.Name</p>
+                </div>
+            </div>
+            <div class="button-l d-flex justify-content-center w-100">
+                <button class="btn btn-light m-auto">Перейти</button>
+            </div>
+        </div>
+    }
+</div>

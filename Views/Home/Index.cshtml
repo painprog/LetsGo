@@ -4,17 +4,30 @@
         <div class="container-2 container-fluid mx-auto">
             <h1 class="pt-1 mb-5 text-center">Быстрый поиск и покупка билетов</h1>
             <div class="container_basic_content">
-                <div class="search_wrapper d-flex justify-content-center">
+                <div class="search_wrapper d-flex justify-content-center position-relative ">
                     <div class="seacrh_input input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fas fa-search"></i>
+                            </span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
+                        <input id="livestream" name="livestream" type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-outline-light" type="button">Город</button>
                         </div>
                     </div>
+                   
+                    <div id="search-page" class="search-page bg-white seacrh_input position-absolute">
+                        @* <p id="values"></p> *@
+                        <div id="search-events">
+                            <div id="result" class="tag-results d-flex flex-column"></div>
+                        </div>
+                        <div>
+                            @*для площадок*@
+                        </div>
+                    </div>
                 </div>
+
                 <div class="links">
                     <a onclick="Afisha()" role="button" aria-pressed="true">Афиша</a>
                     <a onclick="Today()" role="button" aria-pressed="true">Сегодня</a>
@@ -31,7 +44,9 @@
     <div class="main_info_card card_group row mx-0 justify-content-center mt-5">
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">Все</h2>
                 </div>
@@ -40,7 +55,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">билеты</h2>
                 </div>
@@ -49,7 +66,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">без</h2>
                 </div>
@@ -58,7 +77,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">наценки</h2>
                 </div>
@@ -69,23 +90,23 @@
 </div>
 
 <div class="events pt-3">
-    <div class="container">
-        <div class="row">
-            <div class="col-10">
-                <div class="categories">
-                    <div class="concerts">
-                        <div class="row justify-content-between">
-                            <div class="col-11">
-                                <h2 class="category-header">Концерты</h2>
-                            </div>
-                            <div class="col-1 p-0 ps-4">
-                                <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
-                                    <span class="icon-more">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+<div class="container">
+<div class="row">
+<div class="col-10">
+<div class="categories">
+<div class="concerts">
+    <div class="row justify-content-between">
+        <div class="col-11">
+            <h2 class="category-header">Концерты</h2>
+        </div>
+        <div class="col-1 p-0 ps-4">
+            <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
+                <span class="icon-more">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
 
                         <div id="all-concerts" class="row">
                             @foreach (var concert in Model.Concerts)
@@ -379,7 +400,50 @@
         });
 
         function Details(eventId) {
-                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+                window.location.href = '@Url.Action("Details", "Event")?id=' + eventId;
+        }
+        
+        document.getElementById('livestream').addEventListener('keyup', function (e) {
+                    LiveSearch()
+                   });
+        function LiveSearch() {
+            let value = document.getElementById('livestream').value
+            $.ajax({
+                type: "GET", 
+                url: '@Url.Action("Search", "Home")',
+                data: {search: value },
+                datatype: "html",
+                success: 
+                 function (data) {
+                    console.log('OK')
+                    console.log(data)
+                          $('#result').html(data);
+                         }
+                });
+            
+            let timeout = null;
+            
+            document.getElementById('livestream').addEventListener('keyup', function (e) {  
+                  clearTimeout(timeout);
+            
+                  timeout = setTimeout(function () {
+                         LiveSearch()
+                  }, 200);
+             });
+        }   
+        
+        const input         = document.getElementById('livestream');
+        const searchPage    = document.getElementById('search-page');
+        
+        
+        input.addEventListener('input', function(e) {
+          if (input.value === null || input.value === ""){
+            console.log("1")
+            searchPage.style.display = 'none';
+          } else { 
+            searchPage.style.display = 'block';
+          }
+        });               
         }
 
         function LocationDetails(locationId) {

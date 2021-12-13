@@ -98,8 +98,7 @@ $('.choose-date-btn').on("click", function () {
         window.location.href = 'Event/AfishaOn?year=' + year + '&month=' + month + '&day=' + day;
     } 
 })
-
-$('.calendar-days .calendar-day-hover').on('click', function () {
+$('.calendar-body').delegate('.calendar-days .calendar-day-hover', 'click', function () {
     $('.calendar-days').find('.curr-date').removeClass('curr-date');
     $(this).addClass('curr-date');
     let day = $(this).text(), year = $('#year').text(), month = $('#month-picker').text();
@@ -135,6 +134,6 @@ $('.dropbtn').click(function () {
     }, 600);
 });
 
-$('.calendar-day-hover').on('click', function () {
+$('.calendar-days').delegate('.calendar-day-hover', 'click', function () {
     console.log('ûûûû');
 });

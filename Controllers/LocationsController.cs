@@ -68,7 +68,7 @@ namespace LetsGo.Controllers
                 Location = location,
                 LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories),
                 FutureEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList(),
-                PastEvents = events.Where(e => e.EventStart < DateTime.Now).ToList(),
+                PastEvents = events.Where(e => e.EventStart < DateTime.Now).ToList()
                 //MaxDate = maxDate
             };
             return View(viewModel);

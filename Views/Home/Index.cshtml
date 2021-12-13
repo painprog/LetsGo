@@ -90,23 +90,23 @@
 </div>
 
 <div class="events pt-3">
-<div class="container">
-<div class="row">
-<div class="col-10">
-<div class="categories">
-<div class="concerts">
-    <div class="row justify-content-between">
-        <div class="col-11">
-            <h2 class="category-header">Концерты</h2>
-        </div>
-        <div class="col-1 p-0 ps-4">
-            <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
-                <span class="icon-more">
-                    <i class="fas fa-arrow-right"></i>
-                </span>
-            </a>
-        </div>
-    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <div class="categories">
+                    <div class="concerts">
+                        <div class="row justify-content-between">
+                            <div class="col-11">
+                                <h2 class="category-header">Концерты</h2>
+                            </div>
+                            <div class="col-1 p-0 ps-4">
+                                <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
+                                    <span class="icon-more">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
 
                         <div id="all-concerts" class="row">
                             @foreach (var concert in Model.Concerts)
@@ -436,15 +436,14 @@
         const searchPage    = document.getElementById('search-page');
         
         
-        input.addEventListener('input', function(e) {
-          if (input.value === null || input.value === ""){
-            console.log("1")
-            searchPage.style.display = 'none';
-          } else { 
-            searchPage.style.display = 'block';
-          }
-        });               
-        }
+        input.addEventListener('input', function (e) {
+            if (input.value === null || input.value === "") {
+                console.log("1")
+                searchPage.style.display = 'none';
+            } else {
+                searchPage.style.display = 'block';
+            }
+        });
 
         function LocationDetails(locationId) {
             event.preventDefault();

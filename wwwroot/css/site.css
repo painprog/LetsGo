@@ -1258,16 +1258,6 @@ body {
     .sidenav{
         width:100vw;
     }
-.scoll-pane::-webkit-scrollbar {
-    display: none;
-    /* Safari and Chrome*/
-}
-
-.future-events {
-    font-size: 14px;
-    cursor: pointer;
-}
-
     .footer {
         height: 14rem;
     }
@@ -1281,10 +1271,20 @@ body {
     font-weight: 500;
 }
 
+.scoll-pane::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome*/
+}
+
 .gray {
     color: darkgray;
 }
 
 .dark-gray {
     color: gray;
+}
+
+.future-events {
+    font-size: 14px;
+    cursor: pointer;
 }

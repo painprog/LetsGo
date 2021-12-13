@@ -60,9 +60,12 @@ namespace LetsGo.Controllers
         
         public IActionResult Search(string search)
         {
-            var result = _db.Events.Include(x => x.Location).
-                Where(x => x.Name.Contains(search) || x.Location.Name.Contains(search)).ToList();
-            return PartialView(result);
+            IndexPageViewModel ivm = new IndexPageViewModel()
+            {
+                Concerts = _db.Events.Include(e => e.Location).Where(x => x.Name.Contains(search)).ToList(),
+                Locations = _db.Locations.Where(x => x.Name.Contains(search)).ToList()
+            };
+            return PartialView(ivm);
         }
 
     }

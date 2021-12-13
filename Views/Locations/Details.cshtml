@@ -48,7 +48,7 @@
                     {
                         <h5 class="events details_subheader pt-5">Расписание мероприятий</h5>
                         <div class="container">
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="col-1"><button id="slideBack" type="button" class="btn btn-light"><i class="fas fa-arrow-left"></i></button></div>
                                 <div class="col-10">
                                     <div class="scoll-pane" id="container">
@@ -57,17 +57,23 @@
                                     </div>
                                 </div>
                                 <div class="col-1"><button id="slide" type="button" class="btn btn-light"><i class="fas fa-arrow-right"></i></button></div>
-                            </div>
+                            </div>*@
                             <hr />
                             @foreach (var item in Model.FutureEvents)
                             {
-                                <div class="future-events row py-2">
-                                    <div class="col-2 row p-0 mx-3"><div class="col-5 p-0">@item.EventStart.Day</div><div class="col-7 p-0">@item.EventStart.ToString("MMMM")<br />@item.EventStart.DayOfWeek</div></div>
-                                    <div class="col-6">
-                                        <h6>@item.Name</h6>
-                                        <p>@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
+                                <div class="future-events row py-2" onclick="Details('@item.Id')">
+                                    <div class="col-2 row p-0 mx-3">
+                                        <div class="col-5 p-0 day">
+                                            <span>
+                                                @item.EventStart.Day
+                                            </span>
+                                        </div>
+                                    <div class="col-7 p-2"><span class="font-weight-bold">@item.EventStart.ToString("MMMM").ToUpper()</span><br /><span class="gray">@item.EventStart.DayOfWeek</span></div></div>
+                                    <div class="col-6 p-2 pl-4">
+                                        <h6 class="font-weight-bold">@item.Name</h6>
+                                        <p class="address gray">@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
                                     </div>
-                                    <div class="col-3 p-0 text-right"><button class="btn btn-danger future-events"><span>Билеты от @item.MinPrice с</span></button></div>
+                                    <div class="col-3 p-2 text-right ml-auto"><button class="btn btn-danger future-events px-3 py-2"><span>Билеты от @item.MinPrice с</span></button></div>
                                 </div>
                                 <hr />
                             }
@@ -78,15 +84,22 @@
                         <h5 class="details_subheader pt-5">Прошедшие события</h5>
                         <div class="container">
                             <hr />
-                            @foreach (var item in Model.FutureEvents)
+                            @foreach (var item in Model.PastEvents)
                             {
-                                <div class="row py-2">
-                                    <div class="col-3">@item.EventStart</div>
-                                    <div class="col-6">
-                                        <h6>@item.Name</h6>
-                                        <p>@Model.Location.Name</p>
+                                <div class="future-events dark-gray row py-2" onclick="Details('@item.Id')">
+                                    <div class="col-2 row p-0 mx-3">
+                                        <div class="col-5 p-0 day">
+                                            <span>
+                                                @item.EventStart.Day
+                                            </span>
+                                        </div>
+                                        <div class="col-7 p-2"><span class="font-weight-bold">@item.EventStart.ToString("MMMM").ToUpper()</span><br /><span class="gray">@item.EventStart.DayOfWeek</span></div>
                                     </div>
-                                    <div class="col-3"><button class="btn btn-light">Билеты от @item.MinPrice som</button></div>
+                                    <div class="col-6 p-2 pl-4">
+                                        <h6 class="font-weight-bold">@item.Name</h6>
+                                        <p class="address gray">@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
+                                    </div>
+                                    <div class="col-3 p-2 text-right ml-auto"><button class="btn btn-light future-events px-3 py-2"><span>Перейти</span></button></div>
                                 </div>
                                 <hr />
                             }
@@ -114,39 +127,42 @@
 {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 <script>
-        function Scroll() {
-            $([document.documentElement, document.body]).animate({
-                scrollTop: $(".events").offset().top
-            }, 1000);
-        };
-        var button = document.getElementById('slide');
-        button.onclick = function () {
-            var container = document.getElementById('container');
-            sideScroll(container, 'right', 25, 100, 10);
-        };
+    function Scroll() {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".events").offset().top
+        }, 1000);
+    };
+    function Details(eventId) {
+                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+    };
+        //var button = document.getElementById('slide');
+        //button.onclick = function () {
+        //    var container = document.getElementById('container');
+        //    sideScroll(container, 'right', 25, 100, 10);
+        //};
 
-        var back = document.getElementById('slideBack');
-        back.onclick = function () {
-            var container = document.getElementById('container');
-            sideScroll(container, 'left', 25, 100, 10);
-        };
+        //var back = document.getElementById('slideBack');
+        //back.onclick = function () {
+        //    var container = document.getElementById('container');
+        //    sideScroll(container, 'left', 25, 100, 10);
+        //};
 
-        function sideScroll(element, direction, speed, distance, step) {
-            scrollAmount = 0;
-            var slideTimer = setInterval(function () {
-                if (direction == 'left') {
-                    element.scrollLeft -= step;
-                } else {
-                    element.scrollLeft += step;
-                }
-                scrollAmount += step;
-                if (scrollAmount >= distance) {
-                    window.clearInterval(slideTimer);
-                }
-            }, speed);
-        };
+        //function sideScroll(element, direction, speed, distance, step) {
+        //    scrollAmount = 0;
+        //    var slideTimer = setInterval(function () {
+        //        if (direction == 'left') {
+        //            element.scrollLeft -= step;
+        //        } else {
+        //            element.scrollLeft += step;
+        //        }
+        //        scrollAmount += step;
+        //        if (scrollAmount >= distance) {
+        //            window.clearInterval(slideTimer);
+        //        }
+        //    }, speed);
+        //};
 
-        $(document).ready(function () {
+        @*$(document).ready(function () {
             var resultList = [];
             var date = new Date();
             var endDate = new Date(parseInt(@(Model.MaxDate.Year)), parseInt(@(Model.MaxDate.Month))-1, parseInt(@(Model.MaxDate.Day)));
@@ -164,7 +180,7 @@
                 count = count + 1;
                 console.log(count);
             });
-        });
+        });*@
 
 </script>
 }

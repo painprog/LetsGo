@@ -4,6 +4,7 @@ using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,5 +58,21 @@ namespace LetsGo.Controllers
 
             return Json(locations);
         }
+        public async Task<IActionResult> Details(string id)
+        {
+            Location location = await _service.GetLocation(id);
+            var events = await _service.GetLocationEvents(id);
+            DateTime maxDate = events.Max(p => p.EventStart);
+            LocationDetailsViewModel viewModel = new LocationDetailsViewModel
+            {
+                Location = location,
+                LocationCategories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories),
+                FutureEvents = events.Where(e => e.EventStart >= DateTime.Now).ToList(),
+                PastEvents = events.Where(e => e.EventStart < DateTime.Now).ToList(),
+                MaxDate = maxDate
+            };
+            return View(viewModel);
+        }
+
     }
 }

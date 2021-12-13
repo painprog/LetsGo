@@ -3,46 +3,45 @@
     ViewBag.Title = "Детальная страница мероприятия";
 }
 
-<div class="pn-page_section">
-    <div class="pn-page-head">
-        <img class="blur_img" src="@Model.Event.PosterImage" alt="">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="pn-head_image">
-                    <img src="@Model.Event.PosterImage" alt="" class="rounded">
-                </div>
+<div class="pn-page_section my-4">
+<div class="pn-page-head">
+    <img class="blur_img" src="@Model.Event.PosterImage" alt="">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="pn-head_image">
+                <img src="@Model.Event.PosterImage" alt="" class="rounded">
             </div>
-            <div class="col-lg-8">
-                <div class="pn-head_title">
-                    <h1>@Model.Event.Name</h1>
-                    <span>@Model.Event.AgeLimit +</span>
-                </div>
-                <div class="pn-head_description">
-                    <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
-                    <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
-                    <div class="pn-head_place">@Model.Event.Location.Name</div>
-                </div>
-                <div class="pn-head_tags">
-                    @* @if (Model.Event.Categories != null) *@
-                    @* { *@
-                    @*     @foreach (var item in Model.EventCategories) *@
-                    @*     { *@
-                    @*         <a href="#" class="tag">@item.Name</a> *@
-                    @*     } *@
-                    @* } *@
-
-                </div>
-                <div class="pn-head_buttons">
-                    <button class="btn btn-danger" onclick="Scroll()">
-                        <span>билеты</span>
-                    </button>
-                    <button class="btn btn-light">
-                        <span>другие сеансы</span>
-                    </button>
-                </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="pn-head_title">
+                <h1>@Model.Event.Name</h1>
+                <span>@Model.Event.AgeLimit +</span>
+            </div>
+            <div class="pn-head_description">
+                <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
+                <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
+                <div class="pn-head_place" onclick="LocationDetails('@Model.Event.LocationId')">@Model.Event.Location.Name</div>
+            </div>
+            <div class="pn-head_tags">
+                 @if (Model.Event.Categories != null) 
+                 { 
+                     @foreach (var item in Model.EventCategories) 
+                     { 
+                         <a href="#" class="tag">@item.Name</a> 
+                     } 
+                 } 
+            </div>
+            <div class="pn-head_buttons">
+                <button class="btn btn-danger" onclick="Scroll()">
+                    <span>билеты</span>
+                </button>
+                <button class="btn btn-light">
+                    <span>другие сеансы</span>
+                </button>
             </div>
         </div>
     </div>
+</div>
 
     <div class="content">
         <div class="event">
@@ -234,7 +233,7 @@
 @section Scripts
 {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script>
+<script>
         var ticketsCount = $('.ticketsCount');
         var ticketsSum = $('.ticketsSum');
         let pressed = false;
@@ -348,6 +347,10 @@
                 $('.places').show();
                 $('#checkout').hide();
             } *@
+        };
+
+        function LocationDetails(locationId) {
+            window.location.href = '@Url.Action("Details","Locations")?id=' + locationId;
         }
 
         // Функция ymaps.ready() будет вызвана, когда

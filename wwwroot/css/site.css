@@ -706,7 +706,7 @@ body {
 .pn-page_section {
     max-width: 1020px;
     margin: 0 auto;
-    border-radius: 5px;
+    border-radius: 15px;
     background-color: #fff;
 }
 
@@ -759,6 +759,9 @@ body {
     margin-top: 15px;
     color: #fff;
     font-size: 14px;
+}
+.pn-head_place{
+    cursor: pointer;
 }
 
 .pn-head_tags {
@@ -1114,6 +1117,30 @@ body {
 .form-container {
     max-width: 900px;
 }
+.scoll-pane {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    outline: none;
+    overflow-y: hidden;
+    padding-bottom: 15px;
+    -ms-overflow-style: scroll;
+    /* IE 10+ scrollbar-width: none;
+     Firefox*/
+}
+
+.scroll-list {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.scroll-list li{
+    padding: 7px 20px 7px 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
 
 
 .profile {
@@ -1215,6 +1242,15 @@ body {
     .sidenav{
         width:100vw;
     }
+.scoll-pane::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome*/
+}
+
+.future-events {
+    font-size: 14px;
+    cursor: pointer;
+}
 
     .footer {
         height: 14rem;
@@ -1223,4 +1259,16 @@ body {
     .entry-form{
         margin: 20px;
     }
+}
+.future-events .day {
+    font-size: 35px;
+    font-weight: 500;
+}
+
+.gray {
+    color: darkgray;
+}
+
+.dark-gray {
+    color: gray;
 }

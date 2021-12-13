@@ -110,7 +110,7 @@
                                                     @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@concert.LocationId')">
                                                         @concert.Location.Name
                                                     </a>
                                                 </div>
@@ -160,7 +160,7 @@
                                                     @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@festival.LocationId')">
                                                         @festival.Location.Name
                                                     </a>
                                                 </div>
@@ -213,7 +213,7 @@
                                                     по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@performance.LocationId')">
                                                         @performance.Location.Name
                                                     </a>
                                                 </div>
@@ -264,7 +264,7 @@
                                                     по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@forChildren.LocationId')">
                                                         @forChildren.Location.Name
                                                     </a>
                                                 </div>
@@ -295,7 +295,7 @@
                         <div id="all-venues" class="row row-cols-1 row-cols-md-3">
                             @foreach (var location in Model.Locations)
                             {
-                                <div class="col-md-4 p-0">
+                                <div class="col-md-4 p-0" onclick="LocationDetails('@location.Id')">
                                     <div class="card venues-card">
                                         <a href="#" class="venue">
                                             <div class="venue-card-img-container">
@@ -352,7 +352,7 @@
                         $('#all-venues').append(`
                                 <div class="col-md-4 p-0">
                                         <div class="card venues-card">
-                                            <a href="#" class="venue">
+                                            <a href="#" class="venue" onclick="LocationDetails('${venue.Id}')">
                                                 <div class="venue-card-img-container">
                                                     <span class="venue-card-placeholder">${venue.name.charAt(0)}</span>
                                                 </div>
@@ -380,6 +380,12 @@
 
         function Details(eventId) {
                 window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+        }
+
+        function LocationDetails(locationId) {
+            event.preventDefault();
+            event.stopPropagation();
+            window.location.href = '@Url.Action("Details","Locations")?id=' + locationId;
         }
 
         function Afisha() {

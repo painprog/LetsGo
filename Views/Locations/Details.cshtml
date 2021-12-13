@@ -5,11 +5,17 @@
 
 <div class="pn-page_section my-4">
     <div class="pn-page-head bg-dark">
-        @*<img class="blur_img" src="@Model.Location.PosterImage" alt="">*@
+        @if (Model.Location.LocationImage != null)
+        {
+            <img class="blur_img" src="@Model.Location.LocationImage" alt="">
+        }
         <div class="row">
             <div class="col-lg-4">
                 <div class="pn-head_image">
-                    @*<img src="@Model.Event.PosterImage" alt="" class="rounded">*@
+                    @if (Model.Location.LocationImage != null)
+                    {
+                        <img src="@Model.Location.LocationImage" alt="" class="rounded">
+                    }
                 </div>
             </div>
             <div class="col-lg-8">
@@ -21,13 +27,13 @@
                     <div class="pn-head_place">@Model.FutureEvents.Count предстоящих мероприятий в @Model.Location.Name</div>
                 </div>
                 <div class="pn-head_tags">
-                     @if (Model.Location.Categories != null) 
-                     { 
-                         @foreach (var item in Model.LocationCategories) 
-                         { 
-                             <a href="#" class="tag">@item.Name</a> 
-                         } 
-                     } 
+                    @if (Model.Location.Categories != null)
+                    {
+                        @foreach (var item in Model.LocationCategories)
+                        {
+                            <a href="#" class="tag">@item.Name</a>
+                        }
+                    }
                 </div>
                 <div class="pn-head_buttons">
                     <button class="btn btn-dark" onclick="Scroll()">

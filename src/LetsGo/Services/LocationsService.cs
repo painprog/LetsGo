@@ -15,7 +15,8 @@ namespace LetsGo.Services
     {
         private readonly ApplicationDbContext _db;
         private IMemoryCache cache;
-        public LocationsService(LetsGoContext db, IMemoryCache cache)
+
+        public LocationsService(ApplicationDbContext db, IMemoryCache cache)
         {
             _db = db;
             this.cache = cache;
@@ -57,7 +58,7 @@ namespace LetsGo.Services
             await _db.SaveChangesAsync();
             return location;
         }
-        public async Task<Location> GetLocation(string id)
+        public async Task<Location> GetLocation(int id)
         {
             Location location = null;
             if (!cache.TryGetValue(id, out location))
@@ -71,7 +72,7 @@ namespace LetsGo.Services
             }
             return location;
         }
-        public async Task<List<Event>> GetLocationEvents(string locationId)
+        public async Task<List<Event>> GetLocationEvents(int locationId)
         {
             List<Event> Events = new List<Event>();
             Events = await _db.Events.Include(e => e.Location).Where(p => p.LocationId == locationId).ToListAsync();

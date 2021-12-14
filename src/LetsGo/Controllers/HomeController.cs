@@ -1,5 +1,4 @@
-﻿using LetsGo.Enums;
-using LetsGo.ViewModels;
+﻿using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
 using LetsGo.DAL;
 
 namespace LetsGo.Controllers

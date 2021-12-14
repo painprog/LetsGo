@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using LetsGo.Core.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace LetsGo.DAL
 {
@@ -17,6 +21,8 @@ namespace LetsGo.DAL
             IdentityRoleClaim<int>,
             IdentityUserToken<int>>
     {
+        private IWebHostEnvironment _appEnvironment;
+
         public DbSet<EventCategory> EventCategories { get; set; }
         public DbSet<LocationCategory> LocationCategories { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -24,33 +30,19 @@ namespace LetsGo.DAL
         public DbSet<EventTicketType> EventTicketTypes { get; set; }
         public DbSet<PurchasedTicket> PurchasedTickets { get; set; }
 
-        public ApplicationDbContext(DbContextOptions options)
+        public ApplicationDbContext(DbContextOptions options, IWebHostEnvironment appEnvironment)
             : base(options)
         {
+            _appEnvironment = appEnvironment;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            //builder.Seed();
+            builder.Seed(_appEnvironment);
 
             DisableOneToManyCascadeDelete(builder);
-			
-			string filepath = Path.Combine(_appEnvironment.WebRootPath, "jsonsDataSeed/locationCategories.json");
-            builder.Entity<LocationCategory>().HasData(
-                JsonReader.ReadJson<LocationCategory>(filepath)
-                );
-
-            filepath = Path.Combine(_appEnvironment.WebRootPath, "jsonsDataSeed/eventCategories.json");
-            builder.Entity<EventCategory>().HasData(
-                JsonReader.ReadJson<EventCategory>(filepath)
-                );
-
-            filepath = Path.Combine(_appEnvironment.WebRootPath, "jsonsDataSeed/locations.json");
-            builder.Entity<Location>().HasData(
-                JsonReader.ReadJson<Location>(filepath)
-                );
         }
 
         private static void DisableOneToManyCascadeDelete(ModelBuilder builder)
@@ -62,23 +54,13 @@ namespace LetsGo.DAL
         }
     }
 
-    //public static class ModelBuilderExtensions
-    //{
-    //    public static void Seed(this ModelBuilder modelBuilder)
-    //    {
-    //        modelBuilder.Entity<Author>().HasData(
-    //            new Author
-    //            {
-    //                AuthorId = 1,
-    //                FirstName = "William",
-    //                LastName = "Shakespeare"
-    //            }
-    //        );
-    //        modelBuilder.Entity<Book>().HasData(
-    //            new Book { BookId = 1, AuthorId = 1, Title = "Hamlet" },
-    //            new Book { BookId = 2, AuthorId = 1, Title = "King Lear" },
-    //            new Book { BookId = 3, AuthorId = 1, Title = "Othello" }
-    //        );
-    //    }
-    //}
+    public static class ModelBuilderExtensions
+    {
+        public static void Seed(this ModelBuilder modelBuilder, IWebHostEnvironment appEnvironment)
+        {
+            modelBuilder.Entity<LocationCategory>().HasData(JsonConvert.DeserializeObject<LocationCategory[]>(File.ReadAllText(Path.Combine(appEnvironment.WebRootPath, "jsonsDataSeed/locationCategories.json"))));
+            modelBuilder.Entity<EventCategory>().HasData(JsonConvert.DeserializeObject<EventCategory[]>(File.ReadAllText(Path.Combine(appEnvironment.WebRootPath, "jsonsDataSeed/eventCategories.json"))));
+            modelBuilder.Entity<Location>().HasData(JsonConvert.DeserializeObject<Location[]>(File.ReadAllText(Path.Combine(appEnvironment.WebRootPath, "jsonsDataSeed/locations.json"))));
+        }
+    }
 }

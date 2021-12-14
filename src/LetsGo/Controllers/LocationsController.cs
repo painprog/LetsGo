@@ -25,7 +25,7 @@ namespace LetsGo.Controllers
 
         public IActionResult Create()
         {
-            var categories = _db.LocationCategories.Select(x => new SelectListItem(){ Text = x.Name, Value = x.Id }).ToList();
+            var categories = _db.LocationCategories.Select(x => new SelectListItem(){ Text = x.Name, Value = x.Id.ToString() }).ToList();
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
             categories.Remove(other);
             categories.Add(other);
@@ -59,7 +59,7 @@ namespace LetsGo.Controllers
 
             return Json(locations);
         }
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             Location location = await _service.GetLocation(id);
             var events = await _service.GetLocationEvents(id);

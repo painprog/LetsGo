@@ -1,9 +1,8 @@
-﻿using LetsGo.Enums;
-using LetsGo.Models;
-using LetsGo.ViewModels;
+﻿using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using LetsGo.Core.Entities.Enums;
 using LetsGo.DAL;
 
 namespace LetsGo.Controllers

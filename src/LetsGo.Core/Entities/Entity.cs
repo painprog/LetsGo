@@ -6,7 +6,7 @@ namespace LetsGo.Core.Entities
     public abstract class Entity : IEquatable<Entity>
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; protected set; }
+        public int Id { get; set; }
 
         public override bool Equals(object obj)
         {

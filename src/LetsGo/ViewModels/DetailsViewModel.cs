@@ -21,6 +21,6 @@ namespace LetsGo.ViewModels
         [EmailAddress(ErrorMessage = "Некорректно введенная почта")]
         public string Email { get; set; }
 
-        public string EventId { get; set; }
+        public int EventId { get; set; }
     }
 }

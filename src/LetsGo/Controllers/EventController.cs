@@ -1,4 +1,5 @@
-﻿using LetsGo.Services;
+﻿using System;
+using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,7 @@ using LetsGo.Core.Entities;
 using LetsGo.DAL;
 using LetsGo.Extensions;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace LetsGo.Controllers
 {
@@ -31,7 +33,7 @@ namespace LetsGo.Controllers
 
         public async Task<IActionResult> Add()
         {
-            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
+            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }).ToList();
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
             categories.Remove(other);
             categories.Add(other);

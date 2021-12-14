@@ -1,6 +1,7 @@
-﻿using LetsGo.Enums;
+﻿using System;
 using System.Collections.Generic;
 using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
 
 namespace LetsGo.ViewModels
 {

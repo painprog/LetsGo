@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Enums\**" />
+    <Compile Remove="wwwroot\avatars\**" />
+    <Compile Remove="wwwroot\posters\**" />
+    <Content Remove="Enums\**" />
+    <Content Remove="wwwroot\avatars\**" />
+    <Content Remove="wwwroot\posters\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <EmbeddedResource Remove="wwwroot\avatars\**" />
+    <EmbeddedResource Remove="wwwroot\posters\**" />
+    <None Remove="Enums\**" />
+    <None Remove="wwwroot\avatars\**" />
+    <None Remove="wwwroot\posters\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BarCode" Version="2021.11.0" />
     <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
@@ -24,12 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\" />
     <Folder Include="Views\Cabinet\" />
-    <Folder Include="wwwroot\avatars\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\avatars\" />
-    <Folder Include="wwwroot\posters\" />
   </ItemGroup>
 
   <ItemGroup>

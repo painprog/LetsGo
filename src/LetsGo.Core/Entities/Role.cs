@@ -4,12 +4,18 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LetsGo.Core.Entities
 {
-    public class Role : IdentityRole<int>
+    public sealed class Role : IdentityRole<int>
     {
         public ICollection<UserToRole> UserRoles { get; private set; }
 
-        protected Role()
+        private Role()
         {
+            UserRoles = new Collection<UserToRole>();
+        }
+        public Role(string name)
+        {
+            Name = name;
+            NormalizedName = name.ToUpper();
             UserRoles = new Collection<UserToRole>();
         }
     }

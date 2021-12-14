@@ -105,7 +105,7 @@ namespace LetsGo.Services
             int count = 0;
             foreach (var type in ticketTypes)
             {
-                if (String.IsNullOrEmpty(type.Id))
+                if (type.Id == default)
                 {
                     type.EventId = eventId;
                     _goContext.EventTicketTypes.Add(type);
@@ -149,7 +149,7 @@ namespace LetsGo.Services
             //else
             //    CategoriesList.Add(categs);
 
-            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
+            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }).ToList();
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
             categories.Remove(other);
             categories.Add(other);

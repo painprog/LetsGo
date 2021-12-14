@@ -1,4 +1,6 @@
-﻿using LetsGo.Services;
+﻿using System;
+using System.Collections.Generic;
+using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
 using LetsGo.DAL;
 using LetsGo.Extensions;
 

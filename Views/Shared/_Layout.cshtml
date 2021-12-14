@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - LetsGo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/calender.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/v5.11.1/css/free.min.css" media="all">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
@@ -198,6 +199,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/btnloadmore.js"></script>
+    <script charset="windows-1251" type="text/javascript" src="~/js/calender.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
@@ -237,23 +239,23 @@
         $('#category-link').on("click", function () {
             $('body').html(`
 <div class="category-header">
-        <a href="Home/Index">
-            <span class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
-        </a>
+            <a href="Home/Index">
+                <span class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
+            </a>
 </div>
-        <div class="category-links">
-            <div class="row">
-                <div class="col-md-9">
-                    <a class="" href="/Category/Concerts">Концерты</a>
-                    <a class="" href="/Category/Performances">Спектакли</a>
-                    <a class="" href="/Category/Children">Детям</a>
-                    <a class="" href="/Category/Classic">Классика</a>
-                    <a class="" href="/Category/Excursion">Экскурсия</a>
-                    <a class="" href="/Category/Festivals">Фестивали</a>
-                    <a class="" href="/Category/Other">Другое</a>
+            <div class="category-links">
+                <div class="row">
+                    <div class="col-md-9">
+                        <a class="" href="/Category/Concerts">Концерты</a>
+                        <a class="" href="/Category/Performances">Спектакли</a>
+                        <a class="" href="/Category/Children">Детям</a>
+                        <a class="" href="/Category/Classic">Классика</a>
+                        <a class="" href="/Category/Excursion">Экскурсия</a>
+                        <a class="" href="/Category/Festivals">Фестивали</a>
+                        <a class="" href="/Category/Other">Другое</a>
+                    </div>
                 </div>
-            </div>
-        </div>`);
+            </div>`);
         });
 
     </script>

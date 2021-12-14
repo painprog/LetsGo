@@ -4,22 +4,35 @@
         <div class="container-2 container-fluid mx-auto">
             <h1 class="pt-1 mb-5 text-center">Быстрый поиск и покупка билетов</h1>
             <div class="container_basic_content">
-                <div class="search_wrapper d-flex justify-content-center">
+                <div class="search_wrapper d-flex justify-content-center position-relative ">
                     <div class="seacrh_input input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fas fa-search"></i>
+                            </span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
+                        <input id="livestream" name="livestream" type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-outline-light" type="button">Город</button>
                         </div>
                     </div>
+                   
+                    <div id="search-page" class="search-page bg-white seacrh_input position-absolute">
+                        @* <p id="values"></p> *@
+                        <div id="search-events">
+                            <div id="result" class="tag-results d-flex flex-column"></div>
+                        </div>
+                        <div>
+                            @*для площадок*@
+                        </div>
+                    </div>
                 </div>
+
                 <div class="links">
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Афиша</a>
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Сегодня</a>
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Завтра</a>
-                    <a href="#" class="link_day" role="button" aria-pressed="true">Выходные</a>
+                    <a onclick="Afisha()" role="button" aria-pressed="true">Афиша</a>
+                    <a onclick="Today()" role="button" aria-pressed="true">Сегодня</a>
+                    <a onclick="Tomorrow()" role="button" aria-pressed="true">Завтра</a>
+                    <a onclick="Weekends()" role="button" aria-pressed="true">Выходные</a>
                 </div>
                 <div class="icon_buttons align-content-center">
                     <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn far fa-calendar-alt"></i>Календарь</button>
@@ -31,7 +44,9 @@
     <div class="main_info_card card_group row mx-0 justify-content-center mt-5">
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">Все</h2>
                 </div>
@@ -40,7 +55,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">билеты</h2>
                 </div>
@@ -49,7 +66,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">без</h2>
                 </div>
@@ -58,7 +77,9 @@
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
-                <div class="card-img-top text-center pt-2"><img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4"></div>
+                <div class="card-img-top text-center pt-2">
+                    <img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4">
+                </div>
                 <div class="card-body mx-auto p-0">
                     <h2 class="title_card">наценки</h2>
                 </div>
@@ -110,7 +131,7 @@
                                                     @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@concert.LocationId')">
                                                         @concert.Location.Name
                                                     </a>
                                                 </div>
@@ -160,7 +181,7 @@
                                                     @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@festival.LocationId')">
                                                         @festival.Location.Name
                                                     </a>
                                                 </div>
@@ -213,7 +234,7 @@
                                                     по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@performance.LocationId')">
                                                         @performance.Location.Name
                                                     </a>
                                                 </div>
@@ -264,7 +285,7 @@
                                                     по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
                                                 </div>
                                                 <div class="card-venue">
-                                                    <a class="card-venue-link" href="#">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@forChildren.LocationId')">
                                                         @forChildren.Location.Name
                                                     </a>
                                                 </div>
@@ -295,7 +316,7 @@
                         <div id="all-venues" class="row row-cols-1 row-cols-md-3">
                             @foreach (var location in Model.Locations)
                             {
-                                <div class="col-md-4 p-0">
+                                <div class="col-md-4 p-0" onclick="LocationDetails('@location.Id')">
                                     <div class="card venues-card">
                                         <a href="#" class="venue">
                                             <div class="venue-card-img-container">
@@ -352,7 +373,7 @@
                         $('#all-venues').append(`
                                 <div class="col-md-4 p-0">
                                         <div class="card venues-card">
-                                            <a href="#" class="venue">
+                                            <a href="#" class="venue" onclick="LocationDetails('${venue.Id}')">
                                                 <div class="venue-card-img-container">
                                                     <span class="venue-card-placeholder">${venue.name.charAt(0)}</span>
                                                 </div>
@@ -379,7 +400,71 @@
         });
 
         function Details(eventId) {
-                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+                window.location.href = '@Url.Action("Details", "Event")?id=' + eventId;
+        }
+        
+        document.getElementById('livestream').addEventListener('keyup', function (e) {
+                    LiveSearch()
+                   });
+        function LiveSearch() {
+            let value = document.getElementById('livestream').value
+            $.ajax({
+                type: "GET", 
+                url: '@Url.Action("Search", "Home")',
+                data: {search: value },
+                datatype: "html",
+                success: 
+                 function (data) {
+                    console.log('OK')
+                    console.log(data)
+                          $('#result').html(data);
+                         }
+                });
+            
+            let timeout = null;
+            
+            document.getElementById('livestream').addEventListener('keyup', function (e) {  
+                  clearTimeout(timeout);
+            
+                  timeout = setTimeout(function () {
+                         LiveSearch()
+                  }, 200);
+             });
+        }   
+        
+        const input         = document.getElementById('livestream');
+        const searchPage    = document.getElementById('search-page');
+        
+        
+        input.addEventListener('input', function (e) {
+            if (input.value === null || input.value === "") {
+                console.log("1")
+                searchPage.style.display = 'none';
+            } else {
+                searchPage.style.display = 'block';
+            }
+        });
+
+        function LocationDetails(locationId) {
+            event.preventDefault();
+            event.stopPropagation();
+            window.location.href = '@Url.Action("Details","Locations")?id=' + locationId;
+        }
+
+        function Afisha() {
+                window.location.href = '@Url.Action("Afisha", "Event")';
+        }
+
+        function Today() {
+                window.location.href = '@Url.Action("Today", "Event")';
+        }
+
+        function Tomorrow() {
+                window.location.href = '@Url.Action("Tomorrow", "Event")';
+        }
+
+        function Weekends() {
+                window.location.href = '@Url.Action("Weekends", "Event")';
         }
     </script>
 }

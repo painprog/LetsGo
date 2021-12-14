@@ -1,12 +1,12 @@
-﻿@model CategoryViewModel
-
+﻿@model List<Event>
 @{
-    ViewData["Title"] = "Category Page";
+    ViewBag.Title = "Афиша Бишкека на " + DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower() + " " + DateTime.Now.Year;
 }
+
 <div class="events-page">
-    <h2>Афиша <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> Бишкека</h2>
+    <h2>@ViewBag.PageTitle</h2>
     <div class="events row">
-        @foreach (var item in Model.Events)
+        @foreach (var item in Model)
         {
             <div class="col-md-4">
                 <div class="card p-0">
@@ -17,7 +17,7 @@
                             <div class="card-age">@item.AgeLimit+</div>
                         </div>
                         <div class="card-tag">
-                            <a href="#">@ViewBag.CategoryName</a>
+                            <a href="#">@item.Categories</a>
                         </div>
                     </div>
                     <div class="card-block-description">
@@ -48,5 +48,12 @@
         function Details(eventId) {
                 window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
         }
+
+        $('.events').btnLoadmore({
+            showItem: 20, //default 6
+            whenClickBtn: 5, //default 3
+            textBtn: 'Больше мероприятий',
+            classBtn: 'btn btn-danger btn-loadmore'
+        });
     </script>
 }

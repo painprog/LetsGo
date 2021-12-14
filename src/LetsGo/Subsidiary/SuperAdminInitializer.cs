@@ -17,7 +17,7 @@ namespace LetsGo.Subsidiary
             string superAdminEmail = "superadmin@admin.com";
             string superAdminLogin = "superadmin";
             string superAdminPassword = "Password123!";
-            var roles = new[] { "superadmin", "admin" };
+            var roles = new[] { "superadmin", "admin", "organizer"};
             foreach (var role in roles)
             {
                 if (await _roleManager.FindByNameAsync(role) is null)
@@ -27,6 +27,7 @@ namespace LetsGo.Subsidiary
             if (await _userManager.FindByNameAsync(superAdminEmail) == null)
             {
                 User superAdmin = new User { Email = superAdminEmail, UserName = superAdminLogin};
+                superAdmin.EmailConfirmed = true;
                 IdentityResult result = await _userManager.CreateAsync(superAdmin, superAdminPassword);
                 if (result.Succeeded)
                     await _userManager.AddToRoleAsync(superAdmin, "superadmin");

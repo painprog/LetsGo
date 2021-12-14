@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -39,8 +40,7 @@ namespace LetsGo.ViewModels
         [Display(Name = "Время конца")]
         public DateTime EventEnd { get; set; }
 
-        public string Categories { get; set; }
-        public List<string> CategoriesList { get; set; }
+        public IList<SelectListItem> EventCategories { get; set; }
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]

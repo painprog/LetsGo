@@ -36,6 +36,21 @@ namespace LetsGo.DAL
             //builder.Seed();
 
             DisableOneToManyCascadeDelete(builder);
+			
+			string filepath = Path.Combine(_appEnvironment.WebRootPath, "jsonsDataSeed/locationCategories.json");
+            builder.Entity<LocationCategory>().HasData(
+                JsonReader.ReadJson<LocationCategory>(filepath)
+                );
+
+            filepath = Path.Combine(_appEnvironment.WebRootPath, "jsonsDataSeed/eventCategories.json");
+            builder.Entity<EventCategory>().HasData(
+                JsonReader.ReadJson<EventCategory>(filepath)
+                );
+
+            filepath = Path.Combine(_appEnvironment.WebRootPath, "jsonsDataSeed/locations.json");
+            builder.Entity<Location>().HasData(
+                JsonReader.ReadJson<Location>(filepath)
+                );
         }
 
         private static void DisableOneToManyCascadeDelete(ModelBuilder builder)

@@ -16,7 +16,7 @@
                             <button class="btn btn-outline-light" type="button">Город</button>
                         </div>
                     </div>
-                   
+
                     <div id="search-page" class="search-page bg-white seacrh_input position-absolute">
                         @* <p id="values"></p> *@
                         <div id="search-events">
@@ -78,7 +78,7 @@
             </div>
         </div>
     </div>
-    <div id="testttt" class="main_info_card card_group row mx-0 justify-content-center mt-5">
+    <div class="main_info_card card_group row mx-0 justify-content-center mt-5">
         <div class="col-lg-3 col-md-5 col-11 mb-4">
             <div class="card card_cont2">
                 <div class="card-img-top text-center pt-2">
@@ -148,37 +148,37 @@
                         <div id="all-concerts" class="row">
                             @foreach (var concert in Model.Concerts)
                             {
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img" onclick="Details('@concert.Id')">
-                                        <img src="@concert.PosterImage" alt="@concert.Name">
-                                        <div class="wrapper">
-                                            <div class="card-age">@concert.AgeLimit+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Концерты</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <div class="card-title" onclick="Details('@concert.Id')">
-                                            Концерт "@concert.Name"
-                                        </div>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img" onclick="Details('@concert.Id')">
+                                            <img src="@concert.PosterImage" alt="@concert.Name">
+                                            <div class="wrapper">
+                                                <div class="card-age">@concert.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    @concert.Location.Name
+                                            <div class="card-tag">
+                                                <a href="#">Концерты</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <div class="card-title" onclick="Details('@concert.Id')">
+                                                Концерт "@concert.Name"
+                                            </div>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@concert.LocationId')">
+                                                        @concert.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ @concert.MinPrice сом
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ @concert.MinPrice сом
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     </div>
@@ -199,36 +199,36 @@
                         <div id="all-festivals" class="row row-cols-1 row-cols-md-3">
                             @foreach (var festival in Model.Festivals)
                             {
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img" onclick="Details('@festival.Id')">
-                                        <img src="@festival.PosterImage" alt="@festival.Name">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">@festival.AgeLimit+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Фестивали</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <div class="card-title" onclick="Details('@festival.Id')">Фестиваль"@festival.Name"</div>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img" onclick="Details('@festival.Id')">
+                                            <img src="@festival.PosterImage" alt="@festival.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@festival.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    @festival.Location.Name
+                                            <div class="card-tag">
+                                                <a href="#">Фестивали</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <div class="card-title" onclick="Details('@festival.Id')">Фестиваль"@festival.Name"</div>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@festival.LocationId')">
+                                                        @festival.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ @festival.MinPrice сом
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ @festival.MinPrice сом
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     </div>
@@ -249,39 +249,39 @@
                         <div id="all-performances" class="row row-cols-1 row-cols-md-3">
                             @foreach (var performance in Model.Performances)
                             {
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img" onclick="Details('@performance.Id')">
-                                        <img src="@performance.PosterImage" alt="@performance.Name">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">@performance.AgeLimit+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Спектакли</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <div class="card-title" onclick="Details('@performance.Id')">
-                                            Спектакль"@performance.Name"
-                                        </div>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img" onclick="Details('@performance.Id')">
+                                            <img src="@performance.PosterImage" alt="@performance.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@performance.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    @performance.Location.Name
+                                            <div class="card-tag">
+                                                <a href="#">Спектакли</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <div class="card-title" onclick="Details('@performance.Id')">
+                                                Спектакль"@performance.Name"
+                                            </div>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@performance.LocationId')">
+                                                        @performance.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ @performance.MinPrice сом
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ @performance.MinPrice сом
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     </div>
@@ -302,37 +302,37 @@
                         <div id="all-for-children" class="row row-cols-1 row-cols-md-3">
                             @foreach (var forChildren in Model.ForChildren)
                             {
-                            <div class="col-md-4">
-                                <div class="card p-0">
-                                    <div class="card-block-img" onclick="Details('@forChildren.Id')">
-                                        <img src="@forChildren.PosterImage" alt="@forChildren.Name">
-                                        <a href="#"></a>
-                                        <div class="wrapper">
-                                            <div class="card-age">@forChildren.AgeLimit+</div>
-                                        </div>
-                                        <div class="card-tag">
-                                            <a href="#">Детям</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-block-description">
-                                        <div class="card-title" onclick="Details('@forChildren.Id')">@forChildren.Name</div>
-                                        <div class="card-description">
-                                            <div class="card-date">
-                                                c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                <div class="col-md-4">
+                                    <div class="card p-0">
+                                        <div class="card-block-img" onclick="Details('@forChildren.Id')">
+                                            <img src="@forChildren.PosterImage" alt="@forChildren.Name">
+                                            <a href="#"></a>
+                                            <div class="wrapper">
+                                                <div class="card-age">@forChildren.AgeLimit+</div>
                                             </div>
-                                            <div class="card-venue">
-                                                <a class="card-venue-link" href="#">
-                                                    @forChildren.Location.Name
+                                            <div class="card-tag">
+                                                <a href="#">Детям</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-block-description">
+                                            <div class="card-title" onclick="Details('@forChildren.Id')">@forChildren.Name</div>
+                                            <div class="card-description">
+                                                <div class="card-date">
+                                                    c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                </div>
+                                                <div class="card-venue">
+                                                    <a class="card-venue-link" href="#" onclick="LocationDetails('@forChildren.LocationId')">
+                                                        @forChildren.Location.Name
+                                                    </a>
+                                                </div>
+                                                <a href="#" class="card-price">
+                                                    БИЛЕТЫ ОТ @forChildren.MinPrice сом
                                                 </a>
                                             </div>
-                                            <a href="#" class="card-price">
-                                                БИЛЕТЫ ОТ @forChildren.MinPrice сом
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     </div>
@@ -353,19 +353,19 @@
                         <div id="all-venues" class="row row-cols-1 row-cols-md-3">
                             @foreach (var location in Model.Locations)
                             {
-                            <div class="col-md-4 p-0">
-                                <div class="card venues-card">
-                                    <a href="#" class="venue">
-                                        <div class="venue-card-img-container">
-                                            <span class="venue-card-placeholder">@location.Name.Substring(0, 1)</span>
-                                        </div>
-                                        <div class="venue-card-content">
-                                            <p class="venue-card-type">@location.Categories</p>
-                                            <p class="venue-card-title">@location.Name</p>
-                                        </div>
-                                    </a>
+                                <div class="col-md-4 p-0" onclick="LocationDetails('@location.Id')">
+                                    <div class="card venues-card">
+                                        <a href="#" class="venue">
+                                            <div class="venue-card-img-container">
+                                                <span class="venue-card-placeholder">@location.Name.Substring(0, 1)</span>
+                                            </div>
+                                            <div class="venue-card-content">
+                                                <p class="venue-card-type">@location.Categories</p>
+                                                <p class="venue-card-title">@location.Name</p>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     </div>
@@ -378,8 +378,8 @@
     </div>
 </div>
 
-    @section scripts{
-<script>
+@section scripts{
+    <script>
         $(window).on('popstate', function (event) {
             $('body').load(location.href);
         });
@@ -439,40 +439,40 @@
         function Details(eventId) {
                 window.location.href = '@Url.Action("Details", "Event")?id=' + eventId;
         }
-        
+
         document.getElementById('livestream').addEventListener('keyup', function (e) {
                     LiveSearch()
                    });
         function LiveSearch() {
             let value = document.getElementById('livestream').value
             $.ajax({
-                type: "GET", 
+                type: "GET",
                 url: '@Url.Action("Search", "Home")',
                 data: {search: value },
                 datatype: "html",
-                success: 
+                success:
                  function (data) {
                     console.log('OK')
                     console.log(data)
                           $('#result').html(data);
                          }
                 });
-            
+
             let timeout = null;
-            
-            document.getElementById('livestream').addEventListener('keyup', function (e) {  
+
+            document.getElementById('livestream').addEventListener('keyup', function (e) {
                   clearTimeout(timeout);
-            
+
                   timeout = setTimeout(function () {
                          LiveSearch()
                   }, 200);
              });
-        }   
-        
+        }
+
         const input         = document.getElementById('livestream');
         const searchPage    = document.getElementById('search-page');
-        
-        
+
+
         input.addEventListener('input', function (e) {
             if (input.value === null || input.value === "") {
                 console.log("1")
@@ -505,5 +505,5 @@
         }
 
 
-</script>
-    }
+    </script>
+}

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsGo", "LetsGo.csproj", "{4921643B-754C-426C-9981-C2E57EE9221F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsGo", "src\LetsGo\LetsGo.csproj", "{4921643B-754C-426C-9981-C2E57EE9221F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsGo.DAL", "..\LetsGo.DAL\LetsGo.DAL.csproj", "{98977641-98A7-4F95-97C4-C63E337C17B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsGo.DAL", "src\LetsGo.DAL\LetsGo.DAL.csproj", "{98977641-98A7-4F95-97C4-C63E337C17B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsGo.Core", "..\LetsGo.Core\LetsGo.Core.csproj", "{55DCBFF2-4BDB-48FD-9F20-9F95C9859636}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsGo.Core", "src\LetsGo.Core\LetsGo.Core.csproj", "{55DCBFF2-4BDB-48FD-9F20-9F95C9859636}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -183,7 +183,8 @@ body {
 }
 
     .calendar-days div.curr-date,
-    .calendar-days div.curr-date:hover {
+    .calendar-days div.curr-date:hover,
+    .calendar-days div:hover{
         background-color: #eb283f;
         color: var(--white);
         border-radius: 10px;

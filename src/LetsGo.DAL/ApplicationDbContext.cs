@@ -1,12 +1,10 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using LetsGo.Core.Entities;
+using LetsGo.DAL.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace LetsGo.DAL
 {
@@ -21,7 +19,7 @@ namespace LetsGo.DAL
             IdentityRoleClaim<int>,
             IdentityUserToken<int>>
     {
-        private IWebHostEnvironment _appEnvironment;
+        private readonly IWebHostEnvironment _appEnvironment;
 
         public DbSet<EventCategory> EventCategories { get; set; }
         public DbSet<LocationCategory> LocationCategories { get; set; }
@@ -30,8 +28,7 @@ namespace LetsGo.DAL
         public DbSet<EventTicketType> EventTicketTypes { get; set; }
         public DbSet<PurchasedTicket> PurchasedTickets { get; set; }
 
-        public ApplicationDbContext(DbContextOptions options, IWebHostEnvironment appEnvironment)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions options, IWebHostEnvironment appEnvironment) : base(options)
         {
             _appEnvironment = appEnvironment;
         }
@@ -51,16 +48,6 @@ namespace LetsGo.DAL
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-        }
-    }
-
-    public static class ModelBuilderExtensions
-    {
-        public static void Seed(this ModelBuilder modelBuilder, IWebHostEnvironment appEnvironment)
-        {
-            modelBuilder.Entity<LocationCategory>().HasData(JsonConvert.DeserializeObject<LocationCategory[]>(File.ReadAllText(Path.Combine(appEnvironment.WebRootPath, "jsonsDataSeed/locationCategories.json"))));
-            modelBuilder.Entity<EventCategory>().HasData(JsonConvert.DeserializeObject<EventCategory[]>(File.ReadAllText(Path.Combine(appEnvironment.WebRootPath, "jsonsDataSeed/eventCategories.json"))));
-            modelBuilder.Entity<Location>().HasData(JsonConvert.DeserializeObject<Location[]>(File.ReadAllText(Path.Combine(appEnvironment.WebRootPath, "jsonsDataSeed/locations.json"))));
         }
     }
 }

@@ -1,0 +1,142 @@
+﻿@using LetsGo.Core.Entities.Enums
+@model LetsGo.UI.ViewModels.ProfileViewModel
+<div id="all-events">
+    @foreach (var item in Model.Events)
+    {
+        <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
+            <div id="event-status" style="display:none;">@item.Status</div>
+            <div class="row">
+                <div class="pn-page-head col-lg-10" style="border-radius: 0">
+                    <img class="blur_img" src="@item.PosterImage" alt="">
+                    <div class="row">
+                        <div class="col-lg-4 mr-5">
+                            <div class="pn-head_image">
+                                <img src="@item.PosterImage" alt="" class="rounded">
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="pn-head_title">
+                                <h1>@item.Name</h1>
+                                <span>@item.AgeLimit +</span>
+                            </div>
+                            <div class="pn-head_description">
+                                <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
+                                <div class="pn-head_place">@item.Location.Name</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 my-auto text-center sideBox">
+                    <h1 style="font-size: 22px;">Билетов</h1>
+                    <p>
+                        куплено: @item.Sold<br />
+                        @{ var remainder = item.TicketLimit - item.Sold;}
+                        осталось: <text>@(@item.Count - @item.Sold)</text>
+                    </p>
+                </div>
+            </div>
+            <div class="text-center align-content-between admin-event pt-2">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <span>Статус: </span>
+                        @switch (item.Status) 
+                        {
+                            case Status.NotDefined:
+                                <span>Ошибка</span>
+                                break;
+                            case Status.Edited:
+                                // feature
+                                break;
+                            case Status.Rejected:
+                                <span>Отклонен</span>
+                                break;
+                            case Status.New:
+                                <span>Ожидание принятия</span>
+                                break;
+                            case Status.Published:
+                                <span>Опубликован</span>
+                                break;
+                            case Status.UnPublished:
+                                <span>Снят с публикации</span>
+                                break;
+                            case Status.ReviewPublished:
+                                <span>Ожидание добавления</span>
+                                break;
+                            case Status.ReviewUnPublished:
+                                <span>Ожидание снятия</span>
+                                break;
+                            case Status.Expired:
+                                <span>Мероприятие уже прошло</span>
+                                break;
+                        }
+                    </div>
+                    <div class="col-lg-10">
+                        @switch (item.Status)
+                        {
+                            case Status.NotDefined:
+                                //?
+                                break;
+                            case Status.Edited:
+                                //Что-то к edit
+                                break;
+                            case Status.Rejected:
+                                //Что-то к отказу
+                                break;
+                            case Status.New:
+                                <button class="btn btn-success px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отклонить
+                                </button>
+                                break;
+                            case Status.Published:
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Снять с публикации
+                                </button>
+                                break;
+                            case Status.UnPublished:
+                                <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
+                                break;
+                            case Status.ReviewPublished:
+                                <button class="btn btn-primary px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Одобрить возвращение в публикации</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2 denyPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отклонить
+                                </button>
+                                break;
+                            case Status.ReviewUnPublished:
+                                <button class="btn btn-primary px-3 ml-4 mb-2 unPublished" type="button" id="@item.Id">Одобрить снятие с публикации</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2 denyUnPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                    Отклонить
+                                </button>
+                                break;
+                            case Status.Expired:
+                                <p>Мероприятие уже прошло</p><br />
+                                break;
+                        }
+                        <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')">edit</span>
+                        @*<span class="material-icons px-3 py-2">delete</span>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal Cause -->
+<div class="modal fade" id="causeModal" tabindex="-1" aria-labelledby="causeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="causeModalLabel">Введите причину</h5>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <textarea class="form-control flex-fill" id="cause-text"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-success" id="cause-confirm" data-bs-dismiss="modal">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+</div>

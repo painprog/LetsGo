@@ -1,0 +1,259 @@
+﻿@model LetsGo.UI.ViewModels.EditEventViewModel
+@{
+    ViewBag.Title = "Редактирование события";
+}
+
+<div class="entry-form form-container">
+    <h1 class="form-header">@ViewBag.Title</h1><hr />
+    <form id="add-event-form" asp-controller="Event" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" value="@Model.Id" />
+        <div class="form-group">
+            <label asp-for="Name"></label><br />
+            <input asp-for="Name" class="form-control input-field" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label><br />
+            <input asp-for="Description" class="form-control input-field" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Location"></label><br />
+            <input asp-for="Location" class="form-control input-field" list='locations' />
+            <datalist id='locations'>
+                <option selected>@Model.Location</option>
+                @foreach (var item in ViewBag.Locations)
+                {
+                    <option>@item.Name</option>
+                }
+            </datalist>
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventStart"></label><br />
+            <input asp-for="EventStart" type="datetime-local" class="form-control input-field" />
+            <span asp-validation-for="EventStart" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventEnd"></label><br />
+            <input asp-for="EventEnd" type="datetime-local" class="form-control input-field" />
+            <span asp-validation-for="EventEnd" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="File" class="control-label">Загрузка аватарки</label>
+            <input asp-for="File" type="file" class="form-control-file" />
+            <span asp-validation-for="File" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AgeLimit"></label>
+            <input asp-for="AgeLimit" type="number" min="0" max="18" value="@Model.AgeLimit" class="form-control input-field" />
+            <span asp-validation-for="AgeLimit" class="text-danger"></span>
+
+        </div>
+        <div class="form-group">
+            <label>Категории</label>
+            @for (int i = 0; i < Model.EventCategories.Count; i++)
+            {
+            <div class="form-check">
+                <input type="hidden" asp-for="@Model.EventCategories[i].Value" />
+                <input type="hidden" asp-for="@Model.EventCategories[i].Text" />
+                <input class="form-check-input" asp-for="EventCategories[i].Selected" />
+                <label class="form-check-label" asp-for="EventCategories[i].Selected">
+                    @Model.EventCategories[i].Text
+                </label>
+            </div>
+            }
+        </div>
+        <div class="mt-4">
+            <label>Информация о билетах</label>
+            <div>
+                <p>Общее число билетов: <b><span id="total-tickets">@Model.TicketLimit</span></b></p>
+                <table class="table tickets-table text-center mt-3">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Название</th>
+                            <th style="width: 30%;">Описание</th>
+                            <th style="width: 15%;">Количество</th>
+                            <th style="width: 15%;">Цена</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tickets">
+                        @foreach (var tickettype in Model.TicketsExist)
+                        {
+                            <tr class="ticket" id="@tickettype.Id">
+                                <td hidden><input type="hidden" asp-for="@tickettype.Id" class="ticket_id" /></td>
+                                <td hidden><input type="hidden" asp-for="@tickettype.EventId" class="event_id" /></td>
+                                <td>
+                                    <input asp-for="@tickettype.Name" class="ticket_name form-control" />
+                                </td>
+                                <td>
+                                    <input asp-for="@tickettype.Description" class="ticket_description form-control" />
+                                </td>
+                                <td>
+                                    <input asp-for="@tickettype.Count" class="ticket_count form-control" type="number" />
+                                </td>
+                                <td>
+                                    <input asp-for="@tickettype.Price" class="ticket_price form-control" type="number" />
+                                </td>
+                                <td><input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h5>Добавление нового билета</h5>
+                <div class="row mt-4">
+                    <div class="col-md-4 mb-3">
+                        <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
+                    <button class="btn btn-primary" type="button" onclick="AddTicket()">Добавить билет</button>
+                </div>
+                <input type="hidden" asp-for="Tickets" />
+                <input type="hidden" asp-for="TicketsForDel" id="deleted_tickets" />
+            </div>
+            <hr />
+            <div class="form-group mt-4">
+                <button id="add" type="submit" class="btn btn-warning btn-block">Изменить и отправить на проверку</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        var locations = document.getElementById('locations')
+        console.log(locations);
+
+        let totalTickets = $('#total-tickets');
+        let ticketsForDel = [];
+
+
+
+        $(document).ready(function () {
+            var categAll = []
+            var categExist = []
+            $('#checkboxAllCateg input').each(function () {
+                categAll.push($(this).attr('value'));
+            })
+            $('#checkboxExist input').each(function () {
+                categExist.push($(this).attr('value'));
+            })
+
+            for (var i = 0; i < categExist.length; i++) {
+                for (var j = 0; j < categAll.length; j++) {
+                    if (categExist[i] == categAll[j]) {
+                        $('#checkboxAllCateg input[value="' + categExist[i] + '"]').attr("checked", true)
+                        console.log("ok")
+                    }
+                }
+            }
+
+            console.log(categAll)
+            console.log(categExist)
+
+        });
+
+
+        function AddTicket() {
+            var name = $('#ticket_name');
+            var desc = $('#ticket_desc');
+            var count = $('#ticket_count');
+            var price = $('#ticket_price');
+
+            if (name.val() != '' && count.val() != '' && price.val() != '') {
+                totalTickets.text(parseInt(totalTickets.text()) + parseInt(count.val()));
+
+                $('.tickets-table tbody').append(
+                    '<tr class="ticket">' +
+                    '<td hidden><input type="hidden" class="ticket_id"/></td>' +
+                    '<td hidden><input type="hidden" class="event_id"/></td>' +
+                    `<td><input class="ticket_name form-control" value="${name.val()}"/></td>` +
+                    `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
+                    `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
+                    `<td><input class="ticket_price form-control" value="${price.val()}" type="number"/></td>` +
+                    '</td><td><input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" /></td></tr>');
+                name.val('');
+                desc.val('');
+                count.val('');
+                price.val('');
+            }
+        }
+
+        function DeleteTicket(t) {
+            if (t.closest('tr').id != "") {
+                ticketsForDel.push(t.closest('tr').id)
+            }
+            totalTickets.text(parseInt(totalTickets.text()) - parseInt($(t).closest('tr').find('input').eq(4).val()));
+            $(t).closest('tr').remove();
+            console.log(ticketsForDel);
+        };
+
+        function getTicketsData() {
+            let ticketsData = document.getElementById('tickets').getElementsByTagName('input');
+            let extickets = document.getElementsByClassName('ticket');
+            let tickets = [];
+            for (let i = 0; i < extickets.length; i++) {
+                var ticketId = ticketsData[0 + 7 * i].value;
+                tickets.push(
+                    '{"Id":' + (ticketId != "" ? '"' + ticketId + '"': null) + ',' +
+                    '"Name":"' + ticketsData[2 + 7 * i].value + '",' +
+                    '"Description":"' + ticketsData[3 + 7 * i].value + '",' +
+                    '"Count":' + ticketsData[4 + 7 * i].value + ',' +
+                    '"Price":' + ticketsData[5 + 7 * i].value + ',' +
+                    '"EventId":"' + ticketsData[1 + 7 * i].value + '"}'
+                );
+            }
+            return tickets;
+        }
+
+
+        $('form').submit(function () {
+            event.preventDefault();
+            getTicketsData();
+            //ticketLimit
+            $('#TicketLimit').val(totalTickets.text());
+            // categories
+            var categories = [];
+            $('#checkboxAllCateg input:checked').each(function () {
+                categories.push($(this).attr('value'));
+            })
+            $('#Categories').val(categories);
+            // tickets
+            $('#Tickets').val(`[${getTicketsData()}]`);
+            console.log(getTicketsData());
+            // ticketsdel
+            $('#deleted_tickets').val(ticketsForDel);
+            console.log($('#deleted_tickets').val())
+
+            var formData = new FormData(this);
+            $.ajax({
+                url: '@Url.Action("Edit", "Event")',
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        window.location.href = response.href;
+                    }
+                },
+            });
+        });
+    </script>
+}

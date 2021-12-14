@@ -1,0 +1,130 @@
+﻿@model LetsGo.UI.ViewModels.CreateLocationViewModel
+
+@{
+    ViewData["Title"] = "Добавление площадки";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="entry-form form-container">
+    <h1 class="mt-4">Добавить площадку</h1>
+    <hr />
+    <form id="create-location-form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label class="label" asp-for="@Model.Name">Название</label>
+            <input asp-for="@Model.Name" class="form-control input-field" />
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="label" asp-for="@Model.Address">Адрес</label>
+            <input asp-for="@Model.Address" class="form-control input-field" />
+            <span asp-validation-for="@Model.Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label>Координаты</label><br />
+            <label asp-for="@Model.X" class="label"></label>
+            <input asp-for="@Model.X" class="input-field px-3" />
+            <span asp-validation-for="@Model.X" class="text-danger"></span><br />
+            <label asp-for="@Model.Y" class="label mt-2"></label>
+            <input asp-for="@Model.Y" class="input-field px-3" />
+            <span asp-validation-for="@Model.Y" class="text-danger"></span><br />
+            <p class="mt-2 mr-2 d-inline-block">Найти координаты можно по</p><a target="_blank" href="https://yandex.ru/maps/10309/bishkek/?ll=74.603710%2C42.876366&z=12">ссылке</a>
+            <p>нажать ЛКМ на объект, нажать "что здесь?", в панели слева появится информация</p>
+        </div>
+        <div class="mb-3">
+            <label class="label" asp-for="@Model.Description">Описание</label>
+            <textarea class="form-control input-field" asp-for="@Model.Description" rows="4"></textarea>
+            <span asp-validation-for="@Model.Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="label">Выберите категории</label>
+            @for (int i = 0; i < Model.LocationCategories.Count; i++)
+            {
+                <div class="form-check">
+                    <input type="hidden" asp-for="@Model.LocationCategories[i].Value" />
+                    <input type="hidden" asp-for="@Model.LocationCategories[i].Text" />
+                    <input class="form-check-input" asp-for="LocationCategories[i].Selected" />
+                    <label class="form-check-label" asp-for="LocationCategories[i].Selected">
+                        @Model.LocationCategories[i].Text
+                    </label>
+                </div>
+            }
+        </div>
+        <div class="mb-2">
+            <label class="label" asp-for="@Model.Phones">Номер телефона</label>
+            <input asp-for="@Model.Phones" class="form-control input-field" type="tel" />
+            <span asp-validation-for="@Model.Phones" class="text-danger"></span>
+            <a class="add-more-phones mb-3" onclick="AddPhone()">
+                + Добавить еще один телефон
+            </a>
+        </div>
+        <input type="hidden" asp-for="@Model.PhoneNums" value="" />
+        <table id="phones">
+            <tbody>
+            </tbody>
+        </table>
+
+        <div class="form-group mt-3">
+            <input type="submit" value="Добавить" class="btn btn-submit form-control" />
+        </div>
+    </form>
+
+</div>
+
+<div class="position-fixed p-3" style="z-index: 11; position: sticky; top: 0; right:0;">
+    <div class="toast align-items-center text-dark bg-white rounded border-1 badge-dark"
+         role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">LetsGo</strong>
+            <button type="button" class="ml-auto mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Площадка добавлена!
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $('#create-location-form').submit(function (event) {
+            event.preventDefault();
+            var phones = [];
+            var tablePhones = $('#phones tbody tr');
+            tablePhones.each(function () {
+                phones.push($(this).find('td').text());
+            });
+            $('#PhoneNums').val($('#Phones').val() == '' ? phones : phones.concat([$('#Phones').val()]));
+            $.ajax({
+                type: "POST",
+                url: "/Locations/Create",
+                data: $('#create-location-form').serialize()
+            }).done(function (data) {
+                console.log(data);
+                if (data.success) {
+                    $('.toast').toast('show');
+                    setTimeout(function () {
+                        window.location.href = data.href;
+                    }, 2000);
+                }
+            });
+        });
+
+        function AddPhone() {
+            var phone = $('#Phones');
+            if (phone.val() != "") {
+                $('#phones').show();
+                $('#phones tbody').append('<tr><td><input type="button" class="btn btn-outline-danger mr-2" style="font-size: 0.7rem; padding: 0.2rem 0.5rem" value="✖" onclick="Delete(this)" /></td><td>' +
+                    phone.val() + '</td></tr>');
+                phone.val('');
+            }
+        }
+
+        function Delete(a) {
+            $(a).closest('tr').remove();
+        }
+    </script>
+}

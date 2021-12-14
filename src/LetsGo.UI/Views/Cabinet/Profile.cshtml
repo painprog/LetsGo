@@ -1,0 +1,290 @@
+﻿@model LetsGo.UI.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "Профиль";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="mx-3">
+    <h4>Профиль</h4>
+    <div class="card mb-4 py-3">
+        <div class="card-body">
+            @if (User.IsInRole("superadmin"))
+            {
+                <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light mr-3 mt-auto float-right">+ Добавить админа</a>
+            }
+            <a href="#" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
+            <div class="row">
+                <div class="col-lg-2">
+                    <img src="https://www.kindpng.com/picc/m/22-223863_no-avatar-png-circle-transparent-png.png" width="100" height="100" class="rounded-circle ml-3" alt="no avatar" />
+                </div>
+                <div class="col-lg-6">
+                    <h5 class="category-header">@Model.User.Email</h5>
+                    <p class="card-text">
+                        @if (@Model.User.UserName != null)
+                        {<span>Логин: @Model.User.UserName</span>}
+                        @if (@Model.User.PhoneNumber != null)
+                        {<br /><span>Номер телефона: @Model.User.PhoneNumber</span>}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row my-4">
+            <h4 class="mr-auto">Мероприятия</h4>
+            <div class="form-outline mr-2">
+                <input style="text-align: center;" type="text" id="searchbox-input" class="form-control" placeholder="Поиск"
+                       aria-label="Search" onkeyup="filterEvents()" />
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Сортировка
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+            <div class="dropdown" id="dd">
+                <button class="btn btn-dark mr-2 px-3" type="button" id="dropdownMenuButtonFiltr" onclick="ActionDivFiltr()">
+                    Фильтрация
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonFiltr" style="display:none" id="Filtr">
+                    <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFiltr">
+                        <div class="categories ml-1">
+                            <p class="font-weight-bold">Категория:</p>
+                            @foreach (var item in Model.EventCategories)
+                            {
+                                if (!item.HasParent)
+                                {
+                                    <div class="containerForCateg">
+                                        <p>
+                                            <a class="text-decoration-none text-reset ml-1" data-bs-toggle="collapse" href="#collapseExample_@item.Id" aria-expanded="false" aria-controls="collapseExample_@item.Id">
+                                                @item.Name
+                                            </a>
+                                        </p>
+                                        <div class="collapse ml-3" id="collapseExample_@item.Id">
+                                            @foreach (var elem in Model.EventCategories)
+                                            {
+                                                if (elem.ParentId == item.Id)
+                                                {
+                                                    <div class="form-check ml-1">
+                                                        <input class="form-check-input" type="checkbox" asp-for="@Model.EventCategory" value="@elem.Id">
+                                                        <label class="form-check-label" asp-for="@Model.EventCategory">@elem.Name</label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                        <div class="ml-1">
+                            <p class="font-weight-bold">Статус:</p>
+                            <select class="form-select my-1" asp-for="@Model.Status" aria-label="Default select example">
+                                @for (int i = 0; i < Model.Stats.Keys.Count - 2; i++)
+                                {
+                                    <option value="@Model.Stats.ElementAt(i).Value">@Model.Stats.ElementAt(i).Key</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="datetimes ml-1 fw-bold">
+                            <p class="font-weight-bold">Дата начала:</p>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="dateFrom" class="col-form-label">От</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input id="dateFrom" type="datetime-local" asp-for="@Model.DateTimeFrom" class="form-control input-field">
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="dateBefore" class="col-form-label">До</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input id="dateBefore" type="datetime-local" asp-for="@Model.DateTimeBefore" class="form-control input-field">
+                                </div>
+                            </div>
+                        </div>
+                        <input id="EventCategoriesHidden" asp-for="EventCategs" hidden />
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-success px-5 py-2 mt-2">Принять</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @if (User.IsInRole("superadmin"))
+            {
+                <a asp-controller="Locations" asp-action="Create" class="btn btn-danger px-3 mr-2 float-right">+ Добавить локацию</a>
+            }
+            <a asp-controller="Event" asp-action="Add" class="btn btn-danger px-3 float-right">+ Добавить мероприятие</a>
+        </div>
+        @if (Model.Events.Count != 0)
+        {
+            @if (Model.IsOrganizer)
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+            }
+            else
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+            }
+        }
+        else
+        {
+            <p class="d-inline-block">Мероприятия еще не былии добавлены.</p>
+        }
+    </div>
+</div>
+
+
+<div class="position-fixed p-3" style="z-index: 11; position: sticky; top: 60px; right:0;">
+    <div class="toast align-items-center text-dark bg-white rounded border-1 badge-dark"
+         role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">LetsGo</strong>
+            <button type="button" class="ml-auto mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts
+{
+    <script>
+
+        let _id;
+        let _status;
+        let _div;
+        //Скрипты для действий в один клик
+        $('.requestForUnPublish').on('click', function () {
+            _id = this.id;
+            _status = 'ReviewUnPublished';
+            quickSend(this);
+        })
+
+        $('.requestForPublish').on('click', function () {
+            _id = this.id;
+            _status = 'ReviewPublished';
+            quickSend(this);
+        })
+
+        $('.accept').add('.cancelReviewUnPublish').on('click', function() {
+            _id = this.id;
+            _status = 'Published';
+            quickSend(this);
+        })
+
+        $('.cancelReviewPublish').add('.unPublished').on('click', function () {
+            _id = this.id;
+            _status = 'UnPublished';
+            quickSend(this);
+        });
+
+        function quickSend(elem) {
+            console.log(_id + " " + _status)
+            event.preventDefault();
+            $.ajax({
+                url: '@Url.Action("ChangeStatus", "Event")',
+                type: 'POST',
+                data:
+                {
+                    'status': _status,
+                    'eventId': _id
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var div = $(elem).closest('.card');
+                        div.hide('slow');
+                    }
+                }
+            })
+        }
+
+        //Скрипты для действий с указанием причины
+        $('.deny').on('click', function () {
+            _id = this.id;
+            _status = 'Rejected';
+            _div = $(this).closest('.card');
+        })
+
+        $('.unpublish').add('.denyPublished').on('click', function () {
+            _id = this.id;
+            _status = 'UnPublished';
+            _div = $(this).closest('.card');
+        })
+
+        $('.denyUnPublished').on('click', function () {
+            _id = this.id;
+            _status = 'Published';
+            _div = $(this).closest('.card');
+        })
+
+        $('#cause-confirm').on('click', () => {
+            event.preventDefault();
+            let cause = $('textarea#cause-text').val();
+            $('textarea#cause-text').val('');
+            $.ajax({
+                url: '@Url.Action("ChangeStatus", "Event")',
+                type: 'POST',
+                data:
+                {
+                    'status': _status,
+                    'eventId': _id,
+                    'cause': cause
+                },
+                success: function (response) {
+                    if (response.success) {
+                        _div.hide('slow');
+                    }
+                }
+            })
+        })
+
+        function disableCard(elem) {
+            $(elem).closest('card').prop('disabled', true);
+        }
+
+        function eventDetails(eventId) {
+            window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+        }
+
+        function eventEdit(eventId) {
+            event.stopPropagation();
+            window.location.href = '@Url.Action("Edit","Event")?id=' + eventId;
+        }
+
+        //фильтрация
+        var i = 0;
+        function ActionDivFiltr() {
+            i++;
+            if (i % 2 != 0) {
+                $('#Filtr').show()
+            }
+            if (i % 2 == 0) {
+                $('#Filtr').hide()
+            }
+            console.log(i)
+        }
+
+        let eventCategs = [];
+        let strCateg;
+        $('#formFiltr').on("submit", function Filtr() {
+            $('.categories input:checked').each(function Fill() {
+                eventCategs.push($(this).val())
+            })
+            strCateg = eventCategs.join()
+            $('#EventCategoriesHidden').val(strCateg)
+        }
+        )
+
+    </script>
+}

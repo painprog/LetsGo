@@ -12,7 +12,6 @@ namespace LetsGo.DAL
             _applicationDbContextFactory = applicationDbContextFactory;
         }
 
-
         public IUnitOfWork MakeUnitOfWork()
         {
             return new UnitOfWork(_applicationDbContextFactory.Create());

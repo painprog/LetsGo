@@ -1,0 +1,42 @@
+﻿@model LetsGo.UI.ViewModels.AddAdminViewModel
+@{
+    ViewData["Title"] = "Register Admin";
+}
+<div class="entry-form">
+    <h1 class="text-center">Регистрация администратора</h1>
+    <form id="addAdmin-form" asp-controller="Account" asp-action="AddAdmin" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control input-field" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control input-field" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber">Телефон</label>
+            <input asp-for="PhoneNumber" class="form-control input-field" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Avatar" class="control-label">Аватар</label>
+            <input asp-for="Avatar" type="file" class="form-control-file" />
+            <span asp-validation-for="Avatar" class="text-danger"></span>
+        </div>
+        <div class="form-group text-center mb-3">
+            <input type="submit" value="Зарегистироваться" class="btn btn-primary form-control btn-submit" />
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    body {
+        background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+    }
+</style>

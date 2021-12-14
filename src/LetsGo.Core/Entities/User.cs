@@ -15,10 +15,4 @@ namespace LetsGo.Core.Entities
             UserRoles = new Collection<UserToRole>();
         }
     }
-
-    public class UserToRole : IdentityUserRole<int>
-    {
-        public User User { get; private set; }
-        public Role Role { get; private set; }
-    }
 }

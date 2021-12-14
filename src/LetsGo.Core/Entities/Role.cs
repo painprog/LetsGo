@@ -12,6 +12,7 @@ namespace LetsGo.Core.Entities
         {
             UserRoles = new Collection<UserToRole>();
         }
+
         public Role(string name)
         {
             Name = name;

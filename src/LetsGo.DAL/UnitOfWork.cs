@@ -33,7 +33,6 @@ namespace LetsGo.DAL
             _context = context;
             _repositories = new ConcurrentDictionary<Type, object>();
 
-  
             Users = new UserRepository(context);
             Roles = new RoleRepository(context);
             EventCategories = new EventCategoryRepository(context);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LetsGo.Core;
 using LetsGo.Core.Entities;
 using LetsGo.DAL;
 using LetsGo.UI.ViewModels;
@@ -14,12 +15,14 @@ namespace LetsGo.UI.Services
     public class LocationsService
     {
         private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
         private IMemoryCache cache;
 
-        public LocationsService(ApplicationDbContext db, IMemoryCache cache)
+        public LocationsService(ApplicationDbContext db, IMemoryCache cache, IUnitOfWorkFactory unitOfWorkFactory)
         {
             _db = db;
             this.cache = cache;
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public async Task<Location> Create(CreateLocationViewModel model)
@@ -37,26 +40,30 @@ namespace LetsGo.UI.Services
                 Id = x.Value,
                 Name = x.Text
             });
-            if (categories.Count() == 0)
-            {
-                var category = _db.LocationCategories.FirstOrDefault(c => c.Name == "Другое");
-                var categoriesJson = JsonConvert.SerializeObject(new List<LocationCategory> { category });
-                location.Categories = categoriesJson;
-            }   
-            else
-            {
-                var categoriesJson = JsonConvert.SerializeObject(categories);
-                location.Categories = categoriesJson;
-            }
-            
-            List<string> phones = new List<string>();
-            phones = model.PhoneNums.Split(',').ToList();
-            var phoneNumbersJson = JsonConvert.SerializeObject(phones);
-            location.Phones = phoneNumbersJson;
 
-            _db.Locations.Add(location);
-            await _db.SaveChangesAsync();
-            return location;
+            using (var uow = _unitOfWorkFactory.MakeUnitOfWork())
+            {
+                if (categories.Count() == 0)
+                {
+                    var category = uow.LocationCategories.Find(c => c.Name == "Другое").FirstOrDefault();
+                    var categoriesJson = JsonConvert.SerializeObject(new List<LocationCategory> { category });
+                    location.Categories = categoriesJson;
+                }
+                else
+                {
+                    var categoriesJson = JsonConvert.SerializeObject(categories);
+                    location.Categories = categoriesJson;
+                }
+
+                List<string> phones = new List<string>();
+                phones = model.PhoneNums.Split(',').ToList();
+                var phoneNumbersJson = JsonConvert.SerializeObject(phones);
+                location.Phones = phoneNumbersJson;
+
+                uow.Locations.Add(location);
+                await uow.CompleteAsync();
+                return location;
+            }
         }
 
         public async Task<Location> GetLocation(int id)

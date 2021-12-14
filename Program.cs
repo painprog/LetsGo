@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
 
 namespace LetsGo
 {
@@ -19,12 +21,13 @@ namespace LetsGo
         {
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
+
             var services = scope.ServiceProvider;
             try
             {
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                var db = services.GetRequiredService<LetsGoContext>();
+                var db = services.GetRequiredService<ApplicationDbContext>();
 
                 await SuperAdminInitializer.SeedAdminUser(rolesManager, userManager);
                 await CategoriesInitializer.CategoriesSeed(db);
@@ -35,6 +38,7 @@ namespace LetsGo
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occurred while seeding the database.");
             }
+
             host.Run();
         }
 

@@ -1,12 +1,14 @@
 ﻿using LetsGo.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
 
 namespace LetsGo.Subsidiary
 {
     public class CategoriesInitializer
     {
-        public static async Task CategoriesSeed(LetsGoContext db)
+        public static async Task CategoriesSeed(ApplicationDbContext db)
         {
             if (!db.LocationCategories.Any())
             {

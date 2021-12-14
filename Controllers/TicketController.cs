@@ -7,13 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
 
 namespace LetsGo.Controllers
 {
     public class TicketController : Controller
     {
-        private readonly LetsGoContext _goContext;
-        public TicketController(LetsGoContext goContext)
+        private readonly ApplicationDbContext _goContext;
+        public TicketController(ApplicationDbContext goContext)
         {
             _goContext = goContext;
         }
@@ -42,7 +44,7 @@ namespace LetsGo.Controllers
                             CustomerName = model.Name,
                             CustomerPhone = model.PhoneNumber,
                             EventTicketTypeId = item.Id,
-                            Id = Guid.NewGuid().ToString(),
+                            //Id = Guid.NewGuid().ToString(),
                             PurchaseDate = DateTime.Now,
                             Scanned = false
                         };

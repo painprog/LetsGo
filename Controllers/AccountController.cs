@@ -1,17 +1,13 @@
-﻿using LetsGo.Enums;
-using LetsGo.Models;
-using LetsGo.Services;
+﻿using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
 using PasswordGenerator;
 
 namespace LetsGo.Controllers
@@ -20,10 +16,10 @@ namespace LetsGo.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private LetsGoContext _context;
+        private ApplicationDbContext _context;
         private readonly EventsService _Service;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, LetsGoContext context, EventsService service)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, EventsService service)
         {
             _userManager = userManager;
             _signInManager = signInManager;

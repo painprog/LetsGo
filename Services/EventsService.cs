@@ -1,10 +1,4 @@
-﻿using LetsGo.Enums;
-using LetsGo.Models;
-using LetsGo.ViewModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using LetsGo.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
@@ -13,17 +7,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
+using LetsGo.DAL;
 
 namespace LetsGo.Services
 {
     public class EventsService
     {
-        private readonly LetsGoContext _goContext;
+        private readonly ApplicationDbContext _goContext;
         private IMemoryCache cache;
 
-        public EventsService(LetsGoContext goContext, IMemoryCache cache)
+        public EventsService(ApplicationDbContext goContext, IMemoryCache cache)
         {
             _goContext = goContext;
             this.cache = cache;
@@ -89,8 +85,7 @@ namespace LetsGo.Services
             return @event;
         }
 
-
-        public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
+        public async Task<List<EventTicketType>> AddEventTicketTypes(int eventId, List<EventTicketType> ticketTypes)
         {
             foreach (var item in ticketTypes)
             {
@@ -105,20 +100,20 @@ namespace LetsGo.Services
             return ticketTypes;
         }
 
-        public async Task<List<EventTicketType>> UpdateEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
+        public async Task<List<EventTicketType>> UpdateEventTicketTypes(int eventId, List<EventTicketType> ticketTypes)
         {
             foreach (var type in ticketTypes)
             {
-                if (String.IsNullOrEmpty(type.Id))
-                {
-                    type.Id = null;
-                    type.EventId = eventId;
-                    _goContext.EventTicketTypes.Add(type);
-                }
-                else
-                {
+                //if (String.IsNullOrEmpty(type.Id))
+                //{
+                //    type.Id = null;
+                //    type.EventId = eventId;
+                //    _goContext.EventTicketTypes.Add(type);
+                //}
+                //else
+                //{
                     _goContext.EventTicketTypes.Update(type);
-                }
+                //}
                 cache.Set(type.Id, type, new MemoryCacheEntryOptions());
             }
             await _goContext.SaveChangesAsync();
@@ -129,7 +124,7 @@ namespace LetsGo.Services
         {
             foreach (var id in deletedIds)
             {
-                EventTicketType ticketType = await _goContext.EventTicketTypes.FirstOrDefaultAsync(e => e.Id == id);
+                EventTicketType ticketType = await _goContext.EventTicketTypes.FirstOrDefaultAsync(e => e.Id == Convert.ToInt32(id));
                 _goContext.EventTicketTypes.Remove(ticketType);
             }
             await _goContext.SaveChangesAsync();
@@ -149,7 +144,7 @@ namespace LetsGo.Services
             return UC;
         }
 
-        public async Task<EditEventViewModel> MakeEditEventViewModel(string id)
+        public async Task<EditEventViewModel> MakeEditEventViewModel(int id)
         {
             Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == id);
 
@@ -217,7 +212,7 @@ namespace LetsGo.Services
             return @event;
         }
 
-        public async Task<Event> GetEvent(string id)
+        public async Task<Event> GetEvent(int id)
         {
             Event Event = null;
             if (!cache.TryGetValue(id, out Event))
@@ -233,7 +228,7 @@ namespace LetsGo.Services
             return Event;
         }
 
-        public async Task<List<Event>> GetEvents(string userId)
+        public async Task<List<Event>> GetEvents(int userId)
         {
             List<Event> Events = new List<Event>();
             Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
@@ -257,7 +252,7 @@ namespace LetsGo.Services
             return Categories;
         }
 
-        public async Task<bool> ChangeStatus(string status, string eventId, string cause)
+        public async Task<bool> ChangeStatus(string status, int eventId, string cause)
         {
             var @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
             if (status != null && @event != null)

@@ -1,20 +1,17 @@
-﻿using LetsGo.Models;
-using LetsGo.Services;
+﻿using LetsGo.Services;
 using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
+using LetsGo.Extensions;
 
 namespace LetsGo.Controllers
 {
@@ -22,16 +19,15 @@ namespace LetsGo.Controllers
     public class EventController : Controller
     {
         private readonly EventsService _Service;
-        private readonly LetsGoContext _goContext;
+        private readonly ApplicationDbContext _goContext;
         private readonly UserManager<User> _userManager;
 
-        public EventController(EventsService service, LetsGoContext goContext, UserManager<User> userManager)
+        public EventController(EventsService service, ApplicationDbContext goContext, UserManager<User> userManager)
         {
             _Service = service;
             _goContext = goContext;
             _userManager = userManager;
         }
-
 
         public async Task<IActionResult> Add()
         {
@@ -41,7 +37,7 @@ namespace LetsGo.Controllers
                 .Select(x => new SelectListItem()
                 {
                     Text = x.Name,
-                    Value = x.Id
+                    Value = x.Id.ToString()
                 }).ToList(),
                 EventStart = null,
                 EventEnd = null
@@ -58,7 +54,7 @@ namespace LetsGo.Controllers
             {
                 string tickets = model.Tickets;
                 List<EventTicketType> ticketTypes = System.Text.Json.JsonSerializer.Deserialize<List<EventTicketType>>(tickets);
-                model.OrganizerId = _userManager.GetUserId(User);
+                model.OrganizerId = _userManager.GetUserIdAsInt(User);
                 Event @event = await _Service.AddEvent(model);
                 ticketTypes = await _Service.AddEventTicketTypes(@event.Id, ticketTypes);
                 return Json(new { success = true, href = "/Home/Index" });
@@ -66,7 +62,7 @@ namespace LetsGo.Controllers
             return Json(new { succes = false });
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
             List<EventCategory> categories = await _goContext.EventCategories.ToListAsync();
             ViewBag.Categories = categories;
@@ -93,7 +89,7 @@ namespace LetsGo.Controllers
             return Json(new { succes = false });
         }
 
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             Event @event = await _Service.GetEvent(id);
             var tickets = _goContext.EventTicketTypes.Where(t => t.EventId == id).ToList();
@@ -108,7 +104,7 @@ namespace LetsGo.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangeStatus(string status, string eventId, string cause)
+        public async Task<JsonResult> ChangeStatus(string status, int eventId, string cause)
         {
             if (await _Service.ChangeStatus(status, eventId, cause))
             {

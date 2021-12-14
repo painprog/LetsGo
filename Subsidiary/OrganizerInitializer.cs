@@ -1,6 +1,7 @@
 ﻿using LetsGo.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using LetsGo.Core.Entities;
 
 namespace LetsGo.Subsidiary
 {

@@ -1,18 +1,16 @@
-﻿using LetsGo.Enums;
-using LetsGo.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
 
 namespace LetsGo.ViewModels
 {
     public class EditEventViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public string PosterImage { get; set; }
         public virtual int StatusId

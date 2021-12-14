@@ -1,15 +1,16 @@
-﻿using LetsGo.Models;
-using LetsGo.ViewModels;
+﻿using LetsGo.ViewModels;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
 
 namespace LetsGo.Services
 {
     public class LocationsService
     {
-        private readonly LetsGoContext _db;
-        public LocationsService(LetsGoContext db)
+        private readonly ApplicationDbContext _db;
+        public LocationsService(ApplicationDbContext db)
         {
             _db = db;
         }

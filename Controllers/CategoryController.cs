@@ -3,14 +3,15 @@ using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using LetsGo.DAL;
 
 namespace LetsGo.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly LetsGoContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CategoryController(LetsGoContext context)
+        public CategoryController(ApplicationDbContext context)
         {
             _context = context;
         }

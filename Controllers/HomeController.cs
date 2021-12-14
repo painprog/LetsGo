@@ -1,20 +1,21 @@
-﻿using LetsGo.Models;
-using LetsGo.ViewModels;
+﻿using LetsGo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using LetsGo.Core.Entities;
+using LetsGo.DAL;
 
 namespace LetsGo.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly LetsGoContext _db;
+        private readonly ApplicationDbContext _db;
 
-        public HomeController(LetsGoContext db)
+        public HomeController(ApplicationDbContext db)
         {
             _db = db;
         }

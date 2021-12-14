@@ -1,5 +1,5 @@
-﻿using LetsGo.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LetsGo.Core.Entities;
 
 namespace LetsGo.ViewModels
 {

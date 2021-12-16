@@ -279,7 +279,7 @@ namespace LetsGo.Services
                 {
                     case "Published":
                         @event.Status = Status.Published;
-                        @event.StatusDescription = cause == null ? "Ok" : cause;
+                        @event.StatusDescription = null;
                         break;
                     case "Rejected":
                         @event.Status = Status.Rejected;

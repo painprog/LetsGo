@@ -946,8 +946,11 @@ body {
 
 .event-card {
     border-radius: 15px;
-    cursor: pointer;
     overflow: hidden;
+}
+
+.event-card .body {
+    cursor: pointer;
 }
 
 .row {

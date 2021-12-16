@@ -2,9 +2,9 @@
 <div id="all-events">
     @foreach (var item in Model.Events)
     {
-        <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
+        <div class="card mb-3 event-card" style="border-radius: 15px">
             <div id="event-status" style="display:none;">@item.Status</div>
-            <div class="row">
+            <div class="row body" onclick="eventDetails('@item.Id')">
                 <div class="pn-page-head col-lg-10" style="border-radius: 0">
                     <img class="blur_img" src="@item.PosterImage" alt="">
                     <div class="row">
@@ -82,28 +82,36 @@
                                 //Что-то к отказу
                                 break;
                             case Status.New:
-                                <button class="btn btn-success px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять</button>
-                                <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button class="btn btn-success px-3 ml-4 mb-2" type="button" id="@item.Id" 
+                                        onclick="ChangeStatus(this, 'Published')">Принять</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                         onclick="ChangeDenyStatus(this, 'Rejected')">
                                     Отклонить
                                 </button>
                                 break;
                             case Status.Published:
-                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                         onclick="ChangeStatus(this, 'UnPublished')">
                                     Снять с публикации
                                 </button>
                                 break;
                             case Status.UnPublished:
-                                <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
+                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                         onclick="ChangeStatus(this, 'Published')">Вернуть в публикации</button>
                                 break;
                             case Status.ReviewPublished:
-                                <button class="btn btn-primary px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Одобрить возвращение в публикации</button>
-                                <button type="button" class="btn btn-danger px-3 mb-2 denyPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                         onclick="ChangeStatus(this, 'Published')">Одобрить возвращение в публикации</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                         onclick="ChangeDenyStatus(this, 'UnPublished')">
                                     Отклонить
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
-                                <button class="btn btn-primary px-3 ml-4 mb-2 unPublished" type="button" id="@item.Id">Одобрить снятие с публикации</button>
-                                <button type="button" class="btn btn-danger px-3 mb-2 denyUnPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'UnPublished')">Одобрить снятие с публикации</button>
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'Published')">
                                     Отклонить
                                 </button>
                                 break;

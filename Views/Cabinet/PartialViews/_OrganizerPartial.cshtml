@@ -2,9 +2,10 @@
 <div id="all-events">
     @foreach (var item in Model.Events)
     {
-        <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
-            <div id="event-status" style="display:none;">@item.Status</div>
-            <div class="row">
+        <div class="card mb-3 event-card" style="border-radius: 15px">
+            @*<div id="event-status" style="display:none;">@item.Status</div>*@
+            <div id="event-status" style="padding: 20px;">@item.Status</div>
+            <div class="row body" onclick="eventDetails('@item.Id')">
                 <div class="pn-page-head col-lg-10" style="border-radius: 0">
                     <img class="blur_img" src="@item.PosterImage" alt="">
                     <div class="row">
@@ -85,16 +86,20 @@
                                 <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                                 break;
                             case Status.Published:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 requestForUnPublish" id="@item.Id">Отправить заявку: снять с публикации</button>
+                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
+                                        onclick="ChangeStatus(this, 'ReviewUnPublished')">Отправить заявку: снять с публикации</button>
                                 break;
                             case Status.UnPublished:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 requestForPublish" id="@item.Id">Отправить заявку: опубликовать</button><br />
+                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'ReviewPublished')">Отправить заявку: опубликовать</button><br />
                                 break;
                             case Status.ReviewPublished:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 cancelReviewPublish" id="@item.Id">Отменить запрос возвращения</button>
+                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'UnPublished')">Отменить запрос возвращения</button>
                                 break;
                             case Status.ReviewUnPublished:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 cancelReviewUnPublish" id="@item.Id">Отменить запрос снятия</button>
+                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">Отменить запрос снятия</button>
                                 break;
                             case Status.Expired:
                                 break;
@@ -103,21 +108,20 @@
                 </div>
             </div>
             <div class="text-light bg-danger text-center align-content-between admin-event px-2" style="line-height: 40px">
-                @if (item.StatusDescription != null && item.StatusDescription != "Ok")
+                @if (item.StatusDescription != null)
                 {
                     @switch (item.Status)
                     {
                         case Status.Published:
-                            <span>Отказано в снятии по причине: </span>
+                            <span>Отказано в снятии по причине: @item.StatusDescription</span>
                             break;
                         case Status.UnPublished:
-                            <span>Отказано в публикации по причине: </span>
+                            <span>Отказано в публикации по причине: @item.StatusDescription</span>
                             break;
                         case Status.Rejected:
-                            <span>Отказано по причине: </span>
+                            <span>Отказано по причине: @item.StatusDescription</span>
                             break;
                     }
-                    <span>@item.StatusDescription</span>
                 }
             </div>
         </div>

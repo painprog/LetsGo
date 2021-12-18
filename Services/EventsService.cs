@@ -312,7 +312,17 @@ namespace LetsGo.Services
             return false;
         }
 
-
+        public async Task<List<Event>> CheckForExpired()
+        {
+            var events = _goContext.Events.ToList();
+            foreach (var item in events)
+            {
+                if (item.EventEnd < DateTime.Now) item.Status = Status.Expired;
+                _goContext.Events.Update(item);
+            }
+            await _goContext.SaveChangesAsync();
+            return events;
+        }
 
 
 

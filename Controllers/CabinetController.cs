@@ -16,16 +16,15 @@ namespace LetsGo.Controllers
     [Authorize]
     public class CabinetController : Controller
     {
-        private readonly EventsService _service;
-        private readonly CabinetService _cabService;
+        private readonly EventsService _eventService;
+        private readonly CabinetService _cabinetService;
         private readonly LetsGoContext _context;
         private readonly UserManager<User> _userManager;
 
-        public CabinetController(EventsService service, CabinetService cabService,
-            LetsGoContext context, UserManager<User> userManager)
+        public CabinetController(EventsService eventService, CabinetService cabinetService, LetsGoContext context, UserManager<User> userManager)
         {
-            _service = service;
-            _cabService = cabService;
+            _eventService = eventService;
+            _cabinetService = cabinetService;
             _context = context;
             _userManager = userManager;
         }
@@ -38,14 +37,14 @@ namespace LetsGo.Controllers
 
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user, IsOrganizer = User.IsInRole("organizer") };
-            Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
+            Dictionary<string, Status> Stats = _cabinetService.GetDictionaryStats();
             viewModel.Stats = Stats;
             viewModel.EventCategories = _context.EventCategories.ToList();
 
-            IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(EventCategories, Status,
+            IQueryable<Event> Events = _cabinetService.QueryableEventsAfterFilter(EventCategories, Status,
                 DateTimeFrom, DateTimeBefore);
 
-            if (User.IsInRole("organizer"))
+            if (viewModel.IsOrganizer)
                 viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
             else
                 viewModel.Events = Events.ToList();

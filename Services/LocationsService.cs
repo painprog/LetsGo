@@ -14,6 +14,7 @@ namespace LetsGo.Services
     {
         private readonly LetsGoContext _db;
         private IMemoryCache cache;
+
         public LocationsService(LetsGoContext db, IMemoryCache cache)
         {
             _db = db;
@@ -30,11 +31,7 @@ namespace LetsGo.Services
                 X = double.Parse(model.X.Replace('.', ',')),
                 Y = double.Parse(model.Y.Replace('.', ','))
             };
-            var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new
-            {
-                Id = x.Value,
-                Name = x.Text
-            });
+            var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new { Id = x.Value, Name = x.Text });
             if (categories.Count() == 0)
             {
                 var category = _db.LocationCategories.FirstOrDefault(c => c.Name == "Другое");
@@ -53,9 +50,11 @@ namespace LetsGo.Services
             location.Phones = phoneNumbersJson;
 
             _db.Locations.Add(location);
+            cache.Set(location.Id, location, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             await _db.SaveChangesAsync();
             return location;
         }
+
         public async Task<Location> GetLocation(string id)
         {
             Location location = null;
@@ -70,6 +69,7 @@ namespace LetsGo.Services
             }
             return location;
         }
+
         public async Task<List<Event>> GetLocationEvents(string locationId)
         {
             List<Event> Events = new List<Event>();

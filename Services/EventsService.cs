@@ -40,8 +40,7 @@ namespace LetsGo.Services
                 using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                     await eventView.File.CopyToAsync(fileStream);
             }
-            else
-                pathImage = "/images/gradient.jpeg";
+            else pathImage = "/images/gradient.jpeg";
 
             string categoriesJson = String.Empty;
             if (eventView.Categories.Where(x => x.Selected).Count() == 0)
@@ -51,11 +50,7 @@ namespace LetsGo.Services
             }
             else
             {
-                var categories = eventView.Categories.Where(x => x.Selected).Select(x => new
-                {
-                    Id = x.Value,
-                    Name = x.Text
-                });
+                var categories = eventView.Categories.Where(x => x.Selected).Select(x => new { Id = x.Value, Name = x.Text });
                 categoriesJson = JsonConvert.SerializeObject(categories);
             }
 
@@ -72,7 +67,7 @@ namespace LetsGo.Services
                 TicketLimit = eventView.TicketLimit,
                 Status = Status.New,
                 StatusUpdate = DateTime.Now,
-                LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id,
+                LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == eventView.Location).Id,  // change
                 OrganizerId = eventView.OrganizerId
             };
 
@@ -85,11 +80,10 @@ namespace LetsGo.Services
 
             await _goContext.Events.AddAsync(@event);
             await _goContext.SaveChangesAsync();
-            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
+            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
 
             return @event;
         }
-
 
         public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
         {
@@ -97,7 +91,7 @@ namespace LetsGo.Services
             {
                 item.EventId = eventId;
                 _goContext.EventTicketTypes.Add(item);
-                cache.Set(item.Id, item, new MemoryCacheEntryOptions());
+                cache.Set(item.Id, item, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             }
 
             await _goContext.SaveChangesAsync();
@@ -120,39 +114,30 @@ namespace LetsGo.Services
                     _goContext.EventTicketTypes.Update(type);
                 }
                 count += type.Count;
-                cache.Set(type.Id, type, new MemoryCacheEntryOptions());
+                cache.Set(type.Id, type, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             }
-            Event @event = _goContext.Events.FirstOrDefault(e => e.Id == eventId);
+
+            Event @event = GetEvent(eventId).Result;
             @event.Count = count;
             _goContext.Events.Update(@event);
             await _goContext.SaveChangesAsync();
+
             return ticketTypes;
         }
 
-        public async Task DeleteEventTicketTypes(string[] deletedIds)
+        public async Task DeleteEventTicketTypes(string[] IdsForDelete)
         {
-            foreach (var id in deletedIds)
+            foreach (var id in IdsForDelete)
             {
-                EventTicketType ticketType = await _goContext.EventTicketTypes.FirstOrDefaultAsync(e => e.Id == id);
+                EventTicketType ticketType = GetEventTicketType(id).Result;
                 _goContext.EventTicketTypes.Remove(ticketType);
             }
             await _goContext.SaveChangesAsync();
         }
 
-
         public async Task<EditEventViewModel> MakeEditEventViewModel(string id)
         {
-            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == id);
-
-            //string categs = System.Text.Json.JsonSerializer.Deserialize<string>(@event.Categories);
-            //List<string> CategoriesList = new List<string>();
-            //if (categs.Contains(','))
-            //{ 
-            //    string[] catesgInArray = categs.Split(new char[] { ',' });
-            //    CategoriesList.AddRange(catesgInArray);
-            //}
-            //else
-            //    CategoriesList.Add(categs);
+            Event @event = GetEvent(id).Result;
 
             var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id }).ToList();
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
@@ -178,15 +163,15 @@ namespace LetsGo.Services
                 StatusId = @event.StatusId,
                 Status = @event.Status,
                 //CategoriesList = CategoriesList,
-                Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,
-                TicketsExist = _goContext.EventTicketTypes.Where(e => e.EventId == @event.Id).ToList()
+                Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,  // change
+                TicketsExist = EventTicketTypes(@event.Id).Result
         };
             return editEvent;
         }
 
         public async Task<Event> EditEvent(EditEventViewModel model)
         {
-            Event @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == model.Id);
+            Event @event = GetEvent(model.Id).Result;
 
             if (model.File != null)
             {
@@ -223,34 +208,13 @@ namespace LetsGo.Services
             @event.AgeLimit = model.AgeLimit;
             @event.TicketLimit = model.TicketLimit;
             @event.Status = Status.New;
-            @event.LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == model.Location).Id;
+            @event.LocationId = _goContext.Locations.FirstOrDefault(l => l.Name == model.Location).Id;  // change
 
             _goContext.Events.Update(@event);
             await _goContext.SaveChangesAsync();
-            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions());
+            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+
             return @event;
-        }
-
-        public async Task<Event> GetEvent(string id)
-        {
-            Event Event = null;
-            if (!cache.TryGetValue(id, out Event))
-            {
-                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
-                if (Event != null)
-                {
-                    cache.Set(Event.Id, Event,
-                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-                }
-            }
-            return Event;
-        }
-
-        public async Task<List<Event>> GetEvents(string userId)
-        {
-            List<Event> Events = new List<Event>();
-            Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
-            return Events;
         }
 
         //public async Task<List<EventCategory>> GetEventCategories(string jsonEventCategories)
@@ -272,7 +236,7 @@ namespace LetsGo.Services
 
         public async Task<bool> ChangeStatus(string status, string eventId, string cause)
         {
-            var @event = await _goContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+            var @event = GetEvent(eventId).Result;
             if (status != null && @event != null)
             {
                 switch (status)
@@ -305,16 +269,21 @@ namespace LetsGo.Services
                         break;
                 }
                 @event.StatusUpdate = DateTime.Now;
+
                 _goContext.Events.Update(@event);
                 await _goContext.SaveChangesAsync();
+
                 return true;
             }
             return false;
         }
 
-        public async Task<List<Event>> CheckForExpired()
+        
+        // default methods
+
+        public async Task<List<Event>> Events()
         {
-            var events = _goContext.Events.ToList();
+            var events = _goContext.Events.Include(e => e.Location).ToList();
             foreach (var item in events)
             {
                 if (item.EventEnd < DateTime.Now) item.Status = Status.Expired;
@@ -324,9 +293,58 @@ namespace LetsGo.Services
             return events;
         }
 
+        public async Task<Event> GetEvent(string id)
+        {
+            Event Event = null;
+            if (!cache.TryGetValue(id, out Event))
+            {
+                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
+                if (Event != null)
+                {
+                    cache.Set(Event.Id, Event,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+            }
+            return Event;
+        }
+
+        public async Task<EventTicketType> GetEventTicketType(string id)
+        {
+            EventTicketType Event = null;
+            if (!cache.TryGetValue(id, out Event))
+            {
+                Event = await _goContext.EventTicketTypes.FirstOrDefaultAsync(p => p.Id == id);
+                if (Event != null)
+                {
+                    cache.Set(Event.Id, Event,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+            }
+            return Event;
+        }
+
+        public async Task<List<EventTicketType>> EventTicketTypes(string eventId)
+        {
+            return _goContext.EventTicketTypes.Where(e => e.EventId == eventId).ToList();
+        }
+
+        public async Task<Location> GetLocation(string id)
+        {
+            Location location = null;
+            if (!cache.TryGetValue(id, out location))
+            {
+                location = await _goContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
+                if (location != null)
+                {
+                    cache.Set(location.Id, location,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+            }
+            return location;
+        }
 
 
-
+        // additional methods
 
         public static string GenerateCode()
         {

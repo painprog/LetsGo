@@ -263,14 +263,21 @@ namespace LetsGo.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
+                return View(model);
+            
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            //if (user == null)
+            //{
+            //    return View("ResetPasswordConfirmation");
+            //}
+
+            if (user is null)
             {
+                ModelState.AddModelError("", "Неправильный email");
                 return View(model);
             }
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                return View("ResetPasswordConfirmation");
-            }
+
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {

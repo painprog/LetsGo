@@ -125,11 +125,11 @@
         {
             @if (Model.IsOrganizer)
             {
-                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model, ViewData);
             }
             else
             {
-                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model, ViewData);
             }
         }
         else

@@ -1,4 +1,8 @@
-﻿@model ProfileViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+@model ProfileViewModel
 <div id="all-events">
     @foreach (var item in Model.Events)
     {
@@ -37,35 +41,35 @@
             <div class="text-center align-content-between admin-event pt-2">
                 <div class="row">
                     <div class="col-lg-2">
-                        <span>Статус: </span>
-                        @switch (item.Status) 
+                        <span>@ViewData["Status"]: </span>
+                        @switch (item.Status)
                         {
                             case Status.NotDefined:
-                                <span>Ошибка</span>
+                                <span>@ViewData["NotDefined"]</span>
                                 break;
                             case Status.Edited:
-                                // feature
+                                <span>@ViewData["Edited"]</span>
                                 break;
                             case Status.Rejected:
-                                <span>Отклонен</span>
+                                <span>@ViewData["Rejected"]</span>
                                 break;
                             case Status.New:
-                                <span>Ожидание принятия</span>
+                                <span>@ViewData["New"]</span>
                                 break;
                             case Status.Published:
-                                <span>Опубликован</span>
+                                <span>@ViewData["Published"]</span>
                                 break;
                             case Status.UnPublished:
-                                <span>Снят с публикации</span>
+                                <span>@ViewData["UnPublished"]</span>
                                 break;
                             case Status.ReviewPublished:
-                                <span>Ожидание добавления</span>
+                                <span>@ViewData["ReviewPublished"]</span>
                                 break;
                             case Status.ReviewUnPublished:
-                                <span>Ожидание снятия</span>
+                                <span>@ViewData["ReviewUnPublished"]</span>
                                 break;
                             case Status.Expired:
-                                <span>Мероприятие уже прошло</span>
+                                <span>@ViewData["Expired"]</span>
                                 break;
                         }
                     </div>
@@ -82,34 +86,42 @@
                                 //Что-то к отказу
                                 break;
                             case Status.New:
-                                <button class="btn btn-success px-3 ml-4 mb-2" type="button" id="@item.Id" 
-                                        onclick="ChangeStatus(this, 'Published')">Принять</button>
+                                <button class="btn btn-success px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Принять
+                                </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
-                                         onclick="ChangeDenyStatus(this, 'Rejected')">
+                                        onclick="ChangeDenyStatus(this, 'Rejected')">
                                     Отклонить
                                 </button>
                                 break;
                             case Status.Published:
                                 <button type="button" class="btn btn-danger px-3 ml-4 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
-                                         onclick="ChangeStatus(this, 'UnPublished')">
+                                        onclick="ChangeStatus(this, 'UnPublished')">
                                     Снять с публикации
                                 </button>
                                 break;
                             case Status.UnPublished:
                                 <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                         onclick="ChangeStatus(this, 'Published')">Вернуть в публикации</button>
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Вернуть в публикации
+                                </button>
                                 break;
                             case Status.ReviewPublished:
                                 <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                         onclick="ChangeStatus(this, 'Published')">Одобрить возвращение в публикации</button>
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Одобрить возвращение в публикации
+                                </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
-                                         onclick="ChangeDenyStatus(this, 'UnPublished')">
+                                        onclick="ChangeDenyStatus(this, 'UnPublished')">
                                     Отклонить
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
                                 <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'UnPublished')">Одобрить снятие с публикации</button>
+                                        onclick="ChangeStatus(this, 'UnPublished')">
+                                    Одобрить снятие с публикации
+                                </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'Published')">
                                     Отклонить

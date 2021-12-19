@@ -33,40 +33,40 @@
                         @{ var remainder = item.TicketLimit - item.Sold;}
                         осталось: <text>@(@item.Count - @item.Sold)</text>
                     </p>
-                </div> 
+                </div>
             </div>
             <div class="text-center align-content-between admin-event pt-2">
                 <div class="row">
                     <div class="col-lg-2">
-                        <span>Статус: </span>
-                        @switch (item.Status) 
+                        <span>@ViewData["Status"]: </span>
+                        @switch (item.Status)
                         {
                             case Status.NotDefined:
-                                <span>Ошибка</span>
+                                <span>@ViewData["NotDefined"]</span>
                                 break;
                             case Status.Edited:
-                                // feature
+                                <span>@ViewData["Edited"]</span>
                                 break;
                             case Status.Rejected:
-                                <span>Отклонен</span>
+                                <span>@ViewData["Rejected"]</span>
                                 break;
                             case Status.New:
-                                <span>Ожидание принятия</span>
+                                <span>@ViewData["New"]</span>
                                 break;
                             case Status.Published:
-                                <span>Опубликован</span>
+                                <span>@ViewData["Published"]</span>
                                 break;
                             case Status.UnPublished:
-                                <span>Снят с публикации</span>
+                                <span>@ViewData["UnPublished"]</span>
                                 break;
                             case Status.ReviewPublished:
-                                <span>Ожидание добавления</span>
+                                <span>@ViewData["ReviewPublished"]</span>
                                 break;
                             case Status.ReviewUnPublished:
-                                <span>Ожидание снятия</span>
+                                <span>@ViewData["ReviewUnPublished"]</span>
                                 break;
                             case Status.Expired:
-                                <span>Мероприятие уже прошло</span>
+                                <span>@ViewData["Expired"]</span>
                                 break;
                         }
                     </div>
@@ -87,19 +87,27 @@
                                 break;
                             case Status.Published:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
-                                        onclick="ChangeStatus(this, 'ReviewUnPublished')">Отправить заявку: снять с публикации</button>
+                                        onclick="ChangeStatus(this, 'ReviewUnPublished')">
+                                    Отправить заявку: снять с публикации
+                                </button>
                                 break;
                             case Status.UnPublished:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'ReviewPublished')">Отправить заявку: опубликовать</button><br />
+                                        onclick="ChangeStatus(this, 'ReviewPublished')">
+                                    Отправить заявку: опубликовать
+                                </button><br />
                                 break;
                             case Status.ReviewPublished:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'UnPublished')">Отменить запрос возвращения</button>
+                                        onclick="ChangeStatus(this, 'UnPublished')">
+                                    Отменить запрос возвращения
+                                </button>
                                 break;
                             case Status.ReviewUnPublished:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
-                                        onclick="ChangeStatus(this, 'Published')">Отменить запрос снятия</button>
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Отменить запрос снятия
+                                </button>
                                 break;
                             case Status.Expired:
                                 break;

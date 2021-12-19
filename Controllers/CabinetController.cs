@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,16 @@ namespace LetsGo.Controllers
         private readonly CabinetService _cabinetService;
         private readonly LetsGoContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer<CabinetController> _localizer;
 
-        public CabinetController(EventsService eventService, CabinetService cabinetService, LetsGoContext context, UserManager<User> userManager)
+        public CabinetController(EventsService eventService, CabinetService cabinetService, LetsGoContext context, 
+            UserManager<User> userManager, IStringLocalizer<CabinetController> localizer)
         {
             _eventService = eventService;
             _cabinetService = cabinetService;
             _context = context;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs)
@@ -48,6 +52,17 @@ namespace LetsGo.Controllers
                 viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
             else
                 viewModel.Events = Events.ToList();
+
+            ViewData["Status"] = _localizer["Status"];
+            ViewData["NotDefined"] = _localizer["NotDefined"];
+            ViewData["New"] = _localizer["New"];
+            ViewData["Rejected"] = _localizer["Rejected"];
+            ViewData["Published"] = _localizer["Published"];
+            ViewData["UnPublished"] = _localizer["UnPublished"];
+            ViewData["Edited"] = _localizer["Edited"];
+            ViewData["Expired"] = _localizer["Expired"];
+            ViewData["ReviewPublished"] = _localizer["ReviewPublished"];
+            ViewData["ReviewUnPublished"] = _localizer["ReviewUnPublished"];
 
             return View(viewModel);
         }

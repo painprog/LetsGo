@@ -267,11 +267,6 @@ namespace LetsGo.Controllers
             
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            //if (user == null)
-            //{
-            //    return View("ResetPasswordConfirmation");
-            //}
-
             if (user is null)
             {
                 ModelState.AddModelError("", "Неправильный email");
@@ -289,8 +284,6 @@ namespace LetsGo.Controllers
             }
             return View(model);
         }
-
-
 
 
         // Validations

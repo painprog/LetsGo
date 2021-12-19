@@ -46,9 +46,9 @@ namespace LetsGo.Controllers
                 DateTimeFrom, DateTimeBefore);
 
             if (User.IsInRole("organizer"))
-                viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
+                viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).OrderByDescending(e => e.EventStart).ToList();
             else
-                viewModel.Events = Events.ToList();
+                viewModel.Events = Events.OrderByDescending(e => e.EventStart).ToList();
 
             return View(viewModel);
         }

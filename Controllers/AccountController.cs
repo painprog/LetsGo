@@ -40,15 +40,20 @@ namespace LetsGo.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);        
-                if (user != null)
+                var user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);
+
+                if (user is null)
                 {
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
-                    {
-                        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
-                        return View(model);
-                    }
+                    ModelState.AddModelError("", "Неправильное имя пользователя или email");
+                    return View(model);
                 }
+
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                    return View(model);
+                }
+
                 Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(
                   user,
                   model.Password,
@@ -59,14 +64,14 @@ namespace LetsGo.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                
+
             }
             else
                 ModelState.AddModelError("", "Неправильный логин и (или) пароль");
 
             return View(model);
         }
-        
+
         [Authorize(Roles = "superadmin")]
         [HttpGet]
         public IActionResult AddAdmin()
@@ -191,10 +196,10 @@ namespace LetsGo.Controllers
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
-            {                
+            {
                 return RedirectToAction("Index", "Home");
             }
-   
+
             else
                 return View("Error");
         }
@@ -220,7 +225,7 @@ namespace LetsGo.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPassword(string email) => 
+        public IActionResult ForgotPassword(string email) =>
             View(new ForgotPasswordViewModel { Email = email });
 
         [HttpPost]

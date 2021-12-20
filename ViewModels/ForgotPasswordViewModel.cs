@@ -11,7 +11,7 @@ namespace LetsGo.ViewModels
     {
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [EmailAddress]
-        [Remote("EmailChek", "Account", ErrorMessage = "Неправильный email")]
+        [Remote("EmailChek", "Account", ErrorMessage = "Пользователя с таким email не существует")]
         public string Email { get; set; }
     }
 }

@@ -10,7 +10,6 @@ using System.Linq;
 
 namespace LetsGo.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly LetsGoContext _db;

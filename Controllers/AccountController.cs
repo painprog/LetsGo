@@ -54,14 +54,10 @@ namespace LetsGo.Controllers
                   model.RememberMe,
                   false
                   );
-                if (result.Succeeded)
-                {
+                if (result.Succeeded) 
                     return RedirectToAction("Index", "Home");
-                }
-
-            }
-            else
                 ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+            }
 
             return View(model);
         }
@@ -234,7 +230,7 @@ namespace LetsGo.Controllers
                     return View("ForgotPasswordConfirmation");
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code, email = user.Email },
                     protocol: HttpContext.Request.Scheme);
                 EmailService emailService = new EmailService();
                 await emailService.Send(model.Email, "Восстановление пароля",
@@ -246,9 +242,9 @@ namespace LetsGo.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code, string email)
         {
-            return code == null ? View("Error") : View();
+            return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code, Email = email });
         }
 
         [HttpPost]
@@ -292,20 +288,14 @@ namespace LetsGo.Controllers
 
         public async Task<JsonResult> LoginChek(string loginOrEmail)
         {
-            bool result = false;
             var user = await _userManager.FindByEmailAsync(loginOrEmail) ?? await _userManager.FindByNameAsync(loginOrEmail);
-            if (user != null)
-                result = true;
-            return Json(result);
+            return Json(user != null);
         }
 
         public async Task<JsonResult> EmailChek(string email)
         {
-            bool result = false;
             var user = await _userManager.FindByEmailAsync(email);
-            if (user != null)
-                result = true;
-            return Json(result);
+            return Json(user != null);
         }
     }
 }

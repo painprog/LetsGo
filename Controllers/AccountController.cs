@@ -42,12 +42,6 @@ namespace LetsGo.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);
 
-                if (user is null)
-                {
-                    ModelState.AddModelError("", "Неправильное имя пользователя или email");
-                    return View(model);
-                }
-
                 if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
                     ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
@@ -267,12 +261,6 @@ namespace LetsGo.Controllers
             
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user is null)
-            {
-                ModelState.AddModelError("", "Неправильный email");
-                return View(model);
-            }
-
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
@@ -302,5 +290,22 @@ namespace LetsGo.Controllers
             return !_userManager.Users.Any(b => b.UserName == userName);
         }
 
+        public async Task<JsonResult> LoginChek(string loginOrEmail)
+        {
+            bool result = false;
+            var user = await _userManager.FindByEmailAsync(loginOrEmail) ?? await _userManager.FindByNameAsync(loginOrEmail);
+            if (user != null)
+                result = true;
+            return Json(result);
+        }
+
+        public async Task<JsonResult> EmailChek(string email)
+        {
+            bool result = false;
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+                result = true;
+            return Json(result);
+        }
     }
 }

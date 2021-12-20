@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace LetsGo.ViewModels
     {
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [EmailAddress]
+        [Remote("EmailChek", "Account", ErrorMessage = "Пользователя с таким email не существует")]
         public string Email { get; set; }
     }
 }

@@ -9,12 +9,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="LoginOrEmail" class="control-label"></label>
-            <input asp-for="LoginOrEmail" class="form-control input-field" id="loginOrEmail"/>
+            <input asp-for="LoginOrEmail" class="form-control input-field mb-2" id="loginOrEmail"/>
             <span asp-validation-for="LoginOrEmail" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Password" class="control-label">Введите пароль</label>
-            <input asp-for="Password" class="form-control input-field" id="password" oninput="DisplayLinkForgotPassword()"/>
+            <input asp-for="Password" class="form-control input-field" id="password"/>
             <span class="password-icon"><i class="bi bi-eye-slash" id="togglePassword"></i></span>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
@@ -26,38 +26,38 @@
             <input type="submit" value="Войти" class="btn btn-primary form-control btn-submit"/>
         </div>
     </form>
-    <a id="forgotPassword" style="display:none" class="link">Забыли пароль?</a>
+    <a id="forgotPassword" class="link" asp-controller="Account" asp-action="ForgotPassword">Забыли пароль?</a>
     <a asp-controller="Account" asp-action="OrganizerSignUp" class="link">Зарегистрироваться как организатор</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
-        var togglePassword = document.querySelector('#togglePassword');
-        var password = document.querySelector('#password');
-        togglePassword.addEventListener('click', function (e) {
-            var type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('bi-eye');
-        });
+    var togglePassword = document.querySelector('#togglePassword');
+    var password = document.querySelector('#password');
+    togglePassword.addEventListener('click', function (e) {
+        var type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('bi-eye');
+    });
 
-        function DisplayLinkForgotPassword() {
-            var logOrEm = document.getElementById('loginOrEmail').value;
-            console.log(logOrEm);
-            $.get('@Url.Action("RedirectToForgotPassword", "Account")',
-                { loginOrEmail : logOrEm },
-                function (response) {
-                    if (response.success) {
-                        setAttributes(document.getElementById('forgotPassword'),
-                            { "href": "/Account/ForgotPassword?email=" + response.email, "style": "display:block" }
-                        )
-                        console.log(response.email);
-                        console.log(document.getElementById('forgotPassword'))
-                    }
-                    else {
-                        document.getElementById('forgotPassword').setAttribute("style","display:none")
-                    }
-            });
-         }
+    @*function DisplayLinkForgotPassword() {
+        var logOrEm = document.getElementById('loginOrEmail').value;
+        console.log(logOrEm);
+        $.get('@Url.Action("RedirectToForgotPassword", "Account")',
+            { loginOrEmail : logOrEm },
+            function (response) {
+                if (response.success) {
+                    setAttributes(document.getElementById('forgotPassword'),
+                        { "href": "/Account/ForgotPassword?email=" + response.email, "style": "display:block" }
+                    )
+                    console.log(response.email);
+                    console.log(document.getElementById('forgotPassword'))
+                }
+                else {
+                    document.getElementById('forgotPassword').setAttribute("style","display:none")
+                }
+        });
+        }*@
 
     function setAttributes(el, attrs) {
         for (var key in attrs) {

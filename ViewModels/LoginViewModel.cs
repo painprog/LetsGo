@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace LetsGo.ViewModels
     {
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
         [Display(Name = "Имя пользователя или почта")]
+        [Remote("LoginChek", "Account", ErrorMessage = "Неправильное имя пользователя или email")]
         public string LoginOrEmail { get; set; }
 
 

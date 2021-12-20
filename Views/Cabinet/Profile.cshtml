@@ -64,12 +64,13 @@
         }
         else
         {
-            <p class="d-inline-block">Мероприятия еще не былии добавлены.</p>
+            <p class="d-inline-block col col-xl-9 col-md-12">Мероприятия еще не былии добавлены.</p>
         }
-        <div class="col card h-100" id="dd">
+        <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9" id="dd">
             <div id="Filtr">
                 <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFiltr">
                     <div class="categories ml-1">
+                        <h1 class="text-center font-weight-bold">Фильтры</h1>
                         <p class="font-weight-bold">Категория:</p>
                         @foreach (var item in Model.EventCategories)
                         {
@@ -98,7 +99,6 @@
                                     </div>
                                 </div>
                             }
-
                         }
                     </div>
                     <div class="ml-1">

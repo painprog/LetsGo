@@ -121,8 +121,8 @@ namespace LetsGo.Services
                 ["Не опубликовано"] = Status.UnPublished,
                 ["Отредактировано"] = Status.Edited,
                 ["Истекло"] = Status.Expired,
-                ["Обзор опубликован"] = Status.ReviewPublished,
-                ["Обзор не опубликован"] = Status.ReviewUnPublished,
+                ["Ожидание добавления"] = Status.ReviewPublished,
+                ["Ожидание снятия"] = Status.ReviewUnPublished,
             };
             return Stats;
         }

@@ -278,6 +278,11 @@ namespace LetsGo.Controllers
             {
                 return View("ResetPasswordConfirmation");
             }
+            if(result.Errors.FirstOrDefault(e => e.Code == "InvalidToken") != null)
+            {
+                ModelState.AddModelError("", "Это не ваш почтовый адрес");
+                return View(model);
+            }
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);

@@ -25,7 +25,7 @@ namespace LetsGo.Subsidiary
 
             if (await _userManager.FindByNameAsync(superAdminEmail) == null)
             {
-                User superAdmin = new User { Email = superAdminEmail, UserName = superAdminLogin};
+                User superAdmin = new User { Email = superAdminEmail, UserName = superAdminLogin, AvatarLink = "/images/default_avatar.png" };
                 superAdmin.EmailConfirmed = true;
                 IdentityResult result = await _userManager.CreateAsync(superAdmin, superAdminPassword);
                 if (result.Succeeded)

@@ -24,7 +24,7 @@ namespace LetsGo.UI.Controllers
         private readonly IStringLocalizer<CabinetController> _localizer;
 
         public CabinetController(EventsService eventService, CabinetService cabinetService, ApplicationDbContext context, 
-                                   UserManager<User> _userManager, IStringLocalizer<CabinetController> _localizer)	
+                                   UserManager<User> userManager, IStringLocalizer<CabinetController> localizer)	
         {
             _eventService = eventService;
             _cabinetService = cabinetService;

@@ -42,7 +42,7 @@ namespace LetsGo.UI.Services
             {
                 List<EventCategory> eventCategories = new List<EventCategory>();
                 foreach (var item in EventCategories)
-                    eventCategories.Add(_context.EventCategories.FirstOrDefault(e => e.Id == item));
+                    eventCategories.Add(_context.EventCategories.FirstOrDefault(e => e.Id.ToString() == item));
 
                 var categoriesGroups = eventCategories.GroupBy(e => e.ParentId);
                 List<Event> EventsAfterFiltr = new List<Event>();
@@ -53,7 +53,7 @@ namespace LetsGo.UI.Services
                     count++;
                     for (int i = 0; i < g.ToList().Count; i++)
                     {
-                        Events = Events.Where(x => x.Categories.Contains(g.ToList()[i].Id));
+                        Events = Events.Where(x => x.Categories.Contains(g.ToList()[i].Id.ToString()));
                         if (Events.ToList().Count == 0)
                         {
                             Events = GetEvents();

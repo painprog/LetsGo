@@ -81,7 +81,7 @@ namespace LetsGo.UI.Services
             return @event;
         }
 
-        public async Task<List<EventTicketType>> AddEventTicketTypes(string eventId, List<EventTicketType> ticketTypes)
+        public async Task<List<EventTicketType>> AddEventTicketTypes(int eventId, List<EventTicketType> ticketTypes)
         {
             foreach (var item in ticketTypes)
             {
@@ -315,7 +315,7 @@ namespace LetsGo.UI.Services
             Event Event = null;
             if (!cache.TryGetValue(id, out Event))
             {
-                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
+                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id.ToString() == id);
                 if (Event != null)
                 {
                     cache.Set(Event.Id, Event,
@@ -330,7 +330,7 @@ namespace LetsGo.UI.Services
             EventTicketType Event = null;
             if (!cache.TryGetValue(id, out Event))
             {
-                Event = await _goContext.EventTicketTypes.FirstOrDefaultAsync(p => p.Id == id);
+                Event = await _goContext.EventTicketTypes.FirstOrDefaultAsync(p => p.Id.ToString() == id);
                 if (Event != null)
                 {
                     cache.Set(Event.Id, Event,
@@ -340,7 +340,7 @@ namespace LetsGo.UI.Services
             return Event;
         }
 
-        public async Task<List<EventTicketType>> EventTicketTypes(string eventId)
+        public async Task<List<EventTicketType>> EventTicketTypes(int eventId)
         {
             return _goContext.EventTicketTypes.Where(e => e.EventId == eventId).ToList();
         }
@@ -350,7 +350,7 @@ namespace LetsGo.UI.Services
             Location location = null;
             if (!cache.TryGetValue(id, out location))
             {
-                location = await _goContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
+                location = await _goContext.Locations.FirstOrDefaultAsync(l => l.Id.ToString() == id);
                 if (location != null)
                 {
                     cache.Set(location.Id, location,

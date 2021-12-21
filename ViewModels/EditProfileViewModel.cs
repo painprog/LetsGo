@@ -9,12 +9,12 @@ namespace LetsGo.ViewModels
     {
         public string Id { get; set; }
         [Display(Name = "Почта")]
-        [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Эта почта уже занята")]
+       // [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Эта почта уже занята")]
         public string Email { get; set; }
 
     
         [Display(Name = "Имя пользователя")]
-        [Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Это имя пользователя уже занято")]
+       // [Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Это имя пользователя уже занято")]
         public string UserName { get; set; }
 
       

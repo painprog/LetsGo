@@ -7,6 +7,7 @@ using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,7 +43,8 @@ namespace LetsGo.UI
 
             services
                 .AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
             services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();

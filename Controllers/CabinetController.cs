@@ -57,12 +57,15 @@ namespace LetsGo.Controllers
 
 
         [HttpGet]
-        public ActionResult Edit(string id)
+        public IActionResult Edit(string id)
         {
-            //var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
             var model = new EditProfileViewModel()
             {
-                Id = id
+                Id = id,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
             };
             return View(model);
         }
@@ -72,7 +75,6 @@ namespace LetsGo.Controllers
         public async Task<ActionResult> Edit(EditProfileViewModel userModel)
         {
             var currentUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == userModel.Id);
-            
             string avatar;
             if (userModel.Avatar == null)
             {

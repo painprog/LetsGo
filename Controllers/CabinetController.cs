@@ -30,7 +30,7 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs)
+        public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs, SortState sortOrder = SortState.DateStartDesc)
         {
             List<string> EventCategories = new List<string>();
             if (!string.IsNullOrEmpty(EventCategs))
@@ -46,10 +46,32 @@ namespace LetsGo.Controllers
                 DateTimeFrom, DateTimeBefore);
 
             if (User.IsInRole("organizer"))
-                viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
-            else
-                viewModel.Events = Events.ToList();
-
+                Events = Events.Where(e => e.OrganizerId == user.Id);
+            ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+            ViewBag.PriceSort = sortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
+            ViewBag.DateStartSort = sortOrder == SortState.DateStartAsc ? SortState.DateStartDesc : SortState.DateStartAsc;
+            switch (sortOrder)
+            {
+                case SortState.NameDesc:
+                    Events = Events.OrderByDescending(s => s.Name);
+                    break;
+                case SortState.PriceAsc:
+                    Events = Events.OrderBy(s => s.MinPrice);
+                    break;
+                case SortState.PriceDesc:
+                    Events = Events.OrderByDescending(s => s.MinPrice);
+                    break;
+                case SortState.DateStartAsc:
+                    Events = Events.OrderBy(s => s.EventStart);
+                    break;
+                case SortState.DateStartDesc:
+                    Events = Events.OrderByDescending(s => s.EventStart);
+                    break;
+                default:
+                    Events = Events.OrderBy(s => s.Name);
+                    break;
+            }
+            viewModel.Events = Events.ToList();
             return View(viewModel);
         }
     }

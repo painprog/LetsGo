@@ -40,9 +40,9 @@
                     Сортировка
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" asp-action="Profile" asp-route-sortOrder="@ViewBag.NameSort">По названию</a>
+                    <a class="dropdown-item" asp-action="Profile" asp-route-sortOrder="@ViewBag.PriceSort">По цене билета</a>
+                    <a class="dropdown-item" asp-action="Profile" asp-route-sortOrder="@ViewBag.DateStartSort">По дате начала</a>
                 </div>
             </div>
             <div class="dropdown" id="dd">

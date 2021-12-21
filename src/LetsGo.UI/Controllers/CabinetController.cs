@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LetsGo.Core.Entities;
@@ -16,18 +17,20 @@ namespace LetsGo.UI.Controllers
     [Authorize]
     public class CabinetController : Controller
     {
-        private readonly EventsService _service;
-        private readonly CabinetService _cabService;
+        private readonly EventsService _eventService;
+        private readonly CabinetService _cabinetService;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer<CabinetController> _localizer;
 
-        public CabinetController(EventsService service, CabinetService cabService,
-            ApplicationDbContext context, UserManager<User> userManager)
+        public CabinetController(EventsService eventService, CabinetService cabinetService, ApplicationDbContext context, 
+                                   UserManager<User> _userManager, IStringLocalizer<CabinetController> _localizer)	
         {
-            _service = service;
-            _cabService = cabService;
+            _eventService = eventService;
+            _cabinetService = cabinetService;
             _context = context;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs)
@@ -37,18 +40,29 @@ namespace LetsGo.UI.Controllers
             if (!string.IsNullOrEmpty(EventCategs))
                 EventCategories = EventCategs.Split(',').ToList();
 
-            ProfileViewModel viewModel = new ProfileViewModel { User = user };
-            Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
+            ProfileViewModel viewModel = new ProfileViewModel { User = user, IsOrganizer = User.IsInRole("organizer") };
+            Dictionary<string, Status> Stats = _cabinetService.GetDictionaryStats();
             viewModel.Stats = Stats;
             viewModel.EventCategories = _context.EventCategories.ToList();
 
-            IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(EventCategories, Status,
+            IQueryable<Event> Events = _cabinetService.QueryableEventsAfterFilter(EventCategories, Status,
                 DateTimeFrom, DateTimeBefore);
 
-            if (User.IsInRole("organizer"))
+            if (viewModel.IsOrganizer)
                 viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
             else
                 viewModel.Events = Events.ToList();
+
+            ViewData["Status"] = _localizer["Status"];
+            ViewData["NotDefined"] = _localizer["NotDefined"];
+            ViewData["New"] = _localizer["New"];
+            ViewData["Rejected"] = _localizer["Rejected"];
+            ViewData["Published"] = _localizer["Published"];
+            ViewData["UnPublished"] = _localizer["UnPublished"];
+            ViewData["Edited"] = _localizer["Edited"];
+            ViewData["Expired"] = _localizer["Expired"];
+            ViewData["ReviewPublished"] = _localizer["ReviewPublished"];
+            ViewData["ReviewUnPublished"] = _localizer["ReviewUnPublished"];
 
             return View(viewModel);
         }

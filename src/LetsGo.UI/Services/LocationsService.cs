@@ -35,11 +35,7 @@ namespace LetsGo.UI.Services
                 X = double.Parse(model.X.Replace('.', ',')),
                 Y = double.Parse(model.Y.Replace('.', ','))
             };
-            var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new
-            {
-                Id = x.Value,
-                Name = x.Text
-            });
+            var categories = model.LocationCategories.Where(x => x.Selected).Select(x => new { Id = x.Value, Name = x.Text });
 
             using (var uow = _unitOfWorkFactory.MakeUnitOfWork())
             {
@@ -61,9 +57,10 @@ namespace LetsGo.UI.Services
                 location.Phones = phoneNumbersJson;
 
                 uow.Locations.Add(location);
-                await uow.CompleteAsync();
-                return location;
-            }
+            cache.Set(location.Id, location, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+            await _db.SaveChangesAsync();
+            return location;
+        }
         }
 
         public async Task<Location> GetLocation(int id)

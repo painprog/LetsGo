@@ -36,33 +36,28 @@ namespace LetsGo.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);        
-                if (user != null)
+                var user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);
+
+                if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
-                    {
-                        ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
-                        return View(model);
-                    }
+                    ModelState.AddModelError(string.Empty, "Вы не подтвердили свой email");
+                    return View(model);
                 }
+
                 Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(
                   user,
                   model.Password,
                   model.RememberMe,
                   false
                   );
-                if (result.Succeeded)
-                {
+                if (result.Succeeded) 
                     return RedirectToAction("Index", "Home");
-                }
-                
-            }
-            else
                 ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+            }
 
             return View(model);
         }
-        
+
         [Authorize(Roles = "superadmin")]
         [HttpGet]
         public IActionResult AddAdmin()
@@ -187,10 +182,10 @@ namespace LetsGo.UI.Controllers
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
-            {                
+            {
                 return RedirectToAction("Index", "Home");
             }
-   
+
             else
                 return View("Error");
         }
@@ -216,7 +211,7 @@ namespace LetsGo.UI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPassword(string email) => 
+        public IActionResult ForgotPassword(string email) =>
             View(new ForgotPasswordViewModel { Email = email });
 
         [HttpPost]
@@ -231,7 +226,7 @@ namespace LetsGo.UI.Controllers
                     return View("ForgotPasswordConfirmation");
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code, email = user.Email },
                     protocol: HttpContext.Request.Scheme);
                 EmailService emailService = new EmailService();
                 await emailService.Send(model.Email, "Восстановление пароля",
@@ -243,9 +238,9 @@ namespace LetsGo.UI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code, string email)
         {
-            return code == null ? View("Error") : View();
+            return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code, Email = email });
         }
 
         [HttpPost]
@@ -254,18 +249,19 @@ namespace LetsGo.UI.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
+            
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                return View("ResetPasswordConfirmation");
-            }
+
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return View("ResetPasswordConfirmation");
+            }
+            if(result.Errors.FirstOrDefault(e => e.Code == "InvalidToken") != null)
+            {
+                ModelState.AddModelError("", "Это не ваш почтовый адрес");
+                return View(model);
             }
             foreach (var error in result.Errors)
             {
@@ -273,8 +269,6 @@ namespace LetsGo.UI.Controllers
             }
             return View(model);
         }
-
-
 
 
         // Validations
@@ -288,5 +282,16 @@ namespace LetsGo.UI.Controllers
             return !_userManager.Users.Any(b => b.UserName == userName);
         }
 
+        public async Task<JsonResult> LoginChek(string loginOrEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(loginOrEmail) ?? await _userManager.FindByNameAsync(loginOrEmail);
+            return Json(user != null);
+        }
+
+        public async Task<JsonResult> EmailChek(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return Json(user != null);
+        }
     }
 }

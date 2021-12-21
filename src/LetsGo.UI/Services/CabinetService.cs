@@ -40,8 +40,34 @@ namespace LetsGo.UI.Services
 
             if (EventCategories.Count > 0)
             {
+                List<EventCategory> eventCategories = new List<EventCategory>();
                 foreach (var item in EventCategories)
-                    Events = Events.Where(e => e.Categories.Contains(item));
+                    eventCategories.Add(_context.EventCategories.FirstOrDefault(e => e.Id == item));
+
+                var categoriesGroups = eventCategories.GroupBy(e => e.ParentId);
+                List<Event> EventsAfterFiltr = new List<Event>();
+
+                int count = 0;
+                foreach (var g in categoriesGroups)
+                {
+                    count++;
+                    for (int i = 0; i < g.ToList().Count; i++)
+                    {
+                        Events = Events.Where(x => x.Categories.Contains(g.ToList()[i].Id));
+                        if (Events.ToList().Count == 0)
+                        {
+                            Events = GetEvents();
+                            break;
+                        }
+                        if (i == g.ToList().Count - 1)
+                        {
+                            EventsAfterFiltr.AddRange(Events);
+                            Events = GetEvents();
+                        }
+                    }
+                    if (count == categoriesGroups.ToList().Count)
+                        Events = EventsAfterFiltr.AsQueryable();
+                }
             }
             if (Status != Status.NotDefined)
                 Events = Events.Where(e => e.Status == Status);
@@ -70,6 +96,14 @@ namespace LetsGo.UI.Services
                 ["Обзор не опубликован"] = Status.ReviewUnPublished,
             };
             return Stats;
+        }
+
+        public IQueryable<Event> GetEvents()
+        {
+            IQueryable<Event> events = _context.Events.Include(e => e.Location)
+                .OrderBy(e => e.Status)
+                .ThenByDescending(e => e.CreatedAt);
+            return events;
         }
     }
 }

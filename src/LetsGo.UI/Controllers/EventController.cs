@@ -130,6 +130,26 @@ namespace LetsGo.UI.Controllers
             return View(events);
         }
 
+        public IActionResult AfishaOn(string year, string month, string day)
+        {
+            DateTime date = new DateTime(int.Parse(year),
+                DateTime.ParseExact(month, "MMMM", new CultureInfo("ru-RU")).Month,
+                int.Parse(day));
+
+            var events = _goContext.Events.Include(e => e.Location).Where(e => e.EventStart.Date == date.Date).OrderBy(e => e.EventStart).ToList();
+            SetMainEventCategory(events);
+
+            ViewBag.PageTitle = $"Афиша Бишкека {date.ToString("d MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()}";
+            return View("Afisha", events);
+        }
+
+        public int GetEventsQty(string year, string month, string day)
+        {
+            DateTime date = new DateTime(int.Parse(year), DateTime.ParseExact(month, "MMMM", new CultureInfo("ru-RU")).Month, int.Parse(day));
+            int count = _goContext.Events.Where(e => e.EventStart.Date == date.Date).Count();
+            return count;
+        }
+
         public IActionResult Today()
         {
             var events = _goContext.Events.Include(e => e.Location)

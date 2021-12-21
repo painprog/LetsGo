@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace LetsGo.UI.ViewModels
 {
     public class ResetPasswordViewModel
     {
         [EmailAddress]
+        [Remote("EmailChek", "Account", ErrorMessage = "Неправильный email")]
         public string Email { get; set; }
 
         [DataType(DataType.Password)]

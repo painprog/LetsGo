@@ -16,7 +16,7 @@
                             <button class="btn btn-outline-light" type="button">Город</button>
                         </div>
                     </div>
-                   
+
                     <div id="search-page" class="search-page bg-white seacrh_input position-absolute">
                         @* <p id="values"></p> *@
                         <div id="search-events">
@@ -29,14 +29,51 @@
                 </div>
 
                 <div class="links">
-                    <a onclick="Afisha()" role="button" aria-pressed="true">Афиша</a>
-                    <a onclick="Today()" role="button" aria-pressed="true">Сегодня</a>
-                    <a onclick="Tomorrow()" role="button" aria-pressed="true">Завтра</a>
-                    <a onclick="Weekends()" role="button" aria-pressed="true">Выходные</a>
+                    <a onclick="Afisha()" role="button" aria-pressed="true" class="link_day">Афиша</a>
+                    <a onclick="Today()" role="button" aria-pressed="true" class="link_day">Сегодня</a>
+                    <a onclick="Tomorrow()" role="button" aria-pressed="true" class="link_day">Завтра</a>
+                    <a onclick="Weekends()" role="button" aria-pressed="true" class="link_day">Выходные</a>
                 </div>
-                <div class="icon_buttons align-content-center">
-                    <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn far fa-calendar-alt"></i>Календарь</button>
-                    <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>Фильтры</button>
+                <div class="icon_buttons row justify-content-center">
+                    <div class="dropdown col">
+                        <button id="dropdownMenuLink" data-toggle="dropdown" class="btn btn_icon mx-2 mt-2 dropbtn">
+                            <i class="icon_btn far fa-calendar-alt"></i>Календарь
+                        </button>
+                        <div id="calendar" class="calendar dropdown-menu" data-handledropdownclose="true">
+                            <div class="calendar-header">
+                                <span class="month-picker" id="month-picker">February</span>
+                                <div class="year-picker">
+                                    <span class="year-change" id="prev-year">
+                                        <pre><</pre>
+                                    </span>
+                                    <span id="year">2021</span>
+                                    <span class="year-change" id="next-year">
+                                        <pre>></pre>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="calendar-body">
+                                <div class="calendar-week-day">
+                                    <div>Вс</div>
+                                    <div>Пн</div>
+                                    <div>Вт</div>
+                                    <div>Ср</div>
+                                    <div>Чт</div>
+                                    <div>Пт</div>
+                                    <div>Сб</div>
+                                </div>
+                                <div class="calendar-days"></div>
+                            </div>
+                            <div class="calendar-footer">
+                                <a role="button" class="btn btn-secondary choose-date-btn disabled">Выберите дату</a>
+                            </div>
+                            <div class="month-list"></div>
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>Фильтры</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -402,40 +439,40 @@
         function Details(eventId) {
                 window.location.href = '@Url.Action("Details", "Event")?id=' + eventId;
         }
-        
+
         document.getElementById('livestream').addEventListener('keyup', function (e) {
                     LiveSearch()
                    });
         function LiveSearch() {
             let value = document.getElementById('livestream').value
             $.ajax({
-                type: "GET", 
+                type: "GET",
                 url: '@Url.Action("Search", "Home")',
                 data: {search: value },
                 datatype: "html",
-                success: 
+                success:
                  function (data) {
                     console.log('OK')
                     console.log(data)
                           $('#result').html(data);
                          }
                 });
-            
+
             let timeout = null;
-            
-            document.getElementById('livestream').addEventListener('keyup', function (e) {  
+
+            document.getElementById('livestream').addEventListener('keyup', function (e) {
                   clearTimeout(timeout);
-            
+
                   timeout = setTimeout(function () {
                          LiveSearch()
                   }, 200);
              });
-        }   
-        
+        }
+
         const input         = document.getElementById('livestream');
         const searchPage    = document.getElementById('search-page');
-        
-        
+
+
         input.addEventListener('input', function (e) {
             if (input.value === null || input.value === "") {
                 console.log("1")
@@ -466,5 +503,7 @@
         function Weekends() {
                 window.location.href = '@Url.Action("Weekends", "Event")';
         }
+
+
     </script>
 }

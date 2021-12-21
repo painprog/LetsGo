@@ -1,11 +1,15 @@
 ﻿@using LetsGo.Core.Entities.Enums
 @model LetsGo.UI.ViewModels.ProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
 <div id="all-events">
     @foreach (var item in Model.Events)
     {
-        <div class="card mb-3 event-card" style="border-radius: 15px" onclick="eventDetails('@item.Id')">
+        <div class="card mb-3 event-card" style="border-radius: 15px">
             <div id="event-status" style="display:none;">@item.Status</div>
-            <div class="row">
+            <div class="row body" onclick="eventDetails('@item.Id')">
                 <div class="pn-page-head col-lg-10" style="border-radius: 0">
                     <img class="blur_img" src="@item.PosterImage" alt="">
                     <div class="row">
@@ -38,35 +42,35 @@
             <div class="text-center align-content-between admin-event pt-2">
                 <div class="row">
                     <div class="col-lg-2">
-                        <span>Статус: </span>
-                        @switch (item.Status) 
+                        <span>@ViewData["Status"]: </span>
+                        @switch (item.Status)
                         {
                             case Status.NotDefined:
-                                <span>Ошибка</span>
+                                <span>@ViewData["NotDefined"]</span>
                                 break;
                             case Status.Edited:
-                                // feature
+                                <span>@ViewData["Edited"]</span>
                                 break;
                             case Status.Rejected:
-                                <span>Отклонен</span>
+                                <span>@ViewData["Rejected"]</span>
                                 break;
                             case Status.New:
-                                <span>Ожидание принятия</span>
+                                <span>@ViewData["New"]</span>
                                 break;
                             case Status.Published:
-                                <span>Опубликован</span>
+                                <span>@ViewData["Published"]</span>
                                 break;
                             case Status.UnPublished:
-                                <span>Снят с публикации</span>
+                                <span>@ViewData["UnPublished"]</span>
                                 break;
                             case Status.ReviewPublished:
-                                <span>Ожидание добавления</span>
+                                <span>@ViewData["ReviewPublished"]</span>
                                 break;
                             case Status.ReviewUnPublished:
-                                <span>Ожидание снятия</span>
+                                <span>@ViewData["ReviewUnPublished"]</span>
                                 break;
                             case Status.Expired:
-                                <span>Мероприятие уже прошло</span>
+                                <span>@ViewData["Expired"]</span>
                                 break;
                         }
                     </div>
@@ -83,28 +87,44 @@
                                 //Что-то к отказу
                                 break;
                             case Status.New:
-                                <button class="btn btn-success px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Принять</button>
-                                <button type="button" class="btn btn-danger px-3 mb-2 deny" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button class="btn btn-success px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Принять
+                                </button>
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'Rejected')">
                                     Отклонить
                                 </button>
                                 break;
                             case Status.Published:
-                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2 unpublish" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'UnPublished')">
                                     Снять с публикации
                                 </button>
                                 break;
                             case Status.UnPublished:
-                                <button class="btn btn-danger px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Вернуть в публикации</button>
+                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Вернуть в публикации
+                                </button>
                                 break;
                             case Status.ReviewPublished:
-                                <button class="btn btn-primary px-3 ml-4 mb-2 accept" type="button" id="@item.Id">Одобрить возвращение в публикации</button>
-                                <button type="button" class="btn btn-danger px-3 mb-2 denyPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                    Одобрить возвращение в публикации
+                                </button>
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'UnPublished')">
                                     Отклонить
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
-                                <button class="btn btn-primary px-3 ml-4 mb-2 unPublished" type="button" id="@item.Id">Одобрить снятие с публикации</button>
-                                <button type="button" class="btn btn-danger px-3 mb-2 denyUnPublished" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id">
+                                <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'UnPublished')">
+                                    Одобрить снятие с публикации
+                                </button>
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'Published')">
                                     Отклонить
                                 </button>
                                 break;

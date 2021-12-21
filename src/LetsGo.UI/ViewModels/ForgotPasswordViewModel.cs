@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace LetsGo.UI.ViewModels
 {
@@ -6,6 +7,7 @@ namespace LetsGo.UI.ViewModels
     {
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [EmailAddress]
+        [Remote("EmailChek", "Account", ErrorMessage = "Пользователя с таким email не существует")]
         public string Email { get; set; }
     }
 }

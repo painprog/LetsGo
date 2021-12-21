@@ -14,7 +14,7 @@
             <a href="#" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
             <div class="row">
                 <div class="col-lg-2">
-                    <img src="https://www.kindpng.com/picc/m/22-223863_no-avatar-png-circle-transparent-png.png" width="100" height="100" class="rounded-circle ml-3" alt="no avatar" />
+                    <img src="@Model.User.AvatarLink" width="100" height="100" class="rounded-circle ml-3" alt="no avatar" />
                 </div>
                 <div class="col-lg-6">
                     <h5 class="category-header">@Model.User.Email</h5>
@@ -125,11 +125,11 @@
         {
             @if (Model.IsOrganizer)
             {
-                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model, ViewData);
             }
             else
             {
-                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model, ViewData);
             }
         }
         else
@@ -161,77 +161,48 @@
 {
     <script>
 
-        let _id;
-        let _status;
-        let _div;
-        //Скрипты для действий в один клик
-        $('.requestForUnPublish').on('click', function () {
-            _id = this.id;
-            _status = 'ReviewUnPublished';
-            quickSend(this);
-        })
-
-        $('.requestForPublish').on('click', function () {
-            _id = this.id;
-            _status = 'ReviewPublished';
-            quickSend(this);
-        })
-
-        $('.accept').add('.cancelReviewUnPublish').on('click', function() {
-            _id = this.id;
-            _status = 'Published';
-            quickSend(this);
-        })
-
-        $('.cancelReviewPublish').add('.unPublished').on('click', function () {
-            _id = this.id;
-            _status = 'UnPublished';
-            quickSend(this);
-        });
-
-        function quickSend(elem) {
-            console.log(_id + " " + _status)
-            event.preventDefault();
+        function ChangeStatus(button, newStatus) {
+            event.stopPropagation();
+            // log
+            console.log(button);
+            console.log(button.id);
+            console.log(newStatus);
+            // 
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
                 type: 'POST',
                 data:
                 {
-                    'status': _status,
-                    'eventId': _id
+                    'status': newStatus,
+                    'eventId': button.id
                 },
                 success: function (response) {
                     if (response.success) {
-                        var div = $(elem).closest('.card');
-                        div.hide('slow');
+                        $(button).closest('.card').hide('slow');
                     }
                 }
             })
         }
 
-        //Скрипты для действий с указанием причины
-        $('.deny').on('click', function () {
-            _id = this.id;
-            _status = 'Rejected';
-            _div = $(this).closest('.card');
-        })
-
-        $('.unpublish').add('.denyPublished').on('click', function () {
-            _id = this.id;
-            _status = 'UnPublished';
-            _div = $(this).closest('.card');
-        })
-
-        $('.denyUnPublished').on('click', function () {
-            _id = this.id;
-            _status = 'Published';
-            _div = $(this).closest('.card');
-        })
+        let _id;
+        let _status;
+        let _div;
+        function ChangeDenyStatus(button, newStatus) {
+            event.stopPropagation();
+            // log
+            console.log(button);
+            console.log(button.id);
+            console.log(newStatus);
+            //
+            _id = button.id;
+            _status = newStatus;
+        }
 
         $('#cause-confirm').on('click', () => {
             event.preventDefault();
             let cause = $('textarea#cause-text').val();
             $('textarea#cause-text').val('');
+            console.log(_id, _status, cause);
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
                 type: 'POST',
@@ -243,7 +214,7 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        _div.hide('slow');
+                        $('#' + _id).closest('.card').hide('slow');
                     }
                 }
             })

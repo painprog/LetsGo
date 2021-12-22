@@ -36,13 +36,13 @@
                        aria-label="Search" onkeyup="filterEvents()" />
             </div>
             <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Сортировка
+                <button class="btn btn-dark mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Сортировка по
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" asp-action="Profile" asp-route-sortOrder="@ViewBag.NameSort">По названию</a>
-                    <a class="dropdown-item" asp-action="Profile" asp-route-sortOrder="@ViewBag.PriceSort">По цене билета</a>
-                    <a class="dropdown-item" asp-action="Profile" asp-route-sortOrder="@ViewBag.DateStartSort">По дате начала</a>
+                    <a class="dropdown-item" onclick="Sort('@ViewBag.NameSort')">Названию</a>
+                    <a class="dropdown-item" onclick="Sort('@ViewBag.PriceSort')">Цене билета</a>
+                    <a class="dropdown-item" onclick="Sort('@ViewBag.DateStartSort')">Дате начала</a>
                 </div>
             </div>
             <div class="dropdown" id="dd">
@@ -109,6 +109,7 @@
                             </div>
                         </div>
                         <input id="EventCategoriesHidden" asp-for="EventCategs" hidden />
+                        <input id="SortStateHidden" asp-for="SortOrder" hidden />
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-success px-5 py-2 mt-2">Принять</button>
                         </div>
@@ -285,6 +286,10 @@
             $('#EventCategoriesHidden').val(strCateg)
         }
         )
-
+        function Sort(sortState) {
+            $('#SortStateHidden').val(sortState);
+            console.log($('#SortStateHidden').val());
+            $('#formFiltr').submit();
+        }
     </script>
 }

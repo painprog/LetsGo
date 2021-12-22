@@ -30,7 +30,7 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs, SortState sortOrder = SortState.DateStartDesc)
+        public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs, SortState SortOrder = SortState.DateStartDesc)
         {
             List<string> EventCategories = new List<string>();
             if (!string.IsNullOrEmpty(EventCategs))
@@ -47,10 +47,10 @@ namespace LetsGo.Controllers
 
             if (User.IsInRole("organizer"))
                 Events = Events.Where(e => e.OrganizerId == user.Id);
-            ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
-            ViewBag.PriceSort = sortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
-            ViewBag.DateStartSort = sortOrder == SortState.DateStartAsc ? SortState.DateStartDesc : SortState.DateStartAsc;
-            switch (sortOrder)
+            ViewBag.NameSort = SortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+            ViewBag.PriceSort = SortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
+            ViewBag.DateStartSort = SortOrder == SortState.DateStartAsc ? SortState.DateStartDesc : SortState.DateStartAsc;
+            switch (SortOrder)
             {
                 case SortState.NameDesc:
                     Events = Events.OrderByDescending(s => s.Name);

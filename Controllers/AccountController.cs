@@ -190,9 +190,7 @@ namespace LetsGo.Controllers
             {                
                 return RedirectToAction("Index", "Home");
             }
-   
-            else
-                return View("Error");
+            return View("Error");
         }
 
         [HttpPost]
@@ -297,6 +295,19 @@ namespace LetsGo.Controllers
         {
             return !_userManager.Users.Any(b => b.UserName == userName);
         }
+
+        public bool CheckEmailEdit(string email)
+        {
+            if (_userManager.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User)).Email == email) return true;
+            return !_userManager.Users.Any(b => b.Email == email);
+        }
+
+        public bool CheckUserNameEdit(string userName)
+        {
+            if (_userManager.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User)).Email == userName) return true;
+            return !_userManager.Users.Any(b => b.Email == userName);
+        }
+
 
     }
 }

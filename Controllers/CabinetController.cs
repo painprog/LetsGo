@@ -55,7 +55,6 @@ namespace LetsGo.Controllers
             return View(viewModel);
         }
 
-
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -70,11 +69,11 @@ namespace LetsGo.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public async Task<ActionResult> Edit(EditProfileViewModel userModel)
         {
             var currentUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == userModel.Id);
+            if (currentUser == null) return RedirectToAction("Profile");
             string avatar;
             if (userModel.Avatar == null)
             {
@@ -83,20 +82,38 @@ namespace LetsGo.Controllers
             else
             {
                 avatar = "/avatars/" + EventsService.GenerateCode() + Path.GetExtension(userModel.Avatar.FileName);
-                await using var fileStream =
-                    new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + avatar),
-                        FileMode.Create);
-                await userModel.Avatar.CopyToAsync(fileStream);
+                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + avatar), FileMode.Create))
+                    await userModel.Avatar.CopyToAsync(fileStream);
             }
-
-            if (currentUser == null) return RedirectToAction("Profile");
+            bool newEmail = currentUser.Email != userModel.Email;
             currentUser.Email = userModel.Email;
             currentUser.UserName = userModel.UserName;
             currentUser.PhoneNumber = userModel.PhoneNumber;
             currentUser.AvatarLink = avatar;
             _context.Users.Update(currentUser);
             await _context.SaveChangesAsync();
+            if (newEmail)
+            {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(currentUser);
+                await SendConfirmEmail(currentUser, code);
+                // выходить из аккаунта
+                //return RedirectToAction("Account", "Logout", null);
+            }
             return RedirectToAction("Profile");
+        }
+
+
+
+        public async Task SendConfirmEmail(User user, string code)
+        {
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+            await EmailService.Send(user.Email, "Подтвердите ваш аккаунт",
+                $"Подтвердите регистрацию, перейдя по ссылке:" +
+                $" <a href='{callbackUrl}'>ссылка</a>");
         }
     }
 }

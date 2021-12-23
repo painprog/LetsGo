@@ -102,12 +102,15 @@ namespace LetsGo.Controllers
 
                 if (result.Succeeded)
                 {
-                    EmailService emailService = new EmailService();
-                    await emailService.Send(
+                    await EmailService.Send(
                         admin.Email,
                         "Логин и пароль от аккаунта админа",
                         $"Здравствуйте! Вот ваши данные для входа в аккаунт. Никому их не передавайте <br />    Login: {admin.UserName}<br />    Email: {admin.Email}<br />    Password: {password}"
                     );
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
+                    await SendConfirmEmail(admin, code);
+
                     await _userManager.AddToRoleAsync(admin, "admin");
                     return RedirectToAction("Index", "Home");
                 }
@@ -151,15 +154,8 @@ namespace LetsGo.Controllers
                     if (result.Succeeded)
                     {
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "Account",
-                        new { userId = user.Id, code = code },
-                        protocol: HttpContext.Request.Scheme);
-                        EmailService emailService = new EmailService();
-                        await emailService.Send(model.Email, "Подтвердите ваш аккаунт",
-                            $"Подтвердите регистрацию, перейдя по ссылке:" +
-                            $" <a href='{callbackUrl}'>ссылка</a>");
+                        await SendConfirmEmail(user, code);
+
                         await _userManager.AddToRoleAsync(user, "organizer");
 
                         return View("ConfirmRegistration");
@@ -237,8 +233,7 @@ namespace LetsGo.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
                     protocol: HttpContext.Request.Scheme);
-                EmailService emailService = new EmailService();
-                await emailService.Send(model.Email, "Восстановление пароля",
+                await EmailService.Send(model.Email, "Восстановление пароля",
                     $"Для восстановления пароля пройдите по ссылке: <a href='{callbackUrl}'>ссылка</a>");
                 return View("ForgotPasswordConfirmation");
             }
@@ -279,6 +274,17 @@ namespace LetsGo.Controllers
         }
 
 
+        public async Task SendConfirmEmail(User user, string code)
+        {
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+            await EmailService.Send(user.Email, "Подтвердите ваш аккаунт",
+                $"Подтвердите регистрацию, перейдя по ссылке:" +
+                $" <a href='{callbackUrl}'>ссылка</a>");
+        }
 
 
         // Validations

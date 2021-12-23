@@ -86,6 +86,8 @@ namespace LetsGo.Controllers
                     await userModel.Avatar.CopyToAsync(fileStream);
             }
             bool newEmail = currentUser.Email != userModel.Email;
+            if (newEmail) currentUser.EmailConfirmed = false;
+
             currentUser.Email = userModel.Email;
             currentUser.UserName = userModel.UserName;
             currentUser.PhoneNumber = userModel.PhoneNumber;

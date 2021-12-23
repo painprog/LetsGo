@@ -72,7 +72,7 @@ namespace LetsGo.UI
             {
                 new CultureInfo("ru"),
                 new CultureInfo("en"),
-                new CultureInfo("kg")
+                new CultureInfo("ky")
             }; 
             app.UseRequestLocalization(new RequestLocalizationOptions
             {

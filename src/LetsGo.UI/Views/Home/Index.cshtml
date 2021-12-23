@@ -1,8 +1,10 @@
-﻿@model LetsGo.UI.ViewModels.IndexPageViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model LetsGo.UI.ViewModels.IndexPageViewModel
 <div class="body_part_2">
     <div class="cont_2_body d-flex pb-3">
         <div class="container-2 container-fluid mx-auto">
-            <h1 class="pt-1 mb-5 text-center">Быстрый поиск и покупка билетов</h1>
+            <h1 class="pt-1 mb-5 text-center">@Localizer["Title1"]</h1>
             <div class="container_basic_content">
                 <div class="search_wrapper d-flex justify-content-center position-relative ">
                     <div class="seacrh_input input-group">
@@ -11,9 +13,9 @@
                                 <i class="fas fa-search"></i>
                             </span>
                         </div>
-                        <input id="livestream" name="livestream" type="text" class="form-control" placeholder="Событие или площадка" aria-label="Имя получателя" aria-describedby="basic-addon2">
+                        <input id="livestream" name="livestream" type="text" class="form-control" placeholder="@Localizer["Search"]" aria-label="Имя получателя" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-light" type="button">Город</button>
+                            <button class="btn btn-outline-light" type="button">@Localizer["City"]</button>
                         </div>
                     </div>
 
@@ -29,15 +31,15 @@
                 </div>
 
                 <div class="links">
-                    <a onclick="Afisha()" role="button" aria-pressed="true" class="link_day">Афиша</a>
-                    <a onclick="Today()" role="button" aria-pressed="true" class="link_day">Сегодня</a>
-                    <a onclick="Tomorrow()" role="button" aria-pressed="true" class="link_day">Завтра</a>
-                    <a onclick="Weekends()" role="button" aria-pressed="true" class="link_day">Выходные</a>
+                    <a onclick="Afisha()" role="button" aria-pressed="true" class="link_day">@Localizer["Poster"]</a>
+                    <a onclick="Today()" role="button" aria-pressed="true" class="link_day">@Localizer["Today"]</a>
+                    <a onclick="Tomorrow()" role="button" aria-pressed="true" class="link_day">@Localizer["Tomorrow"]</a>
+                    <a onclick="Weekends()" role="button" aria-pressed="true" class="link_day">@Localizer["Weekends"]</a>
                 </div>
                 <div class="icon_buttons row justify-content-center">
                     <div class="dropdown col">
                         <button id="dropdownMenuLink" data-toggle="dropdown" class="btn btn_icon mx-2 mt-2 dropbtn">
-                            <i class="icon_btn far fa-calendar-alt"></i>Календарь
+                            <i class="icon_btn far fa-calendar-alt"></i>@Localizer["Calendar"]
                         </button>
                         <div id="calendar" class="calendar dropdown-menu" data-handledropdownclose="true">
                             <div class="calendar-header">
@@ -54,25 +56,25 @@
                             </div>
                             <div class="calendar-body">
                                 <div class="calendar-week-day">
-                                    <div>Вс</div>
-                                    <div>Пн</div>
-                                    <div>Вт</div>
-                                    <div>Ср</div>
-                                    <div>Чт</div>
-                                    <div>Пт</div>
-                                    <div>Сб</div>
+                                    <div>@Localizer["Sun"]</div>
+                                    <div>@Localizer["Mon"]</div>
+                                    <div>@Localizer["Tue"]</div>
+                                    <div>@Localizer["Wed"]</div>
+                                    <div>@Localizer["Thu"]</div>
+                                    <div>@Localizer["Fri"]</div>
+                                    <div>@Localizer["Sat"]</div>
                                 </div>
                                 <div class="calendar-days"></div>
                             </div>
                             <div class="calendar-footer">
-                                <a role="button" class="btn btn-secondary choose-date-btn disabled">Выберите дату</a>
+                                <a role="button" class="btn btn-secondary choose-date-btn disabled">@Localizer["ChooseDate"]</a>
                             </div>
                             <div class="month-list"></div>
                         </div>
 
                     </div>
                     <div class="col">
-                        <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>Фильтры</button>
+                        <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>@Localizer["Filters"]</button>
                     </div>
                 </div>
             </div>
@@ -85,9 +87,9 @@
                     <img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1">
                 </div>
                 <div class="card-body mx-auto p-0">
-                    <h2 class="title_card">Все</h2>
+                    <h2 class="title_card">@Localizer["String1"]</h2>
                 </div>
-                <p class="card-text text-center text-lowercase pt-1">цены на билеты как в кассах</p>
+                <p class="card-text text-center text-lowercase pt-1">@Localizer["String5"]</p>
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
@@ -96,9 +98,9 @@
                     <img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2">
                 </div>
                 <div class="card-body mx-auto p-0">
-                    <h2 class="title_card">билеты</h2>
+                    <h2 class="title_card">@Localizer["String2"]</h2>
                 </div>
-                <p class="card-text text-center text-lowercase pt-1">онлайн всегда в наличии</p>
+                <p class="card-text text-center text-lowercase pt-1">@Localizer["String6"]</p>
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
@@ -107,9 +109,9 @@
                     <img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3">
                 </div>
                 <div class="card-body mx-auto p-0">
-                    <h2 class="title_card">без</h2>
+                    <h2 class="title_card">@Localizer["String3"]</h2>
                 </div>
-                <p class="card-text text-center text-lowercase pt-1">комиссии и прочих сборов</p>
+                <p class="card-text text-center text-lowercase pt-1">@Localizer["String7"]</p>
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
@@ -118,9 +120,9 @@
                     <img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4">
                 </div>
                 <div class="card-body mx-auto p-0">
-                    <h2 class="title_card">наценки</h2>
+                    <h2 class="title_card">@Localizer["String4"]</h2>
                 </div>
-                <p class="card-text text-center text-lowercase pt-1">нет, вы платите только за билеты</p>
+                <p class="card-text text-center text-lowercase pt-1">@Localizer["String8"]</p>
             </div>
         </div>
     </div>
@@ -134,7 +136,7 @@
                     <div class="concerts">
                         <div class="row justify-content-between">
                             <div class="col-11">
-                                <h2 class="category-header">Концерты</h2>
+                                <h2 class="category-header">@Localizer["Concerts"]</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
                                 <a asp-controller="Category" asp-action="Concerts" class="more-btn round">
@@ -156,16 +158,16 @@
                                                 <div class="card-age">@concert.AgeLimit+</div>
                                             </div>
                                             <div class="card-tag">
-                                                <a href="#">Концерты</a>
+                                                <a href="#">@Localizer["Concerts"]</a>
                                             </div>
                                         </div>
                                         <div class="card-block-description">
                                             <div class="card-title" onclick="Details('@concert.Id')">
-                                                Концерт "@concert.Name"
+                                                @Localizer["Concert"] "@concert.Name"
                                             </div>
                                             <div class="card-description">
                                                 <div class="card-date">
-                                                    @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @concert.EventStart.ToString("HH:mm")
+                                                    @concert.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) @Localizer["At"] @concert.EventStart.ToString("HH:mm")
                                                 </div>
                                                 <div class="card-venue">
                                                     <a class="card-venue-link" href="#" onclick="LocationDetails('@concert.LocationId')">
@@ -173,7 +175,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @concert.MinPrice сом
+                                                    @Localizer["Price"] @concert.MinPrice @Localizer["som"]
                                                 </a>
                                             </div>
                                         </div>
@@ -186,7 +188,7 @@
                     <div class="festivals">
                         <div class="row justify-content-between">
                             <div class="col-11">
-                                <h2 class="category-header">Фестивали</h2>
+                                <h2 class="category-header">@Localizer["Festivals"]</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
                                 <a asp-controller="Category" asp-action="Festivals" class="more-btn round">
@@ -208,14 +210,14 @@
                                                 <div class="card-age">@festival.AgeLimit+</div>
                                             </div>
                                             <div class="card-tag">
-                                                <a href="#">Фестивали</a>
+                                                <a href="#">@Localizer["Festivals"]</a>
                                             </div>
                                         </div>
                                         <div class="card-block-description">
-                                            <div class="card-title" onclick="Details('@festival.Id')">Фестиваль"@festival.Name"</div>
+                                            <div class="card-title" onclick="Details('@festival.Id')">@Localizer["Festival"]"@festival.Name"</div>
                                             <div class="card-description">
                                                 <div class="card-date">
-                                                    @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @festival.EventStart.ToString("HH:mm")
+                                                    @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) @Localizer["At"] @festival.EventStart.ToString("HH:mm")
                                                 </div>
                                                 <div class="card-venue">
                                                     <a class="card-venue-link" href="#" onclick="LocationDetails('@festival.LocationId')">
@@ -223,7 +225,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @festival.MinPrice сом
+                                                    @Localizer["Price"] @festival.MinPrice @Localizer["som"]
                                                 </a>
                                             </div>
                                         </div>
@@ -236,7 +238,7 @@
                     <div class="performances">
                         <div class="row justify-content-between">
                             <div class="col-11">
-                                <h2 class="category-header">Спектакли</h2>
+                                <h2 class="category-header">@Localizer["Perfomances"]</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
                                 <a asp-controller="Category" asp-action="Performances" class="more-btn round">
@@ -258,17 +260,17 @@
                                                 <div class="card-age">@performance.AgeLimit+</div>
                                             </div>
                                             <div class="card-tag">
-                                                <a href="#">Спектакли</a>
+                                                <a href="#">@Localizer["Perfomances"]</a>
                                             </div>
                                         </div>
                                         <div class="card-block-description">
                                             <div class="card-title" onclick="Details('@performance.Id')">
-                                                Спектакль"@performance.Name"
+                                                @Localizer["Perfomance"]"@performance.Name"
                                             </div>
                                             <div class="card-description">
                                                 <div class="card-date">
-                                                    c @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                    по @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    @Localizer["From"] @performance.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    @Localizer["To"] @performance.EventEnd.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
                                                 </div>
                                                 <div class="card-venue">
                                                     <a class="card-venue-link" href="#" onclick="LocationDetails('@performance.LocationId')">
@@ -276,7 +278,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @performance.MinPrice сом
+                                                    @Localizer["Price"] @performance.MinPrice @Localizer["som"]
                                                 </a>
                                             </div>
                                         </div>
@@ -289,7 +291,7 @@
                     <div class="for-children">
                         <div class="row justify-content-between">
                             <div class="col-11">
-                                <h2 class="category-header">Детям</h2>
+                                <h2 class="category-header">@Localizer["ForChildren"]</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
                                 <a asp-controller="Category" asp-action="Children" class="more-btn round">
@@ -311,15 +313,15 @@
                                                 <div class="card-age">@forChildren.AgeLimit+</div>
                                             </div>
                                             <div class="card-tag">
-                                                <a href="#">Детям</a>
+                                                <a href="#">@Localizer["ForChildren"]</a>
                                             </div>
                                         </div>
                                         <div class="card-block-description">
                                             <div class="card-title" onclick="Details('@forChildren.Id')">@forChildren.Name</div>
                                             <div class="card-description">
                                                 <div class="card-date">
-                                                    c @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
-                                                    по @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    @Localizer["From"] @forChildren.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
+                                                    @Localizer["To"] @forChildren.EventEnd.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU"))
                                                 </div>
                                                 <div class="card-venue">
                                                     <a class="card-venue-link" href="#" onclick="LocationDetails('@forChildren.LocationId')">
@@ -327,7 +329,7 @@
                                                     </a>
                                                 </div>
                                                 <a href="#" class="card-price">
-                                                    БИЛЕТЫ ОТ @forChildren.MinPrice сом
+                                                    @Localizer["Price"] @forChildren.MinPrice @Localizer["som"]
                                                 </a>
                                             </div>
                                         </div>
@@ -340,7 +342,7 @@
                     <div class="venues">
                         <div class="row justify-content-between">
                             <div class="col-11">
-                                <h2 class="category-header">Площадки Бишкека</h2>
+                                <h2 class="category-header">@Localizer["Locations"]</h2>
                             </div>
                             <div class="col-1 p-0 ps-4">
                                 <a id="venues-link" class="more-btn round">
@@ -405,7 +407,7 @@
                     $('.performances').remove();
                     $('.for-children').remove();
                     $('#all-venues').empty();
-                    $('.venues .category-header').text("Площадки в Бишкеке");
+                    $('.venues .category-header').text("@Localizer["Locations"]");
                     result.forEach((venue) => {
                         $('#all-venues').append(`
                                 <div class="col-md-4 p-0">

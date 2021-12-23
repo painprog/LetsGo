@@ -1,7 +1,9 @@
-﻿@model LetsGo.UI.ViewModels.IndexPageViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model LetsGo.UI.ViewModels.IndexPageViewModel
 
 <div class="scroll">
-    <h3 class=" ml-4 mt-3" style="color: grey">Мероприятия</h3>
+    <h3 class=" ml-4 mt-3" style="color: grey">@Localizer["Events"]</h3>
     @if (Model.Concerts.Count != 0)
     {
         @foreach (var item in Model.Concerts)
@@ -23,14 +25,14 @@
                         </div>
                     </div>
                     <div class="button-price d-flex justify-content-center w-100">
-                        <button class="btn btn-light m-auto">Билеты от @item.MinPrice</button>
+                        <button class="btn btn-light m-auto">@Localizer["Price"] @item.MinPrice</button>
                     </div>
                 </div>
             </a>
         }
 
     }
-    <h3 class="ml-4 mt-3" style="color: grey">Локации</h3>
+<h3 class="ml-4 mt-3" style="color: grey">@Localizer["Locations"]</h3>
     @if (Model.Locations.Count != 0)
     {
         @foreach (var item in Model.Locations)
@@ -52,7 +54,7 @@
                         </div>
                     </div>
                     <div class="button-l d-flex justify-content-center w-100">
-                        <button class="btn btn-light m-auto">Перейти</button>
+                        <button class="btn btn-light m-auto">@Localizer["Follow"]</button>
                     </div>
                 </div>
             </a>

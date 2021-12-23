@@ -8,16 +8,20 @@ namespace LetsGo.ViewModels
     public class EditProfileViewModel
     {
         public string Id { get; set; }
-        [Display(Name = "Почта")]
-       // [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Эта почта уже занята")]
-        public string Email { get; set; }
 
-    
-        [Display(Name = "Имя пользователя")]
-       // [Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Это имя пользователя уже занято")]
+        [Required(ErrorMessage = "Поле почты обязательна для заполнения")]
+        [EmailAddress(ErrorMessage = "Некорректная почта")]
+        [Display(Name = "Почта")]
+        [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Эта почта уже занята")]
+        public string Email { get; set; }
+        
+        [Required(ErrorMessage = "Поле никнейм обязательна для заполнения")]
+        [Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Это имя пользователя уже занято")]
+        [RegularExpression(@"[A-Za-z0-9_.]+$", 
+            ErrorMessage = "Можно использовать только заглавные, прописные латинские буквы, цифры _ и .")]
+        [Display(Name = "Никнейм")]
         public string UserName { get; set; }
 
-      
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
 

@@ -1,4 +1,6 @@
-﻿@model LetsGo.UI.ViewModels.LocationDetailsViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model LetsGo.UI.ViewModels.LocationDetailsViewModel
 @{
     ViewBag.Title = Model.Location.Name;
 }
@@ -23,8 +25,8 @@
                     <h1>@Model.Location.Name</h1>
                 </div>
                 <div class="pn-head_description">
-                    <div class="pn-head_text">Адрес: @Model.Location.Address</div>
-                    <div class="pn-head_place">@Model.FutureEvents.Count предстоящих мероприятий в @Model.Location.Name</div>
+                    <div class="pn-head_text">@Localizer["Address"]: @Model.Location.Address</div>
+                    <div class="pn-head_place">@Model.FutureEvents.Count @Localizer["FutureAnnounce"] @Model.Location.Name</div>
                 </div>
                 <div class="pn-head_tags">
                     @if (Model.Location.Categories != null)
@@ -37,7 +39,7 @@
                 </div>
                 <div class="pn-head_buttons">
                     <button class="btn btn-dark" onclick="Scroll()">
-                        <span>Афиша</span>
+                        <span>@Localizer["Poster"]</span>
                     </button>
                 </div>
             </div>
@@ -45,25 +47,25 @@
     </div>
 
     <div class="content">
-        <div class="location">            
+        <div class="location">
             <div class="row mx-2 py-5">
                 <div class="col-8">
                     <h5 class="details_subheader">@Model.Location.Name</h5>
                     <p class="mr-3">@Model.Location.Description</p>
                     @if (Model.FutureEvents.Count != 0)
                     {
-                        <h5 class="events details_subheader pt-5">Расписание мероприятий</h5>
+                <h5 class="events details_subheader pt-5">@Localizer["Schedule"]</h5>
                         <div class="container">
                             @*<div class="row">
-                                <div class="col-1"><button id="slideBack" type="button" class="btn btn-light"><i class="fas fa-arrow-left"></i></button></div>
-                                <div class="col-10">
-                                    <div class="scoll-pane" id="container">
-                                        <ul class="months scroll-list">
-                                        </ul>
+                                    <div class="col-1"><button id="slideBack" type="button" class="btn btn-light"><i class="fas fa-arrow-left"></i></button></div>
+                                    <div class="col-10">
+                                        <div class="scoll-pane" id="container">
+                                            <ul class="months scroll-list">
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-1"><button id="slide" type="button" class="btn btn-light"><i class="fas fa-arrow-right"></i></button></div>
-                            </div>*@
+                                    <div class="col-1"><button id="slide" type="button" class="btn btn-light"><i class="fas fa-arrow-right"></i></button></div>
+                                </div>*@
                             <hr />
                             @foreach (var item in Model.FutureEvents)
                             {
@@ -74,12 +76,13 @@
                                                 @item.EventStart.Day
                                             </span>
                                         </div>
-                                    <div class="col-7 p-2"><span class="font-weight-bold">@item.EventStart.ToString("MMMM").ToUpper()</span><br /><span class="gray">@item.EventStart.DayOfWeek</span></div></div>
+                                        <div class="col-7 p-2"><span class="font-weight-bold">@item.EventStart.ToString("MMMM").ToUpper()</span><br /><span class="gray">@item.EventStart.DayOfWeek</span></div>
+                                    </div>
                                     <div class="col-6 p-2 pl-4">
                                         <h6 class="font-weight-bold">@item.Name</h6>
                                         <p class="address gray">@item.EventStart.ToShortTimeString(), @Model.Location.Name</p>
                                     </div>
-                                    <div class="col-3 p-2 text-right ml-auto"><button class="btn btn-danger px-3 py-2"><span class="future-events">Билеты от @item.MinPrice с</span></button></div>
+                                    <div class="col-3 p-2 text-right ml-auto"><button class="btn btn-danger px-3 py-2"><span class="future-events">@Localizer["Price"] @item.MinPrice с</span></button></div>
                                 </div>
                                 <hr />
                             }
@@ -87,7 +90,7 @@
                     }
                     @if (Model.PastEvents.Count != 0)
                     {
-                        <h5 class="details_subheader pt-5">Прошедшие события</h5>
+                <h5 class="details_subheader pt-5">@Localizer["PastEvents"]</h5>
                         <div class="container">
                             <hr />
                             @foreach (var item in Model.PastEvents)
@@ -117,11 +120,16 @@
                         <p>*календарик, если надо будет</p>
                     </div>
                     <div class="pb-3">
-                        <h6>Как добраться до @Model.Location.Name</h6>
-                        <p>Адрес: @Model.Location.Address</p>
-                    </div>
-                    <div class="pb-3">
-                        <p>*карта, если надо будет</p>
+                        <div class="map-div">
+                            <div class="map-name">@Localizer["HowToGetTo"] @Model.Location.Name</div>
+                            <div class="map-address">@Localizer["Address"]: @Model.Location.Address</div>
+                            <div class="map-address"><b>на карте</b></div>
+                            <input type="hidden" id="CoordinateX" value="@Model.Location.X" />
+                            <input type="hidden" id="CoordinateY" value="@Model.Location.Y" />
+                            <div class="map-card">
+                                <div id="map" class="map" style="width: 300px; height: 300px;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,15 +140,38 @@
 @section Scripts
 {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-<script>
+    <script>
     function Scroll() {
         $([document.documentElement, document.body]).animate({
             scrollTop: $(".events").offset().top
         }, 1000);
     };
     function Details(eventId) {
-                window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
+            window.location.href = '@Url.Action("Details","Event")?id=' + eventId;
     };
+    // Функция ymaps.ready() будет вызвана, когда
+    // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
+    ymaps.ready(init);
+    function init() {
+        var x = parseFloat($('#CoordinateX').val().replace(',', '.'));
+        var y = parseFloat($('#CoordinateY').val().replace(',', '.'));
+        // Создание карты.
+        var myMap = new ymaps.Map("map", {
+            // Координаты центра карты.
+            center: [x, y],
+            // Уровень масштабирования (от 0 до 19)
+            zoom: 15,
+            // элементы управления
+            controls: ['zoomControl']
+        });
+        // Создание геообъекта 
+        var myPlacemark = new ymaps.Placemark([x, y], {}, {
+            preset: 'islands#redIcon'
+        });
+
+        // Размещение геообъекта на карте.
+        myMap.geoObjects.add(myPlacemark);  // какой хочешь
+    }
         //var button = document.getElementById('slide');
         //button.onclick = function () {
         //    var container = document.getElementById('container');
@@ -188,5 +219,5 @@
             });
         });*@
 
-</script>
+    </script>
 }

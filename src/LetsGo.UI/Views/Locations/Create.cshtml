@@ -1,43 +1,45 @@
-﻿@model LetsGo.UI.ViewModels.CreateLocationViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model LetsGo.UI.ViewModels.CreateLocationViewModel
 
 @{
-    ViewData["Title"] = "Добавление площадки";
+    @Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="entry-form form-container">
-    <h1 class="mt-4">Добавить площадку</h1>
+    <h1 class="mt-4">@Localizer["AddLocation"]</h1>
     <hr />
     <form id="create-location-form">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="mb-3">
-            <label class="label" asp-for="@Model.Name">Название</label>
+            <label class="label" asp-for="@Model.Name">@Localizer["Name"]</label>
             <input asp-for="@Model.Name" class="form-control input-field" />
             <span asp-validation-for="@Model.Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label class="label" asp-for="@Model.Address">Адрес</label>
+            <label class="label" asp-for="@Model.Address">@Localizer["Address"]</label>
             <input asp-for="@Model.Address" class="form-control input-field" />
             <span asp-validation-for="@Model.Address" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label>Координаты</label><br />
+            <label>@Localizer["Coordinates"]</label><br />
             <label asp-for="@Model.X" class="label"></label>
             <input asp-for="@Model.X" class="input-field px-3" />
             <span asp-validation-for="@Model.X" class="text-danger"></span><br />
             <label asp-for="@Model.Y" class="label mt-2"></label>
             <input asp-for="@Model.Y" class="input-field px-3" />
             <span asp-validation-for="@Model.Y" class="text-danger"></span><br />
-            <p class="mt-2 mr-2 d-inline-block">Найти координаты можно по</p><a target="_blank" href="https://yandex.ru/maps/10309/bishkek/?ll=74.603710%2C42.876366&z=12">ссылке</a>
-            <p>нажать ЛКМ на объект, нажать "что здесь?", в панели слева появится информация</p>
+            <p class="mt-2 mr-2 d-inline-block">@Localizer["Find"]</p><a target="_blank" href="https://yandex.ru/maps/10309/bishkek/?ll=74.603710%2C42.876366&z=12">@Localizer["Link"]</a>
+            <p>@Localizer["LeftPanel"]</p>
         </div>
         <div class="mb-3">
-            <label class="label" asp-for="@Model.Description">Описание</label>
+            <label class="label" asp-for="@Model.Description">@Localizer["Description"]</label>
             <textarea class="form-control input-field" asp-for="@Model.Description" rows="4"></textarea>
             <span asp-validation-for="@Model.Description" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label class="label">Выберите категории</label>
+            <label class="label">@Localizer["ChooseCategory"]</label>
             @for (int i = 0; i < Model.LocationCategories.Count; i++)
             {
                 <div class="form-check">
@@ -51,11 +53,11 @@
             }
         </div>
         <div class="mb-2">
-            <label class="label" asp-for="@Model.Phones">Номер телефона</label>
+            <label class="label" asp-for="@Model.Phones">@Localizer["PhoneNumber"]</label>
             <input asp-for="@Model.Phones" class="form-control input-field" type="tel" />
             <span asp-validation-for="@Model.Phones" class="text-danger"></span>
             <a class="add-more-phones mb-3" onclick="AddPhone()">
-                + Добавить еще один телефон
+                + @Localizer["AddPhone"]
             </a>
         </div>
         <input type="hidden" asp-for="@Model.PhoneNums" value="" />
@@ -65,7 +67,7 @@
         </table>
 
         <div class="form-group mt-3">
-            <input type="submit" value="Добавить" class="btn btn-submit form-control" />
+            <input type="submit" value="@Localizer["Add"]" class="btn btn-submit form-control" />
         </div>
     </form>
 
@@ -81,7 +83,7 @@
             </button>
         </div>
         <div class="toast-body">
-            Площадка добавлена!
+            @Localizer["LocationAdded"]!
         </div>
     </div>
 </div>

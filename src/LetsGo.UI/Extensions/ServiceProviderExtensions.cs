@@ -15,7 +15,7 @@ namespace LetsGo.UI.Extensions
         {
             var context = services.GetService<ApplicationDbContext>();
 
-            string[] roles = { "superadmin", "admin", "organizer" };
+            string[] roles = { "superadmin", "admin", "organizer", "usher" };
 
             foreach (string role in roles)
             {

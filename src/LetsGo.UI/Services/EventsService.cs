@@ -32,7 +32,7 @@ namespace LetsGo.UI.Services
             if (eventView.File != null)
             {
                 string name = GenerateCode() + Path.GetExtension(eventView.File.FileName);
-                pathImage = "/posters/" + name;
+                pathImage = "/events/" + name;
                 using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                     await eventView.File.CopyToAsync(fileStream);
             }
@@ -139,7 +139,7 @@ namespace LetsGo.UI.Services
             var other = categories.FirstOrDefault(l => l.Text == "Другое");
             categories.Remove(other);
             categories.Add(other);
-            foreach (var item in System.Text.Json.JsonSerializer.Deserialize<List<EventCategory>>(@event.Categories))
+            foreach (var item in JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories))
             {
                 categories.FirstOrDefault(c => c.Text == item.Name).Selected = true;
             }
@@ -173,7 +173,7 @@ namespace LetsGo.UI.Services
             {
                 System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + @event.PosterImage));
                 string filename = GenerateCode() + Path.GetExtension(model.File.FileName);
-                filename = "/posters/" + filename;
+                filename = "/events/" + filename;
                 using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + filename), FileMode.Create))
                     await model.File.CopyToAsync(fileStream);
                 @event.PosterImage = filename;

@@ -446,18 +446,21 @@
                     LiveSearch()
                    });
         function LiveSearch() {
-            let value = document.getElementById('livestream').value
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const culture = Object.fromEntries(urlSearchParams.entries())["culture"];
+
+            let value = document.getElementById('livestream').value;
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("Search", "Home")',
+                url: '@Url.Action("Search", "Home")' + (culture != 'undefined' ? '/?culture=' + culture : ''),
                 data: {search: value },
                 datatype: "html",
                 success:
                  function (data) {
                     console.log('OK')
                     console.log(data)
-                          $('#result').html(data);
-                         }
+                        $('#result').html(data);
+                    }
                 });
 
             let timeout = null;

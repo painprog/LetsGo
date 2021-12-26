@@ -6,16 +6,12 @@
 
   <ItemGroup>
     <Compile Remove="Enums\**" />
-    <Compile Remove="wwwroot\avatars\**" />
     <Compile Remove="wwwroot\posters\**" />
     <Content Remove="Enums\**" />
-    <Content Remove="wwwroot\avatars\**" />
     <Content Remove="wwwroot\posters\**" />
     <EmbeddedResource Remove="Enums\**" />
-    <EmbeddedResource Remove="wwwroot\avatars\**" />
     <EmbeddedResource Remove="wwwroot\posters\**" />
     <None Remove="Enums\**" />
-    <None Remove="wwwroot\avatars\**" />
     <None Remove="wwwroot\posters\**" />
   </ItemGroup>
 
@@ -41,6 +37,7 @@
   <ItemGroup>
     <Folder Include="Views\Cabinet\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\avatars\" />
   </ItemGroup>
 
   <ItemGroup>

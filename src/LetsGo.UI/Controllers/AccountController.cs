@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LetsGo.Core.Entities;
 using LetsGo.DAL;
+using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
 using LetsGo.UI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -93,12 +94,15 @@ namespace LetsGo.UI.Controllers
 
                 if (result.Succeeded)
                 {
-                    EmailService emailService = new EmailService();
-                    await emailService.Send(
+                    await EmailService.Send(
                         admin.Email,
                         "Логин и пароль от аккаунта админа",
                         $"Здравствуйте! Вот ваши данные для входа в аккаунт. Никому их не передавайте <br />    Login: {admin.UserName}<br />    Email: {admin.Email}<br />    Password: {password}"
                     );
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
+                    await SendConfirmEmail(admin, code);
+
                     await _userManager.AddToRoleAsync(admin, "admin");
                     return RedirectToAction("Index", "Home");
                 }
@@ -142,15 +146,8 @@ namespace LetsGo.UI.Controllers
                     if (result.Succeeded)
                     {
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "Account",
-                        new { userId = user.Id, code = code },
-                        protocol: HttpContext.Request.Scheme);
-                        EmailService emailService = new EmailService();
-                        await emailService.Send(model.Email, "Подтвердите ваш аккаунт",
-                            $"Подтвердите регистрацию, перейдя по ссылке:" +
-                            $" <a href='{callbackUrl}'>ссылка</a>");
+                        await SendConfirmEmail(user, code);
+
                         await _userManager.AddToRoleAsync(user, "organizer");
 
                         return View("ConfirmRegistration");
@@ -185,9 +182,7 @@ namespace LetsGo.UI.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
-            else
-                return View("Error");
+            return View("Error");
         }
 
         [HttpPost]
@@ -228,8 +223,7 @@ namespace LetsGo.UI.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code, email = user.Email },
                     protocol: HttpContext.Request.Scheme);
-                EmailService emailService = new EmailService();
-                await emailService.Send(model.Email, "Восстановление пароля",
+                await EmailService.Send(model.Email, "Восстановление пароля",
                     $"Для восстановления пароля пройдите по ссылке: <a href='{callbackUrl}'>ссылка</a>");
                 return View("ForgotPasswordConfirmation");
             }
@@ -271,6 +265,17 @@ namespace LetsGo.UI.Controllers
         }
 
 
+        public async Task SendConfirmEmail(User user, string code)
+        {
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+            await EmailService.Send(user.Email, "Подтвердите ваш аккаунт",
+                $"Подтвердите регистрацию, перейдя по ссылке:" +
+                $" <a href='{callbackUrl}'>ссылка</a>");
+        }
         // Validations
         public bool CheckEmail(string email)
         {
@@ -281,6 +286,19 @@ namespace LetsGo.UI.Controllers
         {
             return !_userManager.Users.Any(b => b.UserName == userName);
         }
+
+        public bool CheckEmailEdit(string email)
+        {
+            if (_userManager.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User)).Email == email) return true;
+            return !_userManager.Users.Any(b => b.Email == email);
+        }
+
+        public bool CheckUserNameEdit(string userName)
+        {
+            if (_userManager.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User)).Email == userName) return true;
+            return !_userManager.Users.Any(b => b.Email == userName);
+        }
+
 
         public async Task<JsonResult> LoginChek(string loginOrEmail)
         {

@@ -40,7 +40,8 @@ namespace LetsGo.UI.Extensions
                 PhoneNumber = string.Empty,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                SecurityStamp = Guid.NewGuid().ToString("D")
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                AvatarLink = "/images/default_avatar.png"
             };
 
             if (!context.Users.Any(u => u.UserName == user.UserName))

@@ -7,6 +7,9 @@ namespace LetsGo.UI.ViewModels
     public class OrganizerSignUpViewModel
     {
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [Remote(action: "CheckUserName", controller: "Account", ErrorMessage = "Это имя пользователя уже занято")]
+        [RegularExpression(@"[A-Za-z0-9_.]+$",
+            ErrorMessage = "Можно использовать только заглавные, прописные латинские буквы, цифры _ и .")]
         public string Username { get; set; }
 
         [DataType(DataType.EmailAddress)]

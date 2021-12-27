@@ -48,8 +48,7 @@ namespace LetsGo.UI.Controllers
                         };
                         _goContext.PurchasedTickets.Add(ticket);
                         GeneratedBarcode QR = QRCodeWriter.CreateQrCode("https://localhost:44377/Home/Index/" + ticket.Id, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
-                        EmailService emailService = new EmailService();
-                        await emailService.Send(
+                        await EmailService.Send(
                             model.Email,
                             "Билет",
                             message + $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br/> <br />покажите его на входе"

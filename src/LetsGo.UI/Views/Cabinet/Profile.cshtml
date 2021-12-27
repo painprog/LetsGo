@@ -11,7 +11,7 @@
             {
                 <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light mr-3 mt-auto float-right">+ Добавить админа</a>
             }
-            <a href="#" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
+            <a asp-action="Edit" asp-controller="Cabinet" asp-route-id="@Model.User.Id" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
             <div class="row">
                 <div class="col-lg-2">
                     <img src="@Model.User.AvatarLink" width="100" height="100" class="rounded-circle ml-3" alt="no avatar" />

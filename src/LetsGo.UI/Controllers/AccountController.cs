@@ -120,6 +120,12 @@ namespace LetsGo.UI.Controllers
 
         public IActionResult OrganizerSignUp() => View();
 
+        public IActionResult EmailConfirmForAdmin(int id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
+             
         [HttpPost]
         public async Task<IActionResult> OrganizerSignUp(OrganizerSignUpViewModel model)
         {
@@ -182,10 +188,13 @@ namespace LetsGo.UI.Controllers
                 return View("Error");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            if (result.Succeeded)
+            var userRoles = await _userManager.GetRolesAsync(user);
+            if (result.Succeeded && userRoles.Contains("admin"))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("EmailConfirmForAdmin", "Account", new { userId = user.Id});
             }
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
             return View("Error");
         }
 

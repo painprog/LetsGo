@@ -94,14 +94,18 @@ namespace LetsGo.UI.Controllers
 
                 if (result.Succeeded)
                 {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = admin.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
                     await EmailService.Send(
                         admin.Email,
                         "Логин и пароль от аккаунта админа",
-                        $"Здравствуйте! Вот ваши данные для входа в аккаунт. Никому их не передавайте <br />    Login: {admin.UserName}<br />    Email: {admin.Email}<br />    Password: {password}"
+                        $"Здравствуйте! Вот ваши данные для входа в аккаунт. Никому их не передавайте <br />    Login: {admin.UserName}<br />    Email: {admin.Email}<br />    Password: {password}<br />" +
+                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>ссылка</a>"
                     );
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
-                    await SendConfirmEmail(admin, code);
 
                     await _userManager.AddToRoleAsync(admin, "admin");
                     return RedirectToAction("Index", "Home");

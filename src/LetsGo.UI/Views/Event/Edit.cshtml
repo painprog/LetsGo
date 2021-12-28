@@ -20,24 +20,23 @@
         </div>
         <div class="form-group">
             <label asp-for="Location"></label><br />
-            <input asp-for="Location" class="form-control input-field" list='locations' />
-            <datalist id='locations'>
-                <option selected>@Model.Location</option>
+            <select id="locations" asp-for="Location" style="width: 100%">
+                <option></option>
                 @foreach (var item in ViewBag.Locations)
                 {
-                    <option>@item.Name</option>
+                    <option id="@item.Name">@item.Name</option>
                 }
-            </datalist>
+            </select>
             <span asp-validation-for="Location" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="EventStart"></label><br />
-            <input asp-for="EventStart" type="datetime-local" class="form-control input-field" />
+            <input asp-for="EventStart" type="text" class="form-control input-field" id="eventStart" value="@Model.EventStart.ToString("yyyy-MM-dd H:mm")"/>
             <span asp-validation-for="EventStart" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="EventEnd"></label><br />
-            <input asp-for="EventEnd" type="datetime-local" class="form-control input-field" />
+            <input asp-for="EventEnd" type="text" class="form-control input-field" id="eventEnd" value="@Model.EventEnd.ToString("yyyy-MM-dd H:mm")"/>
             <span asp-validation-for="EventEnd" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -51,18 +50,31 @@
             <span asp-validation-for="AgeLimit" class="text-danger"></span>
 
         </div>
-        <div class="form-group">
-            <label>Категории</label>
-            @for (int i = 0; i < Model.EventCategories.Count; i++)
+        <div class="form-group" id="category-checkboxes">
+            <label>Категории</label><br>
+            <input asp-for="SelectedCategoryIds" id="selectedCategories" hidden/>
+            @for (int i = 0; i < Model.ParentCategories.Count; i++)
             {
-            <div class="form-check">
-                <input type="hidden" asp-for="@Model.EventCategories[i].Value" />
-                <input type="hidden" asp-for="@Model.EventCategories[i].Text" />
-                <input class="form-check-input" asp-for="EventCategories[i].Selected" />
-                <label class="form-check-label" asp-for="EventCategories[i].Selected">
-                    @Model.EventCategories[i].Text
-                </label>
-            </div>
+                <div class="form-check" id="@Model.ParentCategories[i].Id-div">
+                    <input class="form-check-input" type="checkbox" id="@Model.ParentCategories[i].Id-check" value="@Model.ParentCategories[i].Id">
+                    <label class="form-check-label" for="@Model.ParentCategories[i].Id-check" id="@Model.ParentCategories[i].Id-label">
+                       @Model.ParentCategories[i].Name
+                    </label>
+                </div>
+                <div class="ml-4" id="childCategories-@Model.ParentCategories[i].Id">
+                    @for (int j = 0; j < Model.ChildCategories.Count; j++)
+                    {
+                        if (Model.ChildCategories[j].ParentId == Model.ParentCategories[i].Id)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="@Model.ChildCategories[j].Id-check" value="@Model.ChildCategories[j].Id">
+                                <label class="form-check-label text-dark" for="@Model.ChildCategories[j].Id">
+                                    @Model.ChildCategories[j].Name
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
             }
         </div>
         <div class="mt-4">
@@ -97,7 +109,8 @@
                                 <td>
                                     <input asp-for="@tickettype.Price" class="ticket_price form-control" type="number" />
                                 </td>
-                                <td><input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" />
+                                <td>
+                                    <input type="button" class="btn btn-outline-danger mr-2" value="✖" onclick="DeleteTicket(this)" />
                                 </td>
                             </tr>
                         }
@@ -133,42 +146,70 @@
 
 @section scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
     <script>
-
-        var locations = document.getElementById('locations')
-        console.log(locations);
-
-        let totalTickets = $('#total-tickets');
-        let ticketsForDel = [];
-
-
-
         $(document).ready(function () {
-            var categAll = []
-            var categExist = []
-            $('#checkboxAllCateg input').each(function () {
-                categAll.push($(this).attr('value'));
-            })
-            $('#checkboxExist input').each(function () {
-                categExist.push($(this).attr('value'));
-            })
+            $('#locations').select2({
+                placeholder: "Выберите место проведения",
+                allowClear: true,
+                theme: "bootstrap-5"
+            });
 
-            for (var i = 0; i < categExist.length; i++) {
-                for (var j = 0; j < categAll.length; j++) {
-                    if (categExist[i] == categAll[j]) {
-                        $('#checkboxAllCateg input[value="' + categExist[i] + '"]').attr("checked", true)
-                        console.log("ok")
+            var categExist = $('#selectedCategories').val().split(',');
+
+            var allCategories = $("input:checkbox").map(function() {
+                return this.value;
+            }).toArray();
+
+            for (let i = 0; i < allCategories.length; i++) {
+                for (let j = 0; j < categExist.length; j++) {
+                    if (allCategories[i] == categExist[j]) {
+                        $(`#${allCategories[i]}-check`).attr("checked", true);
                     }
                 }
             }
-
-            console.log(categAll)
-            console.log(categExist)
-
+        });
+        //datepicker
+        let startpicker = flatpickr('#eventStart', {
+            altInput: false,
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            "locale": "ru",
+            onClose: function (selectedDates, dateStr, instance) {
+                endpicker.set('minDate', dateStr);
+            },
         });
 
-
+        let endpicker = flatpickr('#eventEnd', {
+            altInput: false,
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            "locale": "ru",
+            onClose: function (selectedDates, dateStr, instance) {
+                startpicker.set('maxDate', dateStr);
+            }
+        });
+        //checkbox
+        function getCheckboxData() {
+            let categoryIds = [];
+            let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            for (let i = 0; i < checkboxes.length; i++) {
+                categoryIds.push(checkboxes[i].value)
+            }
+            $('#selectedCategories').val(categoryIds);
+        }
+        //tickets
+        let totalTickets = $('#total-tickets');
+        let ticketsForDel = [];
         function AddTicket() {
             var name = $('#ticket_name');
             var desc = $('#ticket_desc');
@@ -221,18 +262,12 @@
             return tickets;
         }
 
-
         $('form').submit(function () {
             event.preventDefault();
+            getCheckboxData()
             getTicketsData();
             //ticketLimit
             $('#TicketLimit').val(totalTickets.text());
-            // categories
-            var categories = [];
-            $('#checkboxAllCateg input:checked').each(function () {
-                categories.push($(this).attr('value'));
-            })
-            $('#Categories').val(categories);
             // tickets
             $('#Tickets').val(`[${getTicketsData()}]`);
             console.log(getTicketsData());

@@ -193,12 +193,13 @@ namespace LetsGo.UI.Controllers
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             var userRoles = await _userManager.GetRolesAsync(user);
-            if (result.Succeeded && userRoles.Contains("admin"))
-            {
-                return RedirectToAction("EmailConfirmForAdmin", "Account", new { email = user.Email});
-            }
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+            {
+                if (userRoles.Contains("admin"))
+                    return RedirectToAction("EmailConfirmForAdmin", "Account", new { email = user.Email });
+                else
+                    return RedirectToAction("Index", "Home");
+            }
             return View("Error");
         }
 

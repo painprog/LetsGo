@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Globalization;
+using Microsoft.Extensions.Options;
 
 namespace LetsGo.UI
 {
@@ -55,6 +56,14 @@ namespace LetsGo.UI
             services.AddSingleton(sp => ApplicationDbContextFactory);
 
             services.AddMemoryCache();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("ru"), new CultureInfo("ky") };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "ru", uiCulture: "ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -68,19 +77,11 @@ namespace LetsGo.UI
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            var supportedCultures = new[]
-            {
-                new CultureInfo("ru"),
-                new CultureInfo("en"),
-                new CultureInfo("ky")
-            }; 
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("ru"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
-            });
-
+            //var supportedCultures = new[] { "en", "ru", "ky" };
+            //var localizationOptions = new RequestLocalizationOptions().AddSupportedCultures(supportedCultures).AddSupportedUICultures(supportedCultures).SetDefaultCulture(supportedCultures[0]);
+            //app.UseRequestLocalization(localizationOptions);
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

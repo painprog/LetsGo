@@ -172,7 +172,7 @@
     </div>
 
     <footer class="footer">
-        <div class="row footer-container">
+        <div class="row footer-container mx-auto">
             <div class="col-lg-3 footer-link-news">
                 <div class="footer-link-title">новости</div>
                 <div class="footer-link">Ежедневное издание «Сова»</div>
@@ -181,21 +181,22 @@
                 <div class="footer-link-title">мобильное приложение</div>
                 <div class="footer-link"><span class="apple-ic"><i class="bi bi-apple"></i></span> App Store</div>
             </div>
-            <div class="col-lg-3 footer-link-cards">
+            <div class="col-lg-2 footer-link-cards">
                 <div class="footer-link-title">мы принимаем</div>
                 <div class="footer-link">
                     <span class="bank-card"><i class="fab fa-cc-visa"></i></span>
                 </div>
             </div>
-            <div class="col-md-3 footer-address">
+            <div class="col-lg-2 footer-link">
+                @await Html.PartialAsync("_SelectLanguagePartial")
+            </div>
+            <div class="footer-address">
                 <p>
-                    © 2021 ООО «МДТЗК»<br>
-                    ул. 2-ая Брестская, д.43, Москва, 123056<br>
-                    Телефон:  <span class="text-white">8-495-134-77-77</span><br>
-                    <span class="text-white">Форма для обратной связи</span>
+                    © 2021 ООО «МДТЗК» ул. 2-ая Брестская, д.43, Москва, 123056 Телефон:  <span class="text-white">8-495-134-77-77</span> <span class="text-white">Форма для обратной связи</span>
                 </p>
             </div>
         </div>
+        <br />
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/btnloadmore.js"></script>
@@ -223,18 +224,18 @@
             $('.dropdown-toggle', this).trigger('click');
         });
 
-        $(document).scroll(function () {
-            if (window.scrollY > screen.height) {
-                $('.search').show();
-                $('.navbar').addClass("nav-end");
-                $('.navbar').removeClass("nav-start");
-            }
-            else {
-                $('.search').hide();
-                $('.navbar').addClass("nav-start");
-                $('.navbar').removeClass('nav-end');
-            }
-        });
+        //$(document).scroll(function () {
+        //    if (window.scrollY > screen.height) {
+        //        $('.search').show();
+        //        $('.navbar').addClass("nav-end");
+        //        $('.navbar').removeClass("nav-start");
+        //    }
+        //    else {
+        //        $('.search').hide();
+        //        $('.navbar').addClass("nav-start");
+        //        $('.navbar').removeClass('nav-end');
+        //    }
+        //});
 
         $('#category-link').on("click", function () {
             $('body').html(`

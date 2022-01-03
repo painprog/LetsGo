@@ -77,9 +77,6 @@ namespace LetsGo.UI
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            //var supportedCultures = new[] { "en", "ru", "ky" };
-            //var localizationOptions = new RequestLocalizationOptions().AddSupportedCultures(supportedCultures).AddSupportedUICultures(supportedCultures).SetDefaultCulture(supportedCultures[0]);
-            //app.UseRequestLocalization(localizationOptions);
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
             app.UseHttpsRedirection();

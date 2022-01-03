@@ -31,12 +31,12 @@
         </div>
         <div class="form-group">
             <label asp-for="EventStart"></label><br />
-            <input asp-for="EventStart" type="text" class="form-control input-field" id="eventStart" value="@Model.EventStart.ToString("yyyy-MM-dd H:mm")"/>
+            <input asp-for="EventStart" type="text" class="form-control input-field" id="eventStart" value="@Model.EventStart.ToString("yyyy-MM-dd H:mm")" />
             <span asp-validation-for="EventStart" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="EventEnd"></label><br />
-            <input asp-for="EventEnd" type="text" class="form-control input-field" id="eventEnd" value="@Model.EventEnd.ToString("yyyy-MM-dd H:mm")"/>
+            <input asp-for="EventEnd" type="text" class="form-control input-field" id="eventEnd" value="@Model.EventEnd.ToString("yyyy-MM-dd H:mm")" />
             <span asp-validation-for="EventEnd" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -52,13 +52,13 @@
         </div>
         <div class="form-group" id="category-checkboxes">
             <label>Категории</label><br>
-            <input asp-for="SelectedCategoryIds" id="selectedCategories" hidden/>
+            <input asp-for="SelectedCategoryIds" id="selectedCategories" hidden />
             @for (int i = 0; i < Model.ParentCategories.Count; i++)
             {
                 <div class="form-check" id="@Model.ParentCategories[i].Id-div">
                     <input class="form-check-input" type="checkbox" id="@Model.ParentCategories[i].Id-check" value="@Model.ParentCategories[i].Id">
                     <label class="form-check-label" for="@Model.ParentCategories[i].Id-check" id="@Model.ParentCategories[i].Id-label">
-                       @Model.ParentCategories[i].Name
+                        @Model.ParentCategories[i].Name
                     </label>
                 </div>
                 <div class="ml-4" id="childCategories-@Model.ParentCategories[i].Id">
@@ -154,14 +154,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
-    <script>
+    <script charset="windows-1251" type="text/javascript" src="~/js/datepicker_searchbox_plugins.js"></script>    
+<script>
         $(document).ready(function () {
-            $('#locations').select2({
-                placeholder: "Выберите место проведения",
-                allowClear: true,
-                theme: "bootstrap-5"
-            });
-
             var categExist = $('#selectedCategories').val().split(',');
 
             var allCategories = $("input:checkbox").map(function() {
@@ -174,28 +169,6 @@
                         $(`#${allCategories[i]}-check`).attr("checked", true);
                     }
                 }
-            }
-        });
-        //datepicker
-        let startpicker = flatpickr('#eventStart', {
-            altInput: false,
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: "today",
-            "locale": "ru",
-            onClose: function (selectedDates, dateStr, instance) {
-                endpicker.set('minDate', dateStr);
-            },
-        });
-
-        let endpicker = flatpickr('#eventEnd', {
-            altInput: false,
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: "today",
-            "locale": "ru",
-            onClose: function (selectedDates, dateStr, instance) {
-                startpicker.set('maxDate', dateStr);
             }
         });
         //checkbox

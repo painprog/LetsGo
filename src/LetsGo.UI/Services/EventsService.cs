@@ -39,16 +39,15 @@ namespace LetsGo.UI.Services
             else pathImage = "/images/gradient.jpeg";
 
             string categoriesJson = String.Empty;
-
-            string[] categoryIds = eventView.SelectedCategoryIds.Split(',');
             
-            if (categoryIds == null)
+            if (eventView.SelectedCategoryIds == null)
             {
                 var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
                 categoriesJson = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {
+                string[] categoryIds = eventView.SelectedCategoryIds.Split(',');
                 List<EventCategory> categories = new List<EventCategory>();
                 foreach(string id in categoryIds)
                 {
@@ -192,17 +191,16 @@ namespace LetsGo.UI.Services
                 using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + filename), FileMode.Create))
                     await model.File.CopyToAsync(fileStream);
                 @event.PosterImage = filename;
-            }
+            }            
 
-            string[] categoryIds = model.SelectedCategoryIds == null ? null : model.SelectedCategoryIds.Split(',');
-
-            if (categoryIds == null)
+            if (model.SelectedCategoryIds == null)
             {
                 var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
                 @event.Categories = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {
+                string[] categoryIds = model.SelectedCategoryIds.Split(',');
                 List<EventCategory> categories = new List<EventCategory>();
                 foreach (string id in categoryIds)
                 {

@@ -121,7 +121,7 @@ namespace LetsGo.UI.Services
             return ticketTypes;
         }
 
-        public async Task DeleteEventTicketTypes(string[] IdsForDelete)
+        public async Task DeleteEventTicketTypes(int[] IdsForDelete)
         {
             foreach (var id in IdsForDelete)
             {
@@ -160,7 +160,7 @@ namespace LetsGo.UI.Services
                 Status = @event.Status,
                 //CategoriesList = CategoriesList,
                 Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,  // change
-                TicketsExist = EventTicketTypes(@event.Id).Result
+                TicketsExist = EventTicketTypes(@event.Id)
         };
             return editEvent;
         }
@@ -212,20 +212,6 @@ namespace LetsGo.UI.Services
             return @event;
         }
 
-        public async Task<Event> GetEvent(int id)
-        {
-            Event Event = null;
-            if (!cache.TryGetValue(id, out Event))
-            {
-                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
-                if (Event != null)
-                {
-                    cache.Set(Event.Id, Event,
-                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-                }
-            }
-            return Event;
-        }
 
         public async Task<List<Event>> GetEvents(int userId)
         {
@@ -310,12 +296,12 @@ namespace LetsGo.UI.Services
             return events;
         }
 
-        public async Task<Event> GetEvent(string id)
+        public async Task<Event> GetEvent(int id)
         {
             Event Event = null;
             if (!cache.TryGetValue(id, out Event))
             {
-                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id.ToString() == id);
+                Event = await _goContext.Events.Include(e => e.Location).FirstOrDefaultAsync(p => p.Id == id);
                 if (Event != null)
                 {
                     cache.Set(Event.Id, Event,
@@ -325,12 +311,12 @@ namespace LetsGo.UI.Services
             return Event;
         }
 
-        public async Task<EventTicketType> GetEventTicketType(string id)
+        public async Task<EventTicketType> GetEventTicketType(int id)
         {
             EventTicketType Event = null;
             if (!cache.TryGetValue(id, out Event))
             {
-                Event = await _goContext.EventTicketTypes.FirstOrDefaultAsync(p => p.Id.ToString() == id);
+                Event = await _goContext.EventTicketTypes.FirstOrDefaultAsync(p => p.Id == id);
                 if (Event != null)
                 {
                     cache.Set(Event.Id, Event,
@@ -340,17 +326,17 @@ namespace LetsGo.UI.Services
             return Event;
         }
 
-        public async Task<List<EventTicketType>> EventTicketTypes(int eventId)
+        public List<EventTicketType> EventTicketTypes(int eventId)
         {
             return _goContext.EventTicketTypes.Where(e => e.EventId == eventId).ToList();
         }
 
-        public async Task<Location> GetLocation(string id)
+        public async Task<Location> GetLocation(int id)
         {
             Location location = null;
             if (!cache.TryGetValue(id, out location))
             {
-                location = await _goContext.Locations.FirstOrDefaultAsync(l => l.Id.ToString() == id);
+                location = await _goContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
                 if (location != null)
                 {
                     cache.Set(location.Id, location,

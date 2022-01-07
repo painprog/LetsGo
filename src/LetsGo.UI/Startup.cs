@@ -53,7 +53,7 @@ namespace LetsGo.UI
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton(sp => ApplicationDbContextFactory);
-
+            services.AddControllers();
             services.AddMemoryCache();
         }
 
@@ -94,6 +94,7 @@ namespace LetsGo.UI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
 
             serviceProvider.InitializeUsersSeedData();

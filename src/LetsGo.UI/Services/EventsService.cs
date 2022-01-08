@@ -39,14 +39,21 @@ namespace LetsGo.UI.Services
             else pathImage = "/images/gradient.jpeg";
 
             string categoriesJson = String.Empty;
-            if (eventView.Categories.Where(x => x.Selected).Count() == 0)
+            
+            if (eventView.SelectedCategoryIds == null)
             {
                 var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
                 categoriesJson = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {
-                var categories = eventView.Categories.Where(x => x.Selected).Select(x => new { Id = x.Value, Name = x.Text });
+                string[] categoryIds = eventView.SelectedCategoryIds.Split(',');
+                List<EventCategory> categories = new List<EventCategory>();
+                foreach(string id in categoryIds)
+                {
+                    categories.Add(await _goContext.EventCategories
+                        .FirstOrDefaultAsync(c => c.Id == Convert.ToInt32(id)));                    
+                }
                 categoriesJson = JsonConvert.SerializeObject(categories);
             }
 
@@ -135,13 +142,19 @@ namespace LetsGo.UI.Services
         {
             Event @event = GetEvent(id).Result;
 
-            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }).ToList();
-            var other = categories.FirstOrDefault(l => l.Text == "Другое");
-            categories.Remove(other);
-            categories.Add(other);
-            foreach (var item in JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories))
+            var parentCategories = _goContext.EventCategories
+                .Where(c => c.HasParent == false)
+                .OrderBy(c => c.Id).ToList();
+
+            var childCategories = _goContext.EventCategories
+                .Where(c => c.HasParent == true)
+                .OrderBy(c => c.ParentId).ToList();
+
+            var selectedCategories = JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories);
+            List<string> scIds = new List<string>();
+            foreach(var category in selectedCategories)
             {
-                categories.FirstOrDefault(c => c.Text == item.Name).Selected = true;
+                scIds.Add(category.Id.ToString());
             }
 
             EditEventViewModel editEvent = new EditEventViewModel
@@ -153,12 +166,13 @@ namespace LetsGo.UI.Services
                 EventStart = @event.EventStart,
                 EventEnd = @event.EventEnd,
                 PosterImage = @event.PosterImage,
-                EventCategories = categories,
+                ParentCategories = parentCategories,
+                ChildCategories = childCategories,
+                SelectedCategoryIds = string.Join(',', scIds),
                 AgeLimit = @event.AgeLimit,
                 TicketLimit = @event.TicketLimit,
                 StatusId = @event.StatusId,
                 Status = @event.Status,
-                //CategoriesList = CategoriesList,
                 Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,  // change
                 TicketsExist = EventTicketTypes(@event.Id)
         };
@@ -171,29 +185,29 @@ namespace LetsGo.UI.Services
 
             if (model.File != null)
             {
-                System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + @event.PosterImage));
+                File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + @event.PosterImage));
                 string filename = GenerateCode() + Path.GetExtension(model.File.FileName);
                 filename = "/events/" + filename;
                 using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + filename), FileMode.Create))
                     await model.File.CopyToAsync(fileStream);
                 @event.PosterImage = filename;
-            }
+            }            
 
-            var categories = model.EventCategories.Where(x => x.Selected).Select(x => new
-            {
-                Id = x.Value,
-                Name = x.Text
-            });
-            if (categories.Count() == 0)
+            if (model.SelectedCategoryIds == null)
             {
                 var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
-                var categoriesJson = JsonConvert.SerializeObject(new List<EventCategory> { category });
-                @event.Categories = categoriesJson;
+                @event.Categories = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {
-                var categoriesJson = JsonConvert.SerializeObject(categories);
-                @event.Categories = categoriesJson;
+                string[] categoryIds = model.SelectedCategoryIds.Split(',');
+                List<EventCategory> categories = new List<EventCategory>();
+                foreach (string id in categoryIds)
+                {
+                    categories.Add(await _goContext.EventCategories
+                        .FirstOrDefaultAsync(c => c.Id == Convert.ToInt32(id)));
+                }
+                @event.Categories = JsonConvert.SerializeObject(categories);
             }
 
             @event.Name = model.Name;
@@ -219,23 +233,6 @@ namespace LetsGo.UI.Services
             Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
             return Events;
         }
-
-        //public async Task<List<EventCategory>> GetEventCategories(string jsonEventCategories)
-        //{
-        //    string eventCategories = System.Text.Json.JsonSerializer.Deserialize<string>(jsonEventCategories);
-        //    List<string> CategoriesList = new List<string>();
-        //    if (eventCategories.Contains(','))
-        //    {
-        //        string[] catesgInArray = eventCategories.Split(new char[] { ',' });
-        //        CategoriesList.AddRange(catesgInArray);
-        //    }
-        //    else
-        //        CategoriesList.Add(eventCategories);
-        //    List<EventCategory> Categories = new List<EventCategory>();
-        //    foreach (var item in CategoriesList)
-        //        Categories.Add(await _goContext.EventCategories.FirstOrDefaultAsync(e => e.Name == item));
-        //    return Categories;
-        //}
 
         public async Task<bool> ChangeStatus(string status, int eventId, string cause)
         {

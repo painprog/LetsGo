@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using IronBarCode;
@@ -7,6 +8,7 @@ using LetsGo.DAL;
 using LetsGo.UI.Services;
 using LetsGo.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 
 namespace LetsGo.UI.Controllers
 {
@@ -47,12 +49,11 @@ namespace LetsGo.UI.Controllers
                             Scanned = false
                         };
                         _goContext.PurchasedTickets.Add(ticket);
-                        GeneratedBarcode QR = QRCodeWriter.CreateQrCode("https://localhost:44377/Home/Index/" + ticket.Id, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
                         EmailService emailService = new EmailService();
                         await emailService.Send(
                             model.Email,
                             "Билет",
-                            message + $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br/> <br />покажите его на входе"
+                            message + $"Ваш QR code: <br /> <img width=\"100\" height=\"100\" src=\"https://localhost:44377/Ticket/GetQR?{ticket.Id}\"><img/> <br/> <br />покажите его на входе"
                         );
                     }
                 }
@@ -62,6 +63,20 @@ namespace LetsGo.UI.Controllers
             }
 
             return Json(new {success = false});
+        }
+        public IActionResult GetQR(int id)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            byte[] data = default(byte[]);
+            using (System.IO.MemoryStream sampleStream = new System.IO.MemoryStream())
+            {
+                qrCodeImage.Save(sampleStream, System.Drawing.Imaging.ImageFormat.Bmp);
+                data = sampleStream.ToArray();
+            }
+            return File(data, "image/jpeg");
         }
     }
 }

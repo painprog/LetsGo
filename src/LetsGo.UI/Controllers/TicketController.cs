@@ -27,11 +27,8 @@ namespace LetsGo.UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<PurchasedTicket> purchasedTickets = new List<PurchasedTicket>();
                 Event @event = _eventService.GetEvent(model.EventId).Result;
-                string message = $"" +
-                    $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
-                    $"Вы совершили покупки билетов на {@event.Name} с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
-                    $"</p>";
 
                 foreach (var item in model.EventTickets)
                 {
@@ -54,19 +51,18 @@ namespace LetsGo.UI.Controllers
                         };
                         ticket.QR = "https://localhost:44377/api/ticketcheck/details/" + ticket.TicketIdentifier;
                         _context.PurchasedTickets.Add(ticket);
-                        
-                        GeneratedBarcode QR = QRCodeWriter.CreateQrCode(ticket.QR, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
-                        await EmailService.Send(
-                            model.Email,
-                            "Билет",
-                            message + $"Тип блиета: {type.Name} <br />Ваш QR code: <br /> {QR.ToHtmlTag()} <br /> <br />Покажите его на входе"
-                        );
+                        purchasedTickets.Add(ticket);
                     }
                 }
-
+                string message = $"" +
+                    $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
+                    $"Вы совершили покупки билетов на \"{@event.Name}\" с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
+                    $"</p>";
 
                 _context.Events.Update(@event);
                 await _context.SaveChangesAsync();
+                await EmailService.SendTickets(model.Email, "Билет", message, purchasedTickets);
+
                 return Json(new {success = true, redirectToUrl = Url.Action("Index", "Home")});
             }
 

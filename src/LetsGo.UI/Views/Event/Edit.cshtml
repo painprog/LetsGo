@@ -156,6 +156,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
     <script charset="windows-1251" type="text/javascript" src="~/js/datepicker_searchbox_plugins.js"></script>    
 <script>
+    const eventId = $('#Id').val();
         $(document).ready(function () {
             var categExist = $('#selectedCategories').val().split(',');
 
@@ -194,8 +195,8 @@
 
                 $('.tickets-table tbody').append(
                     '<tr class="ticket">' +
-                    '<td hidden><input type="hidden" class="ticket_id"/></td>' +
-                    '<td hidden><input type="hidden" class="event_id"/></td>' +
+                    '<td hidden><input type="hidden" class="event_id" value="0" /></td>' +
+                    '<td hidden><input type="hidden" class="ticket_id" value="' + eventId + '" /></td>' +
                     `<td><input class="ticket_name form-control" value="${name.val()}"/></td>` +
                     `<td><input class="ticket_description form-control" value="${desc.val()}"/></td>` +
                     `<td><input class="ticket_count form-control" value="${count.val()}" type="number"/></td>` +
@@ -222,14 +223,13 @@
             let extickets = document.getElementsByClassName('ticket');
             let tickets = [];
             for (let i = 0; i < extickets.length; i++) {
-                var ticketId = ticketsData[0 + 7 * i].value;
                 tickets.push(
-                    '{"Id":' + (ticketId != "" ? '"' + ticketId + '"': null) + ',' +
+                    '{"Id":' + ticketsData[0 + 7 * i].value + ',' +
                     '"Name":"' + ticketsData[2 + 7 * i].value + '",' +
                     '"Description":"' + ticketsData[3 + 7 * i].value + '",' +
                     '"Count":' + ticketsData[4 + 7 * i].value + ',' +
                     '"Price":' + ticketsData[5 + 7 * i].value + ',' +
-                    '"EventId":"' + ticketsData[1 + 7 * i].value + '"}'
+                    '"EventId":' + ticketsData[1 + 7 * i].value + '}'
                 );
             }
             return tickets;

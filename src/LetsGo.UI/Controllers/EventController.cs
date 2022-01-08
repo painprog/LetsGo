@@ -81,7 +81,7 @@ namespace LetsGo.UI.Controllers
                 List<EventTicketType> ticketTypes = JsonConvert.DeserializeObject<List<EventTicketType>>(viewModel.Tickets);
                 await _Service.UpdateEventTicketTypes(viewModel.Id, ticketTypes);
                 Event @event = await _Service.EditEvent(viewModel);
-                string[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',');
+                int[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',').Select(i => int.Parse(i)).ToArray();
                 if (deletedIds != null)
                 {
                     await _Service.DeleteEventTicketTypes(deletedIds);

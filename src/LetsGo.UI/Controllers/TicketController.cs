@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IronBarCode;
@@ -12,10 +13,13 @@ namespace LetsGo.UI.Controllers
 {
     public class TicketController : Controller
     {
-        private readonly ApplicationDbContext _goContext;
-        public TicketController(ApplicationDbContext goContext)
+        private readonly ApplicationDbContext _context;
+        private readonly EventsService _eventService;
+
+        public TicketController(ApplicationDbContext goContext, EventsService eventsService)
         {
-            _goContext = goContext;
+            _context = goContext;
+            _eventService = eventsService;
         }
 
         [HttpPost]
@@ -23,14 +27,12 @@ namespace LetsGo.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Event @event = _goContext.Events.FirstOrDefault(e => e.Id == model.EventId);
+                List<PurchasedTicket> purchasedTickets = new List<PurchasedTicket>();
+                Event @event = _eventService.GetEvent(model.EventId).Result;
+
                 foreach (var item in model.EventTickets)
                 {
-                    var type = _goContext.EventTicketTypes.FirstOrDefault(t => t.Id == item.Id);
-                    string message = $"" +
-                        $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
-                        $"Вы совершили покупки билетов на {@event.Name} с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
-                        $"</p>";
+                    var type = _eventService.GetEventTicketType(item.Id).Result;
 
                     type.Sold += item.Count;
                     @event.Sold += item.Count;
@@ -38,25 +40,29 @@ namespace LetsGo.UI.Controllers
                     {
                         var ticket = new PurchasedTicket()
                         {
+                            TicketIdentifier = Guid.NewGuid().ToString(),
                             CustomerEmail = model.Email,
                             CustomerName = model.Name,
                             CustomerPhone = model.PhoneNumber,
-                            EventTicketTypeId = item.Id,
-                            //Id = Guid.NewGuid().ToString(),
+                            EventTicketType = type,
+                            EventTicketTypeId = type.Id,
                             PurchaseDate = DateTime.Now,
                             Scanned = false
                         };
-                        _goContext.PurchasedTickets.Add(ticket);
-                        GeneratedBarcode QR = QRCodeWriter.CreateQrCode("https://localhost:44377/Home/Index/" + ticket.Id, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
-                        await EmailService.Send(
-                            model.Email,
-                            "Билет",
-                            message + $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br/> <br />покажите его на входе"
-                        );
+                        ticket.QR = "https://localhost:44377/api/ticketcheck/details/" + ticket.TicketIdentifier;
+                        _context.PurchasedTickets.Add(ticket);
+                        purchasedTickets.Add(ticket);
                     }
                 }
-                _goContext.Events.Update(@event);
-                await _goContext.SaveChangesAsync();
+                string message = $"" +
+                    $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
+                    $"Вы совершили покупки билетов на \"{@event.Name}\" с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
+                    $"</p>";
+
+                _context.Events.Update(@event);
+                await _context.SaveChangesAsync();
+                await EmailService.SendTickets(model.Email, "Билет", message, purchasedTickets);
+
                 return Json(new {success = true, redirectToUrl = Url.Action("Index", "Home")});
             }
 

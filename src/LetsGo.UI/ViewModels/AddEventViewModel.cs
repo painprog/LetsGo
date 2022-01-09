@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using LetsGo.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,8 +30,9 @@ namespace LetsGo.UI.ViewModels
         [Required(ErrorMessage = "Поле конца времени обязательна для заполнения")]
         [Display(Name = "Время конца")]
         public DateTime? EventEnd { get; set; }
-
-        public IList<SelectListItem> Categories { get; set; }
+        public List<EventCategory> ParentCategories { get; set; }
+        public List<EventCategory> ChildCategories { get; set; }
+        public string SelectedCategoryIds{ get; set; }
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]
@@ -45,20 +47,6 @@ namespace LetsGo.UI.ViewModels
         public int OrganizerId { get; set; }
 
         public string Tickets { get; set; }
-        //public List<EventTicketType> Tickets { get; set; }
-
-        //[Required(ErrorMessage = "Название типа билета обязательна")]
-        //public string TicketTypeName { get; set; }
-
-        //[Required(ErrorMessage = "Количество типа билета обязательна")]
-        //[Range(1, 1000000, ErrorMessage = "Недопустимое значение количества билетов")]
-        //public int TicketTypeCount { get; set; }
-
-        //[Required(ErrorMessage = "Цена типа билета обязательна")]
-        //[Range(0, 100000000, ErrorMessage = "Недопустимое значение цены билета")]
-        //public int TicketTypePrice { get; set; }
-
-
         public IFormFile File { get; set; }
     }
 }

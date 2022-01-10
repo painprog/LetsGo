@@ -17,6 +17,33 @@
     <None Remove="Enums\**" />
     <None Remove="wwwroot\avatars\**" />
     <None Remove="wwwroot\posters\**" />
+    <EmbeddedResource Update="Resources\Views\Category\Category.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Category.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Category\Category.ru.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.ru.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Category\Category.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Category.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Category\Category.en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.en.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Category\Category.ky.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Category.ky.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Category\Category.ky.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.ky.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +66,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\Views\Event" />
+    <Folder Include="Resources\Views\Shared" />
     <Folder Include="Views\Cabinet\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

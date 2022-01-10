@@ -44,6 +44,60 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Category.ky.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Add.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Add.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Add.ru.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Add.ru.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Add.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Add.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Add.en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Add.en.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Add.ky.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Add.ky.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Add.ky.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Add.ky.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Afisha.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Afisha.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Afisha.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Afisha.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Details.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Details.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Details.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Details.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Edit.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Edit.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Edit.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Edit.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -66,7 +120,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Views\Event" />
     <Folder Include="Resources\Views\Shared" />
     <Folder Include="Views\Cabinet\" />
     <Folder Include="wwwroot\images\" />

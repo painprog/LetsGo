@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AddNewEvent" xml:space="preserve">
+        <value>Добавить новое событие</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Название</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+        <value>Локация</value>
+    </data>
+    <data name="Categories" xml:space="preserve">
+        <value>Категории</value>
+    </data>
+    <data name="TicketDescription" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="TicketPrice" xml:space="preserve">
+        <value>Цена</value>
+    </data>
+    <data name="TotalTicket" xml:space="preserve">
+        <value>Общее число билетов</value>
+    </data>
+    <data name="Ticket" xml:space="preserve">
+        <value>Билеты</value>
+    </data>
+    <data name="TicketName" xml:space="preserve">
+        <value>Название</value>
+    </data>
+    <data name="EventStart" xml:space="preserve">
+        <value>Время начала</value>
+    </data>
+    <data name="EventEnd" xml:space="preserve">
+        <value>Время конца</value>
+    </data>
+    <data name="File" xml:space="preserve">
+        <value>Загрузка аватарки</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+        <value>Добавить</value>
+    </data>
+    <data name="AgeLimit" xml:space="preserve">
+        <value>Возрастное ограничение</value>
+    </data>
+    <data name="Quantity" xml:space="preserve">
+        <value>Количество</value>
+    </data>
+    <data name="AddNewTicket" xml:space="preserve">
+        <value>Добавление нового билета</value>
+    </data>
+    <data name="AddTicket" xml:space="preserve">
+        <value>Добавить билет</value>
+    </data>
+</root>

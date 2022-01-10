@@ -1,0 +1,95 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AboutEvent" xml:space="preserve">
+        <value>Иш-чара жөнүндө</value>
+    </data>
+    <data name="AboutTicketBox" xml:space="preserve">
+        <value>TicketBox билеттерди сатуу боюнча расмий келишими бар. Бардык билеттердин баалары расмий.</value>
+    </data>
+    <data name="Address" xml:space="preserve">
+        <value>Дарек</value>
+    </data>
+    <data name="Basket" xml:space="preserve">
+        <value>Себет</value>
+    </data>
+    <data name="Count" xml:space="preserve">
+        <value>Саны</value>
+    </data>
+    <data name="DoNotDelay " xml:space="preserve">
+        <value>Сатып алууну кечиктирбеңиз</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Почта</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+        <value>Өткөрүү орду</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Аты</value>
+    </data>
+    <data name="DetailedPage" xml:space="preserve">
+        <value>Деталдаштырылган бет </value>
+    </data>
+    <data name="NoServiceFees" xml:space="preserve">
+        <value>Кызмат акысы жок!</value>
+    </data>
+    <data name="Order" xml:space="preserve">
+        <value>Текшерүү</value>
+    </data>
+    <data name="Other" xml:space="preserve">
+        <value>Башка сессиялар</value>
+    </data>
+    <data name="Pay" xml:space="preserve">
+        <value>Оплатить</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Телефон номуру</value>
+    </data>
+    <data name="Photo" xml:space="preserve">
+        <value>Сүрөттөр</value>
+    </data>
+    <data name="Please" xml:space="preserve">
+        <value>Электрондук почта дарегиңизди киргизүүдө этият болуңуз!</value>
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value>Баасы</value>
+    </data>
+    <data name="PriceIncrease" xml:space="preserve">
+        <value>Иш-чаранын даталарына жакындаганда билеттердин баасы көтөрүлүп, популярдуу билеттердин категориялары түгөнүп калышы мүмкүн.</value>
+    </data>
+    <data name="Select" xml:space="preserve">
+        <value>Билеттерди тандаңыз</value>
+    </data>
+    <data name="Tickets" xml:space="preserve">
+        <value>Билеттер</value>
+    </data>
+    <data name="SimpleMusic" xml:space="preserve">
+        <value>Мероприятияга Интерстеллар. Simple Music Ensemble электрондук билеттерге эч кандай кызмат акылары жок.</value>
+    </data>
+    <data name="TicketsSentToEmail" xml:space="preserve">
+        <value>Билеттер почтаңызга жөнөтүлдү!</value>
+    </data>
+    <data name="TicketSum" xml:space="preserve">
+        <value>Билеттер баалуу</value>
+    </data>
+    <data name="TotalSum" xml:space="preserve">
+        <value>Жалпы төлөнүүчү -</value>
+    </data>
+    <data name="WhereAndToWhom" xml:space="preserve">
+        <value>Билеттер кайда жана кимге жөнөтүлүшү керек?</value>
+    </data>
+    <data name="Why" xml:space="preserve">
+        <value>Эмне үчүн TicketBox?</value>
+    </data>
+</root>

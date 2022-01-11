@@ -22,9 +22,9 @@ namespace LetsGo.UI.Controllers
 
         //GET api/ticketcheck/status/{id}
         [HttpGet("status/{id}")]
-        public async Task<ActionResult<PurchasedTicket>> CheckStatus(int id)
+        public async Task<ActionResult<PurchasedTicket>> CheckStatus(string id)
         {
-            PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.Id == id);
+            PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.TicketIdentifier == id);
             if (purchasedTicket == null)
                 return NotFound();
             return new JsonResult(purchasedTicket.Scanned);
@@ -32,9 +32,9 @@ namespace LetsGo.UI.Controllers
 
         //GET api/ticketcheck/skip/{id}
         [HttpGet("skip/{id}")]
-        public async Task<ActionResult<PurchasedTicket>> Skip(int id)
+        public async Task<ActionResult<PurchasedTicket>> Skip(string id)
         {
-            PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.Id == id);
+            PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.TicketIdentifier == id);
             if (purchasedTicket == null)
                 return NotFound();
 
@@ -46,9 +46,9 @@ namespace LetsGo.UI.Controllers
 
         //GET api/ticketcheck/rollback/{id}
         [HttpGet("rollback/{id}")]
-        public async Task<ActionResult<PurchasedTicket>> RollBack(int id)
+        public async Task<ActionResult<PurchasedTicket>> RollBack(string id)
         {
-            PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.Id == id);
+            PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.TicketIdentifier == id);
             if (purchasedTicket == null)
                 return NotFound();
 

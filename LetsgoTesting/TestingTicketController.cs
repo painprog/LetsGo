@@ -58,9 +58,9 @@ namespace LetsgoTesting
 
                 _context.Update(@event);
                 await _context.SaveChangesAsync();
-                await EmailService.SendTickets(model.Email, "Билет", message, purchasedTickets);
+               // await EmailService.SendTickets(model.Email, "Билет", message, purchasedTickets);
 
-                return Json(new { success = true, redirectToUrl = Url.Action("Index", "Home") });
+                return Json(new { success = true/*, redirectToUrl = Url.Action("Index", "Home")*/ });
             }
 
             return Json(new { success = false });

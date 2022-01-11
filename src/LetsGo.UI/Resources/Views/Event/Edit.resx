@@ -18,4 +18,55 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="EditEvent" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Location" xml:space="preserve">
+        <value />
+    </data>
+    <data name="EventStart" xml:space="preserve">
+        <value />
+    </data>
+    <data name="EventEnd" xml:space="preserve">
+        <value />
+    </data>
+    <data name="File" xml:space="preserve">
+        <value />
+    </data>
+    <data name="AgeLimit" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Categories" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Info" xml:space="preserve">
+        <value />
+    </data>
+    <data name="TotalTicket" xml:space="preserve">
+        <value />
+    </data>
+    <data name="TicketName" xml:space="preserve">
+        <value />
+    </data>
+    <data name="TicketDescription" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Quantity" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value />
+    </data>
+    <data name="AddNewTicket" xml:space="preserve">
+        <value />
+    </data>
+    <data name="EditAndSend" xml:space="preserve">
+        <value />
+    </data>
 </root>

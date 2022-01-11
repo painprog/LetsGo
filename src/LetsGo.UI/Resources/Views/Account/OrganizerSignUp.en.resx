@@ -42,4 +42,7 @@
     <data name="OrganizerRegister" xml:space="preserve">
         <value>Sign up Organizer</value>
     </data>
+    <data name="Account" xml:space="preserve">
+        <value>Already have an account?</value>
+    </data>
 </root>

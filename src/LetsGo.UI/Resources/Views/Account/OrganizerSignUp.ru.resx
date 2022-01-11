@@ -42,4 +42,7 @@
     <data name="Register" xml:space="preserve">
         <value>Зарегистрироваться</value>
     </data>
+    <data name="Account" xml:space="preserve">
+        <value>Уже есть аккаунт?</value>
+    </data>
 </root>

@@ -1,33 +1,35 @@
-﻿@model LetsGo.UI.ViewModels.LoginViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+@model LetsGo.UI.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = @_localizer["Login"];
 }
 
 <div class="entry-form">
-    <h1 class="text-center">Вход на сайт</h1>
+    <h1 class="text-center">@_localizer["Login"]</h1>
     <form asp-action="Login">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="LoginOrEmail" class="control-label"></label>
+            <label asp-for="LoginOrEmail" class="control-label">@_localizer["LoginOrEmail"]</label>
             <input asp-for="LoginOrEmail" class="form-control input-field mb-2" id="loginOrEmail"/>
             <span asp-validation-for="LoginOrEmail" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Password" class="control-label">Введите пароль</label>
+            <label asp-for="Password" class="control-label">@_localizer["Password"]</label>
             <input asp-for="Password" class="form-control input-field" id="password"/>
             <span class="password-icon"><i class="bi bi-eye-slash" id="togglePassword"></i></span>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div>
             <input asp-for="RememberMe" class="checkbox" />
-            <label asp-for="RememberMe"></label>
+            <label asp-for="RememberMe">@_localizer["RememberMe"]</label>
         </div>
         <div class="form-group text-center mt-3">
-            <input type="submit" value="Войти" class="btn btn-primary form-control btn-submit"/>
+            <input type="submit" value="@_localizer["SignIn"]" class="btn btn-primary form-control btn-submit"/>
         </div>
     </form>
-    <a id="forgotPassword" class="link" asp-controller="Account" asp-action="ForgotPassword">Забыли пароль?</a>
-    <a asp-controller="Account" asp-action="OrganizerSignUp" class="link">Зарегистрироваться как организатор</a>
+    <a id="forgotPassword" class="link" asp-controller="Account" asp-action="ForgotPassword">@_localizer["ForgotPassword"]</a>
+    <a asp-controller="Account" asp-action="OrganizerSignUp" class="link">@_localizer["OrganizerSignUp"]</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

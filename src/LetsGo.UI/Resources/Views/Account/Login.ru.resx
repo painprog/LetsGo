@@ -33,4 +33,10 @@
     <data name="OrganizerSignUp" xml:space="preserve">
         <value>Зарегистрироваться как организатор</value>
     </data>
+    <data name="RememberMe" xml:space="preserve">
+        <value>Запомнить меня</value>
+    </data>
+    <data name="LoginOrEmail" xml:space="preserve">
+        <value>Имя пользователя или почта</value>
+    </data>
 </root>

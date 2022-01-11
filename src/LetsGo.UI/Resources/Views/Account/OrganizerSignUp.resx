@@ -35,4 +35,7 @@
     <data name="Register" xml:space="preserve">
         <value />
     </data>
+    <data name="Account" xml:space="preserve">
+        <value />
+    </data>
 </root>

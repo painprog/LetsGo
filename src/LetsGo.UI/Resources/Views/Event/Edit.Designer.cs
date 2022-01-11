@@ -72,6 +72,15 @@ namespace LetsGo.UI.Resources.Views.Event {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string AddTicket {
+            get {
+                return ResourceManager.GetString("AddTicket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string AgeLimit {
             get {
                 return ResourceManager.GetString("AgeLimit", resourceCulture);

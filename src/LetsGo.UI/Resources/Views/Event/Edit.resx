@@ -69,4 +69,7 @@
     <data name="EditAndSend" xml:space="preserve">
         <value />
     </data>
+    <data name="AddTicket" xml:space="preserve">
+        <value />
+    </data>
 </root>

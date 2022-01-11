@@ -99,4 +99,7 @@
     <data name="AboutTicketBox" xml:space="preserve">
         <value />
     </data>
+    <data name="Ticket" xml:space="preserve">
+        <value />
+    </data>
 </root>

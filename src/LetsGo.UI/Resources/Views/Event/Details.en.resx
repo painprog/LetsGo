@@ -84,12 +84,15 @@
         <value>Tickets for the amount of</value>
     </data>
     <data name="TotalSum" xml:space="preserve">
-        <value>Total to be paid —</value>
+        <value>Total to be paid </value>
     </data>
     <data name="WhereAndToWhom" xml:space="preserve">
         <value>Where and to whom to send tickets?</value>
     </data>
     <data name="Why" xml:space="preserve">
         <value>Why TicketBox?</value>
+    </data>
+    <data name="Ticket" xml:space="preserve">
+        <value>Ticket</value>
     </data>
 </root>

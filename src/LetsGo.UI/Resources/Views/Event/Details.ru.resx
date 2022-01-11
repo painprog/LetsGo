@@ -87,9 +87,12 @@
         <value>У TicketBox заключен официальный договор на реализацию билетов. Все цены на билеты официальные.</value>
     </data>
     <data name="TotalSum" xml:space="preserve">
-        <value>Итого к оплате —</value>
+        <value>Итого к оплате</value>
     </data>
     <data name="Why" xml:space="preserve">
         <value>Почему TicketBox?</value>
+    </data>
+    <data name="Ticket" xml:space="preserve">
+        <value>Билет</value>
     </data>
 </root>

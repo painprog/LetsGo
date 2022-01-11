@@ -84,12 +84,15 @@
         <value>Билеттер баалуу</value>
     </data>
     <data name="TotalSum" xml:space="preserve">
-        <value>Жалпы төлөнүүчү -</value>
+        <value>Жалпы төлөнүүчү </value>
     </data>
     <data name="WhereAndToWhom" xml:space="preserve">
         <value>Билеттер кайда жана кимге жөнөтүлүшү керек?</value>
     </data>
     <data name="Why" xml:space="preserve">
         <value>Эмне үчүн TicketBox?</value>
+    </data>
+    <data name="Ticket" xml:space="preserve">
+        <value>Билет</value>
     </data>
 </root>

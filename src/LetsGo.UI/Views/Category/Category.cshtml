@@ -1,10 +1,11 @@
 ﻿@model LetsGo.UI.ViewModels.CategoryViewModel
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @{
     ViewData["Title"] = "Category Page";
 }
 <div class="events-page">
-    <h2>Афиша <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> Бишкека</h2>
+    <h2>@_localizer["Afisha"] <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> @_localizer["Bishkek"]</h2>
     <div class="events row">
         @foreach (var item in Model.Events)
         {
@@ -32,7 +33,7 @@
                                 </a>
                             </div>
                             <a href="#" class="card-price">
-                                БИЛЕТЫ ОТ @item.MinPrice KGS
+                                @_localizer["Ticket"] @item.MinPrice KGS
                             </a>
                         </div>
                     </div>

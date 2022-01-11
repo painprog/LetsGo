@@ -70,7 +70,7 @@ namespace LetsGo.UI.Resources.Views.Event {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить новое событие.
+        ///   Looks up a localized string similar to Добавление нового события.
         /// </summary>
         internal static string AddNewEvent {
             get {

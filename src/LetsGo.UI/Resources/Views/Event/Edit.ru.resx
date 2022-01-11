@@ -62,4 +62,7 @@
     <data name="TotalTicket" xml:space="preserve">
         <value>Общее число билетов</value>
     </data>
+    <data name="AddTicket" xml:space="preserve">
+        <value>Добавить билет</value>
+    </data>
 </root>

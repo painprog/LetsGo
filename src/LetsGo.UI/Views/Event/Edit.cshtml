@@ -1,6 +1,8 @@
 ﻿@model LetsGo.UI.ViewModels.EditEventViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @{
-    ViewBag.Title = "Редактирование события";
+    ViewBag.Title = _localizer["EditEvent"];
 }
 
 <div class="entry-form form-container">
@@ -9,17 +11,17 @@
         <div asp-validation-summary="All" class="text-danger"></div>
         <input type="hidden" asp-for="Id" value="@Model.Id" />
         <div class="form-group">
-            <label asp-for="Name"></label><br />
+            <label asp-for="Name">@_localizer["Name"]</label><br />
             <input asp-for="Name" class="form-control input-field" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Description"></label><br />
+            <label asp-for="Description">@_localizer["Description"]</label><br />
             <input asp-for="Description" class="form-control input-field" />
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Location"></label><br />
+            <label asp-for="Location">@_localizer["Location"]</label><br />
             <input asp-for="Location" class="form-control input-field" list='locations' />
             <datalist id='locations'>
                 <option selected>@Model.Location</option>
@@ -31,28 +33,28 @@
             <span asp-validation-for="Location" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="EventStart"></label><br />
+            <label asp-for="EventStart">@_localizer["EventStart"]</label><br />
             <input asp-for="EventStart" type="datetime-local" class="form-control input-field" />
             <span asp-validation-for="EventStart" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="EventEnd"></label><br />
+            <label asp-for="EventEnd">@_localizer["EventEnd"]</label><br />
             <input asp-for="EventEnd" type="datetime-local" class="form-control input-field" />
             <span asp-validation-for="EventEnd" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="File" class="control-label">Загрузка аватарки</label>
+            <label asp-for="File" class="control-label">@_localizer["File"]</label>
             <input asp-for="File" type="file" class="form-control-file" />
             <span asp-validation-for="File" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="AgeLimit"></label>
+            <label asp-for="AgeLimit">@_localizer["AgeLimit"]</label>
             <input asp-for="AgeLimit" type="number" min="0" max="18" value="@Model.AgeLimit" class="form-control input-field" />
             <span asp-validation-for="AgeLimit" class="text-danger"></span>
 
         </div>
         <div class="form-group">
-            <label>Категории</label>
+            <label>@_localizer["Categories"]</label>
             @for (int i = 0; i < Model.EventCategories.Count; i++)
             {
             <div class="form-check">
@@ -66,16 +68,16 @@
             }
         </div>
         <div class="mt-4">
-            <label>Информация о билетах</label>
+            <label>@_localizer["Info"]</label>
             <div>
-                <p>Общее число билетов: <b><span id="total-tickets">@Model.TicketLimit</span></b></p>
+                <p>@_localizer["TotalTicket"]: <b><span id="total-tickets">@Model.TicketLimit</span></b></p>
                 <table class="table tickets-table text-center mt-3">
                     <thead>
                         <tr>
-                            <th style="width: 30%;">Название</th>
-                            <th style="width: 30%;">Описание</th>
-                            <th style="width: 15%;">Количество</th>
-                            <th style="width: 15%;">Цена</th>
+                            <th style="width: 30%;">@_localizer["Name"]</th>
+                            <th style="width: 30%;">@_localizer["Description"]</th>
+                            <th style="width: 15%;">@_localizer["Quantity"]</th>
+                            <th style="width: 15%;">@_localizer["Price"]</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -103,28 +105,28 @@
                         }
                     </tbody>
                 </table>
-                <h5>Добавление нового билета</h5>
+                <h5>@_localizer["AddNewTicket"]</h5>
                 <div class="row mt-4">
                     <div class="col-md-4 mb-3">
-                        <input id="ticket_name" placeholder="название" class="ticket-input form-control" />
+                        <input id="ticket_name" placeholder="@_localizer["Name"]" class="ticket-input form-control" />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <input id="ticket_count" type="number" placeholder="количество" class="ticket-input form-control" />
+                        <input id="ticket_count" type="number" placeholder="@_localizer["Quantity"]" class="ticket-input form-control" />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <input id="ticket_price" type="number" placeholder="цена" class="ticket-input form-control" />
+                        <input id="ticket_price" type="number" placeholder="@_localizer["Price"]" class="ticket-input form-control" />
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
-                    <button class="btn btn-primary" type="button" onclick="AddTicket()">Добавить билет</button>
+                    <textarea id="ticket_desc" placeholder="@_localizer["Description"]" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
+                    <button class="btn btn-primary" type="button" onclick="AddTicket()">@_localizer["AddTicket"]</button>
                 </div>
                 <input type="hidden" asp-for="Tickets" />
                 <input type="hidden" asp-for="TicketsForDel" id="deleted_tickets" />
             </div>
             <hr />
             <div class="form-group mt-4">
-                <button id="add" type="submit" class="btn btn-warning btn-block">Изменить и отправить на проверку</button>
+                <button id="add" type="submit" class="btn btn-warning btn-block">@_localizer["EditAndSend"]</button>
             </div>
         </div>
     </form>

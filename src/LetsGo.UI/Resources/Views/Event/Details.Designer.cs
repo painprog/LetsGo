@@ -252,6 +252,15 @@ namespace LetsGo.UI.Resources.Views.Event {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string Ticket {
+            get {
+                return ResourceManager.GetString("Ticket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string Tickets {
             get {
                 return ResourceManager.GetString("Tickets", resourceCulture);

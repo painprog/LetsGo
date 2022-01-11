@@ -98,6 +98,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Edit.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="Resources\Views\Shared\_Layout.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Shared\_Layout.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_Layout.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -120,7 +129,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Views\Shared" />
     <Folder Include="Views\Cabinet\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

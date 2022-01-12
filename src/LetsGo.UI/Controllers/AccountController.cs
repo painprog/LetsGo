@@ -77,8 +77,6 @@ namespace LetsGo.UI.Controllers
                 else
                 {
                     pathImage = "/avatars/" + EventsService.GenerateCode() + Path.GetExtension(model.Avatar.FileName);
-                    using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                        await model.Avatar.CopyToAsync(fileStream);
                 }
 
                 User admin = new User
@@ -94,6 +92,9 @@ namespace LetsGo.UI.Controllers
 
                 if (result.Succeeded)
                 {
+                    using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                        await model.Avatar.CopyToAsync(fileStream);
+
                     await EmailService.Send(
                         admin.Email,
                         "Логин и пароль от аккаунта админа",
@@ -145,6 +146,10 @@ namespace LetsGo.UI.Controllers
 
                     if (result.Succeeded)
                     {
+
+                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                            await model.Avatar.CopyToAsync(fileStream);
+
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         await SendConfirmEmail(user, code);
 

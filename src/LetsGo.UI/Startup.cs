@@ -13,6 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Globalization;
+using LetsGo.UI.Controllers;
+using LetsGo.UI.HostedServices;
+using LetsGo.UI.Services.Contracts;
 
 namespace LetsGo.UI
 {
@@ -53,6 +56,9 @@ namespace LetsGo.UI
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton(sp => ApplicationDbContextFactory);
+
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 
             services.AddMemoryCache();
         }

@@ -5,6 +5,7 @@ using IronBarCode;
 using LetsGo.Core.Entities;
 using LetsGo.DAL;
 using LetsGo.UI.Services;
+using LetsGo.UI.Services.Contracts;
 using LetsGo.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,13 @@ namespace LetsGo.UI.Controllers
     public class TicketController : Controller
     {
         private readonly ApplicationDbContext _goContext;
-        public TicketController(ApplicationDbContext goContext)
+
+        private readonly IBackgroundTaskQueue _backgroundTaskQueue;
+
+        public TicketController(ApplicationDbContext goContext, IBackgroundTaskQueue backgroundTaskQueue)
         {
             _goContext = goContext;
+            _backgroundTaskQueue = backgroundTaskQueue;
         }
 
         [HttpPost]
@@ -47,12 +52,17 @@ namespace LetsGo.UI.Controllers
                             Scanned = false
                         };
                         _goContext.PurchasedTickets.Add(ticket);
-                        GeneratedBarcode QR = QRCodeWriter.CreateQrCode("https://localhost:44377/Home/Index/" + ticket.Id, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
-                        await EmailService.Send(
-                            model.Email,
-                            "Билет",
-                            message + $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br/> <br />покажите его на входе"
-                        );
+
+                        GeneratedBarcode QR = QRCodeWriter.CreateQrCode($"{Request.Scheme}://{Request.Host}/Home/Index/" + ticket.Id);
+
+                        _backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
+                        {
+                            await EmailService.Send(
+                                model.Email,
+                                "Билет",
+                                message + $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br/> <br />покажите его на входе"
+                            );
+                        });
                     }
                 }
                 _goContext.Events.Update(@event);

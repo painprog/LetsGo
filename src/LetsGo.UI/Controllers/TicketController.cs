@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using IronBarCode;
 using LetsGo.Core.Entities;
 using LetsGo.DAL;
 using LetsGo.UI.Services;
@@ -54,13 +52,9 @@ namespace LetsGo.UI.Controllers
                             PurchaseDate = DateTime.Now,
                             Scanned = false
                         };
-                        ticket.QR = "https://localhost:44377/api/ticketcheck/details/" + ticket.TicketIdentifier;
+                        ticket.QR = $"{Request.Scheme}://{Request.Host}/api/ticketcheck/details/" + ticket.TicketIdentifier;
                         _context.PurchasedTickets.Add(ticket);
                         purchasedTickets.Add(ticket);
-
-                        _backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
-                        {
-                        });
                     }
                 }
                 string message = $"" +
@@ -70,7 +64,11 @@ namespace LetsGo.UI.Controllers
 
                 _context.Events.Update(@event);
                 await _context.SaveChangesAsync();
-                await EmailService.SendTickets(model.Email, "Билет", message, purchasedTickets);
+
+                _backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
+                {
+                    await EmailService.SendTickets(model.Email, "Билет", message, purchasedTickets);
+                });
 
                 return Json(new {success = true, redirectToUrl = Url.Action("Index", "Home")});
             }

@@ -33,13 +33,18 @@ namespace LetsGo.UI.Controllers
 
         public async Task<IActionResult> Add()
         {
-            var categories = _goContext.EventCategories.Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }).ToList();
-            var other = categories.FirstOrDefault(l => l.Text == "Другое");
-            categories.Remove(other);
-            categories.Add(other);
+            var parentCategories = _goContext.EventCategories
+                .Where(c => c.HasParent == false)
+                .OrderBy(c => c.Id).ToList();
+
+            var childCategories = _goContext.EventCategories
+                .Where(c => c.HasParent == true)
+                .OrderBy(c => c.ParentId).ToList();
+
             AddEventViewModel model = new AddEventViewModel()
             {
-                Categories = categories
+                ParentCategories = parentCategories,
+                ChildCategories = childCategories
             };
 
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
@@ -73,10 +78,10 @@ namespace LetsGo.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<EventTicketType> ticketTypes = System.Text.Json.JsonSerializer.Deserialize<List<EventTicketType>>(viewModel.Tickets);
+                List<EventTicketType> ticketTypes = JsonConvert.DeserializeObject<List<EventTicketType>>(viewModel.Tickets);
+                await _Service.UpdateEventTicketTypes(viewModel.Id, ticketTypes);
                 Event @event = await _Service.EditEvent(viewModel);
-                await _Service.UpdateEventTicketTypes(@event.Id, ticketTypes);
-                string[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',');
+                int[] deletedIds = viewModel.TicketsForDel == null ? null : viewModel.TicketsForDel.Split(',').Select(i => int.Parse(i)).ToArray();
                 if (deletedIds != null)
                 {
                     await _Service.DeleteEventTicketTypes(deletedIds);

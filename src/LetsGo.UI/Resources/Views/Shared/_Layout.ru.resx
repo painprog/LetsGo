@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
+﻿<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,111 +12,111 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="Cancellations" xml:space="preserve">
-        <value />
+        <value>Отмены и переносы</value>
     </data>
     <data name="TermsOfReturn" xml:space="preserve">
-        <value />
+        <value>Условия возврата</value>
     </data>
     <data name="Sites" xml:space="preserve">
-        <value />
+        <value>Площадки</value>
     </data>
     <data name="About" xml:space="preserve">
-        <value />
+        <value>О компании</value>
     </data>
     <data name="Contacts" xml:space="preserve">
-        <value />
+        <value>Контакты</value>
     </data>
     <data name="BoxOffice" xml:space="preserve">
-        <value />
+        <value>Кассы</value>
     </data>
     <data name="Requisites" xml:space="preserve">
-        <value />
+        <value>Реквизиты</value>
     </data>
     <data name="PaymentMethods" xml:space="preserve">
-        <value />
+        <value>Способ оплаты</value>
     </data>
     <data name="ElectronicTicket" xml:space="preserve">
-        <value />
+        <value>Электронный билет</value>
     </data>
     <data name="PublicOffer" xml:space="preserve">
-        <value />
+        <value>Публичная оферта</value>
     </data>
     <data name="PrivacyPolicy" xml:space="preserve">
-        <value />
+        <value>Политика конфиденциальности</value>
     </data>
     <data name="Cookie" xml:space="preserve">
-        <value />
+        <value>Политика использования файлов "cookie"</value>
     </data>
     <data name="SubagencyAgreement" xml:space="preserve">
-        <value />
+        <value>Субагентский договор</value>
     </data>
     <data name="Compliance" xml:space="preserve">
-        <value />
+        <value>Комплаенс и деловая этика</value>
     </data>
     <data name="PromoCodes" xml:space="preserve">
-        <value />
+        <value>Промокоды Пономиналу</value>
     </data>
     <data name="Banners" xml:space="preserve">
-        <value />
+        <value>Баннеры Пономиналу</value>
     </data>
     <data name="CorporateClients" xml:space="preserve">
-        <value />
+        <value>Корпоративным клиентам</value>
     </data>
     <data name="PersonalAccount" xml:space="preserve">
-        <value />
+        <value>ЛК организатора</value>
     </data>
     <data name="AffiliateProgram" xml:space="preserve">
-        <value />
+        <value>Партнерская программа</value>
     </data>
     <data name="Categories" xml:space="preserve">
-        <value />
+        <value>Категории</value>
     </data>
     <data name="Excursion" xml:space="preserve">
-        <value />
+        <value>Экскурсия</value>
     </data>
     <data name="LK" xml:space="preserve">
-        <value />
+        <value>Личный кабинет</value>
     </data>
     <data name="Login" xml:space="preserve">
-        <value />
+        <value>Вход</value>
     </data>
     <data name="News" xml:space="preserve">
-        <value />
+        <value>новости</value>
     </data>
     <data name="Owl" xml:space="preserve">
-        <value />
+        <value>Ежедневное издание «Сова»</value>
     </data>
     <data name="mobile" xml:space="preserve">
-        <value />
+        <value>мобильное приложение</value>
     </data>
     <data name="Accept" xml:space="preserve">
-        <value />
+        <value>мы принимаем</value>
     </data>
     <data name="Form" xml:space="preserve">
-        <value />
+        <value>Форма для обратной связи</value>
     </data>
     <data name="LogOut" xml:space="preserve">
-        <value />
-    </data>
-    <data name="Concerts" xml:space="preserve">
-        <value />
-    </data>
-    <data name="Performances" xml:space="preserve">
-        <value />
-    </data>
-    <data name="ForChildren" xml:space="preserve">
-        <value />
+        <value>Выход</value>
     </data>
     <data name="Classic" xml:space="preserve">
-        <value />
+        <value>Классика</value>
     </data>
-    <data name="More" xml:space="preserve">
-        <value />
+    <data name="Concerts" xml:space="preserve">
+        <value>Концерты</value>
     </data>
     <data name="Festivals" xml:space="preserve">
-        <value />
+        <value>Фестевали</value>
+    </data>
+    <data name="ForChildren" xml:space="preserve">
+        <value>Детям</value>
+    </data>
+    <data name="More" xml:space="preserve">
+        <value>Еще</value>
     </data>
     <data name="Other" xml:space="preserve">
-        <value />
+        <value>Другое</value>
+    </data>
+    <data name="Performances" xml:space="preserve">
+        <value>Спектакли</value>
     </data>
 </root>

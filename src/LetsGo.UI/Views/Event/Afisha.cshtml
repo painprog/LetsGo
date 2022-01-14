@@ -1,6 +1,8 @@
 ﻿@model List<LetsGo.Core.Entities.Event>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @{
-    ViewBag.Title = "Афиша Бишкека на " + DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower() + " " + DateTime.Now.Year;
+    ViewBag.Title = _localizer["Poster"] + DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower() + " " + DateTime.Now.Year;
 }
 
 <div class="events-page">
@@ -32,7 +34,7 @@
                                 </a>
                             </div>
                             <a href="#" class="card-price">
-                                БИЛЕТЫ ОТ @item.MinPrice KGS
+                                @_localizer["TicketFrom"] @item.MinPrice KGS
                             </a>
                         </div>
                     </div>

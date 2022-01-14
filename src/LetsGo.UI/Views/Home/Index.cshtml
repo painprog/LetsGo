@@ -452,7 +452,7 @@
             let value = document.getElementById('livestream').value;
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("Search", "Home")' + (culture != 'undefined' ? '/?culture=' + culture : ''),
+                url: '@Url.Action("Search", "Home")',
                 data: {search: value },
                 datatype: "html",
                 success:

@@ -1,4 +1,6 @@
 ﻿@model LetsGo.UI.ViewModels.DetailsViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @{
     ViewBag.Title = "Детальная страница мероприятия";
 }
@@ -33,10 +35,10 @@
             </div>
             <div class="pn-head_buttons">
                 <button class="btn btn-danger" onclick="Scroll()">
-                    <span>билеты</span>
+                    <span>@_localizer["Tickets"] </span>
                 </button>
                 <button class="btn btn-light">
-                    <span>другие сеансы</span>
+                    <span>@_localizer["Other"] </span>
                 </button>
             </div>
         </div>
@@ -83,14 +85,14 @@
 
                 <div class="places">
                     <div class="places-title mb-5">
-                        Выберите билеты
+                        @_localizer["Select"] 
                     </div>
                     <table class="table tickets">
                         <thead>
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Count</th>
+                                <th scope="col">@_localizer["Name"] </th>
+                                <th scope="col">@_localizer["Price"] </th>
+                                <th scope="col">@_localizer["Count"] </th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -117,15 +119,15 @@
                         </tbody>
                     </table>
                     <div class="mini" style="display: none;">
-                        <p><span class="ticketsCount">0</span> билетов на сумму <span class="ticketsSum">0</span></p>
-                        <button class="btn btn-dark btn-lg btn-buy" onclick=" Checkout()">Оформить заказ</button>
+                        <p><span class="ticketsCount">0</span> @_localizer["TicketSum"] <span class="ticketsSum">0</span></p>
+                        <button class="btn btn-dark btn-lg btn-buy" onclick=" Checkout()">@_localizer["Order"] </button>
                     </div>
 
                 </div>
 
 
                 <div id="checkout" class="mx-4 py-5" style="display: none;">
-                    <h5>Корзина</h5>
+                    <h5>@_localizer["Basket"] </h5>
                     <hr style="color: black">
                     <form id="basket">
                         <div class="b-title">
@@ -139,8 +141,8 @@
                         <table class="table table-hover table-basket mt-5 mb-5">
                             <thead style="color: gray">
                                 <tr>
-                                    <th scope="col">Билет</th>
-                                    <th scope="col">Цена</th>
+                                    <th scope="col">@_localizer["Ticket"] </th>
+                                    <th scope="col">@_localizer["Price"] </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -148,61 +150,61 @@
                         </table>
                         <div class="text-right mb-5">
                             <div class="pb-3">
-                                <h5>Итого к оплате — <span class="totalSum"></span></h5>
+                                <h5>@_localizer["TotalSum"]  — <span class="totalSum"></span></h5>
                             </div>
                         </div>
                     </form>
 
 
-                    <h5>Куда и кому отправить билеты?</h5>
-                    <p>Пожалуйста, будьте внимательны при вводе e-mail адреса!</p>
+                    <h5>@_localizer["WhereAndToWhom"] </h5>
+                    <p>@_localizer["Please"] </p>
                     <form id="ticket-buyer-form">
                         <div class="form-row">
                             <input type="hidden" asp-for="@Model.Event.Id" />
                             <div class="col">
-                                <input class="form-control" asp-for="Name" placeholder="Имя">
+                                <input class="form-control" asp-for="Name" placeholder="@_localizer["Name"] ">
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="col">
-                                <input class="form-control" asp-for="PhoneNumber" placeholder="Номер телефона">
+                                <input class="form-control" asp-for="PhoneNumber" placeholder="@_localizer["PhoneNumber"] ">
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                             <div class="col">
-                                <input class="form-control" asp-for="Email" placeholder="Email">
+                                <input class="form-control" asp-for="Email" placeholder="@_localizer["Email"] ">
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-dark mt-4 px-3 btn-lg">Оплатить</button>
+                        <button type="submit" class="btn btn-dark mt-4 px-3 btn-lg">@_localizer["Pay"] </button>
                     </form>
                 </div>
 
             </div>
             <div class="row mx-2 py-5">
                 <div class="col-8">
-                    <h5 class="details_subheader">О мероприятии</h5>
+                    <h5 class="details_subheader">@_localizer["AboutEvent"] </h5>
                     <p>@Model.Event.Description</p>
-                    <h5 class="details_subheader pt-4">Фотографии</h5>
+                    <h5 class="details_subheader pt-4">@_localizer["Photo"] </h5>
                     <div class="card" style="width: 30%;">
                         <img src="@Model.Event.PosterImage" alt="" class="rounded">
                     </div>
                 </div>
                 <div class="col-4 side_descr">
                     <div class="pb-3">
-                        <h3>Почему TicketBox?</h3>
-                        <p>У TicketBox заключен официальный договор на реализацию билетов. Все цены на билеты официальные.</p>
+                        <h3>@_localizer["Why"] </h3>
+                        <p>@_localizer["AboutTicketBox"] </p>
                     </div>
                     <div class="pb-3">
-                        <h3>Не откладывайте покупку</h3>
-                        <p>Ближе к датам мероприятий цены на билеты могут повышаться, а востребованные категории билетов заканчиваться.</p>
+                        <h3>@_localizer["DoNotDelay "] </h3>
+                        <p>@_localizer["PriceIncrease"] </p>
                     </div>
                     <div class="pb-3">
-                        <h3>Никаких сервисных сборов!</h3>
-                        <p>На мероприятие Интерстеллар. Simple Music Ensemble даже электронные билеты без сервисных сборов.</p>
+                        <h3>@_localizer["NoServiceFees"] </h3>
+                        <p>@_localizer["SimpleMusic"] </p>
                     </div>
                     <div class="map-div">
-                        <h2>Место проведения</h2>
+                        <h2>@_localizer["Location"] </h2>
                         <div class="map-name">@Model.Event.Location.Name</div>
-                        <div class="map-address">Адрес: @Model.Event.Location.Address</div>
+                        <div class="map-address">@_localizer["Address"] : @Model.Event.Location.Address</div>
                         <input type="hidden" id="CoordinateX" value="@Model.Event.Location.X" />
                         <input type="hidden" id="CoordinateY" value="@Model.Event.Location.Y" />
                         <div class="map-card">
@@ -224,7 +226,7 @@
             </button>
         </div>
         <div class="toast-body">
-            Билеты отосланы вам на почту!
+           @_localizer["TicketsSentToEmail"] 
         </div>
     </div>
 </div>

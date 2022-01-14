@@ -13,6 +13,96 @@
     <EmbeddedResource Remove="wwwroot\posters\**" />
     <None Remove="Enums\**" />
     <None Remove="wwwroot\posters\**" />
+    <EmbeddedResource Update="Resources\Views\Category\Category.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Category.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Category\Category.ru.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.ru.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Category\Category.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Category.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Category\Category.en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.en.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Category\Category.ky.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Category.ky.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Category\Category.ky.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Category.ky.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Add.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Add.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Add.ru.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Add.ru.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Add.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Add.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Add.en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Add.en.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Add.ky.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Add.ky.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Add.ky.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Add.ky.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Afisha.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Afisha.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Afisha.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Afisha.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Details.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Details.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Details.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Details.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Event\Edit.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Edit.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Event\Edit.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Edit.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Shared\_Layout.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Shared\_Layout.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_Layout.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

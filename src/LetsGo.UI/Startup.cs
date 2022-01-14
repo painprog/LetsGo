@@ -16,6 +16,7 @@ using System.Globalization;
 using LetsGo.UI.Controllers;
 using LetsGo.UI.HostedServices;
 using LetsGo.UI.Services.Contracts;
+using Microsoft.Extensions.Options;
 
 namespace LetsGo.UI
 {
@@ -57,10 +58,15 @@ namespace LetsGo.UI
 
             services.AddSingleton(sp => ApplicationDbContextFactory);
 
-            services.AddHostedService<QueuedHostedService>();
-            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
-
             services.AddMemoryCache();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("ru"), new CultureInfo("ky") };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "ru", uiCulture: "ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -74,19 +80,12 @@ namespace LetsGo.UI
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            var supportedCultures = new[]
-            {
-                new CultureInfo("ru"),
-                new CultureInfo("en"),
-                new CultureInfo("ky")
-            }; 
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("ru"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
-            });
 
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

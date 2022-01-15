@@ -71,10 +71,32 @@
         }
         <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9" id="dd">
             <p class="text-center font-weight-bold py-2" style="font-size: 22px;">Фильтры</p>
-            <div id="Filtr">
-                <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFiltr">
+            <div id="Filter">
+                <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFilter">
                     <div class="categories ml-1">
                         <p class="font-weight-bold">Категория:</p>
+                        @foreach (var category in Model.CategoriesDictionary[-1])
+                        {
+                            <div class="category-checkbox">
+                                <input type="checkbox" value="@category.Id" id="category-@category.Id" />
+                                <label class="forcheckbox" for="category-@category.Id">@category.Name</label>
+                            </div>
+                            @if (Model.CategoriesDictionary.ContainsKey(category.Id))
+                            {
+                                <div class="ml-4">
+                                    <i style="display: none " id="selected-subcategories-@category.Id">0</i>
+                                    @foreach (var subcategory in Model.CategoriesDictionary[category.Id])
+                                    {
+                                        <div class="subcategory-checkbox">
+                                            <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" />
+                                            <label class="forcheckbox" for="subcategory-@subcategory.Id">@subcategory.Name</label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                    @*<div class="categories ml-1">
                         @foreach (var item in Model.EventCategories)
                         {
                             if (!item.HasParent)
@@ -104,7 +126,7 @@
                                 </div>
                             }
                         }
-                    </div>
+                    </div>*@
                     <div class="ml-1">
                         <p class="font-weight-bold">Статус:</p>
                         <select class="form-select my-1" asp-for="@Model.Status" aria-label="Default select example">
@@ -241,7 +263,7 @@
 
         let eventCategs = [];
         let strCateg;
-        $('#formFiltr').on("submit", function Filtr() {
+        $('#formFilter').on("submit", function Filter() {
             $('.categories input:checked').each(function Fill() {
                 eventCategs.push($(this).val())
             })
@@ -252,7 +274,16 @@
         function Sort(sortState) {
             $('#SortStateHidden').val(sortState);
             console.log($('#SortStateHidden').val());
-            $('#formFiltr').submit();
+            $('#formFilter').submit();
         }
+
+
+        function ClickSubcategory(subcategory, id) {
+            var count = $('#selected-subcategories-' + id);
+            if ($(subcategory).is(':checked')) count.text(parseInt(count.text()) + 1);
+            else count.text(parseInt(count.text()) - 1);
+            $('#category-' + id).prop('checked', !parseInt(count.text()) == 0);
+        }
+
     </script>
 }

@@ -43,6 +43,7 @@ namespace LetsGo.Controllers
 
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
+            viewModel.CategoriesDictionary = _context.EventCategories.ToArray().GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
             Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
             viewModel.Stats = Stats;
             viewModel.EventCategories = _context.EventCategories.ToList();

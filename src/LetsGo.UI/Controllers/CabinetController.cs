@@ -37,9 +37,9 @@ namespace LetsGo.Controllers
 
         public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs)
         {
-            List<string> EventCategories = new List<string>();
+            List<int> EventCategories = new List<int>();
             if (!string.IsNullOrEmpty(EventCategs))
-                EventCategories = EventCategs.Split(',').ToList();
+                EventCategories = EventCategs.Split(',').Select(c => int.Parse(c)).ToList();
 
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };

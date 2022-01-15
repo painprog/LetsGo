@@ -33,7 +33,7 @@ namespace LetsGo.UI.Services
             return @event;
         }
 
-        public IQueryable<Event> QueryableEventsAfterFilter(List<string> EventCategories, Status Status,
+        public IQueryable<Event> QueryableEventsAfterFilter(List<int> EventCategories, Status Status,
            DateTime DateTimeFrom, DateTime DateTimeBefore)
         {
             IQueryable<Event> Events = _context.Events.Include(e => e.Location).OrderByDescending(e => e.EventStart);
@@ -42,7 +42,7 @@ namespace LetsGo.UI.Services
             {
                 List<EventCategory> eventCategories = new List<EventCategory>();
                 foreach (var item in EventCategories)
-                    eventCategories.Add(_context.EventCategories.FirstOrDefault(e => e.Id.ToString() == item));
+                    eventCategories.Add(_context.EventCategories.FirstOrDefault(e => e.Id == item));
 
                 List<EventCategory> mainEventCategories = eventCategories.Where(e => !e.HasParent).ToList();
                 List<EventCategory> subEventCategories = eventCategories.Where(e => e.HasParent).ToList();

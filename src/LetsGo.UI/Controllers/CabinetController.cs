@@ -14,6 +14,7 @@ using LetsGo.DAL;
 using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
 using LetsGo.UI.ViewModels;
+using LetsGo.Enums;
 
 namespace LetsGo.Controllers
 {
@@ -35,7 +36,9 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs)
+        public IActionResult Profile(
+            Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs, SortState SortOrder = SortState.DateStartDesc
+        )
         {
             List<int> EventCategories = new List<int>();
             if (!string.IsNullOrEmpty(EventCategs))
@@ -49,13 +52,35 @@ namespace LetsGo.Controllers
             viewModel.EventCategories = _context.EventCategories.ToList();
 
             IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(EventCategories, Status,
-                DateTimeFrom, DateTimeBefore);
+                DateTimeFrom, DateTimeBefore, User.IsInRole("organizer") ? user.Id : null);
 
-            if (User.IsInRole("organizer"))
-                viewModel.Events = Events.Where(e => e.OrganizerId == user.Id).ToList();
-            else
-                viewModel.Events = Events.ToList();
 
+            ViewBag.NameSort = SortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+            ViewBag.PriceSort = SortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
+            ViewBag.DateStartSort = SortOrder == SortState.DateStartAsc ? SortState.DateStartDesc : SortState.DateStartAsc;
+            switch (SortOrder)
+            {
+                case SortState.NameDesc:
+                    Events = Events.OrderByDescending(s => s.Name);
+                    break;
+                case SortState.PriceAsc:
+                    Events = Events.OrderBy(s => s.MinPrice);
+                    break;
+                case SortState.PriceDesc:
+                    Events = Events.OrderByDescending(s => s.MinPrice);
+                    break;
+                case SortState.DateStartAsc:
+                    Events = Events.OrderBy(s => s.EventStart);
+                    break;
+                case SortState.DateStartDesc:
+                    Events = Events.OrderByDescending(s => s.EventStart);
+                    break;
+                default:
+                    Events = Events.OrderBy(s => s.Name);
+                    break;
+            }
+
+            viewModel.Events = Events.ToList();
             return View(viewModel);
         }
 

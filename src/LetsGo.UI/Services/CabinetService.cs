@@ -33,10 +33,12 @@ namespace LetsGo.UI.Services
             return @event;
         }
 
-        public IQueryable<Event> QueryableEventsAfterFilter(List<int> EventCategories, Status Status,
-           DateTime DateTimeFrom, DateTime DateTimeBefore)
+        public IQueryable<Event> QueryableEventsAfterFilter(
+            List<int> EventCategories, Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, int? OrganizerId
+        )
         {
             IQueryable<Event> Events = _context.Events.Include(e => e.Location).OrderByDescending(e => e.EventStart);
+            if (OrganizerId != null) Events = Events.Where(e => e.OrganizerId == OrganizerId);
 
             if (EventCategories.Count > 0)
             {

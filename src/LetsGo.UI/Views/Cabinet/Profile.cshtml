@@ -282,7 +282,7 @@
             var count = $('#selected-subcategories-' + id);
             if ($(subcategory).is(':checked')) count.text(parseInt(count.text()) + 1);
             else count.text(parseInt(count.text()) - 1);
-            $('#category-' + id).prop('checked', !parseInt(count.text()) == 0);
+            $('#category-' + id).prop('checked', parseInt(count.text()));
         }
 
     </script>

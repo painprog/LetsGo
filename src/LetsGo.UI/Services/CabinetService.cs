@@ -34,81 +34,43 @@ namespace LetsGo.UI.Services
         }
 
         public IQueryable<Event> QueryableEventsAfterFilter(
-            List<int> EventCategories, Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, int? OrganizerId
+            List<int> EventCategories, Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore
         )
         {
             IQueryable<Event> Events = _context.Events.Include(e => e.Location).OrderByDescending(e => e.EventStart);
-            if (OrganizerId != null) Events = Events.Where(e => e.OrganizerId == OrganizerId);
 
             if (EventCategories.Count > 0)
             {
-                List<EventCategory> eventCategories = new List<EventCategory>();
-                foreach (var item in EventCategories)
-                    eventCategories.Add(_context.EventCategories.FirstOrDefault(e => e.Id == item));
+                List<Event> FilteredEvents = new List<Event>();
 
-                List<EventCategory> mainEventCategories = eventCategories.Where(e => !e.HasParent).ToList();
-                List<EventCategory> subEventCategories = eventCategories.Where(e => e.HasParent).ToList();
+                List<EventCategory> selectedCategories = new List<EventCategory>();
+                foreach (var id in EventCategories)
+                    selectedCategories.Add(_service.GetEventCategory(id).Result);
 
-                var categoriesGroups = subEventCategories.GroupBy(e => e.ParentId);
-                List<Event> EventsAfterFiltr = new List<Event>();
+                var categoriesDictionary = selectedCategories.GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
 
-                if (mainEventCategories.Count > 0)
+                foreach (var item in categoriesDictionary)
                 {
-                    int j = 0;
-                    foreach (var item in mainEventCategories)
+                    foreach (var category in item.Value)
                     {
-                        Events = Events.Where(e => e.Categories.Contains(item.Name));
-                        EventsAfterFiltr.AddRange(Events);
-                        Events = GetEvents();
-                        j++;
-                    }
-                    if (j == mainEventCategories.ToList().Count && subEventCategories.Count == 0)
-                        Events = EventsAfterFiltr.AsQueryable();
-                }
-                if (subEventCategories.Count > 0)
-                {
-                    int count = 0;
-                    EventCategory eventCategory = new EventCategory();
-                    foreach (var g in categoriesGroups)
-                    {
-                        count++;
-                        if (mainEventCategories.FirstOrDefault(e => e.Id == g.Key) != null)
+                        if (!categoriesDictionary.ContainsKey(category.Id))
                         {
-                            eventCategory = _context.EventCategories.FirstOrDefault(e => e.Id == g.Key);
-                            for (int i = 0; i < EventsAfterFiltr.Count; i++)
-                            {
-                                if (EventsAfterFiltr[i].Categories.Contains(eventCategory.Name))
-                                    EventsAfterFiltr.Remove(EventsAfterFiltr[i]);
-                            }
+                            FilteredEvents.AddRange(Events.Where(e => e.Categories.Contains(category.Name)));
                         }
-                        for (int i = 0; i < g.ToList().Count; i++)
-                        {
-                            Events = Events.Where(x => x.Categories.Contains(g.ToList()[i].Name));
-                            if (Events.ToList().Count == 0)
-                            {
-                                Events = GetEvents();
-                                break;
-                            }
-                            if (i == g.ToList().Count - 1)
-                            {
-                                EventsAfterFiltr.AddRange(Events);
-                                Events = GetEvents();
-                            }
-                        }
-                        if (count == categoriesGroups.ToList().Count)
-                            Events = EventsAfterFiltr.AsQueryable();
                     }
                 }
-               
+
+                Events = FilteredEvents.AsQueryable();
             }
             if (Status != Status.NotDefined)
                 Events = Events.Where(e => e.Status == Status);
-            if (DateTimeFrom != DateTime.MinValue)
-                Events = Events.Where(e => e.EventStart >= DateTimeFrom);
-            if (DateTimeBefore != DateTime.MinValue)
-                Events = Events.Where(e => e.EventStart <= DateTimeBefore);
+
             if (DateTimeFrom != DateTime.MinValue && DateTimeBefore != DateTime.MinValue)
                 Events = Events.Where(e => e.EventStart >= DateTimeFrom && e.EventStart <= DateTimeBefore);
+            else if (DateTimeFrom != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart >= DateTimeFrom);
+            else
+                Events = Events.Where(e => e.EventStart <= DateTimeBefore);
 
             return Events;
         }

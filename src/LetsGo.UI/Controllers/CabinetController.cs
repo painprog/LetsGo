@@ -46,14 +46,15 @@ namespace LetsGo.Controllers
 
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
-            viewModel.CategoriesDictionary = _context.EventCategories.ToArray().GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
+            viewModel.CategoriesDictionary = _context.EventCategories.ToArray()
+                .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
             Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
             viewModel.Stats = Stats;
             viewModel.EventCategories = _context.EventCategories.ToList();
 
-            IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(EventCategories, Status,
-                DateTimeFrom, DateTimeBefore, User.IsInRole("organizer") ? user.Id : null);
-
+            IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(
+                EventCategories, Status, DateTimeFrom, DateTimeBefore
+            );
 
             ViewBag.NameSort = SortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
             ViewBag.PriceSort = SortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;

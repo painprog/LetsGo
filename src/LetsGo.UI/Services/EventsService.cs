@@ -343,6 +343,20 @@ namespace LetsGo.UI.Services
             return location;
         }
 
+        public async Task<EventCategory> GetEventCategory(int id)
+        {
+            EventCategory category = null;
+            if (!cache.TryGetValue(id, out category))
+            {
+                category = await _goContext.EventCategories.FirstOrDefaultAsync(c => c.Id == id);
+                if (category != null)
+                {
+                    cache.Set(category.Id, category,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+            }
+            return category;
+        }
 
         // additional methods
 

@@ -78,7 +78,14 @@
                         @foreach (var category in Model.CategoriesDictionary[-1])
                         {
                             <div class="category-checkbox">
-                                <input type="checkbox" value="@category.Id" id="category-@category.Id" />
+                                @if (Model.selectedCategories.Contains(category.Id.ToString()))
+                                {
+                                    <input type="checkbox" value="@category.Id" id="category-@category.Id" checked />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="@category.Id" id="category-@category.Id" />
+                                }
                                 <label class="forcheckbox" for="category-@category.Id">@category.Name</label>
                             </div>
                             @if (Model.CategoriesDictionary.ContainsKey(category.Id))
@@ -87,46 +94,22 @@
                                     <i style="display: none " id="selected-subcategories-@category.Id">0</i>
                                     @foreach (var subcategory in Model.CategoriesDictionary[category.Id])
                                     {
-                                        <div class="subcategory-checkbox">
-                                            <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" />
-                                            <label class="forcheckbox" for="subcategory-@subcategory.Id">@subcategory.Name</label>
-                                        </div>
+                                <div class="subcategory-checkbox">
+                                    @if (Model.selectedCategories.Contains(subcategory.Id.ToString()))
+                                    {
+                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" />
+                                    }
+                                    <label class="forcheckbox" for="subcategory-@subcategory.Id">@subcategory.Name</label>
+                                </div>
                                     }
                                 </div>
                             }
                         }
                     </div>
-                    @*<div class="categories ml-1">
-                        @foreach (var item in Model.EventCategories)
-                        {
-                            if (!item.HasParent)
-                            {
-                                <div class="containerForCateg">
-                                    <p>
-                                        <input class="form-check-input ml-1" type="checkbox" asp-for="@Model.EventCategory" value="@item.Id">
-                                        <a class="text-decoration-none text-reset ml-4" data-bs-toggle="collapse" href="#collapseExample_@item.Id" aria-expanded="false" aria-controls="collapseExample_@item.Id">
-                                            @item.Name
-                                            @if (@Model.EventCategories.Any(m => m.ParentId == item.Id)) { <i class="fas fa-sort-down"></i> } 
-                                            
-                                        </a>
-
-                                    </p>
-                                    <div class="collapse ml-4" id="collapseExample_@item.Id">
-                                        @foreach (var elem in Model.EventCategories)
-                                        {
-                                            if (elem.ParentId == item.Id)
-                                            {
-                                                <div class="form-check ml-1">
-                                                    <input class="form-check-input" type="checkbox" asp-for="@Model.EventCategory" value="@elem.Id">
-                                                    <label class="form-check-label" asp-for="@Model.EventCategory">@elem.Name</label>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </div>*@
                     <div class="ml-1">
                         <p class="font-weight-bold">Статус:</p>
                         <select class="form-select my-1" asp-for="@Model.Status" aria-label="Default select example">
@@ -155,9 +138,10 @@
                             </div>
                         </div>
                     </div>
-                    <input id="EventCategoriesHidden" asp-for="EventCategs" hidden />
+                    <input asp-for="selectedCategories" hidden />
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-danger px-5 py-2 mt-2">Показать</button>
+                        <input type="reset" value="Сбросить" class="btn btn-outline-danger px-5 py-2 pt-2 mt-2" onclick="Reset()" />
                     </div>
                 </form>
             </div>
@@ -268,7 +252,7 @@
                 eventCategs.push($(this).val())
             })
             strCateg = eventCategs.join()
-            $('#EventCategoriesHidden').val(strCateg)
+            $('#selectedCategories').val(strCateg)
         }
         )
         function Sort(sortState) {
@@ -283,6 +267,11 @@
             if ($(subcategory).is(':checked')) count.text(parseInt(count.text()) + 1);
             else count.text(parseInt(count.text()) - 1);
             $('#category-' + id).prop('checked', parseInt(count.text()));
+        }
+
+        function Reset() {
+            $('input[type="checkbox"]').removeAttr('checked');
+            $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
         }
 
     </script>

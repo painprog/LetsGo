@@ -69,7 +69,7 @@ namespace LetsGo.UI.Services
                 Events = Events.Where(e => e.EventStart >= DateTimeFrom && e.EventStart <= DateTimeBefore);
             else if (DateTimeFrom != DateTime.MinValue)
                 Events = Events.Where(e => e.EventStart >= DateTimeFrom);
-            else
+            else if (DateTimeBefore != DateTime.MinValue)
                 Events = Events.Where(e => e.EventStart <= DateTimeBefore);
 
             return Events;

@@ -37,12 +37,12 @@ namespace LetsGo.Controllers
         }
 
         public IActionResult Profile(
-            Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string EventCategs, SortState SortOrder = SortState.DateStartDesc
+            Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string selectedCategories, SortState SortOrder = SortState.DateStartDesc
         )
         {
             List<int> EventCategories = new List<int>();
-            if (!string.IsNullOrEmpty(EventCategs))
-                EventCategories = EventCategs.Split(',').Select(c => int.Parse(c)).ToList();
+            if (!string.IsNullOrEmpty(selectedCategories))
+                EventCategories = selectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
 
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
@@ -51,6 +51,7 @@ namespace LetsGo.Controllers
             Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
             viewModel.Stats = Stats;
             viewModel.EventCategories = _context.EventCategories.ToList();
+            viewModel.selectedCategories = selectedCategories ?? String.Empty;
 
             IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(
                 EventCategories, Status, DateTimeFrom, DateTimeBefore

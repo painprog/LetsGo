@@ -167,6 +167,26 @@
             </div>
         </nav>
     </header>
+
+    <div id="categories-sm" class="hide">
+        <div class="category-header">
+            <span id="close-category-sm" class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="category-links">
+            <div class="row">
+                <div class="col-md-9">
+                    <a href="/Category/Concerts">Концерты </a>
+                    <a href="/Category/Performances">Спектакли</a>
+                    <a href="/Category/Children">Детям</a>
+                    <a href="/Category/Classic">Классика</a>
+                    <a href="/Category/Excursion">Экскурсия</a>
+                    <a href="/Category/Festivals">Фестивали</a>
+                    <a href="/Category/Other">Другое</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container" style="padding-bottom: 5rem;">
         <main role="main" class="pb-3 page-content">
             @RenderBody()
@@ -239,26 +259,14 @@
         //    }
         //});
 
-        $('#category-link').on("click", function () {
-            $('body').html(`
-<div class="category-header">
-            <a href="Home/Index">
-                <span class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
-            </a>
-</div>
-            <div class="category-links">
-                <div class="row">
-                    <div class="col-md-9">
-                        <a class="" href="/Category/Concerts">Концерты </a>
-                        <a class="" href="/Category/Performances">Спектакли</a>
-                        <a class="" href="/Category/Children">Детям</a>
-                        <a class="" href="/Category/Classic">Классика</a>
-                        <a class="" href="/Category/Excursion">Экскурсия</a>
-                        <a class="" href="/Category/Festivals">Фестивали</a>
-                        <a class="" href="/Category/Other">Другое</a>
-                    </div>
-                </div>
-            </div>`);
+        $('#category-link').on('click', function () {
+            $('#categories-sm').addClass('show');
+            $('#categories-sm').removeClass('hide');
+        });
+
+        $('#close-category-sm').on('click', function () {
+            $('#categories-sm').addClass('hide');
+            $('#categories-sm').removeClass('show');
         });
 
     </script>

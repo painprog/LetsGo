@@ -3,9 +3,9 @@
     ViewData["Title"] = "Профиль";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="mx-3">
-    <h4>Профиль</h4>
-    <div class="card mb-4 py-3">
+<div class="m-3">
+    <h4 class="block-heading">Профиль</h4>
+    <div class="card mb-4 py-3 mt-2">
         <div class="card-body">
             @if (User.IsInRole("superadmin"))
             {
@@ -14,14 +14,14 @@
             <a asp-action="Edit" asp-controller="Cabinet" asp-route-id="@Model.User.Id" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
             <div class="row">
                 <div class="col-lg-2">
-                    <img src="@Model.User.AvatarLink" width="100" height="100" class="rounded-circle ml-3" alt="no avatar" />
+                    <img src="@Model.User.AvatarLink" width="100" height="100" class="rounded-circle" alt="avatar" />
                 </div>
                 <div class="col-lg-6">
-                    <h5 class="category-header">@Model.User.Email</h5>
+                    <h5 class="category-header font-weight-bold">@Model.User.Email</h5>
                     <p class="card-text">
-                        @if (@Model.User.UserName != null)
+                        @if (Model.User.UserName != null)
                         {<span>Логин: @Model.User.UserName</span>}
-                        @if (@Model.User.PhoneNumber != null)
+                        @if (Model.User.PhoneNumber != null)
                         {<br /><span>Номер телефона: @Model.User.PhoneNumber</span>}
                     </p>
                 </div>
@@ -29,12 +29,12 @@
         </div>
     </div>
     <div class="row my-4">
-        <h4 class="mr-auto">Мероприятия</h4>
+        <h4 class="mr-auto block-heading">Мероприятия</h4>
         <div class="form-outline mr-2">
             <input type="text" id="searchbox-input" class="form-control text-center" placeholder="Поиск"
                    aria-label="Search" onkeyup="filterEvents()" />
         </div>
-        <div class="dropdown">
+        @*<div class="dropdown">
             <button class="btn btn-dark dropdown-toggle mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Сортировка
             </button>
@@ -43,7 +43,7 @@
                 <a class="dropdown-item" href="#">Another action</a>
                 <a class="dropdown-item" href="#">Something else here</a>
             </div>
-        </div>
+        </div>*@
         @if (User.IsInRole("superadmin"))
         {
             <a asp-controller="Locations" asp-action="Create" class="btn btn-danger px-3 mr-2 float-right">+ Добавить локацию</a>
@@ -53,7 +53,7 @@
     <div class="row">
         @if (Model.Events.Count != 0)
         {
-            <div class="col events-container mb-5">
+            <div class="col events-container mb-5 pl-0">
                 @if (Model.IsOrganizer)
                 {
                     await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);

@@ -961,6 +961,7 @@ body {
 .admin-event .material-icons {
     cursor: pointer;
     border-radius: 5px;
+    color: white;
 }
 
     .admin-event .material-icons:hover {
@@ -1309,4 +1310,9 @@ body {
     top: 0;
     left: 0;
     background: white;
+}
+
+.block-heading{
+    font-size: 22px;
+    font-weight: 500;
 }

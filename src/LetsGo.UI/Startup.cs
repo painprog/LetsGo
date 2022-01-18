@@ -57,7 +57,8 @@ namespace LetsGo.UI
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton(sp => ApplicationDbContextFactory);
-
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
             services.AddMemoryCache();
             services.Configure<RequestLocalizationOptions>(options =>
             {

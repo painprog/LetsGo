@@ -94,7 +94,12 @@ namespace LetsGo.UI.Controllers
                 {
                     using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                         await model.Avatar.CopyToAsync(fileStream);
-
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = admin.Id, code },
+                        protocol: HttpContext.Request.Scheme);
                     await EmailService.Send(
                         admin.Email,
                         "Логин и пароль от аккаунта админа",

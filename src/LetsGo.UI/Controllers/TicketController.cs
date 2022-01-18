@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LetsGo.Core.Entities;
@@ -7,6 +9,7 @@ using LetsGo.UI.Services;
 using LetsGo.UI.Services.Contracts;
 using LetsGo.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 
 namespace LetsGo.UI.Controllers
 {
@@ -74,6 +77,20 @@ namespace LetsGo.UI.Controllers
             }
 
             return Json(new {success = false});
+        }
+        public IActionResult GetQR(int id)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            byte[] data = default(byte[]);
+            using (System.IO.MemoryStream sampleStream = new System.IO.MemoryStream())
+            {
+                qrCodeImage.Save(sampleStream, System.Drawing.Imaging.ImageFormat.Bmp);
+                data = sampleStream.ToArray();
+            }
+            return File(data, "image/jpeg");
         }
     }
 }

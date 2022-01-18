@@ -6,44 +6,44 @@
 }
 
 <div class="pn-page_section my-4">
-<div class="pn-page-head">
-    <img class="blur_img" src="@Model.Event.PosterImage" alt="">
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="pn-head_image">
-                <img src="@Model.Event.PosterImage" alt="" class="rounded">
+    <div class="pn-page-head">
+        <img class="blur_img" src="@Model.Event.PosterImage" alt="">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="pn-head_image">
+                    <img src="@Model.Event.PosterImage" alt="" class="rounded">
+                </div>
             </div>
-        </div>
-        <div class="col-lg-8">
-            <div class="pn-head_title">
-                <h1>@Model.Event.Name</h1>
-                <span>@Model.Event.AgeLimit +</span>
-            </div>
-            <div class="pn-head_description">
-                <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
-                <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
-                <div class="pn-head_place" onclick="LocationDetails('@Model.Event.LocationId')">@Model.Event.Location.Name</div>
-            </div>
-            <div class="pn-head_tags">
-                 @if (Model.Event.Categories != null) 
-                 { 
-                     @foreach (var item in Model.EventCategories) 
-                     { 
-                         <a href="#" class="tag">@item.Name</a> 
-                     } 
-                 } 
-            </div>
-            <div class="pn-head_buttons">
-                <button class="btn btn-danger" onclick="Scroll()">
-                    <span>@_localizer["Tickets"] </span>
-                </button>
-                <button class="btn btn-light">
-                    <span>@_localizer["Other"] </span>
-                </button>
+            <div class="col-lg-8">
+                <div class="pn-head_title">
+                    <h1>@Model.Event.Name</h1>
+                    <span>@Model.Event.AgeLimit +</span>
+                </div>
+                <div class="pn-head_description">
+                    <div class="pn-head_text">@*20 ноября 2021 в 20:00*@</div>
+                    <div class="pn-head_text">@Model.Event.EventStart.ToShortDateString() @Model.Event.EventEnd.ToShortDateString()</div>
+                    <div class="pn-head_place" onclick="LocationDetails('@Model.Event.LocationId')">@Model.Event.Location.Name</div>
+                </div>
+                <div class="pn-head_tags">
+                    @if (Model.Event.Categories != null)
+                 {
+                    @foreach (var item in Model.EventCategories)
+                     {
+                    <a href="#" class="tag">@item.Name</a>
+                     }
+                 }
+                </div>
+                <div class="pn-head_buttons">
+                    <button class="btn btn-danger" onclick="Scroll()">
+                        <span>@_localizer["Tickets"] </span>
+                    </button>
+                    <button class="btn btn-light">
+                        <span>@_localizer["Other"] </span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <div class="content">
         <div class="event">
@@ -85,7 +85,7 @@
 
                 <div class="places">
                     <div class="places-title mb-5">
-                        @_localizer["Select"] 
+                        @_localizer["Select"]
                     </div>
                     <table class="table tickets">
                         <thead>
@@ -99,22 +99,22 @@
                         <tbody>
                             @foreach (var item in Model.EventTickets)
                             {
-                                <tr>
-                                    <td scope="row">@item.Name</td>
-                                    <td>@item.Price</td>
-                                    <td>0</td>
-                                    <td>
-                                        <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
-                                        <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
-                                    </td>
-                                    <td style="display: none;">
-                                        @item.Id
-                                    </td>
-                                    <td style="display: none;">
-                                        @{ var res = item.Count - item.Sold; }
-                                        @res
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td scope="row">@item.Name</td>
+                                <td>@item.Price</td>
+                                <td>0</td>
+                                <td>
+                                    <input type="button" class="btn btn-outline-success" value="+" onclick="PlusCount(this)">
+                                    <input type="button" class="btn btn-outline-danger" value=" - " onclick="MinusCount(this)">
+                                </td>
+                                <td style="display: none;">
+                                    @item.Id
+                                </td>
+                                <td style="display: none;">
+                                    @{ var res = item.Count - item.Sold; }
+                                    @res
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -226,7 +226,7 @@
             </button>
         </div>
         <div class="toast-body">
-           @_localizer["TicketsSentToEmail"] 
+            @_localizer["TicketsSentToEmail"]
         </div>
     </div>
 </div>
@@ -235,11 +235,10 @@
 @section Scripts
 {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-<script>
+    <script>
         var ticketsCount = $('.ticketsCount');
         var ticketsSum = $('.ticketsSum');
         let pressed = false;
-
         $('#prices').click(function () {
             if ($('.section_box').is(':visible')) {
                 $('.section_box').hide();
@@ -276,7 +275,6 @@
         }
         function MinusCount(a) {
             var row = $(a).closest('tr');
-
             var notsold = row.find('td').eq(5);
             var t = row.find('td').eq(2).text();
             if (t != 0) {
@@ -304,7 +302,6 @@
             });
             console.log(sum);
             $('.totalSum').text(sum);
-
         }
         $('#ticket-buyer-form').submit(function (event) {
             event.preventDefault();
@@ -340,8 +337,6 @@
                 }
             });
         });
-
-
         function Delete(a) {
             $('.totalSum').text(parseInt($('.totalSum').text()) - parseInt($(a).closest('tr').find('td').eq(1).text()));
             $(a).closest('tr').remove();
@@ -350,11 +345,9 @@
                 $('#checkout').hide();
             } *@
         };
-
         function LocationDetails(locationId) {
             window.location.href = '@Url.Action("Details","Locations")?id=' + locationId;
         }
-
         // Функция ymaps.ready() будет вызвана, когда
         // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
         ymaps.ready(init);
@@ -370,16 +363,12 @@
                 // элементы управления
                 controls: ['zoomControl']
             });
-            // Создание геообъекта 
+            // Создание геообъекта
             var myPlacemark = new ymaps.Placemark([x, y], {}, {
                 preset: 'islands#redIcon'
             });
-
             // Размещение геообъекта на карте.
             myMap.geoObjects.add(myPlacemark);  // какой хочешь
-
-
         }
-
     </script>
 }

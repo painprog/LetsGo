@@ -7,7 +7,6 @@ using MimeKit.Text;
 using System.Security.Policy;
 using LetsGo.Core.Entities;
 using System.Collections.Generic;
-using IronBarCode;
 
 namespace LetsGo.UI.Services
 {
@@ -41,10 +40,9 @@ namespace LetsGo.UI.Services
                     email.From.Add(new MailboxAddress("Администрация сайта", "ticketboxkg@gmail.com"));
                     email.To.Add(MailboxAddress.Parse(emailTo));
                     email.Subject = subject;
-                    GeneratedBarcode QR = QRCodeWriter.CreateQrCode(item.QR, 500, QRCodeWriter.QrErrorCorrectionLevel.Highest);
                     email.Body = new TextPart(TextFormat.Html) {
-                        Text = message + $"Тип блиета: {item.EventTicketType.Name} <br />" +
-                        $"Ваш QR code: <br /> {QR.ToHtmlTag()} <br /> <br />Покажите его на входе"
+                        Text = message + $"Ваш QR code: <br /> <img width=\"100\" height=\"100\" src=\"https://localhost:44377/Ticket/GetQR?{item.QR}\">" +
+                        $"<img/> <br/> <br />покажите его на входе"
                     };
                     await client.SendAsync(email);
                 }

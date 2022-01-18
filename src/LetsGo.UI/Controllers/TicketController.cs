@@ -57,13 +57,14 @@ namespace LetsGo.UI.Controllers
                         };
                         ticket.QR = $"{Request.Scheme}://{Request.Host}/api/ticketcheck/details/" + ticket.TicketIdentifier;
                         _context.PurchasedTickets.Add(ticket);
-                        purchasedTickets.Add(ticket);
+                        purchasedTickets.Add(ticket);                     
                     }
                 }
-                string message = $"" +
-                    $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
-                    $"Вы совершили покупки билетов на \"{@event.Name}\" с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
-                    $"</p>";
+                 string message = $"" +
+                     $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
+                     $"Вы совершили покупки билетов на \"{@event.Name}\" с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
+                     $"</p>";
+          
 
                 _context.Events.Update(@event);
                 await _context.SaveChangesAsync();
@@ -78,10 +79,10 @@ namespace LetsGo.UI.Controllers
 
             return Json(new {success = false});
         }
-        public IActionResult GetQR(int id)
+        public IActionResult GetQR(string QR)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(QR, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             byte[] data = default(byte[]);

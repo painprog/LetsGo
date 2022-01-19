@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="links">
-                    <a onclick="Afisha()" role="button" aria-pressed="true" class="link_day">@Localizer["Poster"]</a>
+                    <button onclick="Afisha()" role="button" aria-pressed="true" class="link_day">@Localizer["Poster"]</button>
                     <a onclick="Today()" role="button" aria-pressed="true" class="link_day">@Localizer["Today"]</a>
                     <a onclick="Tomorrow()" role="button" aria-pressed="true" class="link_day">@Localizer["Tomorrow"]</a>
                     <a onclick="Weekends()" role="button" aria-pressed="true" class="link_day">@Localizer["Weekends"]</a>
@@ -43,12 +43,12 @@
                         </button>
                         <div id="calendar" class="calendar dropdown-menu" data-handledropdownclose="true">
                             <div class="calendar-header">
-                                <span class="month-picker" id="month-picker">February</span>
+                                <span class="month-picker" id="month-picker"></span>
                                 <div class="year-picker">
                                     <span class="year-change" id="prev-year">
                                         <pre><</pre>
                                     </span>
-                                    <span id="year">2021</span>
+                                    <span id="year"></span>
                                     <span class="year-change" id="next-year">
                                         <pre>></pre>
                                     </span>
@@ -82,7 +82,7 @@
     </div>
     <div class="main_info_card card_group row mx-0 justify-content-center mt-5">
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1">
                 </div>
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2">
                 </div>
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3">
                 </div>
@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4">
                 </div>
@@ -131,7 +131,7 @@
 <div class="events pt-3">
     <div class="container">
         <div class="row">
-            <div class="col-10">
+            <div class="col-lg-9">
                 <div class="categories">
                     <div class="concerts">
                         <div class="row justify-content-between">
@@ -373,8 +373,80 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2">
-                @*фильтрация*@
+            <div class="col-lg-3">
+                <div class="filter">
+                    <div class="filter-header">
+                        @Localizer["Filter"]
+                    </div>
+                    <div class="filter-date">
+                        <div class="filter-date-header">
+                            @Localizer["Dates"]
+                        </div>
+                        <div class="filter-date-checkbox">
+                            <ul>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-all" />
+                                    <label for="filter-date-input-all">@Localizer["All"]</label>
+                                </li>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-today" />
+                                    <label for="filter-date-input-today">@Localizer["Today"]</label>
+                                </li>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-tomorrow" />
+                                    <label for="filter-date-input-tomorrow">@Localizer["Tomorrow"]</label>
+                                </li>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-month" />
+                                    <label for="filter-date-input-month">@DateTime.Now.ToString("MMMM")</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="filter-categories-header">
+                            @Localizer["Categories"]
+                        </div>
+                        <div class="filter-categories">
+                            <ul>
+                                @foreach(var category in @Model.CategoriesDictionary[-1])
+                                {
+                                    @if (@Model.CategoriesDictionary.ContainsKey(category.Id))
+                                    {
+                                        <li class="category">
+                                            <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                            <div for="category-@category.Id" class="d-inline-block" id="category-link" onclick="OpenSubcategories(@category.Id)">
+                                                <span class="d-inline-block">@Localizer[category.Name]</span>
+                                                <span class="material-icons arrow icon-down-@category.Id">keyboard_arrow_down</span>
+                                                <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
+                                            </div>
+                                        </li>
+                                        <div class="subcategories">
+                                            <ul class="subcategories-@category.Id" style="display: none;">
+                                                @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
+                                                {
+                                                    <li class="subcategory">
+                                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-input-@subcategory.Id" />
+                                                        <label for="subcategory-input-@subcategory.Id">@subcategory.Name</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <li class="category">
+                                            <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                            <label for="category-@category.Id" class="d-inline-block">@Localizer[category.Name]</label>
+                                        </li>
+                                    }
+                                    <hr>
+                                }
+                            </ul>
+                        </div>
+                        <div>
+                            <button class="btn btn-show w-100 mt-2">@Localizer["Show"]</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -509,6 +581,19 @@
                 window.location.href = '@Url.Action("Weekends", "Event")';
         }
 
+        function OpenSubcategories(id) {
+            var subcategories = $('.subcategories-' + id);
+            if (subcategories.is(':visible')) {
+                $('.icon-up-' + id).hide();
+                $('.icon-down-' + id).show();
+                subcategories.hide();
+            }
+            else {
+                $('.icon-down-' + id).hide();
+                $('.icon-up-' + id).show();
+                subcategories.animate({ opacity: "show" }, "fast" );
+            }
+        }
 
     </script>
 }

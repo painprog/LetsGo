@@ -212,7 +212,20 @@
                 '"Price":' + $(this).find('input').eq(3).val() + '}');
         });
         return tickets;
-    }
+        }
+
+        function showChildren(categoryId) {
+            if (document.getElementById(`${categoryId}-check`).checked) {
+                document.getElementById(`childCategories-${categoryId}`).hidden = false;
+            }
+            else {
+                document.getElementById(`childCategories-${categoryId}`).hidden = true;
+                let childInputs = document.querySelectorAll(`div#childCategories-${categoryId} input`);
+                for (let i = 0; i < childInputs.length; i++) {
+                    childInputs[i].checked = false;
+                }
+            }
+        }
 
     $('form').submit(function () {
         event.preventDefault();

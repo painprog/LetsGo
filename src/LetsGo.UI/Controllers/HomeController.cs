@@ -57,7 +57,10 @@ namespace LetsGo.UI.Controllers
                 List<LocationCategory> categories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories);
                 location.Categories = categories[0].Name;
             }
-            
+
+            model.CategoriesDictionary = _db.EventCategories.ToArray()
+                .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
+
             return View(model);
         }
         

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="All" xml:space="preserve">
-    <value>All</value>
+    <value>Все</value>
   </data>
   <data name="At" xml:space="preserve">
     <value>в</value>
@@ -201,7 +201,7 @@
   <data name="Perfomances" xml:space="preserve">
     <value>Спектакли</value>
   </data>
-  <data name="PopMusic" xml:space="preserve">
+  <data name="Pop-Music" xml:space="preserve">
     <value>Поп музыка</value>
   </data>
   <data name="Poster" xml:space="preserve">
@@ -218,6 +218,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Событие или площадка</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Показать</value>
   </data>
   <data name="som" xml:space="preserve">
     <value>сом</value>

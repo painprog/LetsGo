@@ -201,7 +201,7 @@
   <data name="Perfomances" xml:space="preserve">
     <value>Спектакльлар</value>
   </data>
-  <data name="PopMusic" xml:space="preserve">
+  <data name="Pop-Music" xml:space="preserve">
     <value>Поп музыка</value>
   </data>
   <data name="Poster" xml:space="preserve">
@@ -218,6 +218,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Окуя же жай</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Көрсөтүү</value>
   </data>
   <data name="som" xml:space="preserve">
     <value>сом</value>

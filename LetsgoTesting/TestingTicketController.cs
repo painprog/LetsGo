@@ -18,7 +18,7 @@ namespace LetsgoTesting
                 _context = goContext;
                 _eventService = eventsService;
             }
-
+        // fakeTicketController
         [HttpPost]
         public async Task<IActionResult> Create(DetailsViewModel model)
         {

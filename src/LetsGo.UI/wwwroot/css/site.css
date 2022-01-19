@@ -9,6 +9,15 @@ html {
     scrollbar-width: none; /* Firefox */
 }
 
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
 .page-content {
     margin-bottom: 50px;
 }
@@ -248,7 +257,6 @@ body {
     color: rgb(43, 43, 43);
     background-color: rgb(247, 247, 247);
     line-height: 1.42857;
-    position: relative;
     min-height: 100vh;
 }
 
@@ -263,7 +271,7 @@ body {
     line-height: 1.42857;
     display: flex;
     justify-content: space-between;
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
     height: 10rem;
@@ -349,10 +357,6 @@ body {
     justify-content: center;
 }
 
-.search_wrapper {
-    min-height: 48px;
-}
-
 .seacrh_input {
     min-width: 270px;
     max-width: 960px;
@@ -361,7 +365,6 @@ body {
 .search-page{
     width: 100%;
     top: 50px;
-    /*border-radius: 3px;*/
     z-index: 10000;
 }
 
@@ -388,15 +391,20 @@ body {
     height: 44px;
     width: 184px;
     border-radius: 22px;
-    justify-content: center;
     text-align: center;
     padding: 13px 0;
-    margin: 0 20px;
+    margin: 0 10px;
 }
 
 .icon_buttons {
-    margin: 60px 0;
+    margin: 30px 0;
     text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.icon_button{
+    margin: 0 20px;
 }
 
 .main_info_card .title_card {
@@ -1271,6 +1279,29 @@ body {
 
     .entry-form{
         margin: 20px;
+    }
+
+    .icon_buttons, .links {
+        display: block;
+    }
+
+    .icon_button {
+        margin: 0;
+    }
+
+    .links a {
+        font-size: 12px;
+        padding: 10px 15px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container-2 h1{
+        font-size: 26px;
+        overflow:auto;
     }
 }
 .future-events .day {

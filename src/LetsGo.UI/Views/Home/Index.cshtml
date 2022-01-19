@@ -6,7 +6,7 @@
         <div class="container-2 container-fluid mx-auto">
             <h1 class="pt-1 mb-5 text-center">@Localizer["Title1"]</h1>
             <div class="container_basic_content">
-                <div class="search_wrapper d-flex justify-content-center position-relative ">
+                <div class="search_wrapper d-flex justify-content-center position-relative">
                     <div class="seacrh_input input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -36,8 +36,8 @@
                     <a onclick="Tomorrow()" role="button" aria-pressed="true" class="link_day">@Localizer["Tomorrow"]</a>
                     <a onclick="Weekends()" role="button" aria-pressed="true" class="link_day">@Localizer["Weekends"]</a>
                 </div>
-                <div class="icon_buttons row justify-content-center">
-                    <div class="dropdown col">
+                <div class="icon_buttons">
+                    <div class="dropdown icon_button">
                         <button id="dropdownMenuLink" data-toggle="dropdown" class="btn btn_icon mx-2 mt-2 dropbtn">
                             <i class="icon_btn far fa-calendar-alt"></i>@Localizer["Calendar"]
                         </button>
@@ -73,7 +73,7 @@
                         </div>
 
                     </div>
-                    <div class="col">
+                    <div class="icon_button">
                         <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>@Localizer["Filters"]</button>
                     </div>
                 </div>

@@ -16,8 +16,9 @@ namespace LetsGo.UI.ViewModels
         public Status Status { get; set; }
         public SortState SortOrder { get; set; }
         public List<EventCategory> EventCategories { get; set; }
+        public Dictionary<int?, List<EventCategory>> CategoriesDictionary { get; set; }
         public string EventCategory { get; set; }
         public Dictionary<string, Status> Stats { get; set; }
-        public string EventCategs { get; set; }
+        public string selectedCategories { get; set; }
     }
 }

@@ -11,12 +11,12 @@ namespace LetsGo.UI.ViewModels
         public List<LocationCategory> LocationCategories { get; set; }
         public List<EventCategory> EventCategories { get; set; }
         [Required(ErrorMessage = "Имя пользователя обязательно для заполнения")]
-        [Display(Name = "Имя пользоователя")]
+        [Display(Name = "Имя пользователя")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Номер телефона обязательно для заполнения")]
+        [Required(ErrorMessage = "Номер телефона обязателен для заполнения")]
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Почта обязательно для заполнения")]
+        [Required(ErrorMessage = "Почта обязательна для заполнения")]
         [Display(Name = "Почта")]
         [EmailAddress(ErrorMessage = "Некорректно введенная почта")]
         public string Email { get; set; }

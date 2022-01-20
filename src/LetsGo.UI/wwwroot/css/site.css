@@ -1365,3 +1365,8 @@ body {
     background-color: #fff;
     color: #000;
 }
+}
+
+#Filter input[type=checkbox], .forcheckbox {
+    cursor: pointer;
+}

@@ -39,9 +39,9 @@
                 Сортировка
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">Название</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.PriceSort">Стоимость</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.DateStartSort">Дата начала</a>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))

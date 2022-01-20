@@ -1,46 +1,125 @@
-﻿@model List<LetsGo.Core.Entities.Event>
+﻿@model LetsGo.UI.ViewModels.AfishaViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @{
     ViewBag.Title = _localizer["Poster"] + DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower() + " " + DateTime.Now.Year;
 }
 
-<div class="events-page">
-    <h2>@ViewBag.PageTitle</h2>
-    <div class="events row">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4">
-                <div class="card p-0">
-                    <div class="card-block-img" onclick="Details('@item.Id')">
-                        <img src="@item.PosterImage" alt="@item.Name">
-                        <a href="#"></a>
-                        <div class="wrapper">
-                            <div class="card-age">@item.AgeLimit+</div>
-                        </div>
-                        <div class="card-tag">
-                            <a href="#">@item.Categories</a>
+<div class="container">
+    <h2 class="afisha-header">@ViewBag.PageTitle</h2>
+    <div class="row">
+        <div class="events col-lg-9">
+            <div class="row">
+                @foreach (var item in @Model.Events)
+                {
+                    <div class="col-md-4">
+                        <div class="card p-0">
+                            <div class="card-block-img" onclick="Details('@item.Id')">
+                                <img src="@item.PosterImage" alt="@item.Name">
+                                <a href="#"></a>
+                                <div class="wrapper">
+                                    <div class="card-age">@item.AgeLimit+</div>
+                                </div>
+                                <div class="card-tag">
+                                    <a href="#">@item.Categories</a>
+                                </div>
+                            </div>
+                            <div class="card-block-description">
+                                <div class="card-title" onclick="Details('@item.Id')">@ViewBag.CateogryName "@item.Name"</div>
+                                <div class="card-description">
+                                    <div class="card-date">
+                                        @item.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @item.EventStart.ToString("HH:mm")
+                                    </div>
+                                    <div class="card-venue">
+                                        <a class="card-venue-link" href="#">
+                                            @item.Location.Name
+                                        </a>
+                                    </div>
+                                    <a href="#" class="card-price">
+                                        @_localizer["TicketFrom"] @item.MinPrice KGS
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-block-description">
-                        <div class="card-title" onclick="Details('@item.Id')">@ViewBag.CateogryName "@item.Name"</div>
-                        <div class="card-description">
-                            <div class="card-date">
-                                @item.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @item.EventStart.ToString("HH:mm")
-                            </div>
-                            <div class="card-venue">
-                                <a class="card-venue-link" href="#">
-                                    @item.Location.Name
-                                </a>
-                            </div>
-                            <a href="#" class="card-price">
-                                @_localizer["TicketFrom"] @item.MinPrice KGS
-                            </a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="filter">
+                    <div class="filter-header">
+                        @_localizer["Filter"]
+                    </div>
+                    <div class="filter-date">
+                        <div class="filter-date-header">
+                            @_localizer["Dates"]
+                        </div>
+                        <div class="filter-date-checkbox">
+                            <ul>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-all" />
+                                    <label for="filter-date-input-all">@_localizer["All"]</label>
+                                </li>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-today" />
+                                    <label for="filter-date-input-today">@_localizer["Today"]</label>
+                                </li>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-tomorrow" />
+                                    <label for="filter-date-input-tomorrow">@_localizer["Tomorrow"]</label>
+                                </li>
+                                <li class="filter-date-checkbox">
+                                    <input type="checkbox" value="" id="filter-date-input-month" />
+                                    <label for="filter-date-input-month">@DateTime.Now.ToString("MMMM")</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="filter-categories-header">
+                            @_localizer["Categories"]
+                        </div>
+                        <div class="filter-categories">
+                            <ul>
+                                @foreach(var category in @Model.CategoriesDictionary[-1])
+                                {
+                                    @if (@Model.CategoriesDictionary.ContainsKey(category.Id))
+                                    {
+                                        <li class="category">
+                                            <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                            <div for="category-@category.Id" class="d-inline-block" id="category-link" onclick="OpenSubcategories(@category.Id)">
+                                                <span class="d-inline-block">@_localizer[category.Name]</span>
+                                                <span class="material-icons arrow icon-down-@category.Id">keyboard_arrow_down</span>
+                                                <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
+                                            </div>
+                                        </li>
+                                        <div class="subcategories">
+                                            <ul class="subcategories-@category.Id" style="display: none;">
+                                                @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
+                                                {
+                                                    <li class="subcategory">
+                                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-input-@subcategory.Id" />
+                                                        <label for="subcategory-input-@subcategory.Id">@subcategory.Name</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <li class="category">
+                                            <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                            <label for="category-@category.Id" class="d-inline-block">@_localizer[category.Name]</label>
+                                        </li>
+                                    }
+                                    <hr>
+                                }
+                            </ul>
+                        </div>
+                        <div>
+                            <button class="btn btn-show w-100 mt-2">@_localizer["Show"]</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+        </div>
     </div>
 </div>
 
@@ -57,5 +136,20 @@
             textBtn: 'Больше мероприятий',
             classBtn: 'btn btn-danger btn-loadmore'
         });
+
+        
+        function OpenSubcategories(id) {
+            var subcategories = $('.subcategories-' + id);
+            if (subcategories.is(':visible')) {
+                $('.icon-up-' + id).hide();
+                $('.icon-down-' + id).show();
+                subcategories.hide();
+            }
+            else {
+                $('.icon-down-' + id).hide();
+                $('.icon-up-' + id).show();
+                subcategories.animate({ opacity: "show" }, "fast" );
+            }
+        }
     </script>
 }

@@ -132,7 +132,13 @@ namespace LetsGo.UI.Controllers
                 .Where(e => e.EventStart.Month == DateTime.Now.Month).OrderBy(e => e.EventStart).ToList();
             SetMainEventCategory(events);
             ViewBag.PageTitle = $"Афиша Бишкека на {DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()} {DateTime.Now.Year}";
-            return View(events);
+            AfishaViewModel model = new AfishaViewModel()
+            {
+                Events = events,
+                CategoriesDictionary = _goContext.EventCategories.ToArray()
+                    .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList())
+            };
+            return View(model);
         }
 
         public IActionResult AfishaOn(string year, string month, string day)

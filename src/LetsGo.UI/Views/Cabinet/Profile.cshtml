@@ -30,14 +30,14 @@
             </div>
         </div>
     </div>
-    <div class="row my-4">
-        <h4 class="mr-auto block-heading">Мероприятия</h4>
-        <div class="form-outline mr-2">
+    <div class="row my-3 justify-content-between justify-content-md-around events-btns align-items-baseline">
+        <h4 class="mr-auto block-heading col-12 px-0 mb-2">Мероприятия</h4>
+        <div class="form-outline px-0 col-lg-3 col-md-7 col-7 mb-3">
             <input type="text" id="searchbox-input" class="form-control text-center" placeholder="Поиск"
                    aria-label="Search" onkeyup="filterEvents()" />
         </div>
-        <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="dropdown col-lg-2 col-3 px-0">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Сортировка
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -48,9 +48,13 @@
         </div>
         @if (User.IsInRole("superadmin"))
         {
-            <a asp-controller="Locations" asp-action="Create" class="btn btn-danger px-3 mr-2 float-right">+ Добавить локацию</a>
+            <a asp-controller="Locations" asp-action="Create" class="btn btn-danger float-right col-lg-3 col-4">
+                + Добавить локацию
+            </a>
         }
-        <a asp-controller="Event" asp-action="Add" class="btn btn-danger px-3 float-right">+ Добавить мероприятие</a>
+        <a asp-controller="Event" asp-action="Add" class="btn btn-danger float-right col-lg-3 col-4">
+            + Добавить мероприятие
+        </a>
     </div>
     <div class="row">
         @if (Model.Events.Count != 0)

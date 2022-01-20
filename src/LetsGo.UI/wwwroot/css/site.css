@@ -1348,7 +1348,7 @@ body {
     font-weight: 500;
 }
 
-.profile-btns a {
+.profile-btns a, .events-btns a {
     display: flex;
     justify-content: center;
     align-items: center;

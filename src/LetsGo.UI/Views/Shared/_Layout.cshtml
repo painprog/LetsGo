@@ -167,7 +167,7 @@
         </nav>
     </header>
 
-    <div id="categories-sm" class="hide">
+    <div id="categories-sm" class="hide-item">
         <div class="category-header">
             <span id="close-category-sm" class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
         </div>
@@ -186,7 +186,7 @@
         </div>
     </div>
 
-    <div class="container" style="padding-bottom: 1rem;">
+    <div class="container" style="padding-bottom: 10rem;">
         <main role="main" class="pb-3 page-content">
             @RenderBody()
         </main>
@@ -259,13 +259,13 @@
         //});
 
         $('#category-link').on('click', function () {
-            $('#categories-sm').addClass('show');
-            $('#categories-sm').removeClass('hide');
+            $('#categories-sm').addClass('show-item');
+            $('#categories-sm').removeClass('hide-item');
         });
 
         $('#close-category-sm').on('click', function () {
-            $('#categories-sm').addClass('hide');
-            $('#categories-sm').removeClass('show');
+            $('#categories-sm').addClass('hide-item');
+            $('#categories-sm').removeClass('show-item');
         });
 
     </script>

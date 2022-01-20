@@ -7,15 +7,23 @@
 html {
     -ms-overflow-style: none; /* IE 10+ */
     scrollbar-width: none; /* Firefox */
-}
-
-html, body {
-    height: 100%;
+    height:100%;
 }
 
 body {
+    /*height: 100%;*/
     margin: 0px;
     padding: 0px;
+    position: relative;
+    min-height: 100%;
+    font-family: Roboto, sans-serif;
+    color: rgb(43, 43, 43);
+    background-color: rgb(247, 247, 247);
+    line-height: 1.42857;
+}
+
+.footer{
+    margin-top:20px;
 }
 
 .page-content {
@@ -247,22 +255,13 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
+/*html {
     position: relative;
     min-height: 100%;
-}
-
-body {
-    font-family: Roboto, sans-serif;
-    color: rgb(43, 43, 43);
-    background-color: rgb(247, 247, 247);
-    line-height: 1.42857;
-    min-height: 100vh;
-}
+}*/
 
 .footer {
     box-sizing: border-box;
-    width: 100%;
     padding: 30px 0;
     font-family: Roboto,sans-serif;
     background: #151515;
@@ -271,7 +270,7 @@ body {
     line-height: 1.42857;
     display: flex;
     justify-content: space-between;
-    position: relative;
+    position: absolute;
     bottom: 0;
     width: 100%;
     height: 10rem;
@@ -1327,12 +1326,11 @@ body {
     cursor: pointer;
 }
 
-
-.hide {
+.hide-item {
     display: none;
 }
 
-.show {
+.show-item {
     display: block;
     z-index: 9999;
     width: 100%;

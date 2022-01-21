@@ -27,9 +27,9 @@
             <div class="row col col-lg-3 p-0 profile-btns">
                 @if (User.IsInRole("superadmin"))
                 {
-                    <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light float-right col col-sm-12">+ Добавить админа</a>
+                <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light float-right col col-sm-12">+ @_localizer["Add"]</a>
                 }
-                <a asp-action="Edit" asp-controller="Cabinet" asp-route-id="@Model.User.Id" class="btn btn-light float-right col col-sm-12">Изменить</a>
+            <a asp-action="Edit" asp-controller="Cabinet" asp-route-id="@Model.User.Id" class="btn btn-light float-right col col-sm-12">@_localizer["Edit"]</a>
             </div>
         </div>
     </div>

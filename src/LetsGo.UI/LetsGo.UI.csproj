@@ -103,6 +103,51 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>_Layout.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="Resources\Controllers\CategoryController.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CategoryController.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Controllers\CategoryController.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CategoryController.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Cabinet\PartialViews\_AdminPartial.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>_AdminPartial.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Cabinet\PartialViews\_AdminPartial.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_AdminPartial.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Cabinet\PartialViews\_OrganizerPartial.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>_OrganizerPartial.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Cabinet\PartialViews\_OrganizerPartial.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_OrganizerPartial.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Cabinet\Edit.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Edit.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Cabinet\Edit.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Edit.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Views\Cabinet\Profile.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Profile.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Views\Cabinet\Profile.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Profile.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

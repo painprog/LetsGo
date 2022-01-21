@@ -1,10 +1,13 @@
 ﻿@model LetsGo.UI.ViewModels.ProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 @{
-    ViewData["Title"] = "Профиль";
+    ViewData["Title"] = @_localizer["Profiles"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="m-3">
-    <h4 class="block-heading">Профиль</h4>
+    <h4 class="block-heading">@_localizer["Profiles"]</h4>
     <div class="card mb-4 py-3 mt-2">
         <div class="card-body py-0 row justify-content-lg-between">
             <div class="row justify-content-lg-start justify-content-md-between justify-content-lg-between col col-lg-7">
@@ -15,9 +18,9 @@
                     <h5 class="category-header font-weight-bold">@Model.User.Email</h5>
                     <p class="card-text">
                         @if (Model.User.UserName != null)
-                        {<span>Логин: @Model.User.UserName</span>}
+                        {<span>@_localizer["Login"]: @Model.User.UserName</span>}
                         @if (Model.User.PhoneNumber != null)
-                        {<br /><span>Номер телефона: @Model.User.PhoneNumber</span>}
+                        {<br /><span>@_localizer["PhoneNumber"]: @Model.User.PhoneNumber</span>}
                     </p>
                 </div>
             </div>
@@ -31,14 +34,14 @@
         </div>
     </div>
     <div class="row my-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
-        <h4 class="mr-auto block-heading col-12 px-0 mb-2">Мероприятия</h4>
+        <h4 class="mr-auto block-heading col-12 px-0 mb-2">@_localizer["Event"]</h4>
         <div class="form-outline px-0 col-lg-3 col-md-12 col-12 mb-3">
-            <input type="text" id="searchbox-input" class="form-control text-center" placeholder="Поиск"
+            <input type="text" id="searchbox-input" class="form-control text-center" placeholder=" @_localizer["Search"]"
                    aria-label="Search" onkeyup="filterEvents()" />
         </div>
         <div class="dropdown col-2 px-0 mb-3">
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Сортировка
+                @_localizer["Sort"]
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">Название</a>
@@ -49,11 +52,11 @@
         @if (User.IsInRole("superadmin"))
         {
             <a asp-controller="Locations" asp-action="Create" class="btn btn-danger float-right col-lg-3 col-md-4 col-12 mb-2 mr-1">
-                + Добавить локацию
+                + @_localizer["AddLocation"]
             </a>
         }
         <a asp-controller="Event" asp-action="Add" class="btn btn-danger float-right col-lg-3 col-md-4 col-12">
-            + Добавить мероприятие
+            + @_localizer["AddEvent"]
         </a>
     </div>
     <div class="row">
@@ -73,14 +76,14 @@
         }
         else
         {
-            <p class="d-inline-block col col-xl-9 col-md-12">Мероприятия еще не былии добавлены.</p>
+            <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
         }
         <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9" id="dd">
-            <p class="text-center font-weight-bold py-2" style="font-size: 22px;">Фильтры</p>
+            <p class="text-center font-weight-bold py-2" style="font-size: 22px;"> @_localizer["Filters"]</p>
             <div id="Filter">
                 <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFilter">
                     <div class="categories ml-1">
-                        <p class="font-weight-bold">Категория:</p>
+                        <p class="font-weight-bold"> @_localizer["Category"]:</p>
                         @foreach (var category in Model.CategoriesDictionary[-1])
                         {
                             <div class="category-checkbox">
@@ -117,7 +120,7 @@
                         }
                     </div>
                     <div class="ml-1">
-                        <p class="font-weight-bold">Статус:</p>
+                        <p class="font-weight-bold">@_localizer["Status"]:</p>
                         <select class="form-select my-1" asp-for="@Model.Status" aria-label="Default select example">
                             @for (int i = 0; i < Model.Stats.Keys.Count; i++)
                             {
@@ -126,10 +129,10 @@
                         </select>
                     </div>
                     <div class="datetimes ml-1 fw-bold">
-                        <p class="font-weight-bold">Дата начала:</p>
+                        <p class="font-weight-bold">@_localizer["DateStart"]:</p>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
-                                <label for="dateFrom" class="col-form-label">От</label>
+                                <label for="dateFrom" class="col-form-label"> @_localizer["From"]</label>
                             </div>
                             <div class="col-auto">
                                 <input id="dateFrom" type="datetime-local" asp-for="@Model.DateTimeFrom" class="form-control input-field">
@@ -137,7 +140,7 @@
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
-                                <label for="dateBefore" class="col-form-label">До</label>
+                                <label for="dateBefore" class="col-form-label"> @_localizer["To"]</label>
                             </div>
                             <div class="col-auto">
                                 <input id="dateBefore" type="datetime-local" asp-for="@Model.DateTimeBefore" class="form-control input-field">
@@ -146,7 +149,7 @@
                     </div>
                     <input asp-for="selectedCategories" hidden />
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-danger px-5 py-2 mt-2">Показать</button>
+                        <button type="submit" class="btn btn-danger px-5 py-2 mt-2"> @_localizer["Show"]</button>
                         <input type="reset" value="Сбросить" class="btn btn-outline-danger px-5 py-2 pt-2 mt-2" onclick="Reset()" />
                     </div>
                 </form>

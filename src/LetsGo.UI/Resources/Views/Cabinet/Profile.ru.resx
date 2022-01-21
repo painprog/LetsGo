@@ -33,10 +33,10 @@
         <value>Сортировка</value>
     </data>
     <data name="AddEvent" xml:space="preserve">
-        <value>Добавить локацию</value>
+        <value>Добавить мероприятиие</value>
     </data>
     <data name="AddLocation" xml:space="preserve">
-        <value>Добавить мероприятие</value>
+        <value>Добавить локацию</value>
     </data>
     <data name="EventsNotAdded " xml:space="preserve">
         <value>Мероприятия еще не были добавлены.</value>

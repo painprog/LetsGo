@@ -84,10 +84,10 @@
                                 //to do smth
                                 break;
                             case Status.Rejected:
-                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">@_localizer["Edit"]</span></a>
+                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span>@_localizer["Edit"]</a>
                                 break;
                             case Status.New:
-                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">@_localizer["Edit2"]</span></a>
+                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
                                 break;
                             case Status.Published:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"

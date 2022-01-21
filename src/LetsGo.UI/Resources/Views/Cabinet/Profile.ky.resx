@@ -15,10 +15,10 @@
         <value>Администратор кошуу</value>
     </data>
     <data name="AddEvent" xml:space="preserve">
-        <value>Жайгашкан жерди кошуу</value>
+        <value>Окуя кошуу</value>
     </data>
     <data name="AddLocation" xml:space="preserve">
-        <value>Окуя кошуу</value>
+        <value>Жайгашкан жерди кошуу</value>
     </data>
     <data name="Category" xml:space="preserve">
         <value>Категория</value>

@@ -15,10 +15,10 @@
         <value>Add Admin</value>
     </data>
     <data name="AddEvent" xml:space="preserve">
-        <value>Add a location</value>
+        <value>Add an event</value>
     </data>
     <data name="AddLocation" xml:space="preserve">
-        <value>Add an event</value>
+        <value>Add a location </value>
     </data>
     <data name="Category" xml:space="preserve">
         <value>Category</value>

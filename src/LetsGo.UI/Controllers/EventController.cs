@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
 using LetsGo.DAL;
 using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
@@ -118,7 +119,7 @@ namespace LetsGo.UI.Controllers
             }
         }
 
-        public void SetMainEventCategory(List<Event> events)
+        public void SetMainEventCategory(IEnumerable<Event> events)
         {
             foreach (var item in events)
             {
@@ -126,15 +127,23 @@ namespace LetsGo.UI.Controllers
             }
         }
 
-        public IActionResult Afisha()
+        public IActionResult Afisha(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string selectedCategories)
         {
-            var events = _goContext.Events.Include(e => e.Location)
-                .Where(e => e.EventStart.Month == DateTime.Now.Month).OrderBy(e => e.EventStart).ToList();
+            List<int> EventCategories = new List<int>();
+            if (!string.IsNullOrEmpty(selectedCategories))
+                EventCategories = selectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
+
+            IQueryable<Event> events = _Service.QueryableEventsAfterFilter(
+                   EventCategories, Status, DateTimeFrom, DateTimeBefore
+               );
+
+            //var events = _goContext.Events.Include(e => e.Location)
+            //    .Where(e => e.EventStart.Month == DateTime.Now.Month).OrderBy(e => e.EventStart).ToList();
             SetMainEventCategory(events);
             ViewBag.PageTitle = $"Афиша Бишкека на {DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()} {DateTime.Now.Year}";
             AfishaViewModel model = new AfishaViewModel()
             {
-                Events = events,
+                Events = events.ToList(),
                 CategoriesDictionary = _goContext.EventCategories.ToArray()
                     .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList())
             };

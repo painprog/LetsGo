@@ -61,7 +61,6 @@ namespace LetsGo.UI.Controllers
 
             model.CategoriesDictionary = _db.EventCategories.ToArray()
                 .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
-
             return View(model);
         }
         

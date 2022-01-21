@@ -1,7 +1,7 @@
 ﻿@using LetsGo.Core.Entities.Enums
 @model LetsGo.UI.ViewModels.ProfileViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IViewLocalizer _localizer
 
 <div class="" id="all-events">
 
@@ -31,11 +31,11 @@
                     </div>
                 </div>
                 <div class="col-lg-2 my-auto text-center sideBox">
-                    <h1 style="font-size: 22px;">Билетов</h1>
+                    <h1 style="font-size: 22px;">@_localizer["Ticket"]</h1>
                     <p>
-                        куплено: @item.Sold<br />
+                        @_localizer["Buy"]: @item.Sold<br />
                         @{ var remainder = item.TicketLimit - item.Sold;}
-                        осталось: <text>@(@item.Count - @item.Sold)</text>
+                        @_localizer["Remained"]: <text>@(@item.Count - @item.Sold)</text>
                     </p>
                 </div>
             </div>
@@ -72,6 +72,8 @@
                             case Status.Expired:
                                 <span>@ViewData["Expired"]</span>
                                 break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
                     </div>
                     <div class="col-lg-10">
@@ -89,50 +91,50 @@
                             case Status.New:
                                 <button class="btn btn-success px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                    Принять
+                                    @_localizer["Accept"] 
                                 </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'Rejected')">
-                                    Отклонить
+                                   @_localizer["Reject"]
                                 </button>
                                 break;
                             case Status.Published:
                                 <button type="button" class="btn btn-danger px-3 ml-4 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeStatus(this, 'UnPublished')">
-                                    Снять с публикации
+                                   @_localizer["RemoveFromPublication"] 
                                 </button>
                                 break;
                             case Status.UnPublished:
                                 <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                    Вернуть в публикации
+                                  @_localizer["ReturnToPublications"]  
                                 </button>
                                 break;
                             case Status.ReviewPublished:
                                 <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                    Одобрить возвращение в публикации
+                                   @_localizer["Approve"]  
                                 </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'UnPublished')">
-                                    Отклонить
+                                   @_localizer["Reject"] 
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
                                 <button class="btn btn-primary px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'UnPublished')">
-                                    Одобрить снятие с публикации
+                                   @_localizer["ApproveWithdrawal"] 
                                 </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'Published')">
-                                    Отклонить
+                                  @_localizer["Reject"]  
                                 </button>
                                 break;
                             case Status.Expired:
-                                <p>Мероприятие уже прошло</p><br />
+                                <p> @_localizer["Event"] </p><br />
                                 break;
                         }
-                        <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')">edit</span>
+                        <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')"> @_localizer["Edit"]</span>
                         @*<span class="material-icons px-3 py-2">delete</span>*@
                     </div>
                 </div>
@@ -146,7 +148,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="causeModalLabel">Введите причину</h5>
+                <h5 class="modal-title" id="causeModalLabel">@_localizer["EnterTheReason"]</h5>
             </div>
             <div class="modal-body">
                 <div>
@@ -154,8 +156,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-success" id="cause-confirm" data-bs-dismiss="modal">Подтвердить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@_localizer["Cancel"]</button>
+                <button type="button" class="btn btn-success" id="cause-confirm" data-bs-dismiss="modal">@_localizer["Confirm"]</button>
             </div>
         </div>
     </div>

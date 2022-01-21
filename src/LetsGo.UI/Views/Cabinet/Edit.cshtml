@@ -1,36 +1,38 @@
 ﻿@model LetsGo.ViewModels.EditProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 
 @{
-    ViewBag.Title = "Редактирование профиля";
+    ViewBag.Title = @_localizer["EditProfile"] ;
     Layout = "_Layout";
 }
 
 <div class="entry-form">
-    <h1 class="text-center">Редактирование профиля</h1>
+    <h1 class="text-center">@_localizer["EditProfile"]</h1>
     <form id="edit-form" asp-route-id="@Model.Id"  asp-controller="Cabinet" asp-action="Edit"  method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Email" class="control-label"></label>
+            <label asp-for="Email" class="control-label">@_localizer["Email"]</label>
             <input asp-for="Email" class="form-control input-field" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="UserName" class="control-label"></label>
+            <label asp-for="UserName" class="control-label">@_localizer["Name"]</label>
             <input asp-for="UserName" class="form-control input-field" />
             <span asp-validation-for="UserName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="PhoneNumber">Телефон</label>
+            <label asp-for="PhoneNumber">@_localizer["PhoneNumber"]</label>
             <input asp-for="PhoneNumber" class="form-control input-field" />
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Avatar" class="control-label">Аватар</label>
+            <label asp-for="Avatar" class="control-label">@_localizer["Avatar"]</label>
             <input asp-for="Avatar" type="file" class="form-control-file" />
             <span asp-validation-for="Avatar" class="text-danger"></span>
         </div>
         <div class="form-group text-center mb-3">
-            <input type="submit" value="Сохранить" class="btn btn-primary form-control btn-submit" />
+            <input type="submit" value="@_localizer["Save"]" class="btn btn-primary form-control btn-submit" />
         </div>
     </form>
 </div>

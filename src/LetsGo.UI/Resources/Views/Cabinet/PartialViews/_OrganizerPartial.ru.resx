@@ -1,0 +1,50 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Ticket" xml:space="preserve">
+        <value>Билетов</value>
+    </data>
+    <data name="Buy" xml:space="preserve">
+        <value>куплено</value>
+    </data>
+    <data name="Remained" xml:space="preserve">
+        <value>осталось</value>
+    </data>
+    <data name="Send" xml:space="preserve">
+        <value>Отправить заявку: снять с публикации</value>
+    </data>
+    <data name="RefusedForTheReason" xml:space="preserve">
+        <value>Отказано по причине</value>
+    </data>
+    <data name="Publish" xml:space="preserve">
+        <value>Отправить заявку: опубликовать</value>
+    </data>
+    <data name="CancelWithdrawa" xml:space="preserve">
+        <value>Отменить запрос возвращения</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Отменить запрос снятия</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Отредактировать и отправить снова</value>
+    </data>
+    <data name="WithdrawalDenied" xml:space="preserve">
+        <value>Отказано в снятии по причине</value>
+    </data>
+    <data name="DeniedPublication" xml:space="preserve">
+        <value>Отказано в публикации по причине</value>
+    </data>
+    <data name="Edit2" xml:space="preserve">
+        <value>редактировать</value>
+    </data>
+</root>

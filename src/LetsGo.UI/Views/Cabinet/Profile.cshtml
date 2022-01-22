@@ -44,9 +44,9 @@
                 @_localizer["Sort"]
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">Название</a>
-                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.PriceSort">Стоимость</a>
-                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.DateStartSort">Дата начала</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">@_localizer["NameSort"]</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.PriceSort">@_localizer["PriceSort"]</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.DateStartSort">@_localizer["DateStartSort"]</a>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))

@@ -95,8 +95,7 @@ namespace LetsGo.UI.Controllers
                     if (pathImage != "/images/default_avatar.png")
                         using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
                             await model.Avatar.CopyToAsync(fileStream);
-                    using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                        await model.Avatar.CopyToAsync(fileStream);
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
@@ -125,6 +124,8 @@ namespace LetsGo.UI.Controllers
 
         public async Task<IActionResult> EmailConfirmForAdmin(string email)
         {
+            if (email is null)
+                return View("Error");
             var user = await _userManager.FindByEmailAsync(email);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code, email = user.Email },

@@ -1,8 +1,11 @@
-﻿<div class="card">
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
+<div class="card">
     <div class="card-body">
         <span>
-            Ваша почта успешно подтверждена.<br />Сменить пароль можно, перейдя по <a href='@ViewBag.CallbackUrl'>ссылке</a><br />
-            Для входа в приложение перейдите по <a asp-action="Login">ссылке</a>.
+            @_localizer["EmailConfirm"]<br />@_localizer["ResetPassword"] <a href='@ViewBag.CallbackUrl'>@_localizer["Link"]</a><br />
+            @_localizer["Enter"] <a asp-action="Login">@_localizer["Link"]</a>.
         </span>
     </div>
 </div>

@@ -157,6 +157,7 @@ namespace LetsGo.UI.Controllers
                         Email = model.Email,
                         AvatarLink = pathImage,
                         PhoneNumber = model.PhoneNumber,
+                        SelfInfo = model.SelfInfo
                     };
 
                     var result = await _userManager.CreateAsync(user, model.Password);

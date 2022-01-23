@@ -95,7 +95,8 @@ namespace LetsGo.Controllers
                 Id = id,
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber,
-                Email = user.Email
+                Email = user.Email,
+                SelfInfo = user.SelfInfo
             };
             return View(model);
         }
@@ -123,6 +124,8 @@ namespace LetsGo.Controllers
             currentUser.UserName = userModel.UserName;
             currentUser.PhoneNumber = userModel.PhoneNumber;
             currentUser.AvatarLink = avatar;
+            currentUser.SelfInfo = userModel.SelfInfo;
+
             _context.Users.Update(currentUser);
             await _context.SaveChangesAsync();
             if (newEmail)

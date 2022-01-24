@@ -216,38 +216,55 @@
         let _id;
         let _status;
         let _div;
+        let _button;
+        let _email;
         function ChangeDenyStatus(button, newStatus) {
             event.stopPropagation();
             // log
-            console.log(button);
             console.log(button.id);
-            console.log(newStatus);
             //
             _id = button.id;
             _status = newStatus;
+        }
+        function ChangeDenyUserStatus(button, email) {
+            event.stopPropagation();
+            // log
+            console.log(email);
+            //
+            _button = button;
+            _email = email;
+            _id = 'user';
         }
 
         $('#cause-confirm').on('click', () => {
             event.preventDefault();
             let cause = $('textarea#cause-text').val();
             $('textarea#cause-text').val('');
-            console.log(_id, _status, cause);
-            $.ajax({
-                url: '@Url.Action("ChangeStatus", "Event")',
-                type: 'POST',
-                data:
-                {
-                    'status': _status,
-                    'eventId': _id,
-                    'cause': cause
-                },
-                success: function (response) {
-                    if (response.success) {
-                        $('#' + _id).closest('.card').hide('slow');
+            if(_id == 'user')
+            {
+                console.log(_email, cause, _button);
+                DeleteAccount(_email, _button, cause);
+            }
+            else
+            {
+                console.log(_id, _status, cause);
+                $.ajax({
+                    url: '@Url.Action("ChangeStatus", "Event")',
+                    type: 'POST',
+                    data:
+                    {
+                        'status': _status,
+                        'eventId': _id,
+                        'cause': cause
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#' + _id).closest('.card').hide('slow');
+                        }
                     }
-                }
-            })
-        })
+                });
+            }    
+        });
 
         function disableCard(elem) {
             $(elem).closest('card').prop('disabled', true);
@@ -325,7 +342,7 @@
             });
         });
 
-        function ApproveAccount(email) {
+        function ApproveAccount(email, button) {
             event.stopPropagation();
             // log
             console.log(email);
@@ -336,21 +353,26 @@
                 success: function (response) {
                     if (response.success) {
                         console.log("approved");
+                        $(button).closest('.card').hide('slow');
                     }
                 }
             });
         };
-        function DeleteAccount(email) {
+        function DeleteAccount(email, button, cause) {
             event.stopPropagation();
             // log
             console.log(email);
             $.ajax({
                 url: '@Url.Action("DeleteUser", "Cabinet")',
                 type: 'POST',
-                data: {'email': email},
+                data: {
+                    'email': email,
+                    'cause': cause
+                },
                 success: function (response) {
                     if (response.success) {
                         console.log("deleted");
+                        $(button).closest('.card').hide('slow');
                     }
                 }
             });

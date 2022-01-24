@@ -121,7 +121,7 @@
     <value>Аватар</value>
   </data>
   <data name="EditProfile" xml:space="preserve">
-    <value>Редакритование профиля</value>
+    <value>Редактирование профиля</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Почта</value>

@@ -188,11 +188,11 @@
                     <div class="col">
                         @if (item.Approved == false)
                         {
-                            <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email')">
+                            <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email', this)">
                                 @_localizer["Accept"]
                             </button>
                             <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal"
-                                onclick="DeleteAccount('@item.Email')">
+                                onclick="ChangeDenyUserStatus(this, '@item.Email')">
                                 @_localizer["Reject"]
                             </button>
                         }

@@ -176,7 +176,7 @@ namespace LetsGo.Controllers
             }
         }
         [HttpPost]
-        public async Task<JsonResult> DeleteUser(string email)
+        public async Task<JsonResult> DeleteUser(string email, string cause)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
@@ -191,14 +191,14 @@ namespace LetsGo.Controllers
                 if (user.EmailConfirmed)
                 {
                     await EmailService.Send(user.Email, "Ваша учетная запись была удалена",
-                        $"Доброго времени суток, {user.UserName}! Ваша учетная запись на сайте ticketbox.store была удалена" +
-                        $"по определенным причинам.");
+                        $"Доброго времени суток, {user.UserName}! Ваша учетная запись была удалена" +
+                        $"по следующей причине: {cause}");
                 }
                 else
                 {
                     await EmailService.Send(user.Email, "Ваша заявка на создание учетной записи была отклонена",
-                        $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена," +
-                        $"так как администрация сайта сочла ваши данные недостоверными или по каким-либо иным причинам.");
+                        $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена" +
+                        $"по следующей причине: {cause}");
                 }
                 var rolesForUser = await _userManager.GetRolesAsync(user);
 

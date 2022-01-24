@@ -293,14 +293,6 @@
             $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
         }
 
-
-
-
-
-
-
-
-
         $('#events-link').on('click', () => {
             $('#all-events').show();
             $('#all-organizers').hide();
@@ -333,28 +325,36 @@
             });
         });
 
-        function ApproveAccount(button, newStatus) {
+        function ApproveAccount(email) {
             event.stopPropagation();
             // log
-            console.log(button);
-            console.log(button.id);
-            console.log(newStatus);
-            //
+            console.log(email);
             $.ajax({
-              //  url: '@Url.Action("ChangeStatus", "Event")',
+                url: '@Url.Action("Approve", "Cabinet")',
                 type: 'POST',
-                data:
-                {
-                    'status': newStatus,
-                    'organizerId': button.id
-                },
+                data: {'email': email},
                 success: function (response) {
                     if (response.success) {
-                        $(button).closest('.card').hide('slow');
+                        console.log("approved");
                     }
                 }
-            })
-        }
+            });
+        };
+        function DeleteAccount(email) {
+            event.stopPropagation();
+            // log
+            console.log(email);
+            $.ajax({
+                url: '@Url.Action("DeleteUser", "Cabinet")',
+                type: 'POST',
+                data: {'email': email},
+                success: function (response) {
+                    if (response.success) {
+                        console.log("deleted");
+                    }
+                }
+            });
+        };
 
         function userEdit(userId) {
             event.stopPropagation();

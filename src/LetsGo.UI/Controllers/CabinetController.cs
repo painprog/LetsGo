@@ -158,51 +158,67 @@ namespace LetsGo.Controllers
                 $"Подтвердите регистрацию, перейдя по ссылке:" +
                 $" <a href='{callbackUrl}'>ссылка</a>");
         }
-
-        public async Task Approve(string email)
+        [HttpPost]
+        public async Task<JsonResult> Approve(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //user.Approved = true;
-            //_context.SaveChanges();
-            await SendConfirmEmail(user, code);
-        }
-
-        public async Task DeleteUser(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (_context.Events.Any(u => u.OrganizerId == user.Id && u.Status == Status.Published))
+            if (user != null)
             {
-                foreach (var item in _service.GetEvents(user.Id).Result.Where(e => e.Status == Status.Published))
-                {
-                    await _service.ChangeStatus("UnPublished", item.Id, "The organizer of the event was deleted by admin");
-                }
-            }
-            if (user.EmailConfirmed)
-            {
-                await EmailService.Send(user.Email, "Ваша учетная запись была удалена",
-                    $"Доброго времени суток, {user.UserName}! Ваша учетная запись на сайте ticketbox.store была удалена" +
-                    $"по определенным причинам.");
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                user.Approved = true;
+                _context.SaveChanges();
+                await SendConfirmEmail(user, code);
+                return Json(new { success = true });
             }
             else
             {
-                await EmailService.Send(user.Email, "Ваша заявка на создание учетной записи была отклонена",
-                    $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена," +
-                    $"так как администрация сайта сочла ваши данные недостоверными или по каким-либо иным причинам.");
+                return Json(new { success = false });
             }
-            var rolesForUser = await _userManager.GetRolesAsync(user);
-
-            using (var transaction = _context.Database.BeginTransaction())
+        }
+        [HttpPost]
+        public async Task<JsonResult> DeleteUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
             {
-                if (rolesForUser.Count() > 0)
+                if (_context.Events.Any(u => u.OrganizerId == user.Id && u.Status == Status.Published))
                 {
-                    foreach (var item in rolesForUser.ToList())
+                    foreach (var item in _service.GetEvents(user.Id).Result.Where(e => e.Status == Status.Published))
                     {
-                        var result = await _userManager.RemoveFromRoleAsync(user, item);
+                        await _service.ChangeStatus("UnPublished", item.Id, "The organizer of the event was deleted by admin");
                     }
                 }
-                await _userManager.DeleteAsync(user);
-                transaction.Commit();
+                if (user.EmailConfirmed)
+                {
+                    await EmailService.Send(user.Email, "Ваша учетная запись была удалена",
+                        $"Доброго времени суток, {user.UserName}! Ваша учетная запись на сайте ticketbox.store была удалена" +
+                        $"по определенным причинам.");
+                }
+                else
+                {
+                    await EmailService.Send(user.Email, "Ваша заявка на создание учетной записи была отклонена",
+                        $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена," +
+                        $"так как администрация сайта сочла ваши данные недостоверными или по каким-либо иным причинам.");
+                }
+                var rolesForUser = await _userManager.GetRolesAsync(user);
+
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    if (rolesForUser.Count() > 0)
+                    {
+                        foreach (var item in rolesForUser.ToList())
+                        {
+                            var result = await _userManager.RemoveFromRoleAsync(user, item);
+                        }
+                    }
+                    await _userManager.DeleteAsync(user);
+                    transaction.Commit();
+                }
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
             }
         }
     }

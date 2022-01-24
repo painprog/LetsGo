@@ -186,14 +186,16 @@
             <div class="text-center align-content-between admin-event pt-2 bg-danger">
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-danger px-3 ml-4 mb-2" type="button"
-                                @*id="@item.Id" onclick="ApproveAccount(this, 'Published')"*@>
-                            @_localizer["Accept"]
-                        </button>
-                        <button type="button" class="btn btn-danger px-3 mb-2" @*data-bs-toggle="modal" data-bs-target="#causeModal"
-                                id="@item.Id" onclick="RejectAccount(this, 'UnPublished')"*@>
-                            @_localizer["Reject"]
-                        </button>
+                        @if (item.Approved == false)
+                        {
+                            <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email')">
+                                @_localizer["Accept"]
+                            </button>
+                            <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal"
+                                onclick="DeleteAccount('@item.Email')">
+                                @_localizer["Reject"]
+                            </button>
+                        }
                         @if (item.Approved == true)
                         {
                             <span class="material-icons my-auto px-3 mb-2 py-2" onclick="userEdit('@item.Id')"> edit</span>

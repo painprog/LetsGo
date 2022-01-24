@@ -84,7 +84,8 @@ namespace LetsGo.UI.Controllers
                     Email = model.Email,
                     UserName = model.UserName,
                     PhoneNumber = model.PhoneNumber,
-                    AvatarLink = pathImage
+                    AvatarLink = pathImage,
+                    Approved = true
                 };
 
                 string password = new Password().Next();

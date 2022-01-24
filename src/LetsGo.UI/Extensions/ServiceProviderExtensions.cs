@@ -41,7 +41,8 @@ namespace LetsGo.UI.Extensions
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                AvatarLink = "/images/default_avatar.png"
+                AvatarLink = "/images/default_avatar.png",
+                SelfInfo = string.Empty
             };
 
             if (!context.Users.Any(u => u.UserName == user.UserName))

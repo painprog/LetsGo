@@ -37,9 +37,8 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile(
-            Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string selectedCategories, SortState SortOrder = SortState.DateStartDesc
-        )
+        public async Task<IActionResult> Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore,
+            string selectedCategories, SortState SortOrder = SortState.DateStartDesc)
         {
             List<int> EventCategories = new List<int>();
             if (!string.IsNullOrEmpty(selectedCategories))
@@ -84,6 +83,15 @@ namespace LetsGo.Controllers
             }
 
             viewModel.Events = Events.ToList();
+
+            List<User> allUsers = new List<User>();
+            if (User.IsInRole("superadmin"))
+                allUsers.AddRange(await _userManager.GetUsersInRoleAsync("admin"));
+            allUsers.AddRange(await _userManager.GetUsersInRoleAsync("organizer"));
+            allUsers.AddRange(await _userManager.GetUsersInRoleAsync("usher"));
+
+            viewModel.Users = allUsers;
+
             return View(viewModel);
         }
 
@@ -96,7 +104,8 @@ namespace LetsGo.Controllers
                 Id = id,
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber,
-                Email = user.Email
+                Email = user.Email,
+                SelfInfo = user.SelfInfo
             };
             return View(model);
         }
@@ -124,6 +133,8 @@ namespace LetsGo.Controllers
             currentUser.UserName = userModel.UserName;
             currentUser.PhoneNumber = userModel.PhoneNumber;
             currentUser.AvatarLink = avatar;
+            currentUser.SelfInfo = userModel.SelfInfo;
+
             _context.Users.Update(currentUser);
             await _context.SaveChangesAsync();
             if (newEmail)

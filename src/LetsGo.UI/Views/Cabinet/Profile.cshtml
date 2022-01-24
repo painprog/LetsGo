@@ -33,11 +33,21 @@
             </div>
         </div>
     </div>
-    <div class="row my-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
-        <h4 class="mr-auto block-heading col-12 px-0 mb-2">@_localizer["Event"]</h4>
+    <div class="row mt-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
+        <div class="row justify-content-start col-12 px-0">
+            <div class="col-2 px-0">
+                <h4 id="events-link" class="mr-auto block-heading px-0 mb-3 heading-link">@_localizer["Event"]</h4>
+            </div>
+            @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
+            {
+                <div class="col-2 px-0">
+                    <h4 id="organizers-link" class="mr-auto block-heading px-0 heading-link">@_localizer["Users"]</h4>
+                </div>
+            }
+        </div>
         <div class="form-outline px-0 col-lg-3 col-md-12 col-12 mb-3">
             <input type="text" id="searchbox-input" class="form-control text-center" placeholder=" @_localizer["Search"]"
-                   aria-label="Search" onkeyup="filterEvents()" />
+                   aria-label="Search" onkeyup="filter()" />
         </div>
         <div class="dropdown col-2 px-0 mb-3">
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,7 +72,7 @@
     <div class="row">
         @if (Model.Events.Count != 0)
         {
-            <div class="col events-container mb-5 pl-0">
+            <div class="col events-container mb-5 px-0">
                 @if (Model.IsOrganizer)
                 {
                     await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
@@ -78,7 +88,7 @@
         {
             <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
         }
-        <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9" id="dd">
+        <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9 ml-3" id="dd">
             <p class="text-center font-weight-bold py-2" style="font-size: 22px;"> @_localizer["Filters"]</p>
             <div id="Filter">
                 <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFilter">
@@ -186,7 +196,7 @@
             console.log(button);
             console.log(button.id);
             console.log(newStatus);
-            // 
+            //
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
                 type: 'POST',
@@ -283,5 +293,72 @@
             $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
         }
 
+
+
+
+
+
+
+
+
+        $('#events-link').on('click', () => {
+            $('#all-events').show();
+            $('#all-organizers').hide();
+            $('#dropdownMenuButton').show();
+            $('#dd').show();
+        });
+
+        $('#organizers-link').on('click', () => {
+            $('#all-events').hide();
+            $('#all-organizers').show();
+            $('#dropdownMenuButton').hide();
+            $('#dd').hide();
+        });
+
+        $(document).ready(function () {
+            var maxLength = 150;
+            $("#self-info").each(function () {
+                var myStr = $(this).text();
+                if ($.trim(myStr).length > maxLength) {
+                    var newStr = myStr.substring(0, maxLength);
+                    var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+                    $(this).empty().html(newStr);
+                    $(this).append(' <a href="javascript:void(0);" class="read-more font-weight-bold text-decoration-none">...</a>');
+                    $(this).append('<span class="more-text">' + removedStr + '</span>');
+                }
+            });
+            $(".read-more").click(function () {
+                $(this).siblings(".more-text").contents().unwrap();
+                $(this).remove();
+            });
+        });
+
+        function ApproveAccount(button, newStatus) {
+            event.stopPropagation();
+            // log
+            console.log(button);
+            console.log(button.id);
+            console.log(newStatus);
+            //
+            $.ajax({
+              //  url: '@Url.Action("ChangeStatus", "Event")',
+                type: 'POST',
+                data:
+                {
+                    'status': newStatus,
+                    'organizerId': button.id
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $(button).closest('.card').hide('slow');
+                    }
+                }
+            })
+        }
+
+        function userEdit(userId) {
+            event.stopPropagation();
+            window.location.href = '@Url.Action("Edit","Cabinet")?id=' + userId;
+        }
     </script>
 }

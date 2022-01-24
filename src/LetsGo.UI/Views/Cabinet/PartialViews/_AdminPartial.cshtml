@@ -91,43 +91,43 @@
                             case Status.New:
                                 <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                    @_localizer["Accept"] 
+                                    @_localizer["Accept"]
                                 </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'Rejected')">
-                                   @_localizer["Reject"]
+                                    @_localizer["Reject"]
                                 </button>
                                 break;
                             case Status.Published:
                                 <button type="button" class="btn btn-danger px-3 ml-4 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeStatus(this, 'UnPublished')">
-                                   @_localizer["RemoveFromPublication"] 
+                                    @_localizer["RemoveFromPublication"]
                                 </button>
                                 break;
                             case Status.UnPublished:
                                 <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                  @_localizer["ReturnToPublications"]  
+                                    @_localizer["ReturnToPublications"]
                                 </button>
                                 break;
                             case Status.ReviewPublished:
                                 <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                   @_localizer["Approve"]  
+                                    @_localizer["Approve"]
                                 </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'UnPublished')">
-                                   @_localizer["Reject"] 
+                                    @_localizer["Reject"]
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
                                 <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
                                         onclick="ChangeStatus(this, 'UnPublished')">
-                                   @_localizer["ApproveWithdrawal"] 
+                                    @_localizer["ApproveWithdrawal"]
                                 </button>
                                 <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
                                         onclick="ChangeDenyStatus(this, 'Published')">
-                                  @_localizer["Reject"]  
+                                    @_localizer["Reject"]
                                 </button>
                                 break;
                             case Status.Expired:
@@ -136,6 +136,69 @@
                         }
                         <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')"> edit</span>
                         @*<span class="material-icons px-3 py-2">delete</span>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<div id="all-organizers" style="display:none;">
+    @foreach (var item in Model.Users)
+    {
+        <div class="card mb-3 event-card" style="border-radius: 15px">
+            <div class="row body">
+                <div class="pn-page-head col-lg-3 border-right" style="border-radius: 0;">
+                    <div class="row text-center">
+                        <div class="col px-0">
+                            <div class="pn-head_image">
+                                <img src="@item.AvatarLink" alt="avatar" class="rounded-circle">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 sideBox">
+                    <div class="row">
+                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Role"]:</p>
+                        <span id="organizer-role" class="col">
+                           
+                        </span>
+                    </div>
+                    <div class="row">
+                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Username"]:</p>
+                        <span id="organizer-name" class="col">@item.UserName</span>
+                    </div>
+                    <div class="row">
+                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">Email:</p>
+                        <span id="organizer-email" class="col">@item.Email</span>
+                    </div>
+                    <div class="row">
+                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Mobile"]:</p>
+                        <span id="organizer-phone" class="col">@item.PhoneNumber</span>
+                    </div>
+                    <div class="row mt-3">
+                        <p class="col-2 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["SelfInfo"]:</p>
+                        <span id="self-info" class="col px-0" style="text-align: justify;text-overflow: ellipsis; ">@item.SelfInfo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center align-content-between admin-event pt-2 bg-danger">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-danger px-3 ml-4 mb-2" type="button"
+                                @*id="@item.Id" onclick="ApproveAccount(this, 'Published')"*@>
+                            @_localizer["Accept"]
+                        </button>
+                        <button type="button" class="btn btn-danger px-3 mb-2" @*data-bs-toggle="modal" data-bs-target="#causeModal"
+                                id="@item.Id" onclick="RejectAccount(this, 'UnPublished')"*@>
+                            @_localizer["Reject"]
+                        </button>
+                        @if (item.Approved == true)
+                        {
+                            <span class="material-icons my-auto px-3 mb-2 py-2" onclick="userEdit('@item.Id')"> edit</span>
+                            <span class="material-icons px-3 mb-2 py-2">delete</span>
+                        }
                     </div>
                 </div>
             </div>

@@ -24,6 +24,10 @@ namespace LetsGo.ViewModels
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "О себе")]
+        [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        public string SelfInfo { get; set; }
+
         public IFormFile Avatar { get; set; }
     }
 }

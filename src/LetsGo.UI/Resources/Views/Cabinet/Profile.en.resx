@@ -180,4 +180,10 @@
   <data name="PriceSort" xml:space="preserve">
     <value>Price</value>
   </data>
+  <data name="Organizers" xml:space="preserve">
+    <value>Organizers</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
 </root>

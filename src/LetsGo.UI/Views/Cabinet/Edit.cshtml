@@ -9,7 +9,7 @@
 
 <div class="entry-form">
     <h1 class="text-center">@_localizer["EditProfile"]</h1>
-    <form id="edit-form" asp-route-id="@Model.Id"  asp-controller="Cabinet" asp-action="Edit"  method="post" enctype="multipart/form-data">
+    <form id="edit-form" asp-route-id="@Model.Id" asp-controller="Cabinet" asp-action="Edit" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Email" class="control-label">@_localizer["Email"]</label>
@@ -26,6 +26,14 @@
             <input asp-for="PhoneNumber" class="form-control input-field" />
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
+        @if (User.IsInRole("organizer"))
+        {
+            <div class="form-group">
+                <label asp-for="SelfInfo">@_localizer["SelfInfo"]</label>
+                <textarea class="form-control input-field" asp-for="SelfInfo" rows="6"></textarea>
+                <span asp-validation-for="SelfInfo" class="text-danger"></span>
+            </div>
+        }
         <div class="form-group">
             <label asp-for="Avatar" class="control-label">@_localizer["Avatar"]</label>
             <input asp-for="Avatar" type="file" class="form-control-file" />

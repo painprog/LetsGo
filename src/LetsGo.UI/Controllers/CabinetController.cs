@@ -23,6 +23,7 @@ namespace LetsGo.Controllers
     {
         private readonly EventsService _service;
         private readonly CabinetService _cabService;
+        private readonly UsersService _usersService;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
 
@@ -147,6 +148,44 @@ namespace LetsGo.Controllers
             await EmailService.Send(user.Email, "Подтвердите ваш аккаунт",
                 $"Подтвердите регистрацию, перейдя по ссылке:" +
                 $" <a href='{callbackUrl}'>ссылка</a>");
+        }
+
+        public async Task DeleteUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (_context.Events.Any(u => u.OrganizerId == user.Id && u.Status == Status.Published))
+            {
+                foreach (var item in _service.GetEvents(user.Id).Result.Where(e => e.Status == Status.Published))
+                {
+                    await _service.ChangeStatus("UnPublished", item.Id, "The organizer of the event was deleted by admin");
+                }
+            }
+            if (user.EmailConfirmed)
+            {
+                await EmailService.Send(user.Email, "Ваша учетная запись была удалена",
+                    $"Доброго времени суток, {user.UserName}! Ваша учетная запись на сайте ticketbox.store была удалена" +
+                    $"по определенным причинам.");
+            }
+            else
+            {
+                await EmailService.Send(user.Email, "Ваша заявка на создание учетной записи была отклонена",
+                    $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена," +
+                    $"так как администрация сайта сочла ваши данные недостоверными или по каким-либо иным причинам.");
+            }
+            var rolesForUser = await _userManager.GetRolesAsync(user);
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                if (rolesForUser.Count() > 0)
+                {
+                    foreach (var item in rolesForUser.ToList())
+                    {
+                        var result = await _userManager.RemoveFromRoleAsync(user, item);
+                    }
+                }
+                await _userManager.DeleteAsync(user);
+                transaction.Commit();
+            }
         }
     }
 }

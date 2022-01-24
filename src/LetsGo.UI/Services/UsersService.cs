@@ -19,12 +19,6 @@ namespace LetsGo.UI.Services
             _context = context;
             _userManager = userManager;
         }
-        public async Task Delete(int id)
-        {
-            var user = Get(id).Result;
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-        }
         public async Task<User> Get(int id)
         {
             User user = null;

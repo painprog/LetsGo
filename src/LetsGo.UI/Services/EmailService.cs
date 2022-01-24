@@ -41,8 +41,8 @@ namespace LetsGo.UI.Services
                     email.To.Add(MailboxAddress.Parse(emailTo));
                     email.Subject = subject;
                     email.Body = new TextPart(TextFormat.Html) {
-                        Text = message + $"Ваш QR code: <br /> <img width=\"100\" height=\"100\" src=\"https://localhost:44377/Ticket/GetQR?{item.QR}\">" +
-                        $"<img/> <br/> <br />покажите его на входе"
+                        Text = message + $"Ваш QR code: <br /> <img width=\"100\" height=\"100\" src=\"https://localhost:44377/Ticket/GetQR?QR={item.TicketIdentifier}\">" +
+                        $"<img/> <br/> <br />покажите его на входе<br/><a href=\"https://localhost:44377/Ticket/GetPDF?QR={item.TicketIdentifier}\">Ваш билет в pdf формате.<a/>"
                     };
                     await client.SendAsync(email);
                 }

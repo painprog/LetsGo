@@ -41,7 +41,7 @@
             </div>
             <div class="text-center align-content-between admin-event pt-2 bg-danger">
                 <div class="row">
-                    <div class="col-lg-2">
+                    <div class="col-lg-4 text-white my-auto">
                         <span>@ViewData["Status"]: </span>
                         @switch (item.Status)
                         {
@@ -76,7 +76,7 @@
                                 throw new ArgumentOutOfRangeException();
                         }
                     </div>
-                    <div class="col-lg-10">
+                    <div class="col-lg-8">
                         @switch (item.Status)
                         {
                             case Status.NotDefined:
@@ -162,7 +162,8 @@
                     <div class="row">
                         <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Role"]:</p>
                         <span id="organizer-role" class="col">
-                           
+@*                           @item.UserRoles.FirstOrDefault().ToString()
+*@                           
                         </span>
                     </div>
                     <div class="row">

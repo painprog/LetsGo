@@ -15,31 +15,43 @@ using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
 using LetsGo.UI.ViewModels;
 using LetsGo.Enums;
+using Microsoft.Extensions.Localization;
 
-namespace LetsGo.Controllers
+namespace LetsGo.UI.Controllers
 {
     [Authorize]
     public class CabinetController : Controller
     {
         private readonly EventsService _service;
         private readonly CabinetService _cabService;
-        private readonly UsersService _usersService;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer<CabinetController> _localizer;
 
 
         public CabinetController(EventsService service, CabinetService cabService,
-            ApplicationDbContext context, UserManager<User> userManager)
+            ApplicationDbContext context, UserManager<User> userManager, IStringLocalizer<CabinetController> localizer)
         {
             _service = service;
             _cabService = cabService;
             _context = context;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore,
             string selectedCategories, SortState SortOrder = SortState.DateStartDesc)
         {
+            ViewData["NotDefined"] = _localizer["NotDefined"];
+            ViewData["Edited"] = _localizer["Edited"];
+            ViewData["Rejected"] = _localizer["Rejected"];
+            ViewData["New"] = _localizer["New"];
+            ViewData["Published"] = _localizer["Published"];
+            ViewData["UnPublished"] = _localizer["UnPublished"];
+            ViewData["ReviewPublished"] = _localizer["ReviewPublished"];
+            ViewData["ReviewUnPublished"] = _localizer["ReviewUnPublished"];
+            ViewData["Expired"] = _localizer["Expired"];
+            ViewData["Status"] = _localizer["Status"];
             List<int> EventCategories = new List<int>();
             if (!string.IsNullOrEmpty(selectedCategories))
                 EventCategories = selectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
@@ -91,7 +103,6 @@ namespace LetsGo.Controllers
             allUsers.AddRange(await _userManager.GetUsersInRoleAsync("usher"));
 
             viewModel.Users = allUsers;
-
             return View(viewModel);
         }
 

@@ -36,7 +36,7 @@ namespace LetsGo.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Profile(
+        public async Task<IActionResult> Profile(
             Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string selectedCategories, SortState SortOrder = SortState.DateStartDesc
         )
         {
@@ -50,6 +50,7 @@ namespace LetsGo.Controllers
                 .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
             Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
             viewModel.Stats = Stats;
+            viewModel.IsOrganizer = await _userManager.IsInRoleAsync(user, "organizer");
             viewModel.EventCategories = _context.EventCategories.ToList();
             viewModel.selectedCategories = selectedCategories ?? String.Empty;
 

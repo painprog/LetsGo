@@ -1,5 +1,8 @@
 ﻿@using LetsGo.Core.Entities.Enums
 @model LetsGo.UI.ViewModels.ProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 <div class="col col-xl-9 col-md-12" id="all-events">
     @foreach (var item in Model.Events)
     {
@@ -28,11 +31,11 @@
                     </div>
                 </div>
                 <div class="col-lg-2 my-auto text-center sideBox">
-                    <h1 style="font-size: 22px;">Билетов</h1>
+                    <h1 style="font-size: 22px;">@_localizer["Ticket"]</h1>
                     <p>
-                        куплено: @item.Sold<br />
+                        @_localizer["Buy"]: @item.Sold<br />
                         @{ var remainder = item.TicketLimit - item.Sold;}
-                        осталось: <text>@(@item.Count - @item.Sold)</text>
+                        @_localizer["Remained"]: <text>@(@item.Count - @item.Sold)</text>
                     </p>
                 </div>
             </div>
@@ -81,7 +84,7 @@
                                 //to do smth
                                 break;
                             case Status.Rejected:
-                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span> Отредактировать и отправить снова</a>
+                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span>@_localizer["Edit"]</a>
                                 break;
                             case Status.New:
                                 <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
@@ -89,25 +92,25 @@
                             case Status.Published:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
                                         onclick="ChangeStatus(this, 'ReviewUnPublished')">
-                                    Отправить заявку: снять с публикации
+                                   @_localizer["Send"] 
                                 </button>
                                 break;
                             case Status.UnPublished:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
                                         onclick="ChangeStatus(this, 'ReviewPublished')">
-                                    Отправить заявку: опубликовать
+                                  @_localizer["Publish"] 
                                 </button><br />
                                 break;
                             case Status.ReviewPublished:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
                                         onclick="ChangeStatus(this, 'UnPublished')">
-                                    Отменить запрос возвращения
+                                  @_localizer["Cancel"] 
                                 </button>
                                 break;
                             case Status.ReviewUnPublished:
                                 <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
                                         onclick="ChangeStatus(this, 'Published')">
-                                    Отменить запрос снятия
+                                   @_localizer["CancelWithdrawa"]
                                 </button>
                                 break;
                             case Status.Expired:
@@ -122,13 +125,13 @@
                     @switch (item.Status)
                     {
                         case Status.Published:
-                            <span>Отказано в снятии по причине: @item.StatusDescription</span>
+                            <span>@_localizer["WithdrawalDenied"]: @item.StatusDescription</span>
                             break;
                         case Status.UnPublished:
-                            <span>Отказано в публикации по причине: @item.StatusDescription</span>
+                            <span>@_localizer["DeniedPublication"]: @item.StatusDescription</span>
                             break;
                         case Status.Rejected:
-                            <span>Отказано по причине: @item.StatusDescription</span>
+                            <span>@_localizer["RefusedForTheReason"]: @item.StatusDescription</span>
                             break;
                     }
                 }

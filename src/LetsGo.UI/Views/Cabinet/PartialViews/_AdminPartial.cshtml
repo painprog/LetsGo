@@ -200,7 +200,7 @@
                         @if (item.Approved == true)
                         {
                             <span class="material-icons my-auto px-3 mb-2 py-2" onclick="userEdit('@item.Id')"> edit</span>
-                            <span class="material-icons px-3 mb-2 py-2">delete</span>
+                            <span class="material-icons px-3 mb-2 py-2" data-bs-toggle="modal" data-bs-target="#causeModal" onclick="ChangeDenyUserStatus(this, '@item.Email')">delete</span>
                         }
                     </div>
                 </div>

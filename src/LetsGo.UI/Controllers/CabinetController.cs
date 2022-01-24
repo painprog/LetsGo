@@ -199,16 +199,16 @@ namespace LetsGo.UI.Controllers
                         await _service.ChangeStatus("UnPublished", item.Id, "The organizer of the event was deleted by admin");
                     }
                 }
-                if (user.EmailConfirmed)
+                if (user.Approved)
                 {
                     await EmailService.Send(user.Email, "Ваша учетная запись была удалена",
-                        $"Доброго времени суток, {user.UserName}! Ваша учетная запись была удалена" +
+                        $"Доброго времени суток, {user.UserName}! Ваша учетная запись была удалена " +
                         $"по следующей причине: {cause}");
                 }
                 else
                 {
                     await EmailService.Send(user.Email, "Ваша заявка на создание учетной записи была отклонена",
-                        $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена" +
+                        $"Доброго времени суток, {user.UserName}! Ваша заявка на создание учетной записи была отклонена " +
                         $"по следующей причине: {cause}");
                 }
                 var rolesForUser = await _userManager.GetRolesAsync(user);

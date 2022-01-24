@@ -221,5 +221,14 @@ namespace LetsGo.UI.Resources.Views.Cabinet {
                 return ResourceManager.GetString("To", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Users {
+            get {
+                return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
     }
 }

@@ -183,4 +183,7 @@
   <data name="Organizers" xml:space="preserve">
     <value>Уюштуруучулар</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Колдонуучулар</value>
+  </data>
 </root>

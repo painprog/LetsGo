@@ -136,8 +136,6 @@ namespace LetsGo.Controllers
             return RedirectToAction("Profile");
         }
 
-
-
         public async Task SendConfirmEmail(User user, string code)
         {
             var callbackUrl = Url.Action(
@@ -148,6 +146,15 @@ namespace LetsGo.Controllers
             await EmailService.Send(user.Email, "Подтвердите ваш аккаунт",
                 $"Подтвердите регистрацию, перейдя по ссылке:" +
                 $" <a href='{callbackUrl}'>ссылка</a>");
+        }
+
+        public async Task Approve(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //user.Approved = true;
+            //_context.SaveChanges();
+            await SendConfirmEmail(user, code);
         }
 
         public async Task DeleteUser(string email)

@@ -35,12 +35,12 @@
     </div>
     <div class="row mt-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
         <div class="row justify-content-start col-12 px-0">
-            <div class="col-2 px-0">
+            <div class="col-lg-2 col-4 px-0 mr-5">
                 <h4 id="events-link" class="mr-auto block-heading px-0 mb-3 heading-link">@_localizer["Event"]</h4>
             </div>
             @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
             {
-                <div class="col-2 px-0">
+                <div class="col-lg-2 col-4 px-0">
                     <h4 id="organizers-link" class="mr-auto block-heading px-0 heading-link">@_localizer["Users"]</h4>
                 </div>
             }

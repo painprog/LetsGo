@@ -3,12 +3,11 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 
-<div class="col col-xl-9 col-md-12" id="all-events">
+<div class="" id="all-events">
     @foreach (var item in Model.Events)
     {
         <div class="card mb-3 event-card" style="border-radius: 15px">
-            @*<div id="event-status" style="display:none;">@item.Status</div>*@
-            <div id="event-status" style="padding: 20px;">@item.Status</div>
+            <div id="event-status" style="display:none;">@item.Status</div>
             <div class="row body" onclick="eventDetails('@item.Id')">
                 <div class="pn-page-head col-lg-10" style="border-radius: 0">
                     <img class="blur_img" src="@item.PosterImage" alt="">
@@ -39,38 +38,41 @@
                     </p>
                 </div>
             </div>
-            <div class="text-center align-content-between admin-event pt-2">
+            <div class="text-center align-content-between admin-event pt-2 bg-danger">
                 <div class="row">
-                    <div class="col-lg-2">
-                        <span>@ViewData["Status"]: </span>
+                    <div class="col-lg-2 text-white pt-2">
+                        <span>@_localizer["Status"]: </span>
                         @switch (item.Status)
                         {
                             case Status.NotDefined:
-                                <span>@ViewData["NotDefined"]</span>
+                                <span>@_localizer["NotDefined"]</span>
                                 break;
                             case Status.Edited:
-                                <span>@ViewData["Edited"]</span>
+                                <span>@_localizer["Edited"]</span>
                                 break;
                             case Status.Rejected:
-                                <span>@ViewData["Rejected"]</span>
+                                <span>@_localizer["Rejected"]</span>
                                 break;
                             case Status.New:
-                                <span>@ViewData["New"]</span>
+                                <span>@_localizer["New"]</span>
                                 break;
                             case Status.Published:
-                                <span>@ViewData["Published"]</span>
+                                <span>@_localizer["Published"]</span>
                                 break;
                             case Status.UnPublished:
-                                <span>@ViewData["UnPublished"]</span>
+                                <span>@_localizer["UnPublished"]</span>
                                 break;
                             case Status.ReviewPublished:
-                                <span>@ViewData["ReviewPublished"]</span>
+                                <span>@_localizer["ReviewPublished"]</span>
                                 break;
                             case Status.ReviewUnPublished:
-                                <span>@ViewData["ReviewUnPublished"]</span>
+                                <span>@_localizer["ReviewUnPublished"]</span>
                                 break;
                             case Status.Expired:
-                                <span>@ViewData["Expired"]</span>
+                                <span>@_localizer["Expired"]</span>
+                                break;
+                            default:
+                                <span>...</span>
                                 break;
                         }
                     </div>

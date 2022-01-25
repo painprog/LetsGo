@@ -426,20 +426,20 @@ namespace LetsGo.UI.Services
                     case "Today":
                         dateStart = DateTime.Now.Date;
                         dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
-                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd ));
+                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd).ToList());
                         break;
                     case "Tomorrow":
                         dateStart = DateTime.Now.Date;
                         dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
-                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd ));
+                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd).ToList());
                         break;
                     case "Weekend":
-                        filteredEvents.AddRange(events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday));
+                        filteredEvents.AddRange(events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday).ToList());
                         break;
                     default:
                         dateStart = new DateTime(DateTime.Now.Year, int.Parse(date), 1);
                         dateEnd = new DateTime(DateTime.Now.Year, int.Parse(date) + 1, 1).AddMinutes(-1);
-                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd));
+                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd).ToList());
                         break;
                 }
             }

@@ -16,6 +16,7 @@ using System.Globalization;
 using LetsGo.UI.Controllers;
 using LetsGo.UI.HostedServices;
 using LetsGo.UI.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace LetsGo.UI
@@ -35,6 +36,8 @@ namespace LetsGo.UI
                 Configuration.GetConnectionString("DefaultConnection"),
                 appEnvironment
             );
+
+            ApplyMigrations();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -102,6 +105,15 @@ namespace LetsGo.UI
             });
 
             serviceProvider.InitializeUsersSeedData();
+        }
+
+        private void ApplyMigrations()
+        {
+            using (var context = ApplicationDbContextFactory.Create())
+            {
+                context.Database.SetCommandTimeout(TimeSpan.FromHours(4));
+                context.Database.Migrate();
+            }
         }
     }
 }

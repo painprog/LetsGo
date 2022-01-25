@@ -9,8 +9,10 @@ namespace LetsGo.UI.ViewModels
         public List<Event> Festivals { get; set; }
         public List<Event> Performances { get; set; }
         public List<Event> ForChildren { get; set; }
+        public List<Location> Locations { get; set; }
         public Dictionary<int?, List<EventCategory>> CategoriesDictionary { get; set; }
 
-        public List<Location> Locations { get; set; }
+        public string SelectedDates { get; set; }
+        public string SelectedCategories { get; set; }
     }
 }

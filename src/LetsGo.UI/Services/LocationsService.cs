@@ -58,7 +58,7 @@ namespace LetsGo.UI.Services
 
                 uow.Locations.Add(location);
             cache.Set(location.Id, location, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-            await _db.SaveChangesAsync();
+                await uow.CompleteAsync();
             return location;
         }
         }

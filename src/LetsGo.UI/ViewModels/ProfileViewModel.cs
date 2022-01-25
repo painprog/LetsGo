@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using LetsGo.Core.Entities;
 using LetsGo.Core.Entities.Enums;
-using LetsGo.Enums;
+
+//using LetsGo.Enums;
 
 namespace LetsGo.UI.ViewModels
 {
@@ -14,10 +15,11 @@ namespace LetsGo.UI.ViewModels
         public DateTime DateTimeBefore { get; set; }
         public DateTime DateTimeFrom { get; set; }
         public Status Status { get; set; }
-        public SortState SortOrder { get; set; }
+     //   public SortState SortOrder { get; set; }
         public List<EventCategory> EventCategories { get; set; }
+        public Dictionary<int?, List<EventCategory>> CategoriesDictionary { get; set; }
         public string EventCategory { get; set; }
         public Dictionary<string, Status> Stats { get; set; }
-        public string EventCategs { get; set; }
+        public string selectedCategories { get; set; }
     }
 }

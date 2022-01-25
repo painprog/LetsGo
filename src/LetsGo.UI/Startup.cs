@@ -60,7 +60,8 @@ namespace LetsGo.UI
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton(sp => ApplicationDbContextFactory);
-
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
             services.AddMemoryCache();
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -102,6 +103,7 @@ namespace LetsGo.UI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
 
             serviceProvider.InitializeUsersSeedData();

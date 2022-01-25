@@ -92,17 +92,22 @@ namespace LetsGo.UI.Controllers
 
                 if (result.Succeeded)
                 {
-                    using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                        await model.Avatar.CopyToAsync(fileStream);
+                    if (pathImage != "/images/default_avatar.png")
+                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                            await model.Avatar.CopyToAsync(fileStream);
 
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = admin.Id, code },
+                        protocol: HttpContext.Request.Scheme);
                     await EmailService.Send(
                         admin.Email,
                         "Логин и пароль от аккаунта админа",
-                        $"Здравствуйте! Вот ваши данные для входа в аккаунт. Никому их не передавайте <br />    Login: {admin.UserName}<br />    Email: {admin.Email}<br />    Password: {password}"
+                        $"Здравствуйте! Вот ваши данные для входа в аккаунт. Никому их не передавайте <br />    Login: {admin.UserName}<br />    Email: {admin.Email}<br />    Password: {password}<br />" +
+                        $"Подтвердите регистрацию, перейдя по <a href='{callbackUrl}'>ссылке</a>"
                     );
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(admin);
-                    await SendConfirmEmail(admin, code);
 
                     await _userManager.AddToRoleAsync(admin, "admin");
                     return RedirectToAction("Index", "Home");
@@ -117,6 +122,18 @@ namespace LetsGo.UI.Controllers
 
         public IActionResult OrganizerSignUp() => View();
 
+        public async Task<IActionResult> EmailConfirmForAdmin(string email)
+        {
+            if (email is null)
+                return View("Error");
+            var user = await _userManager.FindByEmailAsync(email);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code, email = user.Email },
+                protocol: HttpContext.Request.Scheme);
+            ViewBag.CallbackUrl = callbackUrl;
+            return View();
+        }
+             
         [HttpPost]
         public async Task<IActionResult> OrganizerSignUp(OrganizerSignUpViewModel model)
         {
@@ -146,9 +163,9 @@ namespace LetsGo.UI.Controllers
 
                     if (result.Succeeded)
                     {
-
-                        using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
-                            await model.Avatar.CopyToAsync(fileStream);
+                        if (pathImage != "/images/default_avatar.png")
+                            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + pathImage), FileMode.Create))
+                                await model.Avatar.CopyToAsync(fileStream);
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         await SendConfirmEmail(user, code);
@@ -183,9 +200,13 @@ namespace LetsGo.UI.Controllers
                 return View("Error");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            var userRoles = await _userManager.GetRolesAsync(user);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                if (userRoles.Contains("admin"))
+                    return RedirectToAction("EmailConfirmForAdmin", "Account", new { email = user.Email });
+                else
+                    return RedirectToAction("Index", "Home");
             }
             return View("Error");
         }
@@ -229,7 +250,7 @@ namespace LetsGo.UI.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code, email = user.Email },
                     protocol: HttpContext.Request.Scheme);
                 await EmailService.Send(model.Email, "Восстановление пароля",
-                    $"Для восстановления пароля пройдите по ссылке: <a href='{callbackUrl}'>ссылка</a>");
+                    $"Для восстановления пароля пройдите по <a href='{callbackUrl}'>ссылке</a>");
                 return View("ForgotPasswordConfirmation");
             }
             return View(model);
@@ -278,8 +299,8 @@ namespace LetsGo.UI.Controllers
                 new { userId = user.Id, code = code },
                 protocol: HttpContext.Request.Scheme);
             await EmailService.Send(user.Email, "Подтвердите ваш аккаунт",
-                $"Подтвердите регистрацию, перейдя по ссылке:" +
-                $" <a href='{callbackUrl}'>ссылка</a>");
+                $"Подтвердите регистрацию, перейдя по " +
+                $"<a href='{callbackUrl}'>ссылке</a>");
         }
         // Validations
         public bool CheckEmail(string email)

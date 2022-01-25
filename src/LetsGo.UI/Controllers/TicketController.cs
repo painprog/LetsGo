@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LetsGo.Core.Entities;
@@ -7,6 +9,9 @@ using LetsGo.UI.Services;
 using LetsGo.UI.Services.Contracts;
 using LetsGo.UI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
+using Aspose.Pdf;
+using Aspose.Pdf.Text;
 
 namespace LetsGo.UI.Controllers
 {
@@ -54,13 +59,14 @@ namespace LetsGo.UI.Controllers
                         };
                         ticket.QR = $"{Request.Scheme}://{Request.Host}/api/ticketcheck/details/" + ticket.TicketIdentifier;
                         _context.PurchasedTickets.Add(ticket);
-                        purchasedTickets.Add(ticket);
+                        purchasedTickets.Add(ticket);                     
                     }
                 }
-                string message = $"" +
-                    $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
-                    $"Вы совершили покупки билетов на \"{@event.Name}\" с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
-                    $"</p>";
+                 string message = $"" +
+                     $"<p style=\"text-indent: 20px;\">Здравствуйте, {model.Name}. <br />" +
+                     $"Вы совершили покупки билетов на \"{@event.Name}\" с {@event.EventStart} до {@event.EventEnd} на сайте <a href=\"#\">ticketbox</a><br /><br />" +
+                     $"</p>";
+          
 
                 _context.Events.Update(@event);
                 await _context.SaveChangesAsync();
@@ -74,6 +80,42 @@ namespace LetsGo.UI.Controllers
             }
 
             return Json(new {success = false});
+        }
+        public OptimizedMemoryStream GetQRStream(string QR)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(QR, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            byte[] data = default(byte[]);
+            OptimizedMemoryStream sampleStream = new OptimizedMemoryStream();
+            qrCodeImage.Save(sampleStream, System.Drawing.Imaging.ImageFormat.Bmp);
+            return sampleStream;
+        }
+        public IActionResult GetQR(string QR)
+        {
+            var data = GetQRStream(QR).ToArray();
+            return File(data, "image/jpeg");
+
+        }
+        public IActionResult GetPDF(string QR)
+        {
+            Document document = new Document();
+            Page page = document.Pages.Add();
+            page.AddImage(GetQRStream(QR), new Aspose.Pdf.Rectangle(20, 730, 120, 830));
+            var descriptionText = "Show this qr code to the ticket controller.";
+            var description = new TextFragment(descriptionText);
+            description.TextState.Font = FontRepository.FindFont("Times New Roman");
+            description.TextState.FontSize = 14;
+            description.HorizontalAlignment = HorizontalAlignment.Right;
+            page.Paragraphs.Add(description);
+            byte[] data = default(byte[]);
+            using (System.IO.MemoryStream sampleStream = new System.IO.MemoryStream())
+            {
+                document.Save(sampleStream);
+                data = sampleStream.ToArray();
+            }
+            return File(data, "application/pdf");
         }
     }
 }

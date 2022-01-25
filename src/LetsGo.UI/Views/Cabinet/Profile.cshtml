@@ -1,59 +1,68 @@
 ﻿@model LetsGo.UI.ViewModels.ProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 @{
-    ViewData["Title"] = "Профиль";
+    ViewData["Title"] = @_localizer["Profiles"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="mx-3">
-    <h4>Профиль</h4>
-    <div class="card mb-4 py-3">
-        <div class="card-body">
-            @if (User.IsInRole("superadmin"))
-            {
-                <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light mr-3 mt-auto float-right">+ Добавить админа</a>
-            }
-            <a asp-action="Edit" asp-controller="Cabinet" asp-route-id="@Model.User.Id" class="btn btn-light mr-3 mt-auto float-right">Изменить</a>
-            <div class="row">
-                <div class="col-lg-2">
-                    <img src="@Model.User.AvatarLink" width="100" height="100" class="rounded-circle ml-3" alt="no avatar" />
+<div class="m-3">
+    <h4 class="block-heading">@_localizer["Profiles"]</h4>
+    <div class="card mb-4 py-3 mt-2">
+        <div class="card-body py-0 row justify-content-lg-between">
+            <div class="row justify-content-lg-start justify-content-md-between justify-content-lg-between col col-lg-7">
+                <div class="col-lg-2 col-md-3 p-0">
+                    <img src="@Model.User.AvatarLink" width="100" height="100" class="rounded-circle" alt="avatar" />
                 </div>
-                <div class="col-lg-6">
-                    <h5 class="category-header">@Model.User.Email</h5>
+                <div class="col-lg-8 col-md-7 p-0">
+                    <h5 class="category-header font-weight-bold">@Model.User.Email</h5>
                     <p class="card-text">
-                        @if (@Model.User.UserName != null)
-                        {<span>Логин: @Model.User.UserName</span>}
-                        @if (@Model.User.PhoneNumber != null)
-                        {<br /><span>Номер телефона: @Model.User.PhoneNumber</span>}
+                        @if (Model.User.UserName != null)
+                        {<span>@_localizer["Login"]: @Model.User.UserName</span>}
+                        @if (Model.User.PhoneNumber != null)
+                        {<br /><span>@_localizer["PhoneNumber"]: @Model.User.PhoneNumber</span>}
                     </p>
                 </div>
             </div>
+            <div class="row col col-lg-3 p-0 profile-btns">
+                @if (User.IsInRole("superadmin"))
+                {
+                <a asp-controller="Account" asp-action="AddAdmin" class="btn btn-light float-right col col-sm-12">+ @_localizer["Add"]</a>
+                }
+            <a asp-action="Edit" asp-controller="Cabinet" asp-route-id="@Model.User.Id" class="btn btn-light float-right col col-sm-12">@_localizer["Edit"]</a>
+            </div>
         </div>
     </div>
-    <div class="row my-4">
-        <h4 class="mr-auto">Мероприятия</h4>
-        <div class="form-outline mr-2">
-            <input type="text" id="searchbox-input" class="form-control text-center" placeholder="Поиск"
+    <div class="row my-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
+        <h4 class="mr-auto block-heading col-12 px-0 mb-2">@_localizer["Event"]</h4>
+        <div class="form-outline px-0 col-lg-3 col-md-12 col-12 mb-3">
+            <input type="text" id="searchbox-input" class="form-control text-center" placeholder=" @_localizer["Search"]"
                    aria-label="Search" onkeyup="filterEvents()" />
         </div>
-        <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle mr-2 px-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Сортировка
+        <div class="dropdown col-2 px-0 mb-3">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @_localizer["Sort"]
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">@_localizer["NameSort"]</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.PriceSort">@_localizer["PriceSort"]</a>
+                <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.DateStartSort">@_localizer["DateStartSort"]</a>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))
         {
-            <a asp-controller="Locations" asp-action="Create" class="btn btn-danger px-3 mr-2 float-right">+ Добавить локацию</a>
+            <a asp-controller="Locations" asp-action="Create" class="btn btn-danger float-right col-lg-3 col-md-4 col-12 mb-2 mr-1">
+                + @_localizer["AddLocation"]
+            </a>
         }
-        <a asp-controller="Event" asp-action="Add" class="btn btn-danger px-3 float-right">+ Добавить мероприятие</a>
+        <a asp-controller="Event" asp-action="Add" class="btn btn-danger float-right col-lg-3 col-md-4 col-12">
+            + @_localizer["AddEvent"]
+        </a>
     </div>
     <div class="row">
         @if (Model.Events.Count != 0)
         {
-            <div class="col events-container mb-5">
+            <div class="col events-container mb-5 pl-0">
                 @if (Model.IsOrganizer)
                 {
                     await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
@@ -67,46 +76,51 @@
         }
         else
         {
-            <p class="d-inline-block col col-xl-9 col-md-12">Мероприятия еще не былии добавлены.</p>
+            <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
         }
         <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9" id="dd">
-            <p class="text-center font-weight-bold py-2" style="font-size: 22px;">Фильтры</p>
-            <div id="Filtr">
-                <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFiltr">
+            <p class="text-center font-weight-bold py-2" style="font-size: 22px;"> @_localizer["Filters"]</p>
+            <div id="Filter">
+                <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFilter">
                     <div class="categories ml-1">
-                        <p class="font-weight-bold">Категория:</p>
-                        @foreach (var item in Model.EventCategories)
+                        <p class="font-weight-bold"> @_localizer["Category"]:</p>
+                        @foreach (var category in Model.CategoriesDictionary[-1])
                         {
-                            if (!item.HasParent)
+                            <div class="category-checkbox">
+                                @if (Model.selectedCategories.Contains(category.Id.ToString()))
+                                {
+                                    <input type="checkbox" value="@category.Id" id="category-@category.Id" checked />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="@category.Id" id="category-@category.Id" />
+                                }
+                                <label class="forcheckbox" for="category-@category.Id">@category.Name</label>
+                            </div>
+                            @if (Model.CategoriesDictionary.ContainsKey(category.Id))
                             {
-                                <div class="containerForCateg">
-                                    <p>
-                                        <input class="form-check-input ml-1" type="checkbox" asp-for="@Model.EventCategory" value="@item.Id">
-                                        <a class="text-decoration-none text-reset ml-4" data-bs-toggle="collapse" href="#collapseExample_@item.Id" aria-expanded="false" aria-controls="collapseExample_@item.Id">
-                                            @item.Name
-                                            @if (@Model.EventCategories.Any(m => m.ParentId == item.Id)) { <i class="fas fa-sort-down"></i> } 
-                                            
-                                        </a>
-
-                                    </p>
-                                    <div class="collapse ml-4" id="collapseExample_@item.Id">
-                                        @foreach (var elem in Model.EventCategories)
-                                        {
-                                            if (elem.ParentId == item.Id)
-                                            {
-                                                <div class="form-check ml-1">
-                                                    <input class="form-check-input" type="checkbox" asp-for="@Model.EventCategory" value="@elem.Id">
-                                                    <label class="form-check-label" asp-for="@Model.EventCategory">@elem.Name</label>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
+                                <div class="ml-4">
+                                    <i style="display: none " id="selected-subcategories-@category.Id">0</i>
+                                    @foreach (var subcategory in Model.CategoriesDictionary[category.Id])
+                                    {
+                                <div class="subcategory-checkbox">
+                                    @if (Model.selectedCategories.Contains(subcategory.Id.ToString()))
+                                    {
+                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" />
+                                    }
+                                    <label class="forcheckbox" for="subcategory-@subcategory.Id">@subcategory.Name</label>
+                                </div>
+                                    }
                                 </div>
                             }
                         }
                     </div>
                     <div class="ml-1">
-                        <p class="font-weight-bold">Статус:</p>
+                        <p class="font-weight-bold">@_localizer["Status"]:</p>
                         <select class="form-select my-1" asp-for="@Model.Status" aria-label="Default select example">
                             @for (int i = 0; i < Model.Stats.Keys.Count; i++)
                             {
@@ -115,10 +129,10 @@
                         </select>
                     </div>
                     <div class="datetimes ml-1 fw-bold">
-                        <p class="font-weight-bold">Дата начала:</p>
+                        <p class="font-weight-bold">@_localizer["DateStart"]:</p>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
-                                <label for="dateFrom" class="col-form-label">От</label>
+                                <label for="dateFrom" class="col-form-label"> @_localizer["From"]</label>
                             </div>
                             <div class="col-auto">
                                 <input id="dateFrom" type="datetime-local" asp-for="@Model.DateTimeFrom" class="form-control input-field">
@@ -126,16 +140,17 @@
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
-                                <label for="dateBefore" class="col-form-label">До</label>
+                                <label for="dateBefore" class="col-form-label"> @_localizer["To"]</label>
                             </div>
                             <div class="col-auto">
                                 <input id="dateBefore" type="datetime-local" asp-for="@Model.DateTimeBefore" class="form-control input-field">
                             </div>
                         </div>
                     </div>
-                    <input id="EventCategoriesHidden" asp-for="EventCategs" hidden />
+                    <input asp-for="selectedCategories" hidden />
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-danger px-5 py-2 mt-2">Показать</button>
+                        <button type="submit" class="btn btn-danger px-5 py-2 mt-2"> @_localizer["Show"]</button>
+                        <input type="reset" value="Сбросить" class="btn btn-outline-danger px-5 py-2 pt-2 mt-2" onclick="Reset()" />
                     </div>
                 </form>
             </div>
@@ -241,18 +256,32 @@
 
         let eventCategs = [];
         let strCateg;
-        $('#formFiltr').on("submit", function Filtr() {
+        $('#formFilter').on("submit", function Filter() {
             $('.categories input:checked').each(function Fill() {
                 eventCategs.push($(this).val())
             })
             strCateg = eventCategs.join()
-            $('#EventCategoriesHidden').val(strCateg)
+            $('#selectedCategories').val(strCateg)
         }
         )
         function Sort(sortState) {
             $('#SortStateHidden').val(sortState);
             console.log($('#SortStateHidden').val());
-            $('#formFiltr').submit();
+            $('#formFilter').submit();
         }
+
+
+        function ClickSubcategory(subcategory, id) {
+            var count = $('#selected-subcategories-' + id);
+            if ($(subcategory).is(':checked')) count.text(parseInt(count.text()) + 1);
+            else count.text(parseInt(count.text()) - 1);
+            $('#category-' + id).prop('checked', parseInt(count.text()));
+        }
+
+        function Reset() {
+            $('input[type="checkbox"]').removeAttr('checked');
+            $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
+        }
+
     </script>
 }

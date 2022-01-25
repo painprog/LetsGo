@@ -141,13 +141,12 @@
                 <div class="login_group ml-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
-
                         <div class="nav-item submenu-link mr-5">
-                            <span class="profile" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                            <span class="profile">
                                 <i class="bi bi-person"></i>
                             </span>
 
-                            <div class="submenu pt-4 dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                            <div class="submenu pt-4 dropdown-menu-right">
                                 <a class="submenu-item" asp-controller="Cabinet" asp-action="Profile">@_localizer["LK"]</a>
                                 @using (Html.BeginForm("Logout", "Account"))
                                 {
@@ -167,7 +166,27 @@
             </div>
         </nav>
     </header>
-    <div class="container" style="padding-bottom: 5rem;">
+
+    <div id="categories-sm" class="hide-item">
+        <div class="category-header">
+            <span id="close-category-sm" class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="category-links">
+            <div class="row">
+                <div class="col-md-9">
+                    <a href="/Category/Concerts">@_localizer["Concerts"]</a>
+                    <a href="/Category/Performances">@_localizer["Performances"]</a>
+                    <a href="/Category/Children">@_localizer["ForChildren"]</a>
+                    <a href="/Category/Classic">@_localizer["Classic"]</a>
+                    <a href="/Category/Excursion">@_localizer["Excursion"]</a>
+                    <a href="/Category/Festivals">@_localizer["Festivals"]</a>
+                    <a href="/Category/Other">@_localizer["Other"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 10rem;">
         <main role="main" class="pb-3 page-content">
             @RenderBody()
         </main>
@@ -239,26 +258,14 @@
         //    }
         //});
 
-        $('#category-link').on("click", function () {
-            $('body').html(`
-<div class="category-header">
-            <a href="Home/Index">
-                <span class="text-dark" style="font-size:40px;"><i class="bi bi-x"></i></span>
-            </a>
-</div>
-            <div class="category-links">
-                <div class="row">
-                    <div class="col-md-9">
-                        <a class="" href="/Category/Concerts">Концерты </a>
-                        <a class="" href="/Category/Performances">Спектакли</a>
-                        <a class="" href="/Category/Children">Детям</a>
-                        <a class="" href="/Category/Classic">Классика</a>
-                        <a class="" href="/Category/Excursion">Экскурсия</a>
-                        <a class="" href="/Category/Festivals">Фестивали</a>
-                        <a class="" href="/Category/Other">Другое</a>
-                    </div>
-                </div>
-            </div>`);
+        $('#category-link').on('click', function () {
+            $('#categories-sm').addClass('show-item');
+            $('#categories-sm').removeClass('hide-item');
+        });
+
+        $('#close-category-sm').on('click', function () {
+            $('#categories-sm').addClass('hide-item');
+            $('#categories-sm').removeClass('show-item');
         });
 
     </script>

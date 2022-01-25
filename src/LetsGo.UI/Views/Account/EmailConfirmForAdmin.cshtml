@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
+<div class="card">
+    <div class="card-body">
+        <span>
+            @_localizer["EmailConfirm"]<br />@_localizer["ResetPassword"] <a href='@ViewBag.CallbackUrl'>@_localizer["Link"]</a><br />
+            @_localizer["Enter"] <a asp-action="Login">@_localizer["Link"]</a>.
+        </span>
+    </div>
+</div>

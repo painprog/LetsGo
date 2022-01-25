@@ -7,6 +7,23 @@
 html {
     -ms-overflow-style: none; /* IE 10+ */
     scrollbar-width: none; /* Firefox */
+    height:100%;
+}
+
+body {
+    /*height: 100%;*/
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    min-height: 100%;
+    font-family: Roboto, sans-serif;
+    color: rgb(43, 43, 43);
+    background-color: rgb(247, 247, 247);
+    line-height: 1.42857;
+}
+
+.footer{
+    margin-top:20px;
 }
 
 .page-content {
@@ -238,23 +255,13 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
+/*html {
     position: relative;
     min-height: 100%;
-}
-
-body {
-    font-family: Roboto, sans-serif;
-    color: rgb(43, 43, 43);
-    background-color: rgb(247, 247, 247);
-    line-height: 1.42857;
-    position: relative;
-    min-height: 100vh;
-}
+}*/
 
 .footer {
     box-sizing: border-box;
-    width: 100%;
     padding: 30px 0;
     font-family: Roboto,sans-serif;
     background: #151515;
@@ -349,10 +356,6 @@ body {
     justify-content: center;
 }
 
-.search_wrapper {
-    min-height: 48px;
-}
-
 .seacrh_input {
     min-width: 270px;
     max-width: 960px;
@@ -361,7 +364,6 @@ body {
 .search-page{
     width: 100%;
     top: 50px;
-    /*border-radius: 3px;*/
     z-index: 10000;
 }
 
@@ -388,15 +390,20 @@ body {
     height: 44px;
     width: 184px;
     border-radius: 22px;
-    justify-content: center;
     text-align: center;
     padding: 13px 0;
-    margin: 0 20px;
+    margin: 0 10px;
 }
 
 .icon_buttons {
-    margin: 60px 0;
+    margin: 30px 0;
     text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.icon_button{
+    margin: 0 20px;
 }
 
 .main_info_card .title_card {
@@ -961,6 +968,7 @@ body {
 .admin-event .material-icons {
     cursor: pointer;
     border-radius: 5px;
+    color: white;
 }
 
     .admin-event .material-icons:hover {
@@ -1271,6 +1279,29 @@ body {
     .entry-form{
         margin: 20px;
     }
+
+    .icon_buttons, .links {
+        display: block;
+    }
+
+    .icon_button {
+        margin: 0;
+    }
+
+    .links a {
+        font-size: 12px;
+        padding: 10px 15px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container-2 h1{
+        font-size: 26px;
+        overflow:auto;
+    }
 }
 .future-events .day {
     font-size: 35px;
@@ -1293,4 +1324,30 @@ body {
 .future-events {
     font-size: 14px;
     cursor: pointer;
+}
+
+.hide-item {
+    display: none;
+}
+
+.show-item {
+    display: block;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
+}
+
+.block-heading{
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.profile-btns a, .events-btns a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -127,15 +127,16 @@ namespace LetsGo.UI.Controllers
             }
         }
 
-        public IActionResult Afisha(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore, string selectedCategories)
+        public IActionResult Afisha(string SelectedDates, string SelectedCategories)
         {
             List<int> EventCategories = new List<int>();
-            if (!string.IsNullOrEmpty(selectedCategories))
-                EventCategories = selectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
+            if (!string.IsNullOrEmpty(SelectedCategories))
+                EventCategories = SelectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
 
             IQueryable<Event> events = _Service.QueryableEventsAfterFilter(
-                   EventCategories, Status, DateTimeFrom, DateTimeBefore
-               );
+                   EventCategories, Status.Published, DateTime.MinValue, DateTime.MinValue
+            );
+            events = _Service.FilterEventsByDate(events, SelectedDates ?? "All");
 
             //var events = _goContext.Events.Include(e => e.Location)
             //    .Where(e => e.EventStart.Month == DateTime.Now.Month).OrderBy(e => e.EventStart).ToList();

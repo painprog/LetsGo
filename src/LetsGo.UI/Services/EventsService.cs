@@ -412,5 +412,39 @@ namespace LetsGo.UI.Services
 
             return Events;
         }
+
+        public IQueryable<Event> FilterEventsByDate(IEnumerable<Event> events, string dates)
+        {
+            DateTime dateStart, dateEnd;
+            List<Event> filteredEvents = new List<Event>();
+            foreach (var date in dates.Split(','))
+            {
+                switch (date)
+                {
+                    case "All":
+                        break;
+                    case "Today":
+                        dateStart = DateTime.Now.Date;
+                        dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
+                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd ));
+                        break;
+                    case "Tomorrow":
+                        dateStart = DateTime.Now.Date;
+                        dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
+                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd ));
+                        break;
+                    case "Weekend":
+                        filteredEvents.AddRange(events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday));
+                        break;
+                    default:
+                        dateStart = new DateTime(DateTime.Now.Year, int.Parse(date), 1);
+                        dateEnd = new DateTime(DateTime.Now.Year, int.Parse(date) + 1, 1).AddMinutes(-1);
+                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd));
+                        break;
+                }
+            }
+
+            return filteredEvents.AsQueryable();
+        }
     }
 }

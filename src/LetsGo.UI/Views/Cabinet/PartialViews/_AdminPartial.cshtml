@@ -2,9 +2,7 @@
 @model LetsGo.UI.ViewModels.ProfileViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
-
 <div class="" id="all-events">
-
     @foreach (var item in Model.Events)
     {
         <div class="card mb-3 event-card" style="border-radius: 15px">
@@ -162,8 +160,6 @@
                     <div class="row">
                         <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Role"]:</p>
                         <span id="organizer-role" class="col">
-@*                           @item.UserRoles.FirstOrDefault().ToString()
-*@                           
                         </span>
                     </div>
                     <div class="row">
@@ -186,9 +182,9 @@
             </div>
             <div class="text-center align-content-between admin-event pt-2 bg-danger">
                 <div class="row">
-                    <div class="col">
-                        @if (item.Approved == false)
-                        {
+                    @if (item.Approved == false)
+                    {
+                        <div class="col my-auto">
                             <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email', this)">
                                 @_localizer["Accept"]
                             </button>
@@ -196,13 +192,21 @@
                                 onclick="ChangeDenyUserStatus(this, '@item.Email')">
                                 @_localizer["Reject"]
                             </button>
-                        }
-                        @if (item.Approved == true)
+                        </div>
+                    }
+                    @if (item.Approved == true)
+                    {
+                        @if(item.EmailConfirmed == false)
                         {
-                            <span class="material-icons my-auto px-3 mb-2 py-2" onclick="userEdit('@item.Id')"> edit</span>
-                            <span class="material-icons px-3 mb-2 py-2" data-bs-toggle="modal" data-bs-target="#causeModal" onclick="ChangeDenyUserStatus(this, '@item.Email')">delete</span>
+                            <div class="col my-auto">
+                                <div class="my-auto text-white">Почта еще не подтверждена</div>
+                            </div>
                         }
-                    </div>
+                        <div class="col my-auto">
+                            <span class="material-icons px-3 mb-2" onclick="userEdit('@item.Id')"> edit</span>
+                            <span class="material-icons px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" onclick="ChangeDenyUserStatus(this, '@item.Email')">delete</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

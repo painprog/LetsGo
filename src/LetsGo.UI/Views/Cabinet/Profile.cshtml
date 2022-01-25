@@ -49,7 +49,7 @@
             <input type="text" id="searchbox-input" class="form-control text-center" placeholder=" @_localizer["Search"]"
                    aria-label="Search" onkeyup="filter()" />
         </div>
-        <div class="dropdown col-2 px-0 mb-3">
+        <div id="dropdown" class="dropdown col-2 px-0 mb-3">
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @_localizer["Sort"]
             </button>
@@ -57,6 +57,16 @@
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">@_localizer["NameSort"]</a>
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.PriceSort">@_localizer["PriceSort"]</a>
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.DateStartSort">@_localizer["DateStartSort"]</a>
+            </div>
+        </div>
+        <div id="options" class="col-2 px-0 mb-auto" style="display:none;">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+              <label class="form-check-label" for="inlineCheckbox1">Заявки</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <label class="form-check-label" for="inlineCheckbox2">Одобренные</label>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))
@@ -313,15 +323,17 @@
         $('#events-link').on('click', () => {
             $('#all-events').show();
             $('#all-organizers').hide();
-            $('#dropdownMenuButton').show();
+            $('#dropdown').show();
             $('#dd').show();
+            $('#options').hide();
         });
 
         $('#organizers-link').on('click', () => {
             $('#all-events').hide();
             $('#all-organizers').show();
-            $('#dropdownMenuButton').hide();
+            $('#dropdown').hide();
             $('#dd').hide();
+            $('#options').show();
         });
 
         $(document).ready(function () {

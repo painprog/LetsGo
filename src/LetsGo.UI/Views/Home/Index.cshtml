@@ -74,7 +74,7 @@
 
                     </div>
                     <div class="icon_button">
-                        <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>@Localizer["Filters"]</button>
+                        <button id="filter-button" class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>@Localizer["Filters"]</button>
                     </div>
                 </div>
             </div>
@@ -374,93 +374,23 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="filter">
-                    <form asp-controller="Event" asp-action="Afisha" method="get" id="form">
-                        <div class="filter-header">
-                            @Localizer["Filter"]
-                        </div>
-                        <div class="filter-date">
-                            <div class="filter-date-header">
-                                @Localizer["Dates"]
-                            </div>
-                            <div class="filter-date-checkbox">
-                                <input asp-for="@Model.SelectedDates" hidden />
-                                <ul>
-                                    <li class="filter-date-checkbox">
-                                        <input type="checkbox" value="All" id="filter-date-input-all" />
-                                        <label for="filter-date-input-all">@Localizer["All"]</label>
-                                    </li>
-                                    <li class="filter-date-checkbox">
-                                        <input type="checkbox" value="Today" id="filter-date-input-today" />
-                                        <label for="filter-date-input-today">@Localizer["Today"]</label>
-                                    </li>
-                                    <li class="filter-date-checkbox">
-                                        <input type="checkbox" value="Tomorrow" id="filter-date-input-tomorrow" />
-                                        <label for="filter-date-input-tomorrow">@Localizer["Tomorrow"]</label>
-                                    </li>
-                                    <li class="filter-date-checkbox">
-                                        <input type="checkbox" value="Weekend" id="filter-date-input-weekend" />
-                                        <label for="filter-date-input-weekend">@Localizer["Weekends"]</label>
-                                    </li>
-                                    <li class="filter-date-checkbox">
-                                        <input type="checkbox" value="@DateTime.Now.Month" id="filter-date-input-month" />
-                                        <label for="filter-date-input-month">@DateTime.Now.ToString("MMMM")</label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="filter-categories-header">
-                                @Localizer["Categories"]
-                            </div>
-                            <div class="filter-categories">
-                                <input asp-for="@Model.SelectedCategories" hidden />
-                                <ul>
-                                    @foreach(var category in @Model.CategoriesDictionary[-1])
-                                    {
-                                        @if (@Model.CategoriesDictionary.ContainsKey(category.Id))
-                                        {
-                                            <li class="category">
-                                                <input type="checkbox" value=@category.Id id="category-@category.Id" onclick="OpenSubcategories(@category.Id)">
-                                                <div for="category-@category.Id" class="d-inline-block" id="category-link" onclick="OpenSubcategories(@category.Id)">
-                                                    <span class="d-inline-block">@Localizer[category.Name]</span>
-                                                    <span class="material-icons arrow icon-down-@category.Id">keyboard_arrow_down</span>
-                                                    <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
-                                                </div>
-                                            </li>
-                                            <div class="subcategories">
-                                                <ul class="subcategories-@category.Id" style="display: none;">
-                                                    @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
-                                                    {
-                                                        <li class="subcategory">
-                                                            <input type="checkbox" value="@subcategory.Id" id="subcategory-input-@subcategory.Id" />
-                                                            <label for="subcategory-input-@subcategory.Id">@subcategory.Name</label>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <li class="category">
-                                                <input type="checkbox" value=@category.Id id="category-@category.Id">
-                                                <label for="category-@category.Id" class="d-inline-block">@Localizer[category.Name]</label>
-                                            </li>
-                                        }
-                                        <hr>
-                                    }
-                                </ul>
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-show w-100 mt-2">@Localizer["Show"]</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                @{ 
+                    await Html.RenderPartialAsync(
+                        "/Views/Shared/FilterPartialView.cshtml",
+                        new LetsGo.UI.ViewModels.FilterViewModel() {
+                            CategoriesDictionary = Model.CategoriesDictionary,
+                            SelectedCategories = Model.SelectedCategories, 
+                            SelectedDates = Model.SelectedDates
+                        }
+                    ); }
             </div>
         </div>
     </div>
 </div>
 
 @section scripts{
+    <script type="text/javascript" src="~/js/filter.js"></script>
+
     <script>
         $(window).on('popstate', function (event) {
             $('body').load(location.href);
@@ -574,54 +504,26 @@
         }
 
         function Afisha() {
-                window.location.href = '@Url.Action("AfishaToday", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=All&SelectedCategories=';
         }
 
         function Today() {
-                window.location.href = '@Url.Action("Today", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=Today&SelectedCategories=';
         }
 
         function Tomorrow() {
-                window.location.href = '@Url.Action("Tomorrow", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=Tomorrow&SelectedCategories=';
         }
 
         function Weekends() {
-                window.location.href = '@Url.Action("Weekends", "Event")';  
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=Weekend&SelectedCategories=';
         }
 
-        function OpenSubcategories(id) {
-            var subcategories = $('.subcategories-' + id);
-            if (subcategories.is(':visible')) {
-                $('.icon-up-' + id).hide();
-                $('.icon-down-' + id).show();
-                subcategories.hide();
-            }
-            else {
-                $('.icon-down-' + id).hide();
-                $('.icon-up-' + id).show();
-                subcategories.animate({ opacity: "show" }, "fast" );
-            }
-        }
-
-        function PressCategoryInput(id) {
-
-        }
-
-        $('#form').on('submit', function() {
-            var dates = [];
-            var categories = [];
-            $('.filter-date-checkbox input:checked').each(function() {
-                dates.push($(this).val());
-            })
-            $('.filter-categories input:checked').each(function() {
-                categories.push($(this).val());
-            })
-            $('#SelectedDates').val(dates.join());
-            $('#SelectedCategories').val(categories.join());
-
-            console.log($('.SelectedDates').val());
-            console.log($('.SelectedCategories').val());
-        })
+        $('#filter-button').click(function () {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $('.filter').offset().top - 100
+            }, 500);
+        });
 
     </script>
 }

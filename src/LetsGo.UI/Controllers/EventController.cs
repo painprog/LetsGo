@@ -136,7 +136,7 @@ namespace LetsGo.UI.Controllers
             IQueryable<Event> events = _Service.QueryableEventsAfterFilter(
                    EventCategories, Status.Published, DateTime.MinValue, DateTime.MinValue
             );
-            events = _Service.FilterEventsByDate(events, SelectedDates ?? "All");
+            events = _Service.FilterEventsByDate(events, SelectedDates);
 
             //var events = _goContext.Events.Include(e => e.Location)
             //    .Where(e => e.EventStart.Month == DateTime.Now.Month).OrderBy(e => e.EventStart).ToList();

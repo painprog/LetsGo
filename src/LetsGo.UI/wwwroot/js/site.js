@@ -1,17 +1,45 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
+
+const showItem_events = 20, whenClickBtn_events = 5, showItem_organizers = 20, whenClickBtn_organizers = 5;
+
 $('#all-events').btnLoadmore({
-    showItem: 20, //default 6
-    whenClickBtn: 5, //default 3
+    showItem: showItem_events, //default 6
+    whenClickBtn: whenClickBtn_events, //default 3
     textBtn: 'Больше мероприятий',
-    classBtn: 'btn btn-danger btn-loadmore'
+    classBtn: 'btn btn-danger btn-loadmore btn-loadmore-events'
 });
 
 $('#all-organizers').btnLoadmore({
-    showItem: 20, //default 6
-    whenClickBtn: 5, //default 3
+    showItem: showItem_organizers, //default 6
+    whenClickBtn: whenClickBtn_organizers, //default 3
     textBtn: 'Показать еще',
-    classBtn: 'btn btn-danger btn-loadmore'
+    classBtn: 'btn btn-danger btn-loadmore btn-loadmore-organizers'
+});
+
+
+$('#events-link').on('click', () => {
+    $('#all-events').show();
+    $('#all-organizers').hide();
+    $('#dropdown').show();
+    $('#dd').show();
+    $('#options').hide();
+
+    if ($('#all-events').children().length > showItem_events)
+        $('.btn-loadmore-events').show();
+    $('.btn-loadmore-organizers').hide();
+});
+
+$('#organizers-link').on('click', () => {
+    $('#all-events').hide();
+    $('#all-organizers').show();
+    $('#dropdown').hide();
+    $('#dd').hide();
+    $('#options').show();
+
+    if ($('#all-organizers').children().length > showItem_events)
+        $('.btn-loadmore-organizers').show();
+    $('.btn-loadmore-events').hide();
 });
 
 function filter() {

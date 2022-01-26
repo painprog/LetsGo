@@ -97,7 +97,7 @@
                                 </button>
                                 break;
                             case Status.Published:
-                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2" id="@item.Id"
                                         onclick="ChangeStatus(this, 'UnPublished')">
                                     @_localizer["RemoveFromPublication"]
                                 </button>
@@ -184,7 +184,7 @@
                 <div class="row">
                     @if (item.Approved == false)
                     {
-                        <div class="col my-auto">
+                        <div class="col my-auto" id="ApprovedFalse">
                             <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email', this)">
                                 @_localizer["Accept"]
                             </button>
@@ -199,10 +199,10 @@
                         @if(item.EmailConfirmed == false)
                         {
                             <div class="col my-auto">
-                                <div class="my-auto text-white">Почта еще не подтверждена</div>
+                                <div class="my-auto text-white">@_localizer["NotConfirmedEmail"]</div>
                             </div>
                         }
-                        <div class="col my-auto">
+                        <div class="col my-auto" id="ApprovedTrue">
                             <span class="material-icons px-3 mb-2" onclick="userEdit('@item.Id')"> edit</span>
                             <span class="material-icons px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" onclick="ChangeDenyUserStatus(this, '@item.Email')">delete</span>
                         </div>

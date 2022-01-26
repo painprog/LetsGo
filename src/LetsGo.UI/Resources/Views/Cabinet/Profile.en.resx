@@ -186,4 +186,13 @@
   <data name="Users" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="NotConfirmedEmail" xml:space="preserve">
+    <value>Email hasn't been confirmed yet</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Requests</value>
+  </data>
 </root>

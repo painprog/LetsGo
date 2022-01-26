@@ -186,4 +186,10 @@
   <data name="Users" xml:space="preserve">
     <value>Колдонуучулар</value>
   </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value>Башкалар</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Өтүнүчүлөр</value>
+  </data>
 </root>

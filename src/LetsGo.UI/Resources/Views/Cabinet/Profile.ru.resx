@@ -186,4 +186,10 @@
   <data name="Users" xml:space="preserve">
     <value>Пользователи</value>
   </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value>Другие</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Заявки</value>
+  </data>
 </root>

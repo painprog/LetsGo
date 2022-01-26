@@ -80,24 +80,18 @@
         </a>
     </div>
     <div class="row">
-        @if (Model.Events.Count != 0)
-        {
-            <div class="col events-container mb-5 px-0">
-                @if (Model.IsOrganizer)
-                {
-                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
-                }
-                else
-                {
-                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
-                }
+        <div class="col events-container mb-5 px-0">
+            @if (Model.IsOrganizer)
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+            }
+            else
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+            }
 
-            </div>
-        }
-        else
-        {
-            <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
-        }
+        </div>
+        
         <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9 ml-3" id="dd">
             <p class="text-center font-weight-bold py-2" style="font-size: 22px;"> @_localizer["Filters"]</p>
             <div id="Filter">

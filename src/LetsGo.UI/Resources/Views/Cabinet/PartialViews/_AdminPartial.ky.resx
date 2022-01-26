@@ -174,4 +174,10 @@
   <data name="NotConfirmedEmail" xml:space="preserve">
     <value>Почта азырынча тастыктала элек</value>
   </data>
+  <data name="EventsNotAdded " xml:space="preserve">
+    <value>Окуялар азырынча кошула элек.</value>
+  </data>
+  <data name="UsersNotAdded" xml:space="preserve">
+    <value>Колдонуучулар азырынча кошула элек.</value>
+  </data>
 </root>

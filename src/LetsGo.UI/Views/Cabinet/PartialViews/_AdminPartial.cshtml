@@ -2,216 +2,231 @@
 @model LetsGo.UI.ViewModels.ProfileViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
-<div class="" id="all-events">
-    @foreach (var item in Model.Events)
-    {
-        <div class="card mb-3 event-card" style="border-radius: 15px">
-            <div id="event-status" style="display:none;">@item.Status</div>
-            <div class="row body" onclick="eventDetails('@item.Id')">
-                <div class="pn-page-head col-lg-10" style="border-radius: 0">
-                    <img class="blur_img" src="@item.PosterImage" alt="">
-                    <div class="row">
-                        <div class="col-lg-4 mr-5">
-                            <div class="pn-head_image">
-                                <img src="@item.PosterImage" alt="" class="rounded">
+@if (Model.Events.Count != 0)
+{
+    <div class="" id="all-events">
+        @foreach (var item in Model.Events)
+        {
+            <div class="card mb-3 event-card" style="border-radius: 15px">
+                <div id="event-status" style="display:none;">@item.Status</div>
+                <div class="row body" onclick="eventDetails('@item.Id')">
+                    <div class="pn-page-head col-lg-10" style="border-radius: 0">
+                        <img class="blur_img" src="@item.PosterImage" alt="">
+                        <div class="row">
+                            <div class="col-lg-4 mr-5">
+                                <div class="pn-head_image">
+                                    <img src="@item.PosterImage" alt="" class="rounded">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="pn-head_title">
-                                <h1>@item.Name</h1>
-                                <span>@item.AgeLimit +</span>
-                            </div>
-                            <div class="pn-head_description">
-                                <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
-                                <div class="pn-head_place">@item.Location.Name</div>
+                            <div class="col-lg-7">
+                                <div class="pn-head_title">
+                                    <h1>@item.Name</h1>
+                                    <span>@item.AgeLimit +</span>
+                                </div>
+                                <div class="pn-head_description">
+                                    <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
+                                    <div class="pn-head_place">@item.Location.Name</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-2 my-auto text-center sideBox">
+                        <h1 style="font-size: 20px; font-weight: 500;">Билетов</h1>
+                        <p style="font-size: 16px;">
+                            куплено: @item.Sold<br />
+                            @{
+                                var remainder = item.TicketLimit - item.Sold;
+                            }
+                            @_localizer["Remained"]: <text>@(@item.Count - @item.Sold)</text>
+                        </p>
+                    </div>
                 </div>
-                <div class="col-lg-2 my-auto text-center sideBox">
-                    <h1 style="font-size: 20px; font-weight: 500;">Билетов</h1>
-                    <p style="font-size: 16px;">
-                        куплено: @item.Sold<br />
-                        @{ var remainder = item.TicketLimit - item.Sold;}
-                        @_localizer["Remained"]: <text>@(@item.Count - @item.Sold)</text>
-                    </p>
+                <div class="text-center align-content-between admin-event pt-2 bg-danger">
+                    <div class="row">
+                        <div class="col-lg-4 text-white my-auto">
+                            <span>@ViewData["Status"]: </span>
+                            @switch (item.Status)
+                            {
+                                case Status.NotDefined:
+                                    <span>@ViewData["NotDefined"]</span>
+                                    break;
+                                case Status.Edited:
+                                    <span>@ViewData["Edited"]</span>
+                                    break;
+                                case Status.Rejected:
+                                    <span>@ViewData["Rejected"]</span>
+                                    break;
+                                case Status.New:
+                                    <span>@ViewData["New"]</span>
+                                    break;
+                                case Status.Published:
+                                    <span>@ViewData["Published"]</span>
+                                    break;
+                                case Status.UnPublished:
+                                    <span>@ViewData["UnPublished"]</span>
+                                    break;
+                                case Status.ReviewPublished:
+                                    <span>@ViewData["ReviewPublished"]</span>
+                                    break;
+                                case Status.ReviewUnPublished:
+                                    <span>@ViewData["ReviewUnPublished"]</span>
+                                    break;
+                                case Status.Expired:
+                                    <span>@ViewData["Expired"]</span>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        </div>
+                        <div class="col-lg-8">
+                            @switch (item.Status)
+                            {
+                                case Status.NotDefined:
+                                    //?
+                                    break;
+                                case Status.Edited:
+                                    //Что-то к edit
+                                    break;
+                                case Status.Rejected:
+                                    //Что-то к отказу
+                                    break;
+                                case Status.New:
+                                    <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                        @_localizer["Accept"]
+                                    </button>
+                                    <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'Rejected')">
+                                        @_localizer["Reject"]
+                                    </button>
+                                    break;
+                                case Status.Published:
+                                    <button type="button" class="btn btn-danger px-3 ml-4 mb-2" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'UnPublished')">
+                                        @_localizer["RemoveFromPublication"]
+                                    </button>
+                                    break;
+                                case Status.UnPublished:
+                                    <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                        @_localizer["ReturnToPublications"]
+                                    </button>
+                                    break;
+                                case Status.ReviewPublished:
+                                    <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'Published')">
+                                        @_localizer["Approve"]
+                                    </button>
+                                    <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'UnPublished')">
+                                        @_localizer["Reject"]
+                                    </button>
+                                    break;
+                                case Status.ReviewUnPublished:
+                                    <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
+                                        onclick="ChangeStatus(this, 'UnPublished')">
+                                        @_localizer["ApproveWithdrawal"]
+                                    </button>
+                                    <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
+                                        onclick="ChangeDenyStatus(this, 'Published')">
+                                        @_localizer["Reject"]
+                                    </button>
+                                    break;
+                                case Status.Expired:
+                                    <p> @_localizer["Event"] </p><br />
+                                    break;
+                            }
+                            <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')"> edit</span>
+                            @*<span class="material-icons px-3 py-2">delete</span>*@
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="text-center align-content-between admin-event pt-2 bg-danger">
-                <div class="row">
-                    <div class="col-lg-4 text-white my-auto">
-                        <span>@ViewData["Status"]: </span>
-                        @switch (item.Status)
-                        {
-                            case Status.NotDefined:
-                                <span>@ViewData["NotDefined"]</span>
-                                break;
-                            case Status.Edited:
-                                <span>@ViewData["Edited"]</span>
-                                break;
-                            case Status.Rejected:
-                                <span>@ViewData["Rejected"]</span>
-                                break;
-                            case Status.New:
-                                <span>@ViewData["New"]</span>
-                                break;
-                            case Status.Published:
-                                <span>@ViewData["Published"]</span>
-                                break;
-                            case Status.UnPublished:
-                                <span>@ViewData["UnPublished"]</span>
-                                break;
-                            case Status.ReviewPublished:
-                                <span>@ViewData["ReviewPublished"]</span>
-                                break;
-                            case Status.ReviewUnPublished:
-                                <span>@ViewData["ReviewUnPublished"]</span>
-                                break;
-                            case Status.Expired:
-                                <span>@ViewData["Expired"]</span>
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+        }
+    </div>
+}
+else
+{
+    <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
+}
+
+@if (Model.Users.Count != 0)
+{
+    <div id="all-organizers" style="display:none;">
+        @foreach (var item in Model.Users)
+        {
+            <div class="card mb-3 event-card" style="border-radius: 15px">
+                <div class="row body">
+                    <div class="pn-page-head col-lg-3 border-right" style="border-radius: 0;">
+                        <div class="row text-center">
+                            <div class="col px-0">
+                                <div class="pn-head_image">
+                                    <img src="@item.AvatarLink" alt="avatar" class="rounded-circle">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-8">
-                        @switch (item.Status)
+                    <div class="col-lg-9 sideBox">
+                        <div class="row">
+                            <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Role"]:</p>
+                            <span id="organizer-role" class="col">
+                            </span>
+                        </div>
+                        <div class="row">
+                            <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Username"]:</p>
+                            <span id="organizer-name" class="col">@item.UserName</span>
+                        </div>
+                        <div class="row">
+                            <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">Email:</p>
+                            <span id="organizer-email" class="col">@item.Email</span>
+                        </div>
+                        <div class="row">
+                            <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Mobile"]:</p>
+                            <span id="organizer-phone" class="col">@item.PhoneNumber</span>
+                        </div>
+                        <div class="row mt-3">
+                            <p class="col-2 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["SelfInfo"]:</p>
+                            <span class="self-info col px-0" style="text-align: justify;text-overflow: ellipsis; ">@item.SelfInfo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center align-content-between admin-event pt-2 bg-danger">
+                    <div class="row">
+                        @if (item.Approved == false)
                         {
-                            case Status.NotDefined:
-                                //?
-                                break;
-                            case Status.Edited:
-                                //Что-то к edit
-                                break;
-                            case Status.Rejected:
-                                //Что-то к отказу
-                                break;
-                            case Status.New:
-                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'Published')">
+                            <div class="col my-auto" id="ApprovedFalse">
+                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email', this)">
                                     @_localizer["Accept"]
                                 </button>
-                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
-                                        onclick="ChangeDenyStatus(this, 'Rejected')">
-                                    @_localizer["Reject"]
-                                </button>
-                                break;
-                            case Status.Published:
-                                <button type="button" class="btn btn-danger px-3 ml-4 mb-2" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'UnPublished')">
-                                    @_localizer["RemoveFromPublication"]
-                                </button>
-                                break;
-                            case Status.UnPublished:
-                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'Published')">
-                                    @_localizer["ReturnToPublications"]
-                                </button>
-                                break;
-                            case Status.ReviewPublished:
-                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'Published')">
-                                    @_localizer["Approve"]
-                                </button>
-                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
-                                        onclick="ChangeDenyStatus(this, 'UnPublished')">
-                                    @_localizer["Reject"]
-                                </button>
-                                break;
-                            case Status.ReviewUnPublished:
-                                <button class="btn btn-danger px-3 ml-4 mb-2" type="button" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'UnPublished')">
-                                    @_localizer["ApproveWithdrawal"]
-                                </button>
-                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" id="@item.Id"
-                                        onclick="ChangeDenyStatus(this, 'Published')">
-                                    @_localizer["Reject"]
-                                </button>
-                                break;
-                            case Status.Expired:
-                                <p> @_localizer["Event"] </p><br />
-                                break;
-                        }
-                        <span class="material-icons my-auto px-3 py-2" onclick="eventEdit('@item.Id')"> edit</span>
-                        @*<span class="material-icons px-3 py-2">delete</span>*@
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
-
-<div id="all-organizers" style="display:none;">
-    @foreach (var item in Model.Users)
-    {
-        <div class="card mb-3 event-card" style="border-radius: 15px">
-            <div class="row body">
-                <div class="pn-page-head col-lg-3 border-right" style="border-radius: 0;">
-                    <div class="row text-center">
-                        <div class="col px-0">
-                            <div class="pn-head_image">
-                                <img src="@item.AvatarLink" alt="avatar" class="rounded-circle">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9 sideBox">
-                    <div class="row">
-                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Role"]:</p>
-                        <span id="organizer-role" class="col">
-                        </span>
-                    </div>
-                    <div class="row">
-                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Username"]:</p>
-                        <span id="organizer-name" class="col">@item.UserName</span>
-                    </div>
-                    <div class="row">
-                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">Email:</p>
-                        <span id="organizer-email" class="col">@item.Email</span>
-                    </div>
-                    <div class="row">
-                        <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Mobile"]:</p>
-                        <span id="organizer-phone" class="col">@item.PhoneNumber</span>
-                    </div>
-                    <div class="row mt-3">
-                        <p class="col-2 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["SelfInfo"]:</p>
-                        <span class="self-info col px-0" style="text-align: justify;text-overflow: ellipsis; ">@item.SelfInfo</span>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center align-content-between admin-event pt-2 bg-danger">
-                <div class="row">
-                    @if (item.Approved == false)
-                    {
-                        <div class="col my-auto" id="ApprovedFalse">
-                            <button class="btn btn-danger px-3 ml-4 mb-2" type="button" onclick="ApproveAccount('@item.Email', this)">
-                                @_localizer["Accept"]
-                            </button>
-                            <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal"
+                                <button type="button" class="btn btn-danger px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal"
                                 onclick="ChangeDenyUserStatus(this, '@item.Email')">
-                                @_localizer["Reject"]
-                            </button>
-                        </div>
-                    }
-                    @if (item.Approved == true)
-                    {
-                        @if(item.EmailConfirmed == false)
-                        {
-                            <div class="col my-auto">
-                                <div class="my-auto text-white">@_localizer["NotConfirmedEmail"]</div>
+                                    @_localizer["Reject"]
+                                </button>
                             </div>
                         }
-                        <div class="col my-auto" id="ApprovedTrue">
-                            <span class="material-icons px-3 mb-2" onclick="userEdit('@item.Id')"> edit</span>
-                            <span class="material-icons px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" onclick="ChangeDenyUserStatus(this, '@item.Email')">delete</span>
-                        </div>
-                    }
+                        @if (item.Approved == true)
+                        {
+                            @if (item.EmailConfirmed == false)
+                            {
+                                <div class="col my-auto">
+                                    <div class="my-auto text-white">@_localizer["NotConfirmedEmail"]</div>
+                                </div>
+                            }
+                            <div class="col my-auto" id="ApprovedTrue">
+                                <span class="material-icons px-3 mb-2" onclick="userEdit('@item.Id')"> edit</span>
+                                <span class="material-icons px-3 mb-2" data-bs-toggle="modal" data-bs-target="#causeModal" onclick="ChangeDenyUserStatus(this, '@item.Email')">delete</span>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["UsersNotAdded"]</p>
+}
 
 <!-- Modal Cause -->
 <div class="modal fade" id="causeModal" tabindex="-1" aria-labelledby="causeModalLabel" aria-hidden="true">

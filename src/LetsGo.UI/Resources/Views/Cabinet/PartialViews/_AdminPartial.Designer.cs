@@ -230,5 +230,14 @@ namespace LetsGo.UI.Resources.Views.Cabinet.PartialViews {
                 return ResourceManager.GetString("Username", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UsersNotAdded {
+            get {
+                return ResourceManager.GetString("UsersNotAdded", resourceCulture);
+            }
+        }
     }
 }

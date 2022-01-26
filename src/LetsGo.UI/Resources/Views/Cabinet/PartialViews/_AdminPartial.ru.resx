@@ -174,4 +174,10 @@
   <data name="NotConfirmedEmail" xml:space="preserve">
     <value>Почта еще не подтверждена</value>
   </data>
+  <data name="EventsNotAdded " xml:space="preserve">
+    <value>Мероприятия еще не добавлены.</value>
+  </data>
+  <data name="UsersNotAdded" xml:space="preserve">
+    <value>Пользователи еще не добавлены.</value>
+  </data>
 </root>

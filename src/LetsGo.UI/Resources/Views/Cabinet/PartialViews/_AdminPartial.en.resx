@@ -174,4 +174,10 @@
   <data name="NotConfirmedEmail" xml:space="preserve">
     <value>Email hasn't been confirmed yet</value>
   </data>
+  <data name="EventsNotAdded " xml:space="preserve">
+    <value>Events have not been added yet.</value>
+  </data>
+  <data name="UsersNotAdded" xml:space="preserve">
+    <value>Users have not been added yet.</value>
+  </data>
 </root>

@@ -174,4 +174,7 @@
   <data name="NotConfirmedEmail" xml:space="preserve">
     <value />
   </data>
+  <data name="UsersNotAdded" xml:space="preserve">
+    <value />
+  </data>
 </root>

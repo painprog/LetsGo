@@ -1,0 +1,86 @@
+﻿@model LetsGo.UI.ViewModels.FilterViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
+
+<div class="filter">
+    <form asp-controller="Event" asp-action="Afisha" method="get" id="form">
+        <div class="filter-header">
+            @_localizer["Filter"]
+        </div>
+        <div class="filter-date">
+            <div class="filter-date-header">
+                @_localizer["Dates"]
+            </div>
+            <div class="filter-date-checkbox">
+                <input asp-for="@Model.SelectedDates" hidden />
+                <ul>
+                    <li class="filter-date-checkbox">
+                        <input type="checkbox" value="all" id="filter-date-input-all" onclick="PressDateInput()" />
+                        <label for="filter-date-input-all">@_localizer["All"]</label>
+                    </li>
+                    <li class="filter-date-checkbox">
+                        <input type="checkbox" value="today" id="filter-date-input-today" onclick="PressDateInput()" />
+                        <label for="filter-date-input-today">@_localizer["Today"]</label>
+                    </li>
+                    <li class="filter-date-checkbox">
+                        <input type="checkbox" value="tomorrow" id="filter-date-input-tomorrow" onclick="PressDateInput()" />
+                        <label for="filter-date-input-tomorrow">@_localizer["Tomorrow"]</label>
+                    </li>
+                    <li class="filter-date-checkbox">
+                        <input type="checkbox" value="weekend" id="filter-date-input-weekend" onclick="PressDateInput()" />
+                        <label for="filter-date-input-weekend">@_localizer["Weekends"]</label>
+                    </li>
+                    <li class="filter-date-checkbox">
+                        <input type="checkbox" value="@DateTime.Now.Month" id="filter-date-input-month" onclick="PressDateInput()" />
+                        <label for="filter-date-input-month">@DateTime.Now.ToString("MMMM")</label>
+                    </li>
+                </ul>
+            </div>
+            <div class="filter-categories-header">
+                @_localizer["Categories"]
+            </div>
+            <div class="filter-categories">
+                <input asp-for="@Model.SelectedCategories" hidden />
+                <ul>
+                    @foreach (var category in @Model.CategoriesDictionary[-1])
+                    {
+                        @if (@Model.CategoriesDictionary.ContainsKey(category.Id))
+                        {
+                            <li class="category">
+                                <input type="checkbox" value=@category.Id id="category-@category.Id" onclick="PressCategoryInput(@category.Id)">
+                                <div for="category-@category.Id" class="d-inline-block" id="category-link" onclick="OpenSubcategories(@category.Id)">
+                                    <span class="d-inline-block">@_localizer[category.Name]</span>
+                                    <span class="material-icons arrow icon-down-@category.Id">keyboard_arrow_down</span>
+                                    <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
+                                </div>
+                            </li>
+                            <div class="subcategories">
+                                <ul class="subcategories-@category.Id" style="display: none;">
+                                    @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
+                                    {
+                                        <li class="subcategory">
+                                            <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" />
+                                            <label for="subcategory-@subcategory.Id">@subcategory.Name</label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <li class="category">
+                                <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                <label for="category-@category.Id" class="d-inline-block">@_localizer[category.Name]</label>
+                            </li>
+                        }
+                        <hr>
+                    }
+                </ul>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-show w-100 mt-2">@_localizer["Show"]</button>
+            </div>
+        </div>
+    </form>
+</div>

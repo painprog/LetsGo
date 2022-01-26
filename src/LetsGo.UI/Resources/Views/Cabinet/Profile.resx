@@ -174,4 +174,10 @@
   <data name="Users" xml:space="preserve">
     <value />
   </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value />
+  </data>
 </root>

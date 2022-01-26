@@ -171,4 +171,7 @@
   <data name="Role" xml:space="preserve">
     <value>Рол</value>
   </data>
+  <data name="NotConfirmedEmail" xml:space="preserve">
+    <value>Почта азырынча тастыктала элек</value>
+  </data>
 </root>

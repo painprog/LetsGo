@@ -171,4 +171,7 @@
   <data name="Role" xml:space="preserve">
     <value />
   </data>
+  <data name="NotConfirmedEmail" xml:space="preserve">
+    <value />
+  </data>
 </root>

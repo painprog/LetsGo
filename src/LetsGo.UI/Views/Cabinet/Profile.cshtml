@@ -62,11 +62,11 @@
         <div id="options" class="col-2 px-0 mb-auto" style="display:none;">
             <div class="form-check form-check-inline" id="notApproved">
               <input class="form-check-input" type="checkbox" id="requests" value="requests">
-              <label class="form-check-label" for="requests">Заявки</label>
-            </div>
+              <label class="form-check-label" for="requests">@_localizer["Requests"]</label>
+            </div><br />
             <div class="form-check form-check-inline" id="approved">
               <input class="form-check-input" type="checkbox" id="approvedUsers" value="approvedUsers">
-              <label class="form-check-label" for="approvedUsers">Одобренные</label>
+              <label class="form-check-label" for="approvedUsers">@_localizer["ApprovedUsers"]</label>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))

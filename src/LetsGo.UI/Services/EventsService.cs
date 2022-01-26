@@ -416,30 +416,43 @@ namespace LetsGo.UI.Services
         public IQueryable<Event> FilterEventsByDate(IEnumerable<Event> events, string dates)
         {
             DateTime dateStart, dateEnd;
-            List<Event> filteredEvents = new List<Event>();
+            //List<Event> filteredEvents = new List<Event>();
+            HashSet<Event> filteredEvents = new HashSet<Event>();
             foreach (var date in dates.Split(','))
             {
                 switch (date)
                 {
-                    case "All":
+                    case "all":
                         break;
-                    case "Today":
+                    case "today":
                         dateStart = DateTime.Now.Date;
                         dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
-                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd).ToList());
+                        foreach (var item in events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd))
+                        {
+                            filteredEvents.Add(item);
+                        }
                         break;
-                    case "Tomorrow":
-                        dateStart = DateTime.Now.Date;
-                        dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
-                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd).ToList());
+                    case "tomorrow":
+                        dateStart = DateTime.Now.AddDays(1).Date;
+                        dateEnd = DateTime.Now.AddDays(2).Date.AddMinutes(-1);
+                        foreach (var item in events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd))
+                        {
+                            filteredEvents.Add(item);
+                        }
                         break;
-                    case "Weekend":
-                        filteredEvents.AddRange(events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday).ToList());
+                    case "weekend":
+                        foreach (var item in events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday))
+                        {
+                            filteredEvents.Add(item);
+                        }
                         break;
                     default:
                         dateStart = new DateTime(DateTime.Now.Year, int.Parse(date), 1);
                         dateEnd = new DateTime(DateTime.Now.Year, int.Parse(date) + 1, 1).AddMinutes(-1);
-                        filteredEvents.AddRange(events.Where(e => e.EventStart >= dateStart && e.EventEnd <= dateEnd).ToList());
+                        foreach (var item in events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd))
+                        {
+                            filteredEvents.Add(item);
+                        }
                         break;
                 }
             }

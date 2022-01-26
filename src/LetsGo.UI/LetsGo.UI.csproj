@@ -175,6 +175,7 @@
     <Folder Include="Views\Cabinet\" />
     <Folder Include="wwwroot\avatars\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\avatars\" />
   </ItemGroup>
 
   <ItemGroup>

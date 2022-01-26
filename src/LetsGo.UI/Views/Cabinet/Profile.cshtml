@@ -60,13 +60,13 @@
             </div>
         </div>
         <div id="options" class="col-2 px-0 mb-auto" style="display:none;">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label class="form-check-label" for="inlineCheckbox1">Заявки</label>
+            <div class="form-check form-check-inline" id="notApproved">
+              <input class="form-check-input" type="checkbox" id="requests" value="requests">
+              <label class="form-check-label" for="requests">Заявки</label>
             </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-              <label class="form-check-label" for="inlineCheckbox2">Одобренные</label>
+            <div class="form-check form-check-inline" id="approved">
+              <input class="form-check-input" type="checkbox" id="approvedUsers" value="approvedUsers">
+              <label class="form-check-label" for="approvedUsers">Одобренные</label>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))
@@ -217,7 +217,7 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        $(button).closest('.card').hide('slow');
+                        $(button).closest('.card').hide('fast');
                     }
                 }
             })
@@ -269,7 +269,7 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            $('#' + _id).closest('.card').hide('slow');
+                            $('#' + _id).closest('.card').hide('fast');
                         }
                     }
                 });
@@ -354,6 +354,43 @@
             });
         });
 
+        $('#approved #approvedUsers').on('click', () => {
+            if(!$('#approved #approvedUsers').prop('checked'))
+            {
+                $(this).prop('checked', false);
+                console.log('unchecked');
+                $('#all-organizers #ApprovedTrue').each(function () {
+                    $(this).closest('.card').hide('fast');
+                });
+            }
+            else
+            {
+                $(this).prop('checked', true);
+                console.log('checked');
+                $('#all-organizers #ApprovedTrue').each(function () {
+                    $(this).closest('.card').show('fast');
+                });
+            }
+        });
+        $('#notApproved #requests').on('click', () => {
+            if(!$('#notApproved #requests').prop('checked'))
+            {
+                $(this).prop('checked', false);
+                console.log('unchecked');
+                $('#all-organizers #ApprovedFalse').each(function () {
+                    $(this).closest('.card').hide('fast');
+                });
+            }
+            else
+            {
+                $(this).prop('checked', true);
+                console.log('checked');
+                $('#all-organizers #ApprovedFalse').each(function () {
+                    $(this).closest('.card').show('fast');
+                });
+            }
+        });
+
         function ApproveAccount(email, button) {
             event.stopPropagation();
             // log
@@ -365,7 +402,7 @@
                 success: function (response) {
                     if (response.success) {
                         console.log("approved");
-                        $(button).closest('.card').hide('slow');
+                        $(button).closest('.card').hide('fast');
                     }
                 }
             });
@@ -384,7 +421,7 @@
                 success: function (response) {
                     if (response.success) {
                         console.log("deleted");
-                        $(button).closest('.card').hide('slow');
+                        $(button).closest('.card').hide('fast');
                     }
                 }
             });

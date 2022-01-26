@@ -337,7 +337,7 @@
         });
 
         $(document).ready(function () {
-            var maxLength = 10;
+            var maxLength = 150;
             $(".self-info").each(function () {
                 var myStr = $(this).text();
                 if ($.trim(myStr).length > maxLength) {
@@ -345,7 +345,7 @@
                     var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
                     $(this).empty().html(newStr);
                     $(this).append(' <a href="javascript:void(0);" class="read-more font-weight-bold text-decoration-none">...</a>');
-                    $(this).append('<span class="more-text">' + removedStr + '</span>');
+                    $(this).append('<span class="more-text" style="display:none">'+ removedStr +'</span>');
                 }
             });
             $(".read-more").click(function () {

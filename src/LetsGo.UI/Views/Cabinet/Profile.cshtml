@@ -337,8 +337,8 @@
         });
 
         $(document).ready(function () {
-            var maxLength = 150;
-            $("#self-info").each(function () {
+            var maxLength = 10;
+            $(".self-info").each(function () {
                 var myStr = $(this).text();
                 if ($.trim(myStr).length > maxLength) {
                     var newStr = myStr.substring(0, maxLength);
@@ -395,6 +395,7 @@
             event.stopPropagation();
             // log
             console.log(email);
+            $(button).closest('.card').hide('fast');
             $.ajax({
                 url: '@Url.Action("Approve", "Cabinet")',
                 type: 'POST',
@@ -402,7 +403,6 @@
                 success: function (response) {
                     if (response.success) {
                         console.log("approved");
-                        $(button).closest('.card').hide('fast');
                     }
                 }
             });
@@ -411,6 +411,7 @@
             event.stopPropagation();
             // log
             console.log(email);
+            $(button).closest('.card').hide('fast');
             $.ajax({
                 url: '@Url.Action("DeleteUser", "Cabinet")',
                 type: 'POST',
@@ -421,7 +422,6 @@
                 success: function (response) {
                     if (response.success) {
                         console.log("deleted");
-                        $(button).closest('.card').hide('fast');
                     }
                 }
             });

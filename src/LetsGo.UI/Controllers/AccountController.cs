@@ -170,8 +170,6 @@ namespace LetsGo.UI.Controllers
                                 await model.Avatar.CopyToAsync(fileStream);
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        await SendConfirmEmail(user, code);
-
                         await _userManager.AddToRoleAsync(user, "organizer");
 
                         return View("ConfirmRegistration");

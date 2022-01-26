@@ -7,5 +7,8 @@ namespace LetsGo.UI.ViewModels
     {
         public List<Event> Events { get; set; }
         public Dictionary<int?, List<EventCategory>> CategoriesDictionary { get; set; }
+
+        public string SelectedDates { get; set; }
+        public string SelectedCategories { get; set; }
     }
 }

@@ -314,21 +314,8 @@
             $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
         }
 
-        $('#events-link').on('click', () => {
-            $('#all-events').show();
-            $('#all-organizers').hide();
-            $('#dropdown').show();
-            $('#dd').show();
-            $('#options').hide();
-        });
 
-        $('#organizers-link').on('click', () => {
-            $('#all-events').hide();
-            $('#all-organizers').show();
-            $('#dropdown').hide();
-            $('#dd').hide();
-            $('#options').show();
-        });
+         $('.btn-loadmore-organizers').hide();
 
         $(document).ready(function () {
             var maxLength = 150;

@@ -8,8 +8,8 @@ $('#all-events').btnLoadmore({
 });
 
 $('#all-organizers').btnLoadmore({
-    showItem: 1, //default 6
-    whenClickBtn: 1, //default 3
+    showItem: 20, //default 6
+    whenClickBtn: 5, //default 3
     textBtn: 'Показать еще',
     classBtn: 'btn btn-danger btn-loadmore'
 });

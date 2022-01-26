@@ -7,6 +7,13 @@ $('#all-events').btnLoadmore({
     classBtn: 'btn btn-danger btn-loadmore'
 });
 
+$('#all-organizers').btnLoadmore({
+    showItem: 1, //default 6
+    whenClickBtn: 1, //default 3
+    textBtn: 'Показать еще',
+    classBtn: 'btn btn-danger btn-loadmore'
+});
+
 function filter() {
     filterEvents();
     filterUsers();

@@ -226,14 +226,6 @@ namespace LetsGo.UI.Services
             return @event;
         }
 
-
-        public async Task<List<Event>> GetEvents(int userId)
-        {
-            List<Event> Events = new List<Event>();
-            Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
-            return Events;
-        }
-
         public async Task<bool> ChangeStatus(string status, int eventId, string cause)
         {
             var @event = GetEvent(eventId).Result;
@@ -291,6 +283,13 @@ namespace LetsGo.UI.Services
             }
             await _goContext.SaveChangesAsync();
             return events;
+        }
+
+        public async Task<List<Event>> GetEvents(int userId)
+        {
+            List<Event> Events = new List<Event>();
+            Events = await _goContext.Events.Include(e => e.Location).Where(p => p.OrganizerId == userId).ToListAsync();
+            return Events;
         }
 
         public async Task<Event> GetEvent(int id)
@@ -370,6 +369,85 @@ namespace LetsGo.UI.Services
             }
             string UC = builder.ToString();
             return UC;
+        }
+
+        public IQueryable<Event> QueryableEventsAfterFilter(
+            List<int> EventCategories, Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore
+        )
+        {
+            IQueryable<Event> Events = _goContext.Events.Include(e => e.Location).OrderByDescending(e => e.EventStart);
+
+            if (EventCategories.Count > 0)
+            {
+                HashSet<Event> FilteredEvents = new HashSet<Event>();
+                List<EventCategory> selectedCategories = new List<EventCategory>();
+                foreach (var id in EventCategories)
+                    selectedCategories.Add(GetEventCategory(id).Result);
+
+                var categoriesDictionary = selectedCategories.GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
+
+                foreach (var item in categoriesDictionary)
+                {
+                    foreach (var category in item.Value)
+                    {
+                        if (!categoriesDictionary.ContainsKey(category.Id))
+                        {
+                            FilteredEvents.UnionWith(Events.Where(e => e.Categories.Contains(category.Name)));
+                        }
+                    }
+                }
+
+                Events = FilteredEvents.AsQueryable();
+            }
+            if (Status != Status.NotDefined)
+                Events = Events.Where(e => e.Status == Status);
+
+            if (DateTimeFrom != DateTime.MinValue && DateTimeBefore != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart >= DateTimeFrom && e.EventStart <= DateTimeBefore);
+            else if (DateTimeFrom != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart >= DateTimeFrom);
+            else if (DateTimeBefore != DateTime.MinValue)
+                Events = Events.Where(e => e.EventStart <= DateTimeBefore);
+
+            return Events;
+        }
+
+        public IQueryable<Event> FilterEventsByDate(IEnumerable<Event> events, string dates)
+        {
+            DateTime dateStart, dateEnd;
+            //List<Event> filteredEvents = new List<Event>();
+            HashSet<Event> filteredEvents = new HashSet<Event>();
+            foreach (var date in dates.Split(','))
+            {
+                switch (date)
+                {
+                    case "all":
+                        filteredEvents.UnionWith(events);
+                        break;
+                    case "today":
+                        dateStart = DateTime.Now.Date;
+                        dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
+                        filteredEvents.UnionWith(events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd));
+                        break;
+                    case "tomorrow":
+                        dateStart = DateTime.Now.AddDays(1).Date;
+                        dateEnd = DateTime.Now.AddDays(2).Date.AddMinutes(-1);
+                        filteredEvents.UnionWith(events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd));
+                        break;
+                    case "weekend":
+                        filteredEvents.UnionWith(
+                            events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday)
+                        );
+                        break;
+                    default:
+                        dateStart = new DateTime(DateTime.Now.Year, int.Parse(date), 1);
+                        dateEnd = new DateTime(DateTime.Now.Year, int.Parse(date) + 1, 1).AddMinutes(-1);
+                        filteredEvents.UnionWith(events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd));
+                        break;
+                }
+            }
+
+            return filteredEvents.AsQueryable();
         }
     }
 }

@@ -67,15 +67,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Add.ky.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Update="Resources\Views\Event\Afisha.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Afisha.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Update="Resources\Views\Event\Afisha.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Afisha.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Update="Resources\Views\Event\Details.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Details.Designer.cs</LastGenOutput>

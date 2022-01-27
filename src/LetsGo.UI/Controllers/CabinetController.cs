@@ -61,6 +61,7 @@ namespace LetsGo.UI.Controllers
             viewModel.CategoriesDictionary = _context.EventCategories.ToArray()
                 .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
             Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
+            viewModel.IsOrganizer = User.IsInRole("organizer") ? true : false;
             viewModel.Stats = Stats;
             viewModel.EventCategories = _context.EventCategories.ToList();
             viewModel.selectedCategories = selectedCategories ?? String.Empty;

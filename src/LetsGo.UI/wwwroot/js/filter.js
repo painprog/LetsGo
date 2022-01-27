@@ -4,10 +4,8 @@
         $('#filter-date-input-all').prop("checked", true);
     }
     else {
-        console.log(dates.val());
         dates.val().split(',').forEach(function (elem) {
-            console.log($('#filter-date-input-' + elem).val());
-            if (!Number.isInteger(elem)) {
+            if (!(parseInt(elem) || 0)) {
                 $('#filter-date-input-' + elem).prop('checked', true);
             }
             else {

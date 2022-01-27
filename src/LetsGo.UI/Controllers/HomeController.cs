@@ -25,29 +25,30 @@ namespace LetsGo.UI.Controllers
 
         public IActionResult Index()
         {
+            IQueryable<Event> events = _db.Events.Include(e => e.Location);
             IndexPageViewModel model = new IndexPageViewModel();
 
-            model.Concerts = _db.Events.Include(e => e.Location)
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Концерты") && e.Status == Status.Published)
+            model.Concerts = events
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("Concerts") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
-            model.Festivals = _db.Events.Include(e => e.Location)
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Фестивали") && e.Status == Status.Published)
+            model.Festivals = events
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("Festivals") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
-            model.Performances = _db.Events.Include(e => e.Location)
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Спектакли") && e.Status == Status.Published)
+            model.Performances = events
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("Perfomances") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
-            model.ForChildren = _db.Events.Include(e => e.Location)
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Детям") && e.Status == Status.Published)
+            model.ForChildren = events
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("ForChildren") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 

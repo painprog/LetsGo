@@ -180,4 +180,16 @@
   <data name="PriceSort" xml:space="preserve">
     <value>Баасы</value>
   </data>
+  <data name="Organizers" xml:space="preserve">
+    <value>Уюштуруучулар</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Колдонуучулар</value>
+  </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value>Башкалар</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Өтүнүчүлөр</value>
+  </data>
 </root>

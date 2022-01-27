@@ -25,6 +25,11 @@
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label asp-for="SelfInfo">@_localizer["SelfInfo"]</label>
+            <textarea class="form-control input-field" asp-for="SelfInfo" rows="6"></textarea>
+            <span asp-validation-for="SelfInfo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="Avatar" class="control-label">@_localizer["Avatar"]</label>
             <input asp-for="Avatar" type="file" class="form-control-file" />
             <span asp-validation-for="Avatar" class="text-danger"></span>

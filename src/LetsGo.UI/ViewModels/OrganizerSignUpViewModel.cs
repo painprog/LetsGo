@@ -21,6 +21,10 @@ namespace LetsGo.UI.ViewModels
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
         public string PhoneNumber { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        public string SelfInfo { get; set; }
+
         public IFormFile Avatar { get; set; }
 
         [DataType(DataType.Password)]

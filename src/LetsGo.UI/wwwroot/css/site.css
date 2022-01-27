@@ -555,9 +555,10 @@ button.accept-policy {
     margin: 15px 15px 0 0;
 }
 
-.events .card a:hover, .btn-showmore:hover, .links a:hover:not([tabindex]), .events .card-title:hover {
+.events .card a:hover, .btn-showmore:hover, .links a:hover:not([tabindex]), .events .card-title:hover, .heading-link:hover {
     color: crimson;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .card-tag {
@@ -745,15 +746,39 @@ button.accept-policy {
     border-radius: 15px 15px 0 0;
 }
 
-.blur_img {
-    margin-top: -30px;
-    margin-left: -30px;
-    padding-bottom: 10px;
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
-    height: auto;
-    filter: blur(20px);
+#all-organizers .pn-page-head {
+    padding: 20px 0;
+}
+
+#all-organizers .sideBox{
+    padding: 20px 30px;
+}
+
+#all-organizers .card .body, #all-organizers .pn-head_image {
+    cursor: default;
+}
+
+#all-organizers .sideBox span, #all-organizers .sideBox p {
+    cursor: text;
+}
+
+#all-organizers .sideBox div {
+    margin-bottom: 8px;
+}
+
+    .blur_img {
+        margin-top: -30px;
+        margin-left: -30px;
+        padding-bottom: 10px;
+        pointer-events: none;
+        position: absolute;
+        width: 100%;
+        height: auto;
+        filter: blur(20px);
+    }
+
+#all-organizers .blur_img{
+    margin: -30px 0 0;
 }
 
 .pn-head_image {
@@ -766,6 +791,10 @@ button.accept-policy {
     .pn-head_image img {
         height: 100%;
     }
+
+#all-organizers .pn-head_image {
+    min-width: 180px;
+}
 
 .pn-head_title {
     color: #fff;
@@ -1350,4 +1379,8 @@ button.accept-policy {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#self-info .more-text {
+    display: none;
 }

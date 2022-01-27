@@ -85,16 +85,22 @@
                             </li>
                         </ul>
                         <ul>
-                            <li>
-                                <a href="#">@_localizer["CorporateClients"]</a>
-                            </li>
-                            <li>
-                                <a href="#">@_localizer["PersonalAccount"]</a>
-                            </li>
-                            <li>
-                                <a href="#">@_localizer["AffiliateProgram"]</a>
-                            </li>
-                        </ul>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    <a asp-controller="Account" asp-action="Login">@_localizer["Login"]</a>
+                                </li>
+                            }
+                                <li>
+                                    <a href="#">@_localizer["CorporateClients"]</a>
+                                </li>
+                                <li>
+                                    <a href="#">@_localizer["PersonalAccount"]</a>
+                                </li>
+                                <li>
+                                    <a href="#">@_localizer["AffiliateProgram"]</a>
+                                </li>
+                            </ul>
                     </div>
                 </div>
                 <div class="fog"></div>
@@ -157,11 +163,6 @@
                             </div>
                         </div>
                     }
-                    else
-                    {
-                        <a class="nav-link text-white menu-link" asp-controller="Account" asp-action="Login">@_localizer["Login"]</a>
-                    }
-
                 </div>
             </div>
         </nav>

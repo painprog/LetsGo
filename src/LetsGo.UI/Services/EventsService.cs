@@ -379,8 +379,7 @@ namespace LetsGo.UI.Services
 
             if (EventCategories.Count > 0)
             {
-                List<Event> FilteredEvents = new List<Event>();
-
+                HashSet<Event> FilteredEvents = new HashSet<Event>();
                 List<EventCategory> selectedCategories = new List<EventCategory>();
                 foreach (var id in EventCategories)
                     selectedCategories.Add(GetEventCategory(id).Result);
@@ -393,7 +392,7 @@ namespace LetsGo.UI.Services
                     {
                         if (!categoriesDictionary.ContainsKey(category.Id))
                         {
-                            FilteredEvents.AddRange(Events.Where(e => e.Categories.Contains(category.Name)));
+                            FilteredEvents.UnionWith(Events.Where(e => e.Categories.Contains(category.Name)));
                         }
                     }
                 }
@@ -423,36 +422,27 @@ namespace LetsGo.UI.Services
                 switch (date)
                 {
                     case "all":
+                        filteredEvents.UnionWith(events);
                         break;
                     case "today":
                         dateStart = DateTime.Now.Date;
                         dateEnd = DateTime.Now.AddDays(1).Date.AddMinutes(-1);
-                        foreach (var item in events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd))
-                        {
-                            filteredEvents.Add(item);
-                        }
+                        filteredEvents.UnionWith(events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd));
                         break;
                     case "tomorrow":
                         dateStart = DateTime.Now.AddDays(1).Date;
                         dateEnd = DateTime.Now.AddDays(2).Date.AddMinutes(-1);
-                        foreach (var item in events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd))
-                        {
-                            filteredEvents.Add(item);
-                        }
+                        filteredEvents.UnionWith(events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd));
                         break;
                     case "weekend":
-                        foreach (var item in events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday))
-                        {
-                            filteredEvents.Add(item);
-                        }
+                        filteredEvents.UnionWith(
+                            events.Where(e => e.EventStart.DayOfWeek == DayOfWeek.Saturday || e.EventStart.DayOfWeek == DayOfWeek.Sunday)
+                        );
                         break;
                     default:
                         dateStart = new DateTime(DateTime.Now.Year, int.Parse(date), 1);
                         dateEnd = new DateTime(DateTime.Now.Year, int.Parse(date) + 1, 1).AddMinutes(-1);
-                        foreach (var item in events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd))
-                        {
-                            filteredEvents.Add(item);
-                        }
+                        filteredEvents.UnionWith(events.Where(e => e.EventStart >= dateStart && e.EventStart <= dateEnd));
                         break;
                 }
             }

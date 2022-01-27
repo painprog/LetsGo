@@ -6,7 +6,7 @@
 <div class="filter">
     <form asp-controller="Event" asp-action="Afisha" method="get" id="form">
         <div class="filter-header">
-            @_localizer["Filter"]
+            @_localizer["Filters"]
         </div>
         <div class="filter-date">
             <div class="filter-date-header">
@@ -61,7 +61,7 @@
                                     {
                                         <li class="subcategory">
                                             <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" />
-                                            <label for="subcategory-@subcategory.Id">@subcategory.Name</label>
+                                            <label for="subcategory-@subcategory.Id">_localizer["@subcategory.Name]</label>
                                         </li>
                                     }
                                 </ul>

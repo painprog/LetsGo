@@ -2,11 +2,11 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @{
-    ViewBag.Title = _localizer["Poster"] + DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower() + " " + DateTime.Now.Year;
+    ViewBag.Title = _localizer["Poster"];
 }
 
 <div class="container">
-    <h2 class="afisha-header">@ViewBag.PageTitle</h2>
+    <h2 class="afisha-header">@_localizer["Afisha"]</h2>
     <div class="row">
         <div class="events col-lg-9">
             <div class="row">

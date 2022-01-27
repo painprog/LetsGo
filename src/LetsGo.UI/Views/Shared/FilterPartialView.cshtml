@@ -61,7 +61,7 @@
                                     {
                                         <li class="subcategory">
                                             <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" />
-                                            <label for="subcategory-@subcategory.Id">_localizer["@subcategory.Name]</label>
+                                            <label for="subcategory-@subcategory.Id">@_localizer[@subcategory.Name]</label>
                                         </li>
                                     }
                                 </ul>

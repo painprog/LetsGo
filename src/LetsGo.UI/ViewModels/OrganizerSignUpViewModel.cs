@@ -12,27 +12,28 @@ namespace LetsGo.UI.ViewModels
             ErrorMessage = "Можно использовать только заглавные, прописные латинские буквы, цифры _ и .")]
         public string Username { get; set; }
 
-        [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [Display(Name = "Почта")]
+        [EmailAddress(ErrorMessage = "Некорректная почта")]
         [Remote(action: "CheckEmail", controller: "Account", ErrorMessage = "Эта почта уже занята")]
         public string Email { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [Phone(ErrorMessage = "Неверный формат")]
         public string PhoneNumber { get; set; }
 
-        [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [DataType(DataType.MultilineText)]
         public string SelfInfo { get; set; }
 
         public IFormFile Avatar { get; set; }
 
-        [DataType(DataType.Password)]
         [Required(ErrorMessage = "Введите пароль")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
         [Required(ErrorMessage = "Повторите пароль")]
+        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
     }

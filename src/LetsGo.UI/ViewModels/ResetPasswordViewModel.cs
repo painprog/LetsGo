@@ -5,7 +5,8 @@ namespace LetsGo.UI.ViewModels
 {
     public class ResetPasswordViewModel
     {
-        [EmailAddress]
+        [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [EmailAddress(ErrorMessage = "Некорректная почта")]
         [Remote("EmailChek", "Account", ErrorMessage = "Неправильный email")]
         public string Email { get; set; }
 

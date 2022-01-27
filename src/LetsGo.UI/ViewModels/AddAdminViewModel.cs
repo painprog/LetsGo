@@ -20,6 +20,7 @@ namespace LetsGo.UI.ViewModels
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Данное поле обязательно для заполнения")]
+        [Phone(ErrorMessage = "Неверный формат")]
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
 

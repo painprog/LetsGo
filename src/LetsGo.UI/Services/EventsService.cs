@@ -417,7 +417,7 @@ namespace LetsGo.UI.Services
             DateTime dateStart, dateEnd;
             //List<Event> filteredEvents = new List<Event>();
             HashSet<Event> filteredEvents = new HashSet<Event>();
-            foreach (var date in dates.Split(','))
+            foreach (var date in dates.ToLower().Split(','))
             {
                 switch (date)
                 {

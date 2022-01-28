@@ -374,12 +374,13 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                @{ 
+                @{
                     await Html.RenderPartialAsync(
                         "/Views/Shared/FilterPartialView.cshtml",
-                        new LetsGo.UI.ViewModels.FilterViewModel() {
+                        new LetsGo.UI.ViewModels.FilterViewModel()
+                        {
                             CategoriesDictionary = Model.CategoriesDictionary,
-                            SelectedCategories = Model.SelectedCategories, 
+                            SelectedCategories = Model.SelectedCategories,
                             SelectedDates = Model.SelectedDates
                         }
                     ); }
@@ -390,6 +391,7 @@
 
 @section scripts{
     <script type="text/javascript" src="~/js/filter.js"></script>
+    <script charset="windows-1251" type="text/javascript" src="~/js/calender.js"></script>
 
     <script>
         $(window).on('popstate', function (event) {

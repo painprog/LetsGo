@@ -1,4 +1,4 @@
-﻿@model LetsGo.UI.ViewModels.CategoryViewModel
+﻿@model List<LetsGo.Core.Entities.Event>
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @{
@@ -7,7 +7,7 @@
 <div class="events-page">
     <h2>@_localizer["Afisha"] <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> @_localizer["Bishkek"]</h2>
     <div class="events row">
-        @foreach (var item in Model.Events)
+        @foreach (var item in Model)
         {
             <div class="col-md-4">
                 <div class="card p-0">

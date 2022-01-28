@@ -3,139 +3,146 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 
-<div class="col col-xl-9 col-md-12" id="all-events">
-    @foreach (var item in Model.Events)
-    {
-        <div class="card mb-3 event-card" style="border-radius: 15px">
-            @*<div id="event-status" style="display:none;">@item.Status</div>*@
-            <div id="event-status" style="padding: 20px;">@item.Status</div>
-            <div class="row body" onclick="eventDetails('@item.Id')">
-                <div class="pn-page-head col-lg-10" style="border-radius: 0">
-                    <img class="blur_img" src="@item.PosterImage" alt="">
+@if(Model.Events.Count != 0)
+{
+    <div class="col col-xl-9 col-md-12" id="all-events">
+        @foreach (var item in Model.Events)
+        {
+            <div class="card mb-3 event-card" style="border-radius: 15px">
+                @*<div id="event-status" style="display:none;">@item.Status</div>*@
+                <div id="event-status" style="padding: 20px;">@item.Status</div>
+                <div class="row body" onclick="eventDetails('@item.Id')">
+                    <div class="pn-page-head col-lg-10" style="border-radius: 0">
+                        <img class="blur_img" src="@item.PosterImage" alt="">
+                        <div class="row">
+                            <div class="col-lg-4 mr-5">
+                                <div class="pn-head_image">
+                                    <img src="@item.PosterImage" alt="" class="rounded">
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="pn-head_title">
+                                    <h1>@item.Name</h1>
+                                    <span>@item.AgeLimit +</span>
+                                </div>
+                                <div class="pn-head_description">
+                                    <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
+                                    <div class="pn-head_place">@item.Location.Name</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 my-auto text-center sideBox">
+                        <h1 style="font-size: 22px;">@_localizer["Ticket"]</h1>
+                        <p>
+                            @_localizer["Buy"]: @item.Sold<br />
+                            @{ var remainder = item.TicketLimit - item.Sold;}
+                            @_localizer["Remained"]: <text>@(@item.Count - @item.Sold)</text>
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center align-content-between admin-event pt-2">
                     <div class="row">
-                        <div class="col-lg-4 mr-5">
-                            <div class="pn-head_image">
-                                <img src="@item.PosterImage" alt="" class="rounded">
-                            </div>
+                        <div class="col-lg-4 text-white my-auto">
+                            <span>@ViewData["Status"]: </span>
+                            @switch (item.Status)
+                            {
+                                case Status.NotDefined:
+                                    <span>@ViewData["NotDefined"]</span>
+                                    break;
+                                case Status.Edited:
+                                    <span>@ViewData["Edited"]</span>
+                                    break;
+                                case Status.Rejected:
+                                    <span>@ViewData["Rejected"]</span>
+                                    break;
+                                case Status.New:
+                                    <span>@ViewData["New"]</span>
+                                    break;
+                                case Status.Published:
+                                    <span>@ViewData["Published"]</span>
+                                    break;
+                                case Status.UnPublished:
+                                    <span>@ViewData["UnPublished"]</span>
+                                    break;
+                                case Status.ReviewPublished:
+                                    <span>@ViewData["ReviewPublished"]</span>
+                                    break;
+                                case Status.ReviewUnPublished:
+                                    <span>@ViewData["ReviewUnPublished"]</span>
+                                    break;
+                                case Status.Expired:
+                                    <span>@ViewData["Expired"]</span>
+                                    break;
+                            }
                         </div>
-                        <div class="col-lg-7">
-                            <div class="pn-head_title">
-                                <h1>@item.Name</h1>
-                                <span>@item.AgeLimit +</span>
-                            </div>
-                            <div class="pn-head_description">
-                                <div class="pn-head_text">@item.EventStart.ToShortDateString() @item.EventEnd.ToShortDateString()</div>
-                                <div class="pn-head_place">@item.Location.Name</div>
-                            </div>
+                        <div class="col-lg-8">
+                            @switch (item.Status)
+                            {
+                                case Status.NotDefined:
+                                    //to do smth
+                                    break;
+                                case Status.Edited:
+                                    //to do smth
+                                    break;
+                                case Status.Rejected:
+                                    <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span>@_localizer["Edit"]</a>
+                                    break;
+                                case Status.New:
+                                    <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
+                                    break;
+                                case Status.Published:
+                                    <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
+                                            onclick="ChangeStatus(this, 'ReviewUnPublished')">
+                                       @_localizer["Send"] 
+                                    </button>
+                                    break;
+                                case Status.UnPublished:
+                                    <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
+                                            onclick="ChangeStatus(this, 'ReviewPublished')">
+                                      @_localizer["Publish"] 
+                                    </button><br />
+                                    break;
+                                case Status.ReviewPublished:
+                                    <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
+                                            onclick="ChangeStatus(this, 'UnPublished')">
+                                      @_localizer["Cancel"] 
+                                    </button>
+                                    break;
+                                case Status.ReviewUnPublished:
+                                    <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
+                                            onclick="ChangeStatus(this, 'Published')">
+                                       @_localizer["CancelWithdrawa"]
+                                    </button>
+                                    break;
+                                case Status.Expired:
+                                    break;
+                            }
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 my-auto text-center sideBox">
-                    <h1 style="font-size: 22px;">@_localizer["Ticket"]</h1>
-                    <p>
-                        @_localizer["Buy"]: @item.Sold<br />
-                        @{ var remainder = item.TicketLimit - item.Sold;}
-                        @_localizer["Remained"]: <text>@(@item.Count - @item.Sold)</text>
-                    </p>
-                </div>
-            </div>
-            <div class="text-center align-content-between admin-event pt-2">
-                <div class="row">
-                    <div class="col-lg-2">
-                        <span>@ViewData["Status"]: </span>
-                        @switch (item.Status)
-                        {
-                            case Status.NotDefined:
-                                <span>@ViewData["NotDefined"]</span>
-                                break;
-                            case Status.Edited:
-                                <span>@ViewData["Edited"]</span>
-                                break;
-                            case Status.Rejected:
-                                <span>@ViewData["Rejected"]</span>
-                                break;
-                            case Status.New:
-                                <span>@ViewData["New"]</span>
-                                break;
-                            case Status.Published:
-                                <span>@ViewData["Published"]</span>
-                                break;
-                            case Status.UnPublished:
-                                <span>@ViewData["UnPublished"]</span>
-                                break;
-                            case Status.ReviewPublished:
-                                <span>@ViewData["ReviewPublished"]</span>
-                                break;
-                            case Status.ReviewUnPublished:
-                                <span>@ViewData["ReviewUnPublished"]</span>
-                                break;
-                            case Status.Expired:
-                                <span>@ViewData["Expired"]</span>
-                                break;
-                        }
-                    </div>
-                    <div class="col-lg-10">
-                        @switch (item.Status)
-                        {
-                            case Status.NotDefined:
-                                //to do smth
-                                break;
-                            case Status.Edited:
-                                //to do smth
-                                break;
-                            case Status.Rejected:
-                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2 " asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span>@_localizer["Edit"]</a>
-                                break;
-                            case Status.New:
-                                <a class="btn btn-danger p-0 px-3 ml-4 mb-2" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id"><span class="material-icons my-auto px-3 py-2">edit</span></a>
-                                break;
-                            case Status.Published:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
-                                        onclick="ChangeStatus(this, 'ReviewUnPublished')">
-                                   @_localizer["Send"] 
-                                </button>
-                                break;
-                            case Status.UnPublished:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'ReviewPublished')">
-                                  @_localizer["Publish"] 
-                                </button><br />
-                                break;
-                            case Status.ReviewPublished:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2" id="@item.Id"
-                                        onclick="ChangeStatus(this, 'UnPublished')">
-                                  @_localizer["Cancel"] 
-                                </button>
-                                break;
-                            case Status.ReviewUnPublished:
-                                <button type="button" class="btn btn-warning px-3 ml-4 mb-2 " id="@item.Id"
-                                        onclick="ChangeStatus(this, 'Published')">
-                                   @_localizer["CancelWithdrawa"]
-                                </button>
-                                break;
-                            case Status.Expired:
-                                break;
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="text-light bg-danger text-center align-content-between admin-event px-2" style="line-height: 40px">
-                @if (item.StatusDescription != null)
-                {
-                    @switch (item.Status)
+                <div class="text-light bg-danger text-center align-content-between admin-event px-2" style="line-height: 40px">
+                    @if (item.StatusDescription != null)
                     {
-                        case Status.Published:
-                            <span>@_localizer["WithdrawalDenied"]: @item.StatusDescription</span>
-                            break;
-                        case Status.UnPublished:
-                            <span>@_localizer["DeniedPublication"]: @item.StatusDescription</span>
-                            break;
-                        case Status.Rejected:
-                            <span>@_localizer["RefusedForTheReason"]: @item.StatusDescription</span>
-                            break;
+                        @switch (item.Status)
+                        {
+                            case Status.Published:
+                                <span>@_localizer["WithdrawalDenied"]: @item.StatusDescription</span>
+                                break;
+                            case Status.UnPublished:
+                                <span>@_localizer["DeniedPublication"]: @item.StatusDescription</span>
+                                break;
+                            case Status.Rejected:
+                                <span>@_localizer["RefusedForTheReason"]: @item.StatusDescription</span>
+                                break;
+                        }
                     }
-                }
+                </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
+}

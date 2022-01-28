@@ -48,6 +48,7 @@ namespace LetsGo.UI
             services.AddTransient<LocationsService>();
             services.AddTransient<CabinetService>();
             services.AddTransient<EventsService>();
+            services.AddTransient<UsersService>();
 
             services.AddScoped(sp => ApplicationDbContextFactory.Create());
 

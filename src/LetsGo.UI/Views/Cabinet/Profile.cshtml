@@ -33,13 +33,23 @@
             </div>
         </div>
     </div>
-    <div class="row my-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
-        <h4 class="mr-auto block-heading col-12 px-0 mb-2">@_localizer["Event"]</h4>
+    <div class="row mt-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
+        <div class="row justify-content-start col-12 px-0">
+            <div class="col-lg-2 col-4 px-0 mr-5">
+                <h4 id="events-link" class="mr-auto block-heading px-0 mb-3 heading-link">@_localizer["Event"]</h4>
+            </div>
+            @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
+            {
+                <div class="col-lg-2 col-4 px-0">
+                    <h4 id="organizers-link" class="mr-auto block-heading px-0 heading-link">@_localizer["Users"]</h4>
+                </div>
+            }
+        </div>
         <div class="form-outline px-0 col-lg-3 col-md-12 col-12 mb-3">
             <input type="text" id="searchbox-input" class="form-control text-center" placeholder=" @_localizer["Search"]"
-                   aria-label="Search" onkeyup="filterEvents()" />
+                   aria-label="Search" onkeyup="filter()" />
         </div>
-        <div class="dropdown col-2 px-0 mb-3">
+        <div id="dropdown" class="dropdown col-2 px-0 mb-3">
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @_localizer["Sort"]
             </button>
@@ -47,6 +57,16 @@
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.NameSort">@_localizer["NameSort"]</a>
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.PriceSort">@_localizer["PriceSort"]</a>
                 <a class="dropdown-item" asp-action="Profile" asp-route-SortOrder="@ViewBag.DateStartSort">@_localizer["DateStartSort"]</a>
+            </div>
+        </div>
+        <div id="options" class="col-2 px-0 mb-auto" style="display:none;">
+            <div class="form-check form-check-inline" id="notApproved">
+              <input class="form-check-input" type="checkbox" id="requests" value="requests">
+              <label class="form-check-label" for="requests">@_localizer["Requests"]</label>
+            </div><br />
+            <div class="form-check form-check-inline" id="approved">
+              <input class="form-check-input" type="checkbox" id="approvedUsers" value="approvedUsers">
+              <label class="form-check-label" for="approvedUsers">@_localizer["ApprovedUsers"]</label>
             </div>
         </div>
         @if (User.IsInRole("superadmin"))
@@ -60,25 +80,19 @@
         </a>
     </div>
     <div class="row">
-        @if (Model.Events.Count != 0)
-        {
-            <div class="col events-container mb-5 pl-0">
-                @if (Model.IsOrganizer)
-                {
-                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
-                }
-                else
-                {
-                    await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
-                }
+        <div class="col events-container mb-5 px-0">
+            @if (Model.IsOrganizer)
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_OrganizerPartial.cshtml", Model);
+            }
+            else
+            {
+                await Html.RenderPartialAsync("/Views/Cabinet/PartialViews/_AdminPartial.cshtml", Model);
+            }
 
-            </div>
-        }
-        else
-        {
-            <p class="d-inline-block col col-xl-9 col-md-12">@_localizer["EventsNotAdded "]</p>
-        }
-        <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9" id="dd">
+        </div>
+        
+        <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9 ml-3" id="dd">
             <p class="text-center font-weight-bold py-2" style="font-size: 22px;"> @_localizer["Filters"]</p>
             <div id="Filter">
                 <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFilter">
@@ -186,7 +200,7 @@
             console.log(button);
             console.log(button.id);
             console.log(newStatus);
-            // 
+            //
             $.ajax({
                 url: '@Url.Action("ChangeStatus", "Event")',
                 type: 'POST',
@@ -197,7 +211,7 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        $(button).closest('.card').hide('slow');
+                        $(button).closest('.card').hide('fast');
                     }
                 }
             })
@@ -206,38 +220,55 @@
         let _id;
         let _status;
         let _div;
+        let _button;
+        let _email;
         function ChangeDenyStatus(button, newStatus) {
             event.stopPropagation();
             // log
-            console.log(button);
             console.log(button.id);
-            console.log(newStatus);
             //
             _id = button.id;
             _status = newStatus;
+        }
+        function ChangeDenyUserStatus(button, email) {
+            event.stopPropagation();
+            // log
+            console.log(email);
+            //
+            _button = button;
+            _email = email;
+            _id = 'user';
         }
 
         $('#cause-confirm').on('click', () => {
             event.preventDefault();
             let cause = $('textarea#cause-text').val();
             $('textarea#cause-text').val('');
-            console.log(_id, _status, cause);
-            $.ajax({
-                url: '@Url.Action("ChangeStatus", "Event")',
-                type: 'POST',
-                data:
-                {
-                    'status': _status,
-                    'eventId': _id,
-                    'cause': cause
-                },
-                success: function (response) {
-                    if (response.success) {
-                        $('#' + _id).closest('.card').hide('slow');
+            if(_id == 'user')
+            {
+                console.log(_email, cause, _button);
+                DeleteAccount(_email, _button, cause);
+            }
+            else
+            {
+                console.log(_id, _status, cause);
+                $.ajax({
+                    url: '@Url.Action("ChangeStatus", "Event")',
+                    type: 'POST',
+                    data:
+                    {
+                        'status': _status,
+                        'eventId': _id,
+                        'cause': cause
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#' + _id).closest('.card').hide('fast');
+                        }
                     }
-                }
-            })
-        })
+                });
+            }    
+        });
 
         function disableCard(elem) {
             $(elem).closest('card').prop('disabled', true);
@@ -283,5 +314,103 @@
             $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
         }
 
+
+         $('.btn-loadmore-organizers').hide();
+
+        $(document).ready(function () {
+            var maxLength = 150;
+            $(".self-info").each(function () {
+                var myStr = $(this).text();
+                if ($.trim(myStr).length > maxLength) {
+                    var newStr = myStr.substring(0, maxLength);
+                    var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+                    $(this).empty().html(newStr);
+                    $(this).append(' <a href="javascript:void(0);" class="read-more font-weight-bold text-decoration-none">...</a>');
+                    $(this).append('<span class="more-text" style="display:none">'+ removedStr +'</span>');
+                }
+            });
+            $(".read-more").click(function () {
+                $(this).siblings(".more-text").contents().unwrap();
+                $(this).remove();
+            });
+        });
+
+        $('#approved #approvedUsers').on('click', () => {
+            if(!$('#approved #approvedUsers').prop('checked'))
+            {
+                $(this).prop('checked', false);
+                console.log('unchecked');
+                $('#all-organizers #ApprovedTrue').each(function () {
+                    $(this).closest('.card').hide('fast');
+                });
+            }
+            else
+            {
+                $(this).prop('checked', true);
+                console.log('checked');
+                $('#all-organizers #ApprovedTrue').each(function () {
+                    $(this).closest('.card').show('fast');
+                });
+            }
+        });
+        $('#notApproved #requests').on('click', () => {
+            if(!$('#notApproved #requests').prop('checked'))
+            {
+                $(this).prop('checked', false);
+                console.log('unchecked');
+                $('#all-organizers #ApprovedFalse').each(function () {
+                    $(this).closest('.card').hide('fast');
+                });
+            }
+            else
+            {
+                $(this).prop('checked', true);
+                console.log('checked');
+                $('#all-organizers #ApprovedFalse').each(function () {
+                    $(this).closest('.card').show('fast');
+                });
+            }
+        });
+
+        function ApproveAccount(email, button) {
+            event.stopPropagation();
+            // log
+            console.log(email);
+            $(button).closest('.card').hide('fast');
+            $.ajax({
+                url: '@Url.Action("Approve", "Cabinet")',
+                type: 'POST',
+                data: {'email': email},
+                success: function (response) {
+                    if (response.success) {
+                        console.log("approved");
+                    }
+                }
+            });
+        };
+        function DeleteAccount(email, button, cause) {
+            event.stopPropagation();
+            // log
+            console.log(email);
+            $(button).closest('.card').hide('fast');
+            $.ajax({
+                url: '@Url.Action("DeleteUser", "Cabinet")',
+                type: 'POST',
+                data: {
+                    'email': email,
+                    'cause': cause
+                },
+                success: function (response) {
+                    if (response.success) {
+                        console.log("deleted");
+                    }
+                }
+            });
+        };
+
+        function userEdit(userId) {
+            event.stopPropagation();
+            window.location.href = '@Url.Action("Edit","Cabinet")?id=' + userId;
+        }
     </script>
 }

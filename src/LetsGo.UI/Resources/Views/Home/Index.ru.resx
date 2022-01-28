@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Afisha" xml:space="preserve">
+    <value>Афиша Бишкека</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Все</value>
+  </data>
   <data name="At" xml:space="preserve">
     <value>в</value>
   </data>
+  <data name="Ballet" xml:space="preserve">
+    <value>Балет</value>
+  </data>
   <data name="Calendar" xml:space="preserve">
     <value>Календарь</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Категории</value>
   </data>
   <data name="ChooseDate" xml:space="preserve">
     <value>Выберите дату</value>
@@ -129,11 +141,26 @@
   <data name="City" xml:space="preserve">
     <value>Город</value>
   </data>
+  <data name="Classic" xml:space="preserve">
+    <value>Классика</value>
+  </data>
+  <data name="Comedy" xml:space="preserve">
+    <value>Камедия</value>
+  </data>
   <data name="Concert" xml:space="preserve">
     <value>Концерт</value>
   </data>
   <data name="Concerts" xml:space="preserve">
     <value>Концерты</value>
+  </data>
+  <data name="Dates" xml:space="preserve">
+    <value>Даты</value>
+  </data>
+  <data name="Drama" xml:space="preserve">
+    <value>Драма</value>
+  </data>
+  <data name="Excursions" xml:space="preserve">
+    <value>Экскурсии</value>
   </data>
   <data name="Festival" xml:space="preserve">
     <value>Фестиваль</value>
@@ -153,11 +180,23 @@
   <data name="From" xml:space="preserve">
     <value>с</value>
   </data>
+  <data name="Hip-Hop" xml:space="preserve">
+    <value>Хип-Хоп</value>
+  </data>
   <data name="Locations" xml:space="preserve">
     <value>Площадки Бишкека</value>
   </data>
+  <data name="Melodrams" xml:space="preserve">
+    <value>Мелодрамы</value>
+  </data>
   <data name="Mon" xml:space="preserve">
     <value>Пн</value>
+  </data>
+  <data name="Opera" xml:space="preserve">
+    <value>Опера</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Другое</value>
   </data>
   <data name="Perfomance" xml:space="preserve">
     <value>Спектакль</value>
@@ -165,17 +204,26 @@
   <data name="Perfomances" xml:space="preserve">
     <value>Спектакли</value>
   </data>
+  <data name="Pop-Music" xml:space="preserve">
+    <value>Поп музыка</value>
+  </data>
   <data name="Poster" xml:space="preserve">
     <value>Афиша</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>БИЛЕТЫ ОТ</value>
   </data>
+  <data name="Rock" xml:space="preserve">
+    <value>Рок</value>
+  </data>
   <data name="Sat" xml:space="preserve">
     <value>Сб</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Событие или площадка</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Показать</value>
   </data>
   <data name="som" xml:space="preserve">
     <value>сом</value>
@@ -224,6 +272,9 @@
   </data>
   <data name="Tue" xml:space="preserve">
     <value>Вт</value>
+  </data>
+  <data name="Vocals" xml:space="preserve">
+    <value>Вокал</value>
   </data>
   <data name="Wed" xml:space="preserve">
     <value>Ср</value>

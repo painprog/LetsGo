@@ -53,33 +53,34 @@
             <span asp-validation-for="AgeLimit" class="text-danger"></span>
 
         </div>
-      <div class="form-group" id="category-checkboxes">
-                  <label>@_localizer["Categories"]</label><br>
-                  <input asp-for="SelectedCategoryIds" id="selectedCategories" hidden />
-                  @for (int i = 0; i < Model.ParentCategories.Count; i++)
-                  {
-                      <div class="form-check" id="@Model.ParentCategories[i].Id-div">
-                          <input class="form-check-input" type="checkbox" id="@Model.ParentCategories[i].Id-check" value="@Model.ParentCategories[i].Id">
-                          <label class="form-check-label" for="@Model.ParentCategories[i].Id-check" id="@Model.ParentCategories[i].Id-label">
-                              @Model.ParentCategories[i].Name
-                          </label>
-                      </div>
-                      <div class="ml-4" id="childCategories-@Model.ParentCategories[i].Id">
-                          @for (int j = 0; j < Model.ChildCategories.Count; j++)
-                          {
-                              if (Model.ChildCategories[j].ParentId == Model.ParentCategories[i].Id)
-                              {
-                                  <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" id="@Model.ChildCategories[j].Id-check" value="@Model.ChildCategories[j].Id">
-                                      <label class="form-check-label text-dark" for="@Model.ChildCategories[j].Id">
-                                          @Model.ChildCategories[j].Name
-                                      </label>
-                                  </div>
-                              }
-                          }
-                      </div>
-                  }
-              </div>
+        <div class="form-group" id="category-checkboxes">
+            <label>@_localizer["Categories"]</label><br>
+            <input asp-for="SelectedCategoryIds" id="selectedCategories" hidden />
+            <input  id="ExistedCategories" value="@Model.SelectedCategoryIds" hidden/>
+            @for (int i = 0; i < Model.ParentCategories.Count; i++)
+            {
+                <div class="form-check" id="@Model.ParentCategories[i].Id-div">
+                    <input class="form-check-input" type="checkbox" id="@Model.ParentCategories[i].Id-check" value="@Model.ParentCategories[i].Id">
+                    <label class="form-check-label" for="@Model.ParentCategories[i].Id-check" id="@Model.ParentCategories[i].Id-label">
+                        @Model.ParentCategories[i].Name
+                    </label>
+                </div>
+                <div class="ml-4" id="childCategories-@Model.ParentCategories[i].Id">
+                    @for (int j = 0; j < Model.ChildCategories.Count; j++)
+                    {
+                        if (Model.ChildCategories[j].ParentId == Model.ParentCategories[i].Id)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="@Model.ChildCategories[j].Id-check" value="@Model.ChildCategories[j].Id">
+                                <label class="form-check-label text-dark" for="@Model.ChildCategories[j].Id">
+                                    @Model.ChildCategories[j].Name
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
         <div class="mt-4">
             <label>@_localizer["Info"]</label>
             <div>
@@ -162,25 +163,18 @@
         $(document).ready(function () {
             var categAll = []
             var categExist = []
-            $('#checkboxAllCateg input').each(function () {
+            categExist = $("#ExistedCategories").attr("value").split(",")
+            $('#category-checkboxes .form-check-input').each(function () {
                 categAll.push($(this).attr('value'));
             })
-            $('#checkboxExist input').each(function () {
-                categExist.push($(this).attr('value'));
-            })
-
             for (var i = 0; i < categExist.length; i++) {
                 for (var j = 0; j < categAll.length; j++) {
                     if (categExist[i] == categAll[j]) {
-                        $('#checkboxAllCateg input[value="' + categExist[i] + '"]').attr("checked", true)
+                        $('#category-checkboxes input[value="' + categExist[i] + '"]').attr("checked", true)
                         console.log("ok")
                     }
                 }
             }
-
-            console.log(categAll)
-            console.log(categExist)
-
         });
 
 
@@ -244,10 +238,10 @@
             $('#TicketLimit').val(totalTickets.text());
             // categories
             var categories = [];
-            $('#checkboxAllCateg input:checked').each(function () {
+            $('#category-checkboxes input:checked').each(function () {
                 categories.push($(this).attr('value'));
             })
-            $('#Categories').val(categories);
+            $('#selectedCategories').val(categories);
             // tickets
             $('#Tickets').val(`[${getTicketsData()}]`);
             console.log(getTicketsData());

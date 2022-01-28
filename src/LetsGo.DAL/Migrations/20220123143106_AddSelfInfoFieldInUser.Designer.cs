@@ -3,14 +3,16 @@ using System;
 using LetsGo.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LetsGo.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220123143106_AddSelfInfoFieldInUser")]
+    partial class AddSelfInfoFieldInUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,105 +112,105 @@ namespace LetsGo.DAL.Migrations
                         {
                             Id = 1,
                             HasParent = false,
-                            Name = "Concerts"
+                            Name = "Концерты"
                         },
                         new
                         {
                             Id = 2,
                             HasParent = false,
-                            Name = "Festivals"
+                            Name = "Фестивали"
                         },
                         new
                         {
                             Id = 3,
                             HasParent = false,
-                            Name = "Perfomances"
+                            Name = "Спектакли"
                         },
                         new
                         {
                             Id = 4,
                             HasParent = false,
-                            Name = "ForChildren"
+                            Name = "Детям"
                         },
                         new
                         {
                             Id = 5,
                             HasParent = false,
-                            Name = "Classic"
+                            Name = "Классика"
                         },
                         new
                         {
                             Id = 6,
                             HasParent = false,
-                            Name = "Excursions"
+                            Name = "Экскурсии"
                         },
                         new
                         {
                             Id = 7,
                             HasParent = false,
-                            Name = "Other"
+                            Name = "Другое"
                         },
                         new
                         {
                             Id = 8,
                             HasParent = true,
-                            Name = "Pop-Music",
+                            Name = "Поп-Музыка",
                             ParentId = 1
                         },
                         new
                         {
                             Id = 9,
                             HasParent = true,
-                            Name = "Rock",
+                            Name = "Рок",
                             ParentId = 1
                         },
                         new
                         {
                             Id = 10,
                             HasParent = true,
-                            Name = "Hip-Hop",
+                            Name = "Хип-Хоп",
                             ParentId = 1
                         },
                         new
                         {
                             Id = 11,
                             HasParent = true,
-                            Name = "Comedy",
+                            Name = "Комедии",
                             ParentId = 3
                         },
                         new
                         {
                             Id = 12,
                             HasParent = true,
-                            Name = "Drama",
+                            Name = "Драмы",
                             ParentId = 3
                         },
                         new
                         {
                             Id = 13,
                             HasParent = true,
-                            Name = "Melodrams",
+                            Name = "Мелодрамы",
                             ParentId = 3
                         },
                         new
                         {
                             Id = 14,
                             HasParent = true,
-                            Name = "Opera",
+                            Name = "Опера",
                             ParentId = 5
                         },
                         new
                         {
                             Id = 15,
                             HasParent = true,
-                            Name = "Ballet",
+                            Name = "Балет",
                             ParentId = 5
                         },
                         new
                         {
                             Id = 16,
                             HasParent = true,
-                            Name = "Vocals",
+                            Name = "Вокал",
                             ParentId = 5
                         });
                 });
@@ -448,9 +450,6 @@ namespace LetsGo.DAL.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("AvatarLink")
                         .HasColumnType("longtext");

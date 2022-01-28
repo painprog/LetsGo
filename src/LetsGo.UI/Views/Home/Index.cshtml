@@ -43,12 +43,12 @@
                         </button>
                         <div id="calendar" class="calendar dropdown-menu" data-handledropdownclose="true">
                             <div class="calendar-header">
-                                <span class="month-picker" id="month-picker">February</span>
+                                <span class="month-picker" id="month-picker"></span>
                                 <div class="year-picker">
                                     <span class="year-change" id="prev-year">
                                         <pre><</pre>
                                     </span>
-                                    <span id="year">2021</span>
+                                    <span id="year"></span>
                                     <span class="year-change" id="next-year">
                                         <pre>></pre>
                                     </span>
@@ -74,7 +74,7 @@
 
                     </div>
                     <div class="icon_button">
-                        <button class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>@Localizer["Filters"]</button>
+                        <button id="filter-button" class="btn btn_icon mx-2 mt-2"><i class="icon_btn fas fa-bars"></i>@Localizer["Filters"]</button>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
     </div>
     <div class="main_info_card card_group row mx-0 justify-content-center mt-5">
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/68290.png" alt="pic-1">
                 </div>
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/26583.png" alt="pic-2">
                 </div>
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/26634.png" alt="pic-3">
                 </div>
@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-md-5 col-11 mb-4">
-            <div class="card card_cont2">
+            <div class="card card_cont2 pt-3">
                 <div class="card-img-top text-center pt-2">
                     <img class="img_card" width="58" height="52" src="~/images/2512085.png" alt="pic-4">
                 </div>
@@ -131,7 +131,7 @@
 <div class="events pt-3">
     <div class="container">
         <div class="row">
-            <div class="col-10">
+            <div class="col-lg-9">
                 <div class="categories">
                     <div class="concerts">
                         <div class="row justify-content-between">
@@ -373,14 +373,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2">
-                @*фильтрация*@
+            <div class="col-lg-3">
+                @{ 
+                    await Html.RenderPartialAsync(
+                        "/Views/Shared/FilterPartialView.cshtml",
+                        new LetsGo.UI.ViewModels.FilterViewModel() {
+                            CategoriesDictionary = Model.CategoriesDictionary,
+                            SelectedCategories = Model.SelectedCategories, 
+                            SelectedDates = Model.SelectedDates
+                        }
+                    ); }
             </div>
         </div>
     </div>
 </div>
 
 @section scripts{
+    <script type="text/javascript" src="~/js/filter.js"></script>
+
     <script>
         $(window).on('popstate', function (event) {
             $('body').load(location.href);
@@ -494,21 +504,26 @@
         }
 
         function Afisha() {
-                window.location.href = '@Url.Action("Afisha", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=All&SelectedCategories=';
         }
 
         function Today() {
-                window.location.href = '@Url.Action("Today", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=Today&SelectedCategories=';
         }
 
         function Tomorrow() {
-                window.location.href = '@Url.Action("Tomorrow", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=Tomorrow&SelectedCategories=';
         }
 
         function Weekends() {
-                window.location.href = '@Url.Action("Weekends", "Event")';
+            window.location.href = '@Url.Action("Afisha","Event")?SelectedDates=Weekend&SelectedCategories=';
         }
 
+        $('#filter-button').click(function () {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $('.filter').offset().top - 100
+            }, 500);
+        });
 
     </script>
 }

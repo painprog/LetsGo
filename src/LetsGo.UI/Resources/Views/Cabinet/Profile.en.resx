@@ -180,4 +180,19 @@
   <data name="PriceSort" xml:space="preserve">
     <value>Price</value>
   </data>
+  <data name="Organizers" xml:space="preserve">
+    <value>Organizers</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="NotConfirmedEmail" xml:space="preserve">
+    <value>Email hasn't been confirmed yet</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Requests</value>
+  </data>
 </root>

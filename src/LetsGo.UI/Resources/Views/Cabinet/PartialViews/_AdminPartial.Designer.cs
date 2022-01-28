@@ -19,7 +19,7 @@ namespace LetsGo.UI.Resources.Views.Cabinet.PartialViews {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class _AdminPartial {
@@ -144,6 +144,24 @@ namespace LetsGo.UI.Resources.Views.Cabinet.PartialViews {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string Mobile {
+            get {
+                return ResourceManager.GetString("Mobile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string NotConfirmedEmail {
+            get {
+                return ResourceManager.GetString("NotConfirmedEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string Reject {
             get {
                 return ResourceManager.GetString("Reject", resourceCulture);
@@ -180,9 +198,45 @@ namespace LetsGo.UI.Resources.Views.Cabinet.PartialViews {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SelfInfo {
+            get {
+                return ResourceManager.GetString("SelfInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         internal static string Ticket {
             get {
                 return ResourceManager.GetString("Ticket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string UsersNotAdded {
+            get {
+                return ResourceManager.GetString("UsersNotAdded", resourceCulture);
             }
         }
     }

@@ -180,4 +180,16 @@
   <data name="PriceSort" xml:space="preserve">
     <value>Стоимость</value>
   </data>
+  <data name="Organizers" xml:space="preserve">
+    <value>Организаторы</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="ApprovedUsers" xml:space="preserve">
+    <value>Другие</value>
+  </data>
+  <data name="Requests" xml:space="preserve">
+    <value>Заявки</value>
+  </data>
 </root>

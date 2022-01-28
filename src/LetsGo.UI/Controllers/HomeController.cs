@@ -25,27 +25,28 @@ namespace LetsGo.UI.Controllers
 
         public IActionResult Index()
         {
+            IQueryable<Event> events = _db.Events.Include(e => e.Location);
             IndexPageViewModel model = new IndexPageViewModel();
 
-            model.Concerts = _db.Events.Include(e => e.Location)
+            model.Concerts = events
                 .OrderByDescending(e => e.CreatedAt)
                 .Where(e => e.Categories.Contains("Концерты") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
-            model.Festivals = _db.Events.Include(e => e.Location)
+            model.Festivals = events
                 .OrderByDescending(e => e.CreatedAt)
                 .Where(e => e.Categories.Contains("Фестивали") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
-            model.Performances = _db.Events.Include(e => e.Location)
+            model.Performances = events
                 .OrderByDescending(e => e.CreatedAt)
                 .Where(e => e.Categories.Contains("Спектакли") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
-            model.ForChildren = _db.Events.Include(e => e.Location)
+            model.ForChildren = events
                 .OrderByDescending(e => e.CreatedAt)
                 .Where(e => e.Categories.Contains("Детям") && e.Status == Status.Published)
                 .Take(6)
@@ -57,7 +58,9 @@ namespace LetsGo.UI.Controllers
                 List<LocationCategory> categories = JsonConvert.DeserializeObject<List<LocationCategory>>(location.Categories);
                 location.Categories = categories[0].Name;
             }
-            
+
+            model.CategoriesDictionary = _db.EventCategories.ToArray()
+                .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
             return View(model);
         }
         

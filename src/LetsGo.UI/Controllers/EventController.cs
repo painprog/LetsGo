@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using LetsGo.Core.Entities;
+using LetsGo.Core.Entities.Enums;
 using LetsGo.DAL;
 using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
@@ -118,7 +119,7 @@ namespace LetsGo.UI.Controllers
             }
         }
 
-        public void SetMainEventCategory(List<Event> events)
+        public void SetMainEventCategory(IEnumerable<Event> events)
         {
             foreach (var item in events)
             {
@@ -126,28 +127,29 @@ namespace LetsGo.UI.Controllers
             }
         }
 
-        public IActionResult Afisha()
+        public IActionResult Afisha(string SelectedDates, string SelectedCategories)
         {
-            var events = _goContext.Events.Include(e => e.Location)
-                .Where(e => e.EventStart.Month == DateTime.Now.Month).OrderBy(e => e.EventStart).ToList();
+            List<int> EventCategories = new List<int>();
+            if (!string.IsNullOrEmpty(SelectedCategories))
+                EventCategories = SelectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
+
+            IQueryable<Event> events = _Service.QueryableEventsAfterFilter(
+                   EventCategories, Status.Published, DateTime.MinValue, DateTime.MinValue
+            );
+            events = _Service.FilterEventsByDate(events, SelectedDates);
+
             SetMainEventCategory(events);
-            ViewBag.PageTitle = $"Афиша Бишкека на {DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()} {DateTime.Now.Year}";
-            return View(events);
+            ViewBag.PageTitle = $"Афиша Бишкека";
+            AfishaViewModel model = new AfishaViewModel()
+            {
+                Events = events.ToList(),
+                CategoriesDictionary = _goContext.EventCategories.ToArray()
+                    .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList())
+            };
+            return View(model);
         }
 
-        public IActionResult AfishaOn(string year, string month, string day)
-        {
-            DateTime date = new DateTime(int.Parse(year),
-                DateTime.ParseExact(month, "MMMM", new CultureInfo("ru-RU")).Month,
-                int.Parse(day));
-
-            var events = _goContext.Events.Include(e => e.Location).Where(e => e.EventStart.Date == date.Date).OrderBy(e => e.EventStart).ToList();
-            SetMainEventCategory(events);
-
-            ViewBag.PageTitle = $"Афиша Бишкека {date.ToString("d MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()}";
-            return View("Afisha", events);
-        }
-
+        // ?
         public int GetEventsQty(string year, string month, string day)
         {
             DateTime date = new DateTime(int.Parse(year), DateTime.ParseExact(month, "MMMM", new CultureInfo("ru-RU")).Month, int.Parse(day));
@@ -155,50 +157,5 @@ namespace LetsGo.UI.Controllers
             return count;
         }
 
-        public IActionResult Today()
-        {
-            var events = _goContext.Events.Include(e => e.Location)
-                .Where(e => e.EventStart == DateTime.Now).OrderBy(e => e.EventStart).ToList();
-            SetMainEventCategory(events);
-            ViewBag.PageTitle = $"Афиша Бишкека {DateTime.Now.ToString("d MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()}";
-            return View("Afisha", events);
-        }
-
-        public IActionResult Tomorrow()
-        {
-            var tomorrow = DateTime.Now.AddDays(1);
-            var events = _goContext.Events.Include(e => e.Location)
-                .Where(e => e.EventStart == tomorrow).OrderBy(e => e.EventStart).ToList();
-            SetMainEventCategory(events);
-            ViewBag.PageTitle = $"Афиша Бишкека {tomorrow.ToString("d MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()}";
-            return View("Afisha", events);
-        }
-
-        public IActionResult Weekends()
-        {
-            DateTime sunday;
-            var firstDayOfWeek = new CultureInfo("ky-KG").DateTimeFormat.FirstDayOfWeek;
-            int offset = firstDayOfWeek - DateTime.Now.DayOfWeek;
-            if (offset != 1)
-            {
-                DateTime weekStart = DateTime.Now.AddDays(offset);
-                DateTime endOfWeek = weekStart.AddDays(6);
-                sunday = endOfWeek;
-            }
-            else
-                sunday = DateTime.Now;
-            
-            var events = _goContext.Events.Include(e => e.Location).OrderBy(e => e.EventStart)
-                .Where(e => e.EventStart.Date <= sunday.Date || e.EventStart.Date <= sunday.AddDays(-1).Date).ToList();
-
-            foreach (var item in new List<Event>(events))
-                if (!(item.EventStart.DayOfWeek == DayOfWeek.Saturday || item.EventStart.DayOfWeek == DayOfWeek.Sunday))
-                    events.Remove(item);
-            
-            SetMainEventCategory(events);
-            ViewBag.PageTitle = $"Афиша Бишкека на " + sunday.AddDays(-1).Day +
-                " и " + sunday.ToString("d MMMM", new System.Globalization.CultureInfo("ru-RU"));
-            return View("Afisha", events);
-        }
     }
 }

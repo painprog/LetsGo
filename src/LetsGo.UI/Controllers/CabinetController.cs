@@ -67,7 +67,7 @@ namespace LetsGo.UI.Controllers
             viewModel.EventCategories = _context.EventCategories.ToList();
             viewModel.selectedCategories = selectedCategories ?? String.Empty;
 
-            IQueryable<Event> Events = _cabService.QueryableEventsAfterFilter(
+            IQueryable<Event> Events = _service.QueryableEventsAfterFilter(
                 EventCategories, Status, DateTimeFrom, DateTimeBefore
             );
 

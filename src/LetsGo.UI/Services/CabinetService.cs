@@ -33,48 +33,6 @@ namespace LetsGo.UI.Services
             return @event;
         }
 
-        public IQueryable<Event> QueryableEventsAfterFilter(
-            List<int> EventCategories, Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore
-        )
-        {
-            IQueryable<Event> Events = _context.Events.Include(e => e.Location).OrderByDescending(e => e.EventStart);
-
-            if (EventCategories.Count > 0)
-            {
-                List<Event> FilteredEvents = new List<Event>();
-
-                List<EventCategory> selectedCategories = new List<EventCategory>();
-                foreach (var id in EventCategories)
-                    selectedCategories.Add(_service.GetEventCategory(id).Result);
-
-                var categoriesDictionary = selectedCategories.GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
-
-                foreach (var item in categoriesDictionary)
-                {
-                    foreach (var category in item.Value)
-                    {
-                        if (!categoriesDictionary.ContainsKey(category.Id))
-                        {
-                            FilteredEvents.AddRange(Events.Where(e => e.Categories.Contains(category.Name)));
-                        }
-                    }
-                }
-
-                Events = FilteredEvents.AsQueryable();
-            }
-            if (Status != Status.NotDefined)
-                Events = Events.Where(e => e.Status == Status);
-
-            if (DateTimeFrom != DateTime.MinValue && DateTimeBefore != DateTime.MinValue)
-                Events = Events.Where(e => e.EventStart >= DateTimeFrom && e.EventStart <= DateTimeBefore);
-            else if (DateTimeFrom != DateTime.MinValue)
-                Events = Events.Where(e => e.EventStart >= DateTimeFrom);
-            else if (DateTimeBefore != DateTime.MinValue)
-                Events = Events.Where(e => e.EventStart <= DateTimeBefore);
-
-            return Events;
-        }
-
         public Dictionary<string, Status> GetDictionaryStats()
         {
             Dictionary<string, Status> Stats = new Dictionary<string, Status>

@@ -74,9 +74,12 @@ body {
     list-style-type: none;
     margin-bottom: 40px;
 }
+    .sidenav ul li a {
+        padding: 16px 30px;
+        display: block;
+    }
 
     .sidenav ul li {
-        padding: 16px 30px;
         max-width: 330px;
     }
 

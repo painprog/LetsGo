@@ -40,37 +40,27 @@ namespace LetsGo.UI.Controllers
         }
 
         public async Task<IActionResult> Profile(Status Status, DateTime DateTimeFrom, DateTime DateTimeBefore,
-            string selectedCategories, SortState SortOrder = SortState.DateStartDesc)
+            string SelectedCategories, SortState SortOrder = SortState.DateStartDesc)
         {
-            ViewData["NotDefined"] = _localizer["NotDefined"];
-            ViewData["Edited"] = _localizer["Edited"];
-            ViewData["Rejected"] = _localizer["Rejected"];
-            ViewData["New"] = _localizer["New"];
-            ViewData["Published"] = _localizer["Published"];
-            ViewData["UnPublished"] = _localizer["UnPublished"];
-            ViewData["ReviewPublished"] = _localizer["ReviewPublished"];
-            ViewData["ReviewUnPublished"] = _localizer["ReviewUnPublished"];
-            ViewData["Expired"] = _localizer["Expired"];
-            ViewData["Status"] = _localizer["Status"];
             List<int> EventCategories = new List<int>();
-            if (!string.IsNullOrEmpty(selectedCategories))
-                EventCategories = selectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
+            if (!string.IsNullOrEmpty(SelectedCategories))
+                EventCategories = SelectedCategories.Split(',').Select(c => int.Parse(c)).ToList();
 
             User user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserIdAsInt(User));
             ProfileViewModel viewModel = new ProfileViewModel { User = user };
             viewModel.CategoriesDictionary = _context.EventCategories.ToArray()
                 .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList());
-            Dictionary<string, Status> Stats = _cabService.GetDictionaryStats();
-            viewModel.IsOrganizer = User.IsInRole("organizer") ? true : false;
-            viewModel.Stats = Stats;
+            viewModel.IsOrganizer = User.IsInRole("organizer");
             viewModel.IsOrganizer = await _userManager.IsInRoleAsync(user, "organizer");
-            viewModel.EventCategories = _context.EventCategories.ToList();
-            viewModel.selectedCategories = selectedCategories ?? String.Empty;
-
+            viewModel.SelectedCategories = SelectedCategories ?? String.Empty;
+            viewModel.Statuses = Enum.GetValues(typeof(LetsGo.Core.Entities.Enums.Status));
+            
+            // Filtering
             IQueryable<Event> Events = _service.QueryableEventsAfterFilter(
                 EventCategories, Status, DateTimeFrom, DateTimeBefore
             );
 
+            // Sorting
             ViewBag.NameSort = SortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
             ViewBag.PriceSort = SortOrder == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
             ViewBag.DateStartSort = SortOrder == SortState.DateStartAsc ? SortState.DateStartDesc : SortState.DateStartAsc;
@@ -96,8 +86,7 @@ namespace LetsGo.UI.Controllers
                     break;
             }
 
-            viewModel.Events = Events.ToList();
-
+            viewModel.Events = viewModel.IsOrganizer ? Events.Where(e => e.OrganizerId == user.Id).ToList() : Events.ToList();
             List<User> allUsers = new List<User>();
             if (User.IsInRole("superadmin"))
                 allUsers.AddRange(await _userManager.GetUsersInRoleAsync("admin"));

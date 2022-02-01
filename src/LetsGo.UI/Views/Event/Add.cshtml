@@ -53,30 +53,44 @@
         </div>
         <div class="form-group">
             <label>@_localizer["Categories"]</label>
-            <input type="hidden" asp-for="SelectedCategoryIds" id="selectedCategories" />
-            @for (int i = 0; i < Model.ParentCategories.Count; i++)
-            {
-                <div class="form-check" id="@Model.ParentCategories[i].Id-div">
-                    <input class="form-check-input" type="checkbox" id="@Model.ParentCategories[i].Id-check" value="@Model.ParentCategories[i].Id" onclick="showChildren(@Model.ParentCategories[i].Id)">
-                    <label class="form-check-label" for="@Model.ParentCategories[i].Id-check" id="@Model.ParentCategories[i].Id-label">
-                        @Model.ParentCategories[i].Name
-                    </label>
-                </div>
-                <div class="ml-4" id="childCategories-@Model.ParentCategories[i].Id" hidden>
-                    @for (int j = 0; j < Model.ChildCategories.Count; j++)
+            <input type="hidden" asp-for="SelectedCategories" />
+            <div class="categories mt-3 ml-1">
+                <input asp-for="@Model.SelectedCategories" hidden />
+                <ul>
+                    @foreach (var category in @Model.CategoriesDictionary[-1])
                     {
-                        @if (Model.ChildCategories[j].ParentId == Model.ParentCategories[i].Id)
+                        @if (@Model.CategoriesDictionary.ContainsKey(category.Id))
                         {
-                            <div class="form-check">
-                                <input class="form-check-input child-checkbox @Model.ParentCategories[i].Id" type="checkbox" id="@Model.ChildCategories[j].Id-check" value="@Model.ChildCategories[j].Id">
-                                <label class="form-check-label text-dark" for="@Model.ChildCategories[j].Id">
-                                    @Model.ChildCategories[j].Name
-                                </label>
-                            </div>
+                            <li class="category">
+                                <input type="checkbox" value=@category.Id id="category-@category.Id" onclick="PressCategoryInput(@category.Id)">
+                                <div for="category-@category.Id" class="d-inline-block" id="category-link" onclick="OpenSubcategories(@category.Id)">
+                                    <span class="d-inline-block">@_localizer[category.Name]</span>
+                                    <span class="material-icons arrow icon-down-@category.Id">keyboard_arrow_down</span>
+                                    <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
+                                </div>
+                            </li>
+                            <li class="subcategories">
+                                <ul class="subcategories-@category.Id" style="display: none;">
+                                    @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
+                                    {
+                                        <li class="subcategory">
+                                            <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" />
+                                            <span for="subcategory-@subcategory.Id">@_localizer[@subcategory.Name]</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="category">
+                                <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                <label for="category-@category.Id" class="d-inline-block">@_localizer[category.Name]</label>
+                            </li>
                         }
                     }
-                </div>
-            }
+                </ul>
+            </div>
         </div>
         <div class="pt-5">
             <label>@_localizer["Ticket"]</label>
@@ -88,7 +102,7 @@
             </p>
             <input type="hidden" asp-for="Tickets" />
             <input type="hidden" asp-for="TicketLimit" />
-            <table class="table tickets-table">
+            <table class="table tickets-table mt-2">
                 <thead>
                     <tr>
                         <th style="width: 30%;">@_localizer["Name"]</th>
@@ -102,7 +116,7 @@
                 </tbody>
             </table>
 
-            <h6 class="pt-3">@_localizer["AddNewTicket"]</h6>
+            <h6 class="mt-5">@_localizer["AddNewTicket"]</h6>
             <div class="row mt-4">
                 <div class="col-md-4 mb-3">
                     <input id="ticket_name" placeholder="@_localizer["Name"]" class="ticket-input form-control" />
@@ -118,12 +132,6 @@
                 <textarea id="ticket_desc" placeholder="@_localizer["Description"]" class="form-control mb-2 input-field mr-3" rows="3" style="resize:none;"></textarea>
                 <button class="btn btn-primary" type="button" onclick="AddTicket()">@_localizer["AddTicket"]</button>
             </div>
-
-            @*<input id="ticket_name" placeholder="название" class="ticket-input input-field" />
-                <input id="ticket_count" type="number" placeholder="количество" class="ticket-input input-field" />
-                <input id="ticket_price" type="number" placeholder="цена" class="ticket-input input-field" />
-                <textarea id="ticket_desc" placeholder="описание" class="form-control mb-2 input-field" rows="3" style="resize:none;"></textarea>
-                <input type="button" class="btn btn-primary" value="Добавить билет" onclick="AddTicket()" />*@
         </div>
         <hr />
         <div class="form-group">
@@ -143,6 +151,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+
+    <script type="text/javascript" src="~/js/filter.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#locations').select2({
@@ -223,7 +234,7 @@
             for (let i = 0; i < checkboxes.length; i++) {
                 categoryIds.push(checkboxes[i].value)
             }
-            $('#selectedCategories').val(categoryIds);
+            $('#SelectedCategories').val(categoryIds);
         }
         $('form').submit(function () {
         getCheckboxData()

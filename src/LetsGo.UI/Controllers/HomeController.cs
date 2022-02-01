@@ -30,26 +30,26 @@ namespace LetsGo.UI.Controllers
             IndexPageViewModel model = new IndexPageViewModel();
 
             model.Concerts = events
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Концерты") && e.Status == Status.Published)
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("Concerts") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
             model.Festivals = events
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Фестивали") && e.Status == Status.Published)
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("Festivals") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
             model.Performances = events
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Спектакли") && e.Status == Status.Published)
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("Perfomances") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 
             model.ForChildren = events
-                .OrderByDescending(e => e.CreatedAt)
-                .Where(e => e.Categories.Contains("Детям") && e.Status == Status.Published)
+                .OrderByDescending(e => e.EventStart)
+                .Where(e => e.Categories.Contains("ForChildren") && e.Status == Status.Published)
                 .Take(6)
                 .ToList();
 

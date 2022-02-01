@@ -25,8 +25,9 @@ $('#events-link').on('click', () => {
     $('#dd').show();
     $('#options').hide();
 
-    if ($('#all-events').children().length > showItem_events)
+    if ($('#all-events').children().length > showItem_events) {
         $('.btn-loadmore-events').show();
+    }
     $('.btn-loadmore-organizers').hide();
 });
 

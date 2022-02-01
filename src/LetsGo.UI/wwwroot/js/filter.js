@@ -1,4 +1,17 @@
 ﻿$(document).ready(function () {
+    var categories = $('#SelectedCategories');
+    categories.val().split(',').forEach(function (elem) {
+        var category = $('#category-' + elem);
+        if (category.length) {
+            category.prop('checked', true);
+        }
+        else {
+            category = $('#subcategory-' + elem);
+            category.prop('checked', true);
+            category.closest('.subcategories').children().show();
+        }
+    })
+
     var dates = $('#SelectedDates');
     if (dates.val() === '') {
         $('#filter-date-input-all').prop("checked", true);
@@ -13,19 +26,6 @@
             }
         })
     }
-
-    var categories = $('#SelectedCategories');
-    categories.val().split(',').forEach(function (elem) {
-        var category = $('#category-' + elem);
-        if (category.length) {
-            category.prop('checked', true);
-        }
-        else {
-            category = $('#subcategory-' + elem);
-            category.prop('checked', true);
-            category.closest('.subcategories').children().show();
-        }
-    })
 })
 
 function OpenSubcategories(id) {

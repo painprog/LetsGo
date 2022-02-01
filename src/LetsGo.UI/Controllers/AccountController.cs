@@ -112,7 +112,7 @@ namespace LetsGo.UI.Controllers
                 foreach (var error in result.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
             }
-            return RedirectToAction("Index", "Home");
+            return View(model);
         }
 
 

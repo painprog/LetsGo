@@ -55,7 +55,7 @@
                                     <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
                                 </div>
                             </li>
-                            <div class="subcategories">
+                            <li class="subcategories">
                                 <ul class="subcategories-@category.Id" style="display: none;">
                                     @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
                                     {
@@ -65,7 +65,7 @@
                                         </li>
                                     }
                                 </ul>
-                            </div>
+                            </li>
                         }
                         else
                         {

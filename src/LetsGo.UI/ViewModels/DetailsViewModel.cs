@@ -18,7 +18,7 @@ namespace LetsGo.UI.ViewModels
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Почта обязательна для заполнения")]
         [Display(Name = "Почта")]
-        [EmailAddress(ErrorMessage = "Некорректно введенная почта")]
+        [EmailAddress(ErrorMessage = "Некорректная почта")]
         public string Email { get; set; }
 
         public int EventId { get; set; }

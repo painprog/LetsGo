@@ -22,6 +22,7 @@ namespace LetsGo.ViewModels
         public string UserName { get; set; }
 
         [Display(Name = "Номер телефона")]
+        [Phone(ErrorMessage = "Неверный формат")]
         public string PhoneNumber { get; set; }
 
         [Display(Name = "О себе")]

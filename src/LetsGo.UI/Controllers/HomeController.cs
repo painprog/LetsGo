@@ -22,7 +22,7 @@ namespace LetsGo.UI.Controllers
             _db = db;
         }
 
-        [HttpGet("index.html")]
+        [HttpGet]
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Index()
         {

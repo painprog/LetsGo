@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using MimeKit;
 using MimeKit.Text;
-using System.Security.Policy;
 using LetsGo.Core.Entities;
 using System.Collections.Generic;
 

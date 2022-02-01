@@ -15,7 +15,7 @@ namespace LetsGo.UI.Extensions
         {
             var context = services.GetService<ApplicationDbContext>();
 
-            string[] roles = { "superadmin", "admin", "organizer", "usher" };
+            string[] roles = { "superadmin", "admin", "organizer", "usher", "apiclient" };
 
             foreach (string role in roles)
             {
@@ -56,18 +56,23 @@ namespace LetsGo.UI.Extensions
                 userStore.CreateAsync(user).GetAwaiter().GetResult();
             }
 
-            AssignRoles(services, user.Email, new[] { "superadmin" }).GetAwaiter().GetResult();
+            AssignRoles(services, user.Email, new[] { "superadmin", "apiclient" }).GetAwaiter().GetResult();
 
             context.SaveChangesAsync();
         }
 
-        private static async Task<IdentityResult> AssignRoles(IServiceProvider services, string email, string[] roles)
+        private static async Task AssignRoles(IServiceProvider services, string email, string[] roles)
         {
             UserManager<User> _userManager = services.GetService<UserManager<User>>();
             User user = await _userManager.FindByEmailAsync(email);
-            var result = await _userManager.AddToRolesAsync(user, roles);
 
-            return result;
+            foreach (string role in roles)
+            {
+                if (!await _userManager.IsInRoleAsync(user, role))
+                {
+                    await _userManager.AddToRoleAsync(user, role);
+                }
+            }
         }
 
     }

@@ -1,14 +1,12 @@
-﻿using LetsGo.Core.Entities;
+﻿using System.Threading.Tasks;
+using LetsGo.Core.Entities;
 using LetsGo.DAL;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LetsGo.UI.Controllers
+namespace LetsGo.UI.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -22,6 +20,7 @@ namespace LetsGo.UI.Controllers
 
         //GET api/ticketcheck/status/{id}
         [HttpGet("status/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "apiclient")]
         public async Task<ActionResult<PurchasedTicket>> CheckStatus(string id)
         {
             PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.TicketIdentifier == id);
@@ -32,6 +31,7 @@ namespace LetsGo.UI.Controllers
 
         //GET api/ticketcheck/skip/{id}
         [HttpGet("skip/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "apiclient")]
         public async Task<ActionResult<PurchasedTicket>> Skip(string id)
         {
             PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.TicketIdentifier == id);
@@ -46,6 +46,7 @@ namespace LetsGo.UI.Controllers
 
         //GET api/ticketcheck/rollback/{id}
         [HttpGet("rollback/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "apiclient")]
         public async Task<ActionResult<PurchasedTicket>> RollBack(string id)
         {
             PurchasedTicket purchasedTicket = await _context.PurchasedTickets.FirstOrDefaultAsync(t => t.TicketIdentifier == id);

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsGo.DAL", "src\LetsGo.DA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsGo.Core", "src\LetsGo.Core\LetsGo.Core.csproj", "{55DCBFF2-4BDB-48FD-9F20-9F95C9859636}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsgoTesting", "LetsgoTesting\LetsgoTesting.csproj", "{1827BF65-79E4-4EA9-9D3B-5A0D5DFB0988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LetsgoTesting", "LetsgoTesting\LetsgoTesting.csproj", "{1827BF65-79E4-4EA9-9D3B-5A0D5DFB0988}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetsGo.Api", "LetsGo.Api\LetsGo.Api.csproj", "{854E44F8-F543-4093-955B-81EA9F471A5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1827BF65-79E4-4EA9-9D3B-5A0D5DFB0988}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1827BF65-79E4-4EA9-9D3B-5A0D5DFB0988}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1827BF65-79E4-4EA9-9D3B-5A0D5DFB0988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{854E44F8-F543-4093-955B-81EA9F471A5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{854E44F8-F543-4093-955B-81EA9F471A5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{854E44F8-F543-4093-955B-81EA9F471A5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{854E44F8-F543-4093-955B-81EA9F471A5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

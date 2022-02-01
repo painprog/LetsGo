@@ -23,6 +23,8 @@ namespace LetsGo.UI.Controllers
             _db = db;
         }
 
+        [HttpGet("index.html")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Index()
         {
             IQueryable<Event> events = _db.Events.Include(e => e.Location);

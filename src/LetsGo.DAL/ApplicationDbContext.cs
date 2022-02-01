@@ -37,7 +37,9 @@ namespace LetsGo.DAL
         {
             base.OnModelCreating(builder);
 
-            builder.Seed(_appEnvironment);
+            var a = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+            if (_appEnvironment.ApplicationName == "LetsGo.UI")
+                builder.Seed(_appEnvironment);
 
             DisableOneToManyCascadeDelete(builder);
         }

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LetsGo.Core.Entities;
-using LetsGo.DAL;
 using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
 using LetsGo.UI.ViewModels;
@@ -17,15 +16,11 @@ namespace LetsGo.UI.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private ApplicationDbContext _context;
-        private readonly EventsService _Service;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, EventsService service)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
-            _Service = service;
         }
         public IActionResult Login()
         {
@@ -302,6 +297,7 @@ namespace LetsGo.UI.Controllers
                 $"Подтвердите регистрацию, перейдя по " +
                 $"<a href='{callbackUrl}'>ссылке</a>");
         }
+
         // Validations
         public bool CheckEmail(string email)
         {

@@ -5,7 +5,6 @@ using LetsGo.Core.Entities;
 using LetsGo.Core.Entities.Enums;
 using LetsGo.DAL;
 using LetsGo.UI.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;

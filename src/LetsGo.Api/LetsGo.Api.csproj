@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\LetsGo.Core\LetsGo.Core.csproj" />
-    <ProjectReference Include="..\src\LetsGo.DAL\LetsGo.DAL.csproj" />
+    <ProjectReference Include="..\LetsGo.Core\LetsGo.Core.csproj" />
+    <ProjectReference Include="..\LetsGo.DAL\LetsGo.DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,7 +18,6 @@ using Newtonsoft.Json;
 
 namespace LetsGo.UI.Controllers
 {
-    [Authorize]
     public class EventController : Controller
     {
         private readonly EventsService _Service;
@@ -32,26 +31,22 @@ namespace LetsGo.UI.Controllers
             _userManager = userManager;
         }
 
+
+        [Authorize]
         public async Task<IActionResult> Add()
         {
-            var parentCategories = _goContext.EventCategories
-                .Where(c => c.HasParent == false)
-                .OrderBy(c => c.Id).ToList();
-
-            var childCategories = _goContext.EventCategories
-                .Where(c => c.HasParent == true)
-                .OrderBy(c => c.ParentId).ToList();
-
             AddEventViewModel model = new AddEventViewModel()
             {
-                ParentCategories = parentCategories,
-                ChildCategories = childCategories
+                CategoriesDictionary = _goContext.EventCategories.ToArray()
+                .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList())
             };
 
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
             return View(model);
         }
 
+
+        [Authorize]
         [HttpPost]
         public async Task<JsonResult> Add(AddEventViewModel model)
         {
@@ -67,6 +62,7 @@ namespace LetsGo.UI.Controllers
             return Json(new { succes = false });
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Locations = await _goContext.Locations.ToListAsync();
@@ -74,6 +70,7 @@ namespace LetsGo.UI.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(EditEventViewModel viewModel)
         {
@@ -106,6 +103,8 @@ namespace LetsGo.UI.Controllers
             return View(viewModel);
         }
 
+
+        [Authorize]
         [HttpPost]
         public async Task<JsonResult> ChangeStatus(string status, int eventId, string cause)
         {
@@ -119,6 +118,8 @@ namespace LetsGo.UI.Controllers
             }
         }
 
+
+        [Authorize]
         public void SetMainEventCategory(IEnumerable<Event> events)
         {
             foreach (var item in events)
@@ -127,6 +128,8 @@ namespace LetsGo.UI.Controllers
             }
         }
 
+
+        [Authorize]
         public IActionResult Afisha(string SelectedDates, string SelectedCategories)
         {
             List<int> EventCategories = new List<int>();

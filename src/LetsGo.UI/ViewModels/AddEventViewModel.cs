@@ -10,7 +10,6 @@ namespace LetsGo.UI.ViewModels
 {
     public class AddEventViewModel
     {
-
         [Required(ErrorMessage = "Поле названия обязательна для заполнения")]
         [Display(Name = "Название")]
         public string Name { get; set; }
@@ -30,9 +29,9 @@ namespace LetsGo.UI.ViewModels
         [Required(ErrorMessage = "Поле конца времени обязательна для заполнения")]
         [Display(Name = "Время конца")]
         public DateTime? EventEnd { get; set; }
-        public List<EventCategory> ParentCategories { get; set; }
-        public List<EventCategory> ChildCategories { get; set; }
-        public string SelectedCategoryIds{ get; set; }
+
+        public Dictionary<int?, List<EventCategory>> CategoriesDictionary { get; set; }
+        public string SelectedCategories{ get; set; }
 
         [Display(Name = "Возрастное ограничение")]
         [Range(0, 18, ErrorMessage = ("Ошибка значения возроста. от 0 до 18"))]

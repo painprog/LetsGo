@@ -225,7 +225,7 @@
             })
         }
 
-        const appr, req;
+        let appr, req;
         let _id, _status, _div, _button, _email;
         function ChangeDenyStatus(button, newStatus) {
             event.stopPropagation();
@@ -311,6 +311,8 @@
         $(document).ready(function () {
             appr = $('#approvedUsers');
             req = $('#requests');
+            appr.prop('checked', true);
+            req.prop('checked', true);
             var maxLength = 150;
             $(".self-info").each(function () {
                 var myStr = $(this).text();

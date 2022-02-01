@@ -40,20 +40,15 @@ namespace LetsGo.UI.Services
 
             string categoriesJson = String.Empty;
             
-            if (eventView.SelectedCategoryIds == null)
+            if (eventView.SelectedCategories == null)
             {
                 var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
                 categoriesJson = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {
-                string[] categoryIds = eventView.SelectedCategoryIds.Split(',');
-                List<EventCategory> categories = new List<EventCategory>();
-                foreach(string id in categoryIds)
-                {
-                    categories.Add(await _goContext.EventCategories
-                        .FirstOrDefaultAsync(c => c.Id == Convert.ToInt32(id)));                    
-                }
+                string[] categoryIds = eventView.SelectedCategories.Split(',');
+                List<EventCategory> categories = categoryIds.Select(e => _goContext.EventCategories.FirstOrDefault(c => c.Id == int.Parse(e))).ToList();
                 categoriesJson = JsonConvert.SerializeObject(categories);
             }
 
@@ -94,7 +89,6 @@ namespace LetsGo.UI.Services
             {
                 item.EventId = eventId;
                 _goContext.EventTicketTypes.Add(item);
-                cache.Set(item.Id, item, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             }
 
             await _goContext.SaveChangesAsync();
@@ -123,6 +117,7 @@ namespace LetsGo.UI.Services
             Event @event = GetEvent(eventId).Result;
             @event.Count = count;
             _goContext.Events.Update(@event);
+            cache.Set(@event.Id, @event, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             await _goContext.SaveChangesAsync();
 
             return ticketTypes;
@@ -142,20 +137,7 @@ namespace LetsGo.UI.Services
         {
             Event @event = GetEvent(id).Result;
 
-            var parentCategories = _goContext.EventCategories
-                .Where(c => c.HasParent == false)
-                .OrderBy(c => c.Id).ToList();
-
-            var childCategories = _goContext.EventCategories
-                .Where(c => c.HasParent == true)
-                .OrderBy(c => c.ParentId).ToList();
-
-            var selectedCategories = JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories);
-            List<string> scIds = new List<string>();
-            foreach(var category in selectedCategories)
-            {
-                scIds.Add(category.Id.ToString());
-            }
+            var SelectedCategories = JsonConvert.DeserializeObject<List<EventCategory>>(@event.Categories);
 
             EditEventViewModel editEvent = new EditEventViewModel
             {
@@ -166,16 +148,16 @@ namespace LetsGo.UI.Services
                 EventStart = @event.EventStart,
                 EventEnd = @event.EventEnd,
                 PosterImage = @event.PosterImage,
-                ParentCategories = parentCategories,
-                ChildCategories = childCategories,
-                SelectedCategoryIds = string.Join(',', scIds),
                 AgeLimit = @event.AgeLimit,
                 TicketLimit = @event.TicketLimit,
                 StatusId = @event.StatusId,
                 Status = @event.Status,
+                CategoriesDictionary = _goContext.EventCategories.ToArray()
+                    .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList()),
+                SelectedCategories = String.Join(',', SelectedCategories.Select(c => c.Id.ToString())),
                 Location = _goContext.Locations.FirstOrDefault(e => e.Id == @event.Location.Id).Name,  // change
                 TicketsExist = EventTicketTypes(@event.Id)
-        };
+            };
             return editEvent;
         }
 
@@ -193,14 +175,14 @@ namespace LetsGo.UI.Services
                 @event.PosterImage = filename;
             }            
 
-            if (model.SelectedCategoryIds == null)
+            if (model.SelectedCategories == null)
             {
                 var category = _goContext.EventCategories.FirstOrDefault(c => c.Name == "Другое");
                 @event.Categories = JsonConvert.SerializeObject(new List<EventCategory> { category });
             }
             else
             {
-                string[] categoryIds = model.SelectedCategoryIds.Split(',');
+                string[] categoryIds = model.SelectedCategories.Split(',');
                 List<EventCategory> categories = new List<EventCategory>();
                 foreach (string id in categoryIds)
                 {

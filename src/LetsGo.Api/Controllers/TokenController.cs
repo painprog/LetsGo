@@ -55,9 +55,9 @@ namespace LetsGo.UI.Controllers.Api
             }
         }
 
-        [HttpGet("validate")]
+        [HttpGet("test")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "apiclient")]
-        public IActionResult GetList()
+        public IActionResult TestToken()
         {
             return Ok("Token validation succeeded");
         }

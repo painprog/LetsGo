@@ -1,23 +1,16 @@
 using System;
-using System.Collections.Generic;
-using LetsGo.Core;
-using LetsGo.Core.Entities;
 using LetsGo.DAL;
 using LetsGo.DAL.Contracts;
 using LetsGo.UI.Extensions;
 using LetsGo.UI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
 using LetsGo.DAL.Extensions;
-using LetsGo.UI.Controllers;
 using LetsGo.UI.HostedServices;
 using LetsGo.UI.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -54,23 +47,10 @@ namespace LetsGo.UI
             services.AddTransient<EventsService>();
             services.AddTransient<UsersService>();
 
-            // services.AddScoped(sp => ApplicationDbContextFactory.Create());
-
-            //services
-            //    .AddIdentity<User, Role>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
-
             services.AddDataBase(ApplicationDbContextFactory);
 
             services.AddRazorPages();
 
-            //services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            // services.AddJWTTokenServices(Configuration);
-
-            // services.AddSingleton(sp => ApplicationDbContextFactory);
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
             services.AddMemoryCache();
@@ -82,39 +62,6 @@ namespace LetsGo.UI
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo() { Title = "You api title", Version = "v1" });
-            //     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            //     {
-            //         Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
-            //           Enter 'Bearer' [space] and then your token in the text input below.
-            //           \r\n\r\nExample: 'Bearer 12345abcdef'",
-            //         Name = "Authorization",
-            //         In = ParameterLocation.Header,
-            //         Type = SecuritySchemeType.ApiKey,
-            //         Scheme = "Bearer"
-            //     });
-            //
-            //     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            //     {
-            //         {
-            //             new OpenApiSecurityScheme
-            //             {
-            //                 Reference = new OpenApiReference
-            //                 {
-            //                     Type = ReferenceType.SecurityScheme,
-            //                     Id = "Bearer"
-            //                 },
-            //                 Scheme = "oauth2",
-            //                 Name = "Bearer",
-            //                 In = ParameterLocation.Header,
-            //             },
-            //             new List<string>()
-            //         }
-            //     });
-            // });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -141,17 +88,6 @@ namespace LetsGo.UI
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // app.UseSwagger(c =>
-            // {
-            //     c.SerializeAsV2 = true;
-            //     c.RouteTemplate = "swagger/{documentName}/swagger.json";
-            // });
-            // app.UseSwaggerUI(c =>
-            // {
-            //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API V1");
-            //     c.RoutePrefix = "swagger";
-            // });
 
             app.UseEndpoints(endpoints =>
             {

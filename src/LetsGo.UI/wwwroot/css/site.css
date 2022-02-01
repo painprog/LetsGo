@@ -1384,7 +1384,7 @@ button.accept-policy {
     padding: 6px 0;
 }
 
-.filter input {
+.filter input[type=checkbox] {
     cursor: pointer;
     transform: scale(1.5);
     margin-right: 6px;
@@ -1403,6 +1403,7 @@ button.accept-policy {
 .filter-category {
     padding: 10px 0;
 }
+
 
 #category-link {
     cursor: pointer;
@@ -1455,4 +1456,8 @@ button.accept-policy {
 
 #self-info .more-text {
     display: none;
+}
+
+.cabinet-filter input {
+    transform: scale(1) !important;
 }

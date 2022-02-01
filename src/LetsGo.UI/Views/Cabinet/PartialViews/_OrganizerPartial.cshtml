@@ -5,12 +5,12 @@
 
 @if(Model.Events.Count != 0)
 {
-    <div class="col col-xl-9 col-md-12" id="all-events">
+    <div class="" id="all-events">
         @foreach (var item in Model.Events)
         {
             <div class="card mb-3 event-card" style="border-radius: 15px">
-                @*<div id="event-status" style="display:none;">@item.Status</div>*@
-                <div id="event-status" style="padding: 20px;">@item.Status</div>
+                <div id="event-status" style="display:none;">@item.Status</div>
+                @*<div id="event-status" style="padding: 20px;">@item.Status</div>*@
                 <div class="row body" onclick="eventDetails('@item.Id')">
                     <div class="pn-page-head col-lg-10" style="border-radius: 0">
                         <img class="blur_img" src="@item.PosterImage" alt="">
@@ -41,7 +41,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="text-center align-content-between admin-event pt-2">
+                <div class="text-center align-content-between admin-event bg-danger pt-2">
                     <div class="row">
                         <div class="col-lg-4 text-white my-auto">
                             <span>@ViewData["Status"]: </span>

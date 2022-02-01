@@ -93,59 +93,63 @@
         </div>
         
         <div class="col card mb-5 h-100 col-xl-3 col-md-4 col-sm-6 col-9 ml-3" id="dd">
-            <p class="text-center font-weight-bold py-2" style="font-size: 22px;"> @_localizer["Filters"]</p>
-            <div id="Filter">
+            <p class="text-center font-weight-bold pt-4" style="font-size: 22px;"> @_localizer["Filters"]</p>
+            <div id="Filter" class="filter">
                 <form asp-controller="Cabinet" asp-action="Profile" method="get" id="formFilter">
                     <div class="categories ml-1">
-                        <p class="font-weight-bold"> @_localizer["Category"]:</p>
-                        @foreach (var category in Model.CategoriesDictionary[-1])
-                        {
-                            <div class="category-checkbox">
-                                @if (Model.selectedCategories.Contains(category.Id.ToString()))
+                        <p class="font-weight-bold"> @_localizer["Categories"]:</p>
+                        <div class="filter-categories my-3">
+                            <input id="SelectedDates" value="" hidden />
+                            <input asp-for="@Model.SelectedCategories" hidden />
+                            <ul>
+                                @foreach (var category in @Model.CategoriesDictionary[-1])
                                 {
-                                    <input type="checkbox" value="@category.Id" id="category-@category.Id" checked />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" value="@category.Id" id="category-@category.Id" />
-                                }
-                                <label class="forcheckbox" for="category-@category.Id">@category.Name</label>
-                            </div>
-                            @if (Model.CategoriesDictionary.ContainsKey(category.Id))
-                            {
-                                <div class="ml-4">
-                                    <i style="display: none " id="selected-subcategories-@category.Id">0</i>
-                                    @foreach (var subcategory in Model.CategoriesDictionary[category.Id])
+                                    @if (@Model.CategoriesDictionary.ContainsKey(category.Id))
                                     {
-                                <div class="subcategory-checkbox">
-                                    @if (Model.selectedCategories.Contains(subcategory.Id.ToString()))
-                                    {
-                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" checked />
+                                        <li class="category">
+                                            <input type="checkbox" value=@category.Id id="category-@category.Id" onclick="PressCategoryInput(@category.Id)">
+                                            <div for="category-@category.Id" class="d-inline-block" id="category-link" onclick="OpenSubcategories(@category.Id)">
+                                                <span class="d-inline-block">@_localizer[category.Name]</span>
+                                                <span class="material-icons arrow icon-down-@category.Id">keyboard_arrow_down</span>
+                                                <span class="material-icons arrow icon-up-@category.Id" style="display: none;">keyboard_arrow_up</span>
+                                            </div>
+                                        </li>
+                                        <li class="subcategories">
+                                            <ul class="subcategories-@category.Id" style="display: none;">
+                                                @foreach (var subcategory in @Model.CategoriesDictionary[category.Id])
+                                                {
+                                                    <li class="subcategory">
+                                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" />
+                                                        <label for="subcategory-@subcategory.Id">@_localizer[@subcategory.Name]</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
                                     }
                                     else
                                     {
-                                        <input type="checkbox" value="@subcategory.Id" id="subcategory-@subcategory.Id" onclick="ClickSubcategory(this, @category.Id)" />
+                                        <li class="category">
+                                            <input type="checkbox" value=@category.Id id="category-@category.Id">
+                                            <label for="category-@category.Id" class="d-inline-block">@_localizer[category.Name]</label>
+                                        </li>
                                     }
-                                    <label class="forcheckbox" for="subcategory-@subcategory.Id">@subcategory.Name</label>
-                                </div>
-                                    }
-                                </div>
-                            }
-                        }
+                                }
+                            </ul>
+                        </div>
                     </div>
-                    <div class="ml-1">
+                    <div class="ml-1 mb-3">
                         <p class="font-weight-bold">@_localizer["Status"]:</p>
-                        <select class="form-select my-1" asp-for="@Model.Status" aria-label="Default select example">
-                            @for (int i = 0; i < Model.Stats.Keys.Count; i++)
+                        <select class="form-select my-1 form-control" asp-for="@Model.Status" aria-label="Default select example">
+                            @for (int i = 0; i < Model.Statuses.Length; i++)
                             {
-                                <option value="@Model.Stats.ElementAt(i).Value">@Model.Stats.ElementAt(i).Key</option>
+                            <option value="@i">@_localizer[@Model.Statuses.GetValue(i).ToString()]</option>
                             }
                         </select>
                     </div>
-                    <div class="datetimes ml-1 fw-bold">
+                    <div class="datetimes ml-1 fw-bold mb-3">
                         <p class="font-weight-bold">@_localizer["DateStart"]:</p>
                         <div class="row g-3 align-items-center">
-                            <div class="col-auto">
+                            <div class="col">
                                 <label for="dateFrom" class="col-form-label"> @_localizer["From"]</label>
                             </div>
                             <div class="col-auto">
@@ -153,7 +157,7 @@
                             </div>
                         </div>
                         <div class="row g-3 align-items-center">
-                            <div class="col-auto">
+                            <div class="col">
                                 <label for="dateBefore" class="col-form-label"> @_localizer["To"]</label>
                             </div>
                             <div class="col-auto">
@@ -161,7 +165,7 @@
                             </div>
                         </div>
                     </div>
-                    <input asp-for="selectedCategories" hidden />
+                    <input asp-for="SelectedCategories" hidden />
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-danger px-5 py-2 mt-2"> @_localizer["Show"]</button>
                         <input type="reset" value="Сбросить" class="btn btn-outline-danger px-5 py-2 pt-2 mt-2" onclick="Reset()" />
@@ -192,6 +196,8 @@
 
 @section Scripts
 {
+    <script type="text/javascript" src="~/js/filter.js"></script>
+
     <script>
 
         function ChangeStatus(button, newStatus) {
@@ -292,7 +298,7 @@
                 eventCategs.push($(this).val())
             })
             strCateg = eventCategs.join()
-            $('#selectedCategories').val(strCateg)
+            $('#SelectedCategories').val(strCateg)
         }
         )
         function Sort(sortState) {

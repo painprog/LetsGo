@@ -33,6 +33,7 @@
             </div>
         </div>
     </div>
+
     <div class="row mt-3 justify-content-md-between justify-content-lg-between justify-content-center events-btns align-items-baseline">
         <div class="row justify-content-start col-12 px-0">
             <div class="col-lg-2 col-4 px-0 mr-5">
@@ -61,11 +62,11 @@
         </div>
         <div id="options" class="col-2 px-0 mb-auto" style="display:none;">
             <div class="form-check form-check-inline" id="notApproved">
-              <input class="form-check-input" type="checkbox" id="requests" value="requests">
+              <input class="form-check-input" type="checkbox" id="requests" value="requests" onclick="UsersCheck()">
               <label class="form-check-label" for="requests">@_localizer["Requests"]</label>
             </div><br />
             <div class="form-check form-check-inline" id="approved">
-              <input class="form-check-input" type="checkbox" id="approvedUsers" value="approvedUsers">
+              <input class="form-check-input" type="checkbox" id="approvedUsers" value="approvedUsers" onclick="UsersCheck()">
               <label class="form-check-label" for="approvedUsers">@_localizer["ApprovedUsers"]</label>
             </div>
         </div>
@@ -79,6 +80,7 @@
             + @_localizer["AddEvent"]
         </a>
     </div>
+
     <div class="row">
         <div class="col events-container mb-5 px-0">
             @if (Model.IsOrganizer)
@@ -223,11 +225,8 @@
             })
         }
 
-        let _id;
-        let _status;
-        let _div;
-        let _button;
-        let _email;
+        const appr, req;
+        let _id, _status, _div, _button, _email;
         function ChangeDenyStatus(button, newStatus) {
             event.stopPropagation();
             // log
@@ -299,31 +298,19 @@
             })
             strCateg = eventCategs.join()
             $('#SelectedCategories').val(strCateg)
-        }
-        )
-        function Sort(sortState) {
-            $('#SortStateHidden').val(sortState);
-            console.log($('#SortStateHidden').val());
-            $('#formFilter').submit();
-        }
-
-
-        function ClickSubcategory(subcategory, id) {
-            var count = $('#selected-subcategories-' + id);
-            if ($(subcategory).is(':checked')) count.text(parseInt(count.text()) + 1);
-            else count.text(parseInt(count.text()) - 1);
-            $('#category-' + id).prop('checked', parseInt(count.text()));
-        }
+        });
 
         function Reset() {
             $('input[type="checkbox"]').removeAttr('checked');
-            $('input[type="datetime-local"]').each(function () { console.log($(this).val()); $(this).val('0001-01-01T00:00:00.000'); console.log($(this).val()); });
+            $('input[type="datetime-local"]').val('0001-01-01T00:00:00.000');
         }
 
 
          $('.btn-loadmore-organizers').hide();
 
         $(document).ready(function () {
+            appr = $('#approvedUsers');
+            req = $('#requests');
             var maxLength = 150;
             $(".self-info").each(function () {
                 var myStr = $(this).text();
@@ -341,42 +328,25 @@
             });
         });
 
-        $('#approved #approvedUsers').on('click', () => {
-            if(!$('#approved #approvedUsers').prop('checked'))
-            {
-                $(this).prop('checked', false);
-                console.log('unchecked');
-                $('#all-organizers #ApprovedTrue').each(function () {
-                    $(this).closest('.card').hide('fast');
-                });
+        function UsersCheck() {
+            if (appr.is(':checked') && req.is(':checked')) {
+                $('#all-organizers #ApprovedTrue').closest('.card').show('fast');
+                $('#all-organizers #ApprovedFalse').closest('.card').show('fast');
             }
-            else
-            {
-                $(this).prop('checked', true);
-                console.log('checked');
-                $('#all-organizers #ApprovedTrue').each(function () {
-                    $(this).closest('.card').show('fast');
-                });
+            else if (appr.is(':checked')) {
+                $('#all-organizers #ApprovedTrue').closest('.card').show('fast');
+                $('#all-organizers #ApprovedFalse').closest('.card').hide('fast');
             }
-        });
-        $('#notApproved #requests').on('click', () => {
-            if(!$('#notApproved #requests').prop('checked'))
-            {
-                $(this).prop('checked', false);
-                console.log('unchecked');
-                $('#all-organizers #ApprovedFalse').each(function () {
-                    $(this).closest('.card').hide('fast');
-                });
+            else if (req.is(':checked')) {
+                $('#all-organizers #ApprovedTrue').closest('.card').hide('fast');
+                $('#all-organizers #ApprovedFalse').closest('.card').show('fast');
             }
-            else
-            {
-                $(this).prop('checked', true);
-                console.log('checked');
-                $('#all-organizers #ApprovedFalse').each(function () {
-                    $(this).closest('.card').show('fast');
-                });
+            else {
+                $('#all-organizers #ApprovedTrue').closest('.card').hide('fast');
+                $('#all-organizers #ApprovedFalse').closest('.card').hide('fast');
             }
-        });
+        }
+
 
         function ApproveAccount(email, button) {
             event.stopPropagation();

@@ -1457,7 +1457,3 @@ button.accept-policy {
 #self-info .more-text {
     display: none;
 }
-
-.cabinet-filter input {
-    transform: scale(1) !important;
-}

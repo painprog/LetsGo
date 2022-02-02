@@ -57,7 +57,6 @@
             <label>@_localizer["Categories"]</label>
             <input type="hidden" asp-for="SelectedCategories" />
             <div class="categories mt-3 ml-1">
-                <input asp-for="@Model.SelectedCategories" hidden />
                 <ul>
                     @foreach (var category in @Model.CategoriesDictionary[-1])
                     {
@@ -253,10 +252,10 @@
             $('#TicketLimit').val(totalTickets.text());
             // categories
             var categories = [];
-            $('#category-checkboxes input:checked').each(function () {
-                categories.push($(this).attr('value'));
+            $('.categories input:checked').each(function () {
+                categories.push($(this).val());
             })
-            $('#selectedCategories').val(categories);
+            $('#SelectedCategories').val(categories.join());
             // tickets
             $('#Tickets').val(`[${getTicketsData()}]`);
             console.log(getTicketsData());

@@ -119,26 +119,26 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a id="concerts-link" class="nav-link text-white menu-link" asp-controller="Category" asp-action="Concerts"> @_localizer["Concerts"]</a>
+                            <a id="concerts-link" class="nav-link text-white menu-link" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=1"> @_localizer["Concerts"]</a>
                         </li>
                         <li class="nav-item">
-                            <a id="performances-link" class="nav-link text-white menu-link" asp-controller="Category" asp-action="Performances"> @_localizer["Performances"]</a>
+                            <a id="performances-link" class="nav-link text-white menu-link" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=3"> @_localizer["Performances"]</a>
                         </li>
                         <li class="nav-item">
-                            <a id="children-link" class="nav-link text-white menu-link" asp-controller="Category" asp-action="Children"> @_localizer["ForChildren"]</a>
+                            <a id="children-link" class="nav-link text-white menu-link" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=4"> @_localizer["ForChildren"]</a>
                         </li>
                         <li class="nav-item">
-                            <a id="classic-link" class="nav-link text-white menu-link" asp-controller="Category" asp-action="Classic"> @_localizer["Classic"]</a>
+                            <a id="classic-link" class="nav-link text-white menu-link" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=5"> @_localizer["Classic"]</a>
                         </li>
                         <li class="nav-item">
-                            <a id="excursions-link1" class="nav-link text-white menu-link" asp-controller="Category" asp-action="Excursion"> @_localizer["Excursion"]</a>
+                            <a id="excursions-link1" class="nav-link text-white menu-link" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=6"> @_localizer["Excursion"]</a>
                         </li>
                         <li class="nav-item submenu-link mr-5">
                             <a id="more-link" class="nav-link text-white menu-link"> @_localizer["More"]</a>
                             <div class="submenu pt-4">
-                                <a class="submenu-item" asp-controller="Category" asp-action="Festivals"> @_localizer["Festivals"]</a>
-                                <a class="submenu-item" asp-controller="Category" asp-action="Other"> @_localizer["Other"]</a>
-                                <a id="excursions-link2" class="submenu-item" asp-controller="Category" asp-action="Excursion">@_localizer["Excursion"]</a>
+                                <a class="submenu-item" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=2"> @_localizer["Festivals"]</a>
+                                <a class="submenu-item" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=7"> @_localizer["Other"]</a>
+                                <a id="excursions-link2" class="submenu-item" href="~/Event/Afisha?SelectedDates=all&SelectedCategories=6">@_localizer["Excursion"]</a>
                             </div>
                         </li>
                     </ul>

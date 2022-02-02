@@ -4,12 +4,12 @@
 @{
     ViewData["Title"] = "Category Page";
 }
-<div class="events-page">
-    <h2>@_localizer["Afisha"] <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> @_localizer["Bishkek"]</h2>
+<div class="events-page mt-3">
+    <h2 class="font-weight-bold mb-3" style="font-size:25px;">@_localizer["Afisha"] <span style="text-transform:lowercase;">@ViewBag.CategoryName</span> @_localizer["Bishkek"]</h2>
     <div class="events row">
         @foreach (var item in Model)
         {
-            <div class="col-md-4">
+            <div class="col-md-3 pl-0">
                 <div class="card p-0">
                     <div class="card-block-img" onclick="Details('@item.Id')">
                         <img src="@item.PosterImage" alt="@item.Name">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="card-block-description">
-                        <div class="card-title" onclick="Details('@item.Id')">@ViewBag.CateogryName "@item.Name"</div>
+                        <div class="card-title" onclick="Details('@item.Id')" style="font-size:18px;">@ViewBag.CateogryName "@item.Name"</div>
                         <div class="card-description">
                             <div class="card-date">
                                 @item.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) в @item.EventStart.ToString("HH:mm")

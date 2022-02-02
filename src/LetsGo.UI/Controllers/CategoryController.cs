@@ -24,7 +24,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Concerts"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                .Where(e => e.Categories.Contains("Концерты") && e.Status == Status.Published).ToList();
+                .Where(e => e.Categories.Contains("Concerts") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
 
@@ -32,7 +32,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Performances"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                    .Where(e => e.Categories.Contains("Спектакли") && e.Status == Status.Published).ToList();
+                    .Where(e => e.Categories.Contains("Performances") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
 
@@ -40,7 +40,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Children"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                    .Where(e => e.Categories.Contains("Детям") && e.Status == Status.Published).ToList();
+                    .Where(e => e.Categories.Contains("Children") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
 
@@ -48,7 +48,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Classic"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                    .Where(e => e.Categories.Contains("Классика") && e.Status == Status.Published).ToList();
+                    .Where(e => e.Categories.Contains("Classic") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
 
@@ -56,7 +56,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Excursion"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                    .Where(e => e.Categories.Contains("Классика") && e.Status == Status.Published).ToList();
+                    .Where(e => e.Categories.Contains("Excursion") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
 
@@ -64,7 +64,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Festivals"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                    .Where(e => e.Categories.Contains("Фестивали") && e.Status == Status.Published).ToList();
+                    .Where(e => e.Categories.Contains("Festivals") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
 
@@ -72,7 +72,7 @@ namespace LetsGo.UI.Controllers
         {
             ViewBag.CategoryName = _localizer["Other"];
             List<Event> events = _context.Events.Include(e => e.Location)
-                    .Where(e => e.Categories.Contains("Другое") && e.Status == Status.Published).ToList();
+                    .Where(e => e.Categories.Contains("Other") && e.Status == Status.Published).ToList();
             return View("Category", events);
         }
     }

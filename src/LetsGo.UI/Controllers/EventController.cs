@@ -128,8 +128,6 @@ namespace LetsGo.UI.Controllers
             }
         }
 
-
-        [Authorize]
         public IActionResult Afisha(string SelectedDates, string SelectedCategories)
         {
             List<int> EventCategories = new List<int>();
@@ -150,6 +148,26 @@ namespace LetsGo.UI.Controllers
                     .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList())
             };
             return View(model);
+        }
+
+        public IActionResult AfishaOn(string year, string month, string day)
+        {
+            DateTime date = new DateTime(int.Parse(year),
+                DateTime.ParseExact(month, "MMMM", new CultureInfo("ru-RU")).Month,
+                int.Parse(day));
+
+            var events = _goContext.Events.Include(e => e.Location).Where(e => e.EventStart.Date == date.Date).OrderBy(e => e.EventStart).ToList();
+            SetMainEventCategory(events);
+
+            AfishaViewModel model = new AfishaViewModel()
+            {
+                Events = events.ToList(),
+                CategoriesDictionary = _goContext.EventCategories.ToArray()
+                    .GroupBy(c => c.ParentId).ToDictionary(g => g.Key.HasValue ? g.Key : -1, g => g.ToList())
+            };
+
+            ViewBag.PageTitle = $"Афиша Бишкека {date.ToString("d MMMM", new System.Globalization.CultureInfo("ru-RU")).ToLower()}";
+            return View("Afisha", model);
         }
 
         // ?

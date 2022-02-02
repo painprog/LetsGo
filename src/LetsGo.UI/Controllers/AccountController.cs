@@ -30,6 +30,9 @@ namespace LetsGo.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            if(_userManager.Users.First(u => u.UserName == model.LoginOrEmail || u.Email == model.LoginOrEmail).Approved == false)
+                ModelState.AddModelError(string.Empty, "Ваш профиль еще не подтверждён.");
+            
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.LoginOrEmail) ?? await _userManager.FindByNameAsync(model.LoginOrEmail);

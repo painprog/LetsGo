@@ -195,4 +195,85 @@
   <data name="Requests" xml:space="preserve">
     <value>Requests</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Ballet" xml:space="preserve">
+    <value>Ballet</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Classic" xml:space="preserve">
+    <value>Classic</value>
+  </data>
+  <data name="Comedy" xml:space="preserve">
+    <value>Comedy</value>
+  </data>
+  <data name="Concert" xml:space="preserve">
+    <value>Concert</value>
+  </data>
+  <data name="Concerts" xml:space="preserve">
+    <value>Concerts</value>
+  </data>
+  <data name="Dates" xml:space="preserve">
+    <value>Dates</value>
+  </data>
+  <data name="Drama" xml:space="preserve">
+    <value>Drama</value>
+  </data>
+  <data name="Excursions" xml:space="preserve">
+    <value>Excursions</value>
+  </data>
+  <data name="Festival" xml:space="preserve">
+    <value>Festival</value>
+  </data>
+  <data name="Festivals" xml:space="preserve">
+    <value>Festivals</value>
+  </data>
+  <data name="Filters1" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="ForChildren" xml:space="preserve">
+    <value>For children</value>
+  </data>
+  <data name="Hip-Hop" xml:space="preserve">
+    <value>Hip-Hop</value>
+  </data>
+  <data name="Melodrams" xml:space="preserve">
+    <value>Melodrams</value>
+  </data>
+  <data name="Opera" xml:space="preserve">
+    <value>Opera</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Perfomance" xml:space="preserve">
+    <value>Perfomance</value>
+  </data>
+  <data name="Perfomances" xml:space="preserve">
+    <value>Perfomances</value>
+  </data>
+  <data name="Pop-Music" xml:space="preserve">
+    <value>Pop Music</value>
+  </data>
+  <data name="Rock" xml:space="preserve">
+    <value>Rock</value>
+  </data>
+  <data name="Show1" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="Tomorrow" xml:space="preserve">
+    <value>Tomorrow</value>
+  </data>
+  <data name="Vocals" xml:space="preserve">
+    <value>Vocals</value>
+  </data>
+  <data name="Weekends" xml:space="preserve">
+    <value>Weekends</value>
+  </data>
 </root>

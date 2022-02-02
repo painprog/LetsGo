@@ -192,4 +192,85 @@
   <data name="Requests" xml:space="preserve">
     <value>Өтүнүчүлөр</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>Баары</value>
+  </data>
+  <data name="Ballet" xml:space="preserve">
+    <value>Баллет</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Категориялар</value>
+  </data>
+  <data name="Classic" xml:space="preserve">
+    <value>Классика</value>
+  </data>
+  <data name="Comedy" xml:space="preserve">
+    <value>Комедия</value>
+  </data>
+  <data name="Concert" xml:space="preserve">
+    <value>Концерт</value>
+  </data>
+  <data name="Concerts" xml:space="preserve">
+    <value>Концерттер</value>
+  </data>
+  <data name="Dates" xml:space="preserve">
+    <value>Даталар</value>
+  </data>
+  <data name="Drama" xml:space="preserve">
+    <value>Драма</value>
+  </data>
+  <data name="Excursions" xml:space="preserve">
+    <value>Экскурсиялар</value>
+  </data>
+  <data name="Festival" xml:space="preserve">
+    <value>Фетиваль</value>
+  </data>
+  <data name="Festivals" xml:space="preserve">
+    <value>Фестивальдар</value>
+  </data>
+  <data name="Filters1" xml:space="preserve">
+    <value>Чыпкалар</value>
+  </data>
+  <data name="ForChildren" xml:space="preserve">
+    <value>Балдар үчүн</value>
+  </data>
+  <data name="Hip-Hop" xml:space="preserve">
+    <value>Хип-Хоп</value>
+  </data>
+  <data name="Melodrams" xml:space="preserve">
+    <value>Мелодрамалар</value>
+  </data>
+  <data name="Opera" xml:space="preserve">
+    <value>Опера</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Башка</value>
+  </data>
+  <data name="Perfomance" xml:space="preserve">
+    <value>Спектакль</value>
+  </data>
+  <data name="Perfomances" xml:space="preserve">
+    <value>Спектакльдер</value>
+  </data>
+  <data name="Pop-Music" xml:space="preserve">
+    <value>Поп-Музыка</value>
+  </data>
+  <data name="Rock" xml:space="preserve">
+    <value>Рок</value>
+  </data>
+  <data name="Show1" xml:space="preserve">
+    <value>Көрсөтүү</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Бүгүн</value>
+  </data>
+  <data name="Tomorrow" xml:space="preserve">
+    <value>Эртең</value>
+  </data>
+  <data name="Vocals" xml:space="preserve">
+    <value>Вокал</value>
+  </data>
+  <data name="Weekends" xml:space="preserve">
+    <value>Дем алыш күндөрү</value>
+  </data>
 </root>

@@ -39,6 +39,7 @@ namespace LetsGo.UI.Extensions
                 NormalizedUserName = superAdminLogin.ToUpper(),
                 PhoneNumber = string.Empty,
                 EmailConfirmed = true,
+                Approved = true,
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 AvatarLink = "/images/default_avatar.png",

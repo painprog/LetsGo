@@ -36,11 +36,13 @@ namespace LetsGo.UI.Controllers
             if (ModelState.IsValid)
             {
                 List<PurchasedTicket> purchasedTickets = new List<PurchasedTicket>();
-                Event @event = _eventService.GetEvent(model.EventId).Result;
+                //Event @event = _eventService.GetEvent(model.EventId).Result;
+                Event @event = _context.Events.FirstOrDefault(e => e.Id == model.EventId);
 
                 foreach (var item in model.EventTickets)
                 {
-                    var type = _eventService.GetEventTicketType(item.Id).Result;
+                    //var type = _eventService.GetEventTicketType(item.Id).Result;
+                    var type = _context.EventTicketTypes.FirstOrDefault(t => t.Id == item.Id);
 
                     type.Sold += item.Count;
                     @event.Sold += item.Count;
@@ -69,7 +71,7 @@ namespace LetsGo.UI.Controllers
           
 
                 _context.Events.Update(@event);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 _backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
                 {

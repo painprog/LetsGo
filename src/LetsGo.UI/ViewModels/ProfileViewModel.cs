@@ -19,5 +19,6 @@ namespace LetsGo.UI.ViewModels
         public Array Statuses { get; set; }
         public Dictionary<int?, List<EventCategory>> CategoriesDictionary { get; set; }
         public string SelectedCategories { get; set; }
+        public Dictionary<User, IList<string>> UsersWithRoles { get; set; }
     }
 }

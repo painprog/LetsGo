@@ -138,7 +138,15 @@
                     <div class="col-lg-9 sideBox">
                         <div class="row">
                             <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Role"]:</p>
-                            <span id="organizer-role" class="col"></span>
+                            <span id="organizer-role" class="col">
+                                @{ 
+                                    var user = Model.UsersWithRoles.First(u => u.Key.Id == item.Id);
+                                }
+                                @foreach (var role in user.Value)
+                                {
+                                    @role;
+                                }
+                            </span>
                         </div>
                         <div class="row">
                             <p class="col-lg-4 px-0 text-secondary" style="font-size: 17px; font-weight: 400;">@_localizer["Username"]:</p>
@@ -192,7 +200,7 @@
     }
     else
     {
-        <p class="ml-3 mt-2">@_localizer["UsersNotAdded"]</p>
+    <p class="ml-3 mt-2">@_localizer["UsersNotAdded"]</p>
     }
 </div>
 

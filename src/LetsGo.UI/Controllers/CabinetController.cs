@@ -92,6 +92,14 @@ namespace LetsGo.UI.Controllers
                 allUsers.AddRange(await _userManager.GetUsersInRoleAsync("admin"));
             allUsers.AddRange(await _userManager.GetUsersInRoleAsync("organizer"));
             allUsers.AddRange(await _userManager.GetUsersInRoleAsync("usher"));
+            
+            Dictionary<User, IList<string>> usersWithRoles = new Dictionary<User, IList<string>>();
+            foreach (var u in allUsers)
+            {
+                usersWithRoles.Add(u, await _userManager.GetRolesAsync(u));
+            }
+
+            viewModel.UsersWithRoles = usersWithRoles;
 
             viewModel.Users = allUsers;
             return View(viewModel);

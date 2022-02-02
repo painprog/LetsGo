@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="card-block-description">
                                             <div class="card-title" onclick="Details('@concert.Id')">
-                                                @Localizer["Concert"] "@concert.Name"
+                                                "@concert.Name"
                                             </div>
                                             <div class="card-description">
                                                 <div class="card-date">
@@ -214,7 +214,7 @@
                                             </div>
                                         </div>
                                         <div class="card-block-description">
-                                            <div class="card-title" onclick="Details('@festival.Id')">@Localizer["Festival"]"@festival.Name"</div>
+                                            <div class="card-title" onclick="Details('@festival.Id')">@festival.Name</div>
                                             <div class="card-description">
                                                 <div class="card-date">
                                                     @festival.EventStart.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ru-RU")) @Localizer["At"] @festival.EventStart.ToString("HH:mm")
@@ -265,7 +265,7 @@
                                         </div>
                                         <div class="card-block-description">
                                             <div class="card-title" onclick="Details('@performance.Id')">
-                                                @Localizer["Perfomance"]"@performance.Name"
+                                                "@performance.Name"
                                             </div>
                                             <div class="card-description">
                                                 <div class="card-date">
